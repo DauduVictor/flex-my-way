@@ -1,0 +1,40 @@
+name: flex_my_way
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.18.2
+  flutter_secure_storage: ^5.0.2
+  flutter_svg: ^1.0.3
+  get_storage: ^2.0.3
+  hooks_riverpod: ^1.0.3
+  http: ^0.13.4
+  intl: ^0.17.0
+  url_launcher: ^6.0.20
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/jpegs/
+    - assets/images/svgs/
+
+  fonts:
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/Gilroy-Light.otf
+        - asset: assets/fonts/Gilroy-ExtraBold.otf
+          weight: 700
