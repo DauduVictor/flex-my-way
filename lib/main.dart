@@ -1,28 +1,39 @@
-import 'package:flex_my_way/src/features/views/splash_screen.dart';
-import 'package:flex_my_way/src/services/navigation_service/i_navigation_services.dart';
-import 'package:flex_my_way/src/services/snackbar_service/snackbar_service.dart';
-import 'package:flex_my_way/src/shared/routing/app_routing.dart';
-import 'package:flex_my_way/src/shared/theme/app_theme.dart';
+import 'package:flex_my_way/screens/find-a-flex.dart';
+import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
+import 'package:flex_my_way/screens/host/host_registration.dart';
+import 'package:flex_my_way/screens/onboarding/forgot_password.dart';
+import 'package:flex_my_way/screens/host/host_a_flex.dart';
+import 'package:flex_my_way/screens/host/host_flex_success.dart';
+import 'package:flex_my_way/screens/onboarding/login.dart';
+import 'package:flex_my_way/screens/splash-screen.dart';
+import 'package:flex_my_way/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(const MyApp());
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      navigatorKey: ref.watch(navigationService).navigatorKey,
-      scaffoldMessengerKey: ref.watch(snackbarService).scaffoldMessengerKey,
-      onGenerateRoute: Routes.generateRoute,
-      home: const SplashScreenView(),
+      home: const SplashScreen(),
+      routes: {
+        SplashScreen.id: (context) => const SplashScreen(),
+        Login.id: (context) => const Login(),
+        ForgotPassword.id: (context) => const ForgotPassword(),
+        FindAFlex.id: (context) => const FindAFlex(),
+        HostRegistration.id: (context) => const HostRegistration(),
+        HostAFlex.id: (context) => const HostAFlex(),
+        HostFlexTermsAndConditions.id: (context) => const HostFlexTermsAndConditions(),
+        HostFlexSuccess.id: (context) => const HostFlexSuccess(),
+      },
     );
   }
 }
