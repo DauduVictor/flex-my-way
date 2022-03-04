@@ -1,6 +1,8 @@
+import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
 import 'package:flex_my_way/screens/host/host_registration.dart';
+import 'package:flex_my_way/screens/notifications.dart';
 import 'package:flex_my_way/screens/onboarding/forgot_password.dart';
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
 import 'package:flex_my_way/screens/host/host_flex_success.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      home: const Dashboard(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         Login.id: (context) => const Login(),
@@ -33,6 +35,7 @@ class MyApp extends StatelessWidget {
         HostAFlex.id: (context) => const HostAFlex(),
         HostFlexTermsAndConditions.id: (context) => const HostFlexTermsAndConditions(),
         HostFlexSuccess.id: (context) => const HostFlexSuccess(),
+        Dashboard.id: (context) => const Dashboard(),
       },
     );
   }

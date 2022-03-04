@@ -1,6 +1,7 @@
 import 'package:flex_my_way/util/constants/constants.dart';
-import 'package:flex_my_way/util/fonts.dart';
 import 'package:flutter/material.dart';
+
+import '../components/list-tile-button.dart';
 
 class Notifications extends StatefulWidget {
 
@@ -15,6 +16,7 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 75,
@@ -24,15 +26,16 @@ class _NotificationsState extends State<Notifications> {
             bottomRight: Radius.circular(30.0),
           ),
         ),
-        backgroundColor: backgroundColor,
+        backgroundColor: whiteColor,
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
             color: lightTextColor,
-            size: 17,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Notifications',
@@ -44,41 +47,41 @@ class _NotificationsState extends State<Notifications> {
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
           child: Column(
             children: [
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
+                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
+                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
+                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
               ),
-              ReusableNotificationButton(
+              ListTileButton(
                 onPressed: () { },
-                notificationTitle: 'You’ve got a message from our support team. Head over there.',
+                title: 'You’ve got a message from our support team. Head over there.',
               ),
               const SizedBox(height: 8),
               Text(
@@ -94,60 +97,6 @@ class _NotificationsState extends State<Notifications> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ReusableNotificationButton extends StatelessWidget {
-
-  final void Function() onPressed;
-  final String notificationTitle;
-
-  const ReusableNotificationButton({
-    Key? key,
-    required this.onPressed,
-    required this.notificationTitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextButton(
-          onPressed: onPressed,
-          style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
-            padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 20),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0),
-            )
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  notificationTitle,
-                  style: TextStyle(
-                    color: whiteColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  size: 21,
-                  color: whiteColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-      ],
     );
   }
 }

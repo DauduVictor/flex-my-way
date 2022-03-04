@@ -1,8 +1,9 @@
-import 'package:flex_my_way/components/reusable-button.dart';
+import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
+import '../dashboard/dashboard.dart';
 
 class HostFlexSuccess extends StatelessWidget {
 
@@ -13,6 +14,7 @@ class HostFlexSuccess extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(30, 60, 30, 30),
         child: SingleChildScrollView(
@@ -31,120 +33,147 @@ class HostFlexSuccess extends StatelessWidget {
                 style: textTheme.headline4,
               ),
               const SizedBox(height: 32),
-              RichText(
-                text: TextSpan(
-                  text: AppStrings.importSelected,
-                  style: textTheme.bodyText2,
-                  children: [
-                    TextSpan(
-                      text: AppStrings.betaSMS,
-                      style: textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: AppStrings.bothAtVery,
-                      style: textTheme.bodyText2,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(AppStrings.clickTheirIcon),
-              const SizedBox(height: 24),
-              const Text(AppStrings.youCanAlsoShare),
-              const SizedBox(height: 24),
-              Container(
-                padding: const EdgeInsets.all(20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Column(
                   children: [
                     RichText(
+                      textAlign: TextAlign.justify,
                       text: TextSpan(
-                        text: AppStrings.kelechiMo,
-                        style: textTheme.bodyText2!
-                            .copyWith(fontWeight: FontWeight.w600),
+                        text: AppStrings.importSelected,
+                        style: textTheme.bodyText2,
                         children: [
                           TextSpan(
-                            text: AppStrings.isInviting,
-                            style: textTheme.bodyText2),
+                            text: AppStrings.betaSMS,
+                            style: textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           TextSpan(
-                            text: AppStrings.invitingDate,
-                            style: textTheme.bodyText2!
-                                .copyWith(fontWeight: FontWeight.w600),
+                            text: AppStrings.bothAtVery,
+                            style: textTheme.bodyText2,
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text(AppStrings.clickTheBelow),
+                    const Text(
+                      AppStrings.clickTheirIcon,
+                      textAlign: TextAlign.justify,
+                    ),
                     const SizedBox(height: 24),
-                    Text(
-                      AppStrings.flexURL,
-                      style: textTheme.bodyText2!
-                          .copyWith(color: primaryColor),
-                    )
+                    const Text(
+                      AppStrings.youCanAlsoShare,
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 32),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: whiteColor,
+                      ),
+                      child: Column(
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: AppStrings.kelechiMo,
+                              style: textTheme.bodyText2!
+                                  .copyWith(fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                    text: AppStrings.isInviting,
+                                    style: textTheme.bodyText2),
+                                TextSpan(
+                                  text: AppStrings.invitingDate,
+                                  style: textTheme.bodyText2!
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Text(
+                            AppStrings.clickTheBelow,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 24),
+                          Text(
+                            AppStrings.flexURL,
+                            textAlign: TextAlign.center,
+                            style: textTheme.bodyText2!.copyWith(color: primaryColor),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(19),
+                              backgroundColor: primaryColorVariant,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              )
+                          ),
+                          child: Center(
+                            child: Text(
+                              AppStrings.betaSMSCaps,
+                              style: textTheme.bodyText2!.copyWith(
+                                color: whiteColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.all(19),
+                            backgroundColor: primaryColorVariant,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.share_rounded,
+                            size: 35,
+                            color: whiteColor,
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(19),
+                              backgroundColor: primaryColorVariant,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              )
+                          ),
+                          child: const Icon(
+                            Icons.file_copy,
+                            size: 35,
+                            color: whiteColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    Button(
+                      label: AppStrings.goHome,
+                      onPressed: () {
+                        Navigator.pushNamed(context, Dashboard.id);
+                      },
+                    ),
+                    const SizedBox(height: 4),
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(19),
-                      backgroundColor: primaryColorVariant,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      )
-                    ),
-                    child: Center(
-                      child: Text(
-                        AppStrings.betaSMSCaps,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: whiteColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: primaryColorVariant,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(shareIcon),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 24),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: primaryColorVariant,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(copyIcon),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Button(
-                label: AppStrings.goHome,
-                onPressed: () {},
-              )
             ],
           ),
         ),

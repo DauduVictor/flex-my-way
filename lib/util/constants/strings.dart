@@ -72,4 +72,8 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
   static const flexURL = 'https://www.flexmyway.io/uweb191';
   static const betaSMSCaps = 'BETA\nSMS';
   static const goHome = 'Go Home';
+
+  //Dashboard
+  static const confirmedInvitees = 'Confirmed Invitees';
+  static const manageYourFlex = 'Manage your flex';
 }

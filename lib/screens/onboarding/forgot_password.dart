@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../components/reusable-text-form-field.dart';
+import '../../components/text-form-field.dart';
 import '../../util/constants/constants.dart';
 import '../../util/size-config.dart';
 

@@ -20,7 +20,7 @@ class Button extends StatelessWidget {
     SizeConfig().init(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        elevation: 0,
+        elevation: 1,
         padding: const EdgeInsets.symmetric(vertical: 21),
         primary: primaryColor,
         shape: RoundedRectangleBorder(

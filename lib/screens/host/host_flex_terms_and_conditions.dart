@@ -1,5 +1,5 @@
 import 'package:flex_my_way/screens/host/host_flex_success.dart';
-import 'package:flex_my_way/components/reusable-button.dart';
+import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';

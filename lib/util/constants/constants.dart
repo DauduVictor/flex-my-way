@@ -23,6 +23,11 @@ const copyIcon = 'assets/images/svgs/copy_icon.svg';
 const shareIcon = 'assets/images/svgs/share_icon.svg';
 const splashBackgroundImage = 'assets/images/jpegs/splash.png';
 
+BorderRadius appBarBottomBorder = const BorderRadius.only(
+  bottomLeft: Radius.circular(30.0),
+  bottomRight: Radius.circular(30.0),
+);
+
 List<int> ageRating = [10, 13, 15, 16, 18];
 List<String> typeOfFlex = [
   'After Party, Ball',

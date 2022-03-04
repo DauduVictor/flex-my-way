@@ -1,6 +1,6 @@
-import 'package:flex_my_way/components/reusable-dropdown-field.dart';
-import 'package:flex_my_way/components/reusable-button.dart';
-import 'package:flex_my_way/components/reusable-text-form-field.dart';
+import 'package:flex_my_way/components/dropdown-field.dart';
+import 'package:flex_my_way/components/button.dart';
+import 'package:flex_my_way/components/text-form-field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../util/constants/constants.dart';
@@ -231,6 +231,7 @@ class _HostAFlexState extends State<HostAFlex> {
                       Navigator.pushNamed(context, HostFlexTermsAndConditions.id);
                     },
                   ),
+                  const SizedBox(height: 4),
                 ],
               ),
             ),
