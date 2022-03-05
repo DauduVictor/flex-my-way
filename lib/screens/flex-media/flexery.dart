@@ -33,6 +33,7 @@ class _FlexeryState extends State<Flexery> {
           child: Column(
             children: [
               const SizedBox(height: 50),
+              //appbar
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -123,12 +124,110 @@ class _FlexeryState extends State<Flexery> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              //body of media
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 15,
+                runSpacing: 16,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _showImageDialog();
+                    },
+                    child: Container(
+                      width: SizeConfig.screenWidth! * 0.28,
+                      height: SizeConfig.screenHeight! * 0.13,
+                      color: Colors.black.withOpacity(0.7),
+                    ),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                  Container(
+                    width: SizeConfig.screenWidth! * 0.28,
+                    height: SizeConfig.screenHeight! * 0.13,
+                    color: Colors.black.withOpacity(0.7),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  ///widget to show the dialog for image
+  Future<void> _showImageDialog () {
+    return showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: '',
+      transitionBuilder: (context, animation, secondaryAnimation, widget) {
+        return Transform.translate(
+          offset: Offset(0, - 60 * animation.value) ,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.close,
+                      color: whiteColor,
+                      size: 31,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Container(
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight! * 0.68,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+        transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, animation1, animation2) {
+        return Container();
+      }
+    );
+  }
+
   ///widget to show the dialog for filter
   Future<void> _showFilterDialog () {
     return showDialog(
@@ -152,7 +251,8 @@ class _FlexeryState extends State<Flexery> {
             ),
             const SizedBox(height: 20),
             Container(
-              padding: const EdgeInsets.fromLTRB(16, 30, 16, 21),
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 21),
+              clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
                 color: const Color(0xFFFFFFFF),
@@ -161,64 +261,70 @@ class _FlexeryState extends State<Flexery> {
                 borderRadius: BorderRadius.circular(40),
                 color: Colors.white,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 20),
                     const Text(
-                      'Turn On notifications',
+                      'Sort by',
                       style: TextStyle(
-                        color: Color(0xFF001140),
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
-                        fontSize: 23,
+                        fontFamily: 'Gilroy',
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(15, 8, 15, 20),
-                      child: Text(
-                        'You will get updates when important events happen',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color(0xFF001140),
-                          fontWeight: FontWeight.normal,
-                          fontSize: 18.5,
-                        ),
-                      ),
-                    ),
-                    /// update button
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          ),
-                          child: const Text(
-                            'Not Now',
+                    const SizedBox(height: 25),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        width: SizeConfig.screenWidth,
+                        child: const Center(
+                          child: Text(
+                            'Most Recent',
                             style: TextStyle(
-                              fontSize: 19,
-                              color: Color(0xFF4F5877),
+                              fontSize: 18,
                               fontWeight: FontWeight.w500,
+                              fontFamily: 'Gilroy',
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () { },
-                          style: ElevatedButton.styleFrom(
-                            primary: const Color(0xFF4D84FF),
-                            onSurface: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          ),
-                          child: const Text(
-                            'Turn On',
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        color: primaryColorVariant,
+                        width: SizeConfig.screenWidth,
+                        child: const Center(
+                          child: Text(
+                            'Most Popular Flex',
                             style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Gilroy',
                             ),
                           ),
                         ),
-                      ],
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        width: SizeConfig.screenWidth,
+                        child: const Center(
+                          child: Text(
+                            'Random',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Gilroy',
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -230,3 +336,18 @@ class _FlexeryState extends State<Flexery> {
     );
   }
 }
+// ///List of pictures used in wrap
+// final List<Widget> _pictureList = [
+//   for (int i = 0; i < 8; i++){
+//     return GestureDetector(
+//       onTap: () {
+//         _showImageDialog();
+//       },
+//       child: Container(
+//         width: SizeConfig.screenWidth! * 0.28,
+//         height: SizeConfig.screenHeight! * 0.13,
+//         color: Colors.black.withOpacity(0.7),
+//       ),
+//     ),
+//   }
+// ];
