@@ -19,44 +19,42 @@ class CustomDropdownButtonField extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
-        SizedBox(
-          height: 60,
-          child: DropdownButtonFormField(
-            onChanged: onChanged,
-            isExpanded: true,
-            items: items.map((val) => DropdownMenuItem(
-              value: val,
-              child: Text(
-                '$val',
-                style: textTheme.bodyText2,
-              ),
+        DropdownButtonFormField(
+          onChanged: onChanged,
+          isExpanded: true,
+          items: items.map((val) => DropdownMenuItem(
+            value: val,
+            child: Text(
+              '$val',
+              style: textTheme.bodyText2,
             ),
-            ).toList(),
-            hint: FittedBox(
-                child: Text(
+          ),
+          ).toList(),
+          hint: FittedBox(
+            child: Text(
               hintText,
               style: textTheme.bodyText2,
-            )),
-            icon: const Icon(Icons.expand_more),
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(24, 24, 12, 16),
-              focusColor: neutralColor,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                borderSide: BorderSide(color: neutralColor),
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                borderSide: BorderSide(color: neutralColor),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                borderSide: BorderSide(color: neutralColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(24)),
-                borderSide: BorderSide(color: neutralColor),
-              ),
+            ),
+          ),
+          icon: const Icon(Icons.expand_more),
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.fromLTRB(24, 24, 12, 16),
+            focusColor: neutralColor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+              borderSide: BorderSide(color: neutralColor),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+              borderSide: BorderSide(color: neutralColor),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+              borderSide: BorderSide(color: neutralColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+              borderSide: BorderSide(color: neutralColor),
             ),
           ),
         ),

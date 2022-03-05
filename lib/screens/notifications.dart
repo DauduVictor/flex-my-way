@@ -1,10 +1,11 @@
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
-
+import '../components/app-bar.dart';
 import '../components/list-tile-button.dart';
 
 class Notifications extends StatefulWidget {
 
+  static const String id = "notifications";
   const Notifications({Key? key}) : super(key: key);
 
   @override
@@ -17,31 +18,7 @@ class _NotificationsState extends State<Notifications> {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 75,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30.0),
-            bottomRight: Radius.circular(30.0),
-          ),
-        ),
-        backgroundColor: whiteColor,
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: lightTextColor,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          'Notifications',
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: buildAppBar(context, textTheme, 'Notifications'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),

@@ -1,10 +1,13 @@
 import 'package:flex_my_way/components/list-tile-button.dart';
+import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import '../../components/app-bar.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 import '../notifications.dart';
+import 'drawer.dart';
 
 class Dashboard extends StatefulWidget {
 
@@ -21,78 +24,15 @@ class _DashboardState extends State<Dashboard> {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: whiteColor,
-        centerTitle: true,
-        title: Text(
-          'Hi, Kelechi',
-          style: textTheme.headline5,
-        ),
-        actions: [
-          Center(
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        transitionDuration: const Duration(milliseconds: 600),
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return const Notifications();
-                        },
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          return Container(
-                            color: whiteColor.withOpacity(animation.value),
-                            child: SlideTransition(
-                              position: animation.drive(
-                                Tween(
-                                  begin: const Offset(0.0, -1.0),
-                                  end: Offset.zero,
-                                ).chain(CurveTween(curve: Curves.easeInCubic)),
-                              ),
-                              child: child,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    IconlyLight.notification,
-                    color: Colors.black,
-                    size: 23,
-                  ),
-                ),
-                Positioned(
-                  right: 2.3,
-                  top: 0.8,
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 35),
-        ],
-      ),
+      appBar: buildAppBarWithNotification(textTheme, context),
+      drawer: const RefactoredDrawer(),
       body: DefaultTabController(
         length: 2,
         child: Column(
           children: [
             Container(
               width: SizeConfig.screenWidth,
-              padding: const EdgeInsets.fromLTRB(35, 24, 35, 0),
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
               decoration: BoxDecoration(
                 color: whiteColor,
                 borderRadius: appBarBottomBorder,
@@ -107,7 +47,9 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(height: 24),
                   ListTileButton(
                     title: 'You have 111 pending invites. How would you like to deal with these?',
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, PendingInvites.id);
+                    },
                   ),
                 ],
               ),
@@ -282,6 +224,7 @@ class ReusableDashBoardCard extends StatelessWidget {
               const SizedBox(width: 24),
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(

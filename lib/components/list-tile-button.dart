@@ -19,11 +19,11 @@ class ListTileButton extends StatelessWidget {
         TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-              backgroundColor: primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 20),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.0),
-              )
+            backgroundColor: primaryColor,
+            padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24.0),
+            )
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

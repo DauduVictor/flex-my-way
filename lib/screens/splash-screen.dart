@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// Function to navigate after the splash screen loader ends
   void _navigate() {
-    Timer(const Duration(milliseconds: 100), () {
+    Timer(const Duration(microseconds: 10), () {
       setState(() {
         _width = 0;
       });
@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateTo() {
-    Timer(const Duration(milliseconds: 2500), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushNamed(context, FindAFlex.id);
     });
   }
@@ -76,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: AnimatedContainer(
                 margin: EdgeInsets.only(right: SizeConfig.screenWidth!.toDouble() * _width),
                 curve: Curves.bounceInOut,
-                duration: const Duration(milliseconds: 2450),
+                duration: const Duration(milliseconds: 4950),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.white,

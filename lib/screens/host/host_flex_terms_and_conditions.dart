@@ -26,9 +26,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: transparent,
-        elevation: 0,
-        centerTitle: true,
+        leadingWidth: 80,
         title: Text(
           AppStrings.hostAFlex,
           style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
@@ -55,7 +53,8 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                 decoration: BoxDecoration(
                   color: whiteColor,
                   borderRadius: BorderRadius.circular(24)),
-                child: const Scrollbar(
+                child: const RawScrollbar(
+                  thumbColor: primaryColor,
                   radius: Radius.circular(8.0),
                   thickness: 4.0,
                   isAlwaysShown: true,

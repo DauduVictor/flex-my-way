@@ -22,9 +22,17 @@ class AppTheme {
         color: const Color(0xFF000000).withOpacity(0.4),
       ),
     ),
-    scrollbarTheme: ScrollbarThemeData(
-      thumbColor: MaterialStateProperty.all(primaryColor),
-      trackColor: MaterialStateProperty.all(primaryColor.withOpacity(0.3)),
+    // scrollbarTheme: ScrollbarThemeData(
+    //   thumbColor: MaterialStateProperty.all(primaryColor),
+    //   trackColor: MaterialStateProperty.all(primaryColor.withOpacity(0.3)),
+    // ),
+    appBarTheme: const AppBarTheme(
+      elevation: 0,
+      backgroundColor: whiteColor,
+      centerTitle: true,
+      iconTheme: IconThemeData(
+        color: neutralColor,
+      ),
     ),
   );
 

@@ -28,87 +28,87 @@ class Login extends StatelessWidget {
         },
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 45),
             height: SizeConfig.screenHeight,
             width: SizeConfig.screenWidth,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/jpegs/login-decorated-screen.png'
-                ),
+                image: AssetImage(loginDecoratedImage),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Login',
-                  style: textTheme.headline4!.copyWith(fontSize: 30),
-                ),
-                const SizedBox(height: 32),
-                CustomTextFormField(
-                  textEditingController: _emailAddressController,
-                  onChanged: (value) { },
-                  hintText: 'Your Email Address',
-                ),
-                CustomTextFormField(
-                  textEditingController: _emailAddressController,
-                  onChanged: (value) { },
-                  hintText: 'Your Password',
-                ),
-                const SizedBox(height: 24),
-                Button(
-                  label: 'Log in',
-                  onPressed: () {
-                    FocusScopeNode currentFocus = FocusScope.of(context);
-                    if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                    // Navigator.pushNamed(context, HostAFlex.id);
-                  },
-                ),
-                const SizedBox(height: 24),
-                RichText(
-                  text: TextSpan(
-                    style: textTheme.bodyText1!,
-                    children: [
-                      const TextSpan(
-                        text: 'Forgot your password? ',
-                      ),
-                      TextSpan(
-                        text: 'Click Here',
-                        style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                        recognizer: TapGestureRecognizer()..onTap = () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const ForgotPassword()),
-                          );
-                        },
-                      ),
-                    ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 45),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login',
+                    style: textTheme.headline4!.copyWith(fontSize: 30),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Don’t have an account?',
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText1!,
-                ),
-                const SizedBox(height: 4),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Login()),
-                    );
-                  },
-                  child: Text(
-                    'Sign Up',
-                    textAlign: TextAlign.center,
-                    style: textTheme.bodyText1!.copyWith(
-                      fontWeight: FontWeight.w600,
+                  const SizedBox(height: 32),
+                  CustomTextFormField(
+                    textEditingController: _emailAddressController,
+                    onChanged: (value) { },
+                    hintText: 'Your Email Address',
+                  ),
+                  CustomTextFormField(
+                    textEditingController: _emailAddressController,
+                    onChanged: (value) { },
+                    hintText: 'Your Password',
+                  ),
+                  const SizedBox(height: 24),
+                  Button(
+                    label: 'Log in',
+                    onPressed: () {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                      // Navigator.pushNamed(context, HostAFlex.id);
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  RichText(
+                    text: TextSpan(
+                      style: textTheme.bodyText1!,
+                      children: [
+                        const TextSpan(
+                          text: 'Forgot your password? ',
+                        ),
+                        TextSpan(
+                          text: 'Click Here',
+                          style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                          recognizer: TapGestureRecognizer()..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ForgotPassword()),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Text(
+                    'Don’t have an account?',
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyText1!,
+                  ),
+                  const SizedBox(height: 4),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
+                    },
+                    child: Text(
+                      'Sign Up',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

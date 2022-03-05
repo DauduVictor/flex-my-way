@@ -41,9 +41,7 @@ class _HostAFlexState extends State<HostAFlex> {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: transparent,
-        elevation: 0,
-        centerTitle: true,
+        leadingWidth: 80,
         title: Text(
           AppStrings.hostAFlex,
           style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),

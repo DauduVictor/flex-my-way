@@ -1,6 +1,10 @@
 class AppStrings {
+
   static const celebrateTogether = 'Celebrate together. \nFind your Flex.';
   static const flexMyWay = 'flex\nmy\nway';
+  static const enterCurrentPassword = 'Enter Current Password';
+  static const enterNewPassword = 'Enter New Password';
+  static const save = 'Save';
 
   //Find a Flex
   static const youDeyGround = 'you dey ground, you no wan flex?';
@@ -76,4 +80,17 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
   //Dashboard
   static const confirmedInvitees = 'Confirmed Invitees';
   static const manageYourFlex = 'Manage your flex';
+  static const flexId = 'flexID';
+
+  //drawer
+  static const settings = 'Settings';
+
+  //settings
+  static const editProfileDetails = 'Edit Profile Details';
+  static const becomeAHost = 'Become a Host';
+  static const editPassword = 'Edit Password';
+  static const inviteYourFriends = 'Invite your Friends';
+  static const about = 'About';
+  static const helpAndSupport = 'Help & Support';
+  static const logOut = 'Logout';
 }

@@ -22,6 +22,9 @@ const successImage = 'assets/images/svgs/success.svg';
 const copyIcon = 'assets/images/svgs/copy_icon.svg';
 const shareIcon = 'assets/images/svgs/share_icon.svg';
 const splashBackgroundImage = 'assets/images/jpegs/splash.png';
+const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
+const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
+const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),

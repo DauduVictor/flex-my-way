@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
+import '../../util/size-config.dart';
 import '../dashboard/dashboard.dart';
 
 class HostFlexSuccess extends StatelessWidget {
@@ -12,6 +13,7 @@ class HostFlexSuccess extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -163,7 +165,7 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(height: SizeConfig.screenHeight! * 0.05),
                     Button(
                       label: AppStrings.goHome,
                       onPressed: () {
