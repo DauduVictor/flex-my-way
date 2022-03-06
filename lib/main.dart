@@ -1,6 +1,8 @@
 import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/screens/find-a-flex.dart';
+import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
+import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
 import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
 import 'package:flex_my_way/screens/host/host_registration.dart';
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const Dashboard(),
+      home: const FlexHistory(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         Login.id: (context) => const Login(),
@@ -53,6 +55,8 @@ class MyApp extends StatelessWidget {
         PrivacyPolicy.id: (context) => const PrivacyPolicy(),
         HelpAndSupport.id: (context) => const HelpAndSupport(),
         PendingInvites.id: (context) => const PendingInvites(),
+        FlexHistory.id: (context) => const FlexHistory(),
+        FlexHistoryDetail.id: (context) => const FlexHistoryDetail(),
       },
     );
   }

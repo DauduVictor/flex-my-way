@@ -1,3 +1,4 @@
+import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
@@ -131,7 +132,9 @@ class _SettingsState extends State<Settings> {
                       ReusableSettingsButton(
                         name: AppStrings.logOut,
                         icon: IconlyLight.logout,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, FindAFlex.id);
+                        },
                       ),
                       const SizedBox(height: 12),
                     ],

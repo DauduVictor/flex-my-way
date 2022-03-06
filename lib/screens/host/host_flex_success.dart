@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
-import '../dashboard/dashboard.dart';
+import '../onboarding/login.dart';
 
 class HostFlexSuccess extends StatelessWidget {
 
@@ -169,7 +169,7 @@ class HostFlexSuccess extends StatelessWidget {
                     Button(
                       label: AppStrings.goHome,
                       onPressed: () {
-                        Navigator.pushNamed(context, Dashboard.id);
+                        Navigator.pushNamed(context, Login.id);
                       },
                     ),
                     const SizedBox(height: 4),

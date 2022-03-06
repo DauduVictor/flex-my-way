@@ -1,3 +1,4 @@
+import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../components/button.dart';
@@ -61,7 +62,7 @@ class Login extends StatelessWidget {
                     onPressed: () {
                       FocusScopeNode currentFocus = FocusScope.of(context);
                       if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                      // Navigator.pushNamed(context, HostAFlex.id);
+                      Navigator.pushNamed(context, Dashboard.id);
                     },
                   ),
                   const SizedBox(height: 24),
@@ -76,10 +77,7 @@ class Login extends StatelessWidget {
                           text: 'Click Here',
                           style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
                           recognizer: TapGestureRecognizer()..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ForgotPassword()),
-                            );
+                            Navigator.pushNamed(context, ForgotPassword.id);
                           },
                         ),
                       ],
@@ -94,10 +92,6 @@ class Login extends StatelessWidget {
                   const SizedBox(height: 4),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Login()),
-                      );
                     },
                     child: Text(
                       'Sign Up',

@@ -13,18 +13,13 @@ const splashBackgroundColor = Color(0xFF86CBF0);
 const lightTextColor = Color(0xFF374957);
 
 // images
-const splashBackground = 'assets/images/svgs/splash_background.svg';
-const newSplash = 'assets/images/svgs/new_splash.svg';
-const calendar = 'assets/images/svgs/calendar.svg';
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
-const cameraIcon = 'assets/images/svgs/camera.svg';
 const successImage = 'assets/images/svgs/success.svg';
-const copyIcon = 'assets/images/svgs/copy_icon.svg';
-const shareIcon = 'assets/images/svgs/share_icon.svg';
 const splashBackgroundImage = 'assets/images/jpegs/splash.png';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
+const flexBackgroundImage = 'assets/images/jpegs/flex-history-background-image.png';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),

@@ -26,7 +26,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
       body: Container(
         width: SizeConfig.screenWidth,
         height: SizeConfig.screenHeight,
-        padding: const EdgeInsets.only(top: 40, bottom: 60.0),
+        padding: const EdgeInsets.only(top: 40, bottom: 90.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import '../flex-history/flex-history.dart';
 import '../settings/settings.dart';
 import 'dashboard.dart';
 
@@ -74,6 +75,7 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                       routeName: 'Home',
                       onPressed: () {
                         HapticFeedback.lightImpact();
+                        Navigator.pop(context);
                         Navigator.pushNamed(context, Dashboard.id);
                       },
                     ),
@@ -85,6 +87,7 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                       routeName: 'Flexery',
                       onPressed: () {
                         HapticFeedback.lightImpact();
+                        Navigator.pop(context);
                         Navigator.pushNamed(context, Flexery.id);
                       },
                     ),
@@ -92,12 +95,17 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                       routeName: AppStrings.settings,
                       onPressed: () {
                         HapticFeedback.lightImpact();
+                        Navigator.pop(context);
                         Navigator.pushNamed(context, Settings.id);
                       },
                     ),
                     DrawerButton(
                       routeName: 'Flex History',
-                      onPressed: () {},
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, FlexHistory.id);
+                      },
                     ),
                     // DrawerButton(
                     //   routeName: 'FlexGuard (Coming Soon)',
