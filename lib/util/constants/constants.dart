@@ -20,6 +20,8 @@ const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
 const flexBackgroundImage = 'assets/images/jpegs/flex-history-background-image.png';
+const hostImage = 'assets/images/jpegs/host-image.png';
+const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),

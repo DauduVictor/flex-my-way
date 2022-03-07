@@ -221,12 +221,6 @@ class _FlexHistoryState extends State<FlexHistory> {
             ishost: false,
           ),
           ReusableFlexHistoryButton(
-            title: 'Bee Beach Party',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-          ReusableFlexHistoryButton(
             title: 'Synopsis Hangout',
             month: 'DEC',
             day: '25',
@@ -352,7 +346,9 @@ class ReusableFlexHistoryButton extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, FlexHistoryDetail.id);
+          },
           style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
               backgroundColor: primaryColor.withOpacity(0.4),

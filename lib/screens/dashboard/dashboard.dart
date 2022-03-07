@@ -56,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 24),
+                padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
                 child: Column(
                   children: [
                     Container(
@@ -218,7 +218,10 @@ class ReusableDashBoardCard extends StatelessWidget {
                 height: SizeConfig.screenHeight! * 0.11,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: Colors.black,
+                  image: const DecorationImage(
+                    image: AssetImage(unsplashImage),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 24),
