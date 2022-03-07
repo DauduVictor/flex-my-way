@@ -1,4 +1,3 @@
-import 'package:flex_my_way/util/fonts.dart';
 import 'package:flutter/material.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';

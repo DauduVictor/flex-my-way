@@ -2,7 +2,6 @@ import 'package:flex_my_way/components/dropdown-field.dart';
 import 'package:flex_my_way/components/button.dart';
 import 'package:flex_my_way/components/text-form-field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import 'host_flex_terms_and_conditions.dart';
@@ -36,6 +35,9 @@ class _HostAFlexState extends State<HostAFlex> {
   /// A [TextEditingController] to control the input text for event amount
   final TextEditingController _flexRulesController = TextEditingController();
 
+  /// A variable to hold the payment status
+  String _paid = 'Free';
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -59,9 +61,9 @@ class _HostAFlexState extends State<HostAFlex> {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -164,28 +166,32 @@ class _HostAFlexState extends State<HostAFlex> {
                     items: paidOrFree,
                     onChanged: (value) {
                       value = value.toString();
+                      setState(() {
+                        _paid = value.toString();
+                      });
                     },
                   ),
-                  // eventPaymentState.value == 'Paid'
-                  //     ? CustomTextFormField(
-                  //   hintText: AppStrings.howMuchAreYouCharging,
-                  //   onChanged: (value) {},
-                  //   textEditingController: eventAmountController,
-                  // )
-                  //     : Container(),
-                  // eventPaymentState.value == 'Paid'
-                  //     ? Container(
-                  //   padding: const EdgeInsets.all(20),
-                  //   decoration: BoxDecoration(
-                  //     color: primaryColorVariant,
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   child: Text(
-                  //     AppStrings.weWillTake,
-                  //     style: textTheme.bodyText2,
-                  //   ),
-                  // )
-                  //     : Container(),
+                  _paid == 'Paid'
+                      ? CustomTextFormField(
+                    hintText: AppStrings.howMuchAreYouCharging,
+                    onChanged: (value) {},
+                    textEditingController: _eventAmountController,
+                  )
+                      : Container(),
+                  _paid == 'Paid'
+                      ? Container(
+                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 30),
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
+                          color: primaryColorVariant,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Text(
+                          AppStrings.weWillTake,
+                          style: textTheme.bodyText2,
+                        ),
+                      )
+                      : Container(),
                   CustomDropdownButtonField(
                     hintText: AppStrings.openToPublicOrPrivate,
                     items: publicOrPrivate,
@@ -224,12 +230,14 @@ class _HostAFlexState extends State<HostAFlex> {
                   ),
                   const SizedBox(height: 32),
                   Button(
-                    label: AppStrings.signUp,
+                    label: 'Host Flex',
                     onPressed: () {
-                      Navigator.pushNamed(context, HostFlexTermsAndConditions.id);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HostFlexTermsAndConditions(paid: _paid)));
                     },
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 25),
                 ],
               ),
             ),

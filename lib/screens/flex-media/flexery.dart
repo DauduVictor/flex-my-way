@@ -49,6 +49,8 @@ class _FlexeryState extends State<Flexery> {
                           radius: 22,
                           child: TextButton(
                             onPressed: () {
+                              FocusScopeNode currentFocus = FocusScope.of(context);
+                              if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
                               Scaffold.of(context).openDrawer();
                             },
                             style: TextButton.styleFrom(
@@ -74,8 +76,9 @@ class _FlexeryState extends State<Flexery> {
                         child: TextField(
                           keyboardType: TextInputType.text,
                           textInputAction: TextInputAction.search,
+                          style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.fromLTRB(5, 15, 5, 5),
+                            contentPadding: const EdgeInsets.fromLTRB(5, 18, 5, 5),
                             border: InputBorder.none,
                             prefixIcon: Icon(
                               IconlyLight.search,
@@ -133,53 +136,53 @@ class _FlexeryState extends State<Flexery> {
                 //body of media
                 Wrap(
                   alignment: WrapAlignment.spaceBetween,
-                  spacing: 15,
-                  runSpacing: 16,
+                  spacing: 5,
+                  runSpacing: 5,
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _showImageDialog();
+                        _showImageDialog(unsplashImage);
                       },
                       child: Container(
-                        width: SizeConfig.screenWidth! * 0.28,
-                        height: SizeConfig.screenHeight! * 0.13,
-                        color: Colors.black.withOpacity(0.7),
+                        width: SizeConfig.screenWidth! * 0.3,
+                        height: SizeConfig.screenHeight! * 0.155,
+                        color: Colors.grey,
+                        child: Image.asset(
+                          unsplashImage,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.medium,
+                        ),
                       ),
                     ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
+                    GestureDetector(
+                      onTap: () {
+                        _showImageDialog(hostImage);
+                      },
+                      child: Container(
+                        width: SizeConfig.screenWidth! * 0.3,
+                        height: SizeConfig.screenHeight! * 0.155,
+                        color: Colors.grey,
+                        child: Image.asset(
+                          hostImage,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.medium,
+                        ),
+                      ),
                     ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
-                    ),
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.28,
-                      height: SizeConfig.screenHeight! * 0.13,
-                      color: Colors.black.withOpacity(0.7),
+                    GestureDetector(
+                      onTap: () {
+                        _showImageDialog(unsplashImage);
+                      },
+                      child: Container(
+                        width: SizeConfig.screenWidth! * 0.3,
+                        height: SizeConfig.screenHeight! * 0.155,
+                        color: Colors.grey,
+                        child: Image.asset(
+                          unsplashImage,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.medium,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -192,7 +195,7 @@ class _FlexeryState extends State<Flexery> {
   }
 
   ///widget to show the dialog for image
-  Future<void> _showImageDialog () {
+  Future<void> _showImageDialog (String image) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -217,10 +220,14 @@ class _FlexeryState extends State<Flexery> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
+                SizedBox(
                   width: SizeConfig.screenWidth,
                   height: SizeConfig.screenHeight! * 0.68,
-                  color: Colors.black.withOpacity(0.7),
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.medium,
+                  ),
                 ),
               ],
             ),

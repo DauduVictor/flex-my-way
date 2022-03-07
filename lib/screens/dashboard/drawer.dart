@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import '../find-a-flex.dart';
 import '../flex-history/flex-history.dart';
 import '../settings/settings.dart';
 import 'dashboard.dart';
@@ -81,7 +82,11 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                     ),
                     DrawerButton(
                       routeName: 'Join/Host a Flex',
-                      onPressed: () {},
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, FindAFlex.id);
+                      },
                     ),
                     DrawerButton(
                       routeName: 'Flexery',

@@ -34,9 +34,6 @@ class _HostRegistrationState extends State<HostRegistration> {
   /// A [TextEditingController] to control the input text for host phone number
   final TextEditingController _hostPhoneNumberController = TextEditingController();
 
-  /// A [TextEditingController] to control the input text for host phone number
-  final TextEditingController _bvnController = TextEditingController();
-
   /// Bool value to hold the obscure state for password
   bool _obscureText = true;
 
@@ -78,9 +75,9 @@ class _HostRegistrationState extends State<HostRegistration> {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -170,12 +167,6 @@ class _HostRegistrationState extends State<HostRegistration> {
                   //   ),
                   // ),
                   const SizedBox(height: 24),
-                  CustomTextFormField(
-                    hintText: AppStrings.yourBVN,
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {},
-                    textEditingController: _bvnController,
-                  ),
                   InkWell(
                     onTap: () {},
                     child: Container(
@@ -207,7 +198,7 @@ class _HostRegistrationState extends State<HostRegistration> {
                       Navigator.pushNamed(context, HostAFlex.id);
                     },
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 25),
                 ],
               ),
             ),

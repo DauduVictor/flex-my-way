@@ -15,7 +15,6 @@ const lightTextColor = Color(0xFF374957);
 // images
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
 const successImage = 'assets/images/svgs/success.svg';
-const splashBackgroundImage = 'assets/images/jpegs/splash.png';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';

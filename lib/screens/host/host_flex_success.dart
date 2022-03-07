@@ -17,9 +17,9 @@ class HostFlexSuccess extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 60, 30, 30),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30, 60, 30, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -172,7 +172,7 @@ class HostFlexSuccess extends StatelessWidget {
                         Navigator.pushNamed(context, Login.id);
                       },
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),
