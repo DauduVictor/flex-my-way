@@ -77,7 +77,7 @@ class _HostRegistrationState extends State<HostRegistration> {
         },
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
             child: Form(
               key: _formKey,
               child: Column(

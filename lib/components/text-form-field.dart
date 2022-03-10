@@ -1,5 +1,6 @@
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
 
@@ -15,6 +16,9 @@ class CustomTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.textCapitalization = TextCapitalization.none,
     this.suffix,
+    this.readOnly = false,
+    this.onTap,
+    this.inputFormatters
   }) : super(key: key);
 
   final String? hintText;
@@ -27,6 +31,9 @@ class CustomTextFormField extends StatelessWidget {
   final int maxLines;
   final TextCapitalization textCapitalization;
   final Widget? suffix;
+  final bool readOnly;
+  final void Function()? onTap;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +47,13 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           maxLines: maxLines,
           cursorColor: neutralColor,
+          readOnly: readOnly,
           textInputAction: textInputAction,
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,
           style: textTheme.bodyText2,
+          onTap: onTap,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             suffixIcon: suffix,
             hintText: hintText,

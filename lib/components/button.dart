@@ -6,12 +6,14 @@ class Button extends StatelessWidget {
   final String label;
   final void Function() onPressed;
   final Color labelColor;
+  final Widget? child;
 
   const Button({
     Key? key,
     required this.label,
     required this.onPressed,
     this.labelColor = whiteColor,
+    this.child
   }) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class Button extends StatelessWidget {
       child: SizedBox(
         width: SizeConfig.screenWidth! - 130,
         child: Center(
-          child: Text(
+          child: child ?? Text(
             label,
             style: textTheme.bodyText2!.copyWith(
               color: labelColor,

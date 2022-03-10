@@ -1,7 +1,7 @@
+import 'package:flex_my_way/screens/host/host_a_flex.dart';
 import 'package:flutter/material.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
-import 'host/host_registration.dart';
 
 class FindAFlex extends StatelessWidget {
 
@@ -36,7 +36,7 @@ class FindAFlex extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, HostRegistration.id),
+                  onTap: () => Navigator.pushNamed(context, HostAFlex.id),
                   child: CircleAvatar(
                     backgroundColor: whiteColor,
                     radius: 42,

@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      home: const Login(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         Login.id: (context) => const Login(),

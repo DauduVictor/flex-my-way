@@ -57,7 +57,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
             child: Padding(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.fromLTRB(30, 30, 30, 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
