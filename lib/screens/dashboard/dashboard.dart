@@ -3,6 +3,7 @@ import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import '../../bloc/future-values.dart';
 import '../../components/app-bar.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
@@ -19,12 +20,37 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  /// Instantiating a class of the [FutureValues]
+  var futureValues = FutureValues();
+
+  /// Variable to hold the user's name
+  String userName = 'there';
+
+  /// Function to get user details from the database
+  void _getCurrentUser() async {
+    if(!mounted) return;
+    await futureValues.getCurrentUser().then((user) {
+      setState(() {
+        userName = user.name!;
+      });
+    }).catchError((e){
+      print(e);
+    });
+  }
+
+  @override
+  void initState() {
+    _getCurrentUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context),
+      appBar: buildAppBarWithNotification(textTheme, context, userName),
       drawer: const RefactoredDrawer(),
       body: DefaultTabController(
         length: 2,

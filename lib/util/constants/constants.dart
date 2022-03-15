@@ -21,6 +21,8 @@ const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
 const flexBackgroundImage = 'assets/images/jpegs/flex-history-background-image.png';
 const hostImage = 'assets/images/jpegs/host-image.png';
 const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
+const splashImage = 'assets/images/jpegs/splash-screen-image.png';
+const onBoardingImage = 'assets/images/jpegs/splash-image-2.png';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),
@@ -52,6 +54,7 @@ List<String> paidOrFree = ['Free', 'Paid'];
 List<String> publicOrPrivate = ['Public', 'Private'];
 List<bool> displayToOnlyAcceptedParticipants = [false, true];
 List<bool> isGenderRestrictions = [false, true];
+List<String> yesOrNo = ['Yes', 'No'];
 List<String> foodAndDrinkPolicy = ['Food', 'Drink'];
 List<String> genders = ['Male', 'Female'];
 List<String> occupations = ['Architect', 'Lawyer', 'Mobile Developer'];

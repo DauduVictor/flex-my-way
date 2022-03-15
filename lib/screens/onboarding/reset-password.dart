@@ -1,47 +1,23 @@
-import 'package:flex_my_way/bloc/future-values.dart';
-import 'package:flex_my_way/networking/user-datasource.dart';
-import 'package:flex_my_way/screens/dashboard/dashboard.dart';
-import 'package:flutter/gestures.dart';
+import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/text-form-field.dart';
-import '../../database/user-db-helper.dart';
-import '../../model/user.dart';
+import '../../networking/user-datasource.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
-import 'forgot_password.dart';
 
-class Login extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
 
-  static const String id = 'login';
-  const Login({Key? key}) : super(key: key);
+  static const String id = "resetPassword";
+  const ResetPassword({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _LoginState extends State<Login> {
-
-  /// Instantiating a class of the [FutureValues]
-  var futureValues = FutureValues();
-
-  /// Instantiating the user model
-  var user = User();
-
-  /// Function to get user details from the database
-  void _getCurrentUser() async {
-    if(!mounted) return;
-    await futureValues.getCurrentUser().then((user) {
-      setState(() {
-        _emailAddressController.text = user.email!;
-      });
-    }).catchError((e){
-      print(e);
-    });
-  }
+class _ResetPasswordState extends State<ResetPassword> {
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
@@ -57,12 +33,6 @@ class _LoginState extends State<Login> {
 
   ///Variable to hold the bool value of password field obscure text
   bool _obscureText = true;
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,65 +61,38 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Login',
+                      AppStrings.resetPassword,
                       style: textTheme.headline4!.copyWith(fontSize: 30),
+                    ),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                      child: Text(
+                        'Enter your Email and we will send a link to your registered email',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyText1!,
+                      ),
                     ),
                     const SizedBox(height: 32),
                     _buildForm(textTheme),
                     const SizedBox(height: 24),
                     Button(
-                      label: 'Log in',
+                      label: AppStrings.resetPassword,
                       onPressed: () {
                         FocusScopeNode currentFocus = FocusScope.of(context);
                         if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
                         if(_formKey.currentState!.validate()){
-                          _login();
+                          _resetPassword();
                         }
                       },
                       child: _showSpinner == true
-                        ? const SizedBox(
-                          height: 21,
-                          width: 19,
-                          child: CircleProgressIndicator())
-                        : null,
+                          ? const SizedBox(
+                              height: 21,
+                              width: 19,
+                              child: CircleProgressIndicator())
+                          : null,
                     ),
                     const SizedBox(height: 24),
-                    RichText(
-                      text: TextSpan(
-                        style: textTheme.bodyText1!,
-                        children: [
-                          const TextSpan(
-                            text: 'Forgot your password? ',
-                          ),
-                          TextSpan(
-                            text: 'Click Here',
-                            style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                            recognizer: TapGestureRecognizer()..onTap = () {
-                              Navigator.pushNamed(context, ForgotPassword.id);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Don’t have an account?',
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyText1!,
-                    ),
-                    const SizedBox(height: 4),
-                    GestureDetector(
-                      onTap: () {
-
-                      },
-                      child: Text(
-                        'Sign Up',
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyText1!.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -215,7 +158,7 @@ class _LoginState extends State<Login> {
   }
 
   /// Function to make api call to login
-  void _login() async {
+  void _resetPassword() async {
     if(!mounted) return;
     setState(() => _showSpinner = true);
     var api = UserDataSource();
@@ -226,24 +169,12 @@ class _LoginState extends State<Login> {
     await api.signIn(body).then((value) async {
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      var db = DatabaseHelper();
-      await db.initDb();
-      await db.saveUser(user);
-      _addBoolToSP(user);
+      Functions.showMessage(value);
     }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      Functions.showMessage(e.toString());
+      Functions.showMessage(e);
       print(e);
     });
-  }
-
-  /// This function adds a true boolean value to show user is logged in and also
-  /// saves token as reference from the [user] model using [SharedPreferences]
-  /// It moves to the [Dashboard] after saving those details
-  _addBoolToSP(User user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('loggedIn', true);
-    Navigator.pushNamed(context, Dashboard.id);
   }
 }

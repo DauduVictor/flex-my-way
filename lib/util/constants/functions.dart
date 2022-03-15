@@ -5,13 +5,13 @@ import 'constants.dart';
 class Functions {
 
   /// Function to show error message using flutter toast
-  static void showErrorMessage(message) {
+  static void showMessage(message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
-        backgroundColor: errorColor,
+        backgroundColor: Colors.black.withOpacity(0.8),
         textColor: whiteColor,
         fontSize: 14.0
     );

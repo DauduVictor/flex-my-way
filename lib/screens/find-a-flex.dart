@@ -1,7 +1,9 @@
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
+import 'package:flex_my_way/screens/host/host_registration.dart';
 import 'package:flutter/material.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
+import '../util/size-config.dart';
 
 class FindAFlex extends StatelessWidget {
 
@@ -10,12 +12,22 @@ class FindAFlex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       backgroundColor: splashBackgroundColor,
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(30.0),
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              onBoardingImage,
+            ),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -36,7 +48,7 @@ class FindAFlex extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, HostAFlex.id),
+                  onTap: () => Navigator.pushNamed(context, HostRegistration.id),
                   child: CircleAvatar(
                     backgroundColor: whiteColor,
                     radius: 42,

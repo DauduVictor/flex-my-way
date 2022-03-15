@@ -11,12 +11,14 @@ import 'package:flex_my_way/screens/onboarding/forgot_password.dart';
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
 import 'package:flex_my_way/screens/host/host_flex_success.dart';
 import 'package:flex_my_way/screens/onboarding/login.dart';
+import 'package:flex_my_way/screens/onboarding/reset-password.dart';
 import 'package:flex_my_way/screens/settings/about.dart';
 import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/settings.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
+import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
 import 'package:flex_my_way/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +37,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const Login(),
+      home: const FlexHistoryDetail(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
+        OnboardingScreen.id: (context) => const OnboardingScreen(),
         Login.id: (context) => const Login(),
         ForgotPassword.id: (context) => const ForgotPassword(),
+        ResetPassword.id: (context) => const ResetPassword(),
         FindAFlex.id: (context) => const FindAFlex(),
         HostRegistration.id: (context) => const HostRegistration(),
         HostAFlex.id: (context) => const HostAFlex(),

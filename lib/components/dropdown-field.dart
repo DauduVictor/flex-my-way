@@ -8,11 +8,13 @@ class CustomDropdownButtonField extends StatelessWidget {
     required this.hintText,
     required this.items,
     required this.onChanged,
+    this.validator
   }) : super(key: key);
 
   final String hintText;
   final List<dynamic> items;
   final Function(Object?)? onChanged;
+  final String? Function(Object?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class CustomDropdownButtonField extends StatelessWidget {
         DropdownButtonFormField(
           onChanged: onChanged,
           isExpanded: true,
+          validator: validator,
           items: items.map((val) => DropdownMenuItem(
             value: val,
             child: Text(

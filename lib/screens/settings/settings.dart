@@ -26,6 +26,9 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
 
+  /// Variable to hold the user's name
+  String userName = 'there';
+
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
 
@@ -43,7 +46,7 @@ class _SettingsState extends State<Settings> {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context),
+      appBar: buildAppBarWithNotification(textTheme, context, userName),
       drawer: const RefactoredDrawer(),
       body: GestureDetector(
         onTap: () {

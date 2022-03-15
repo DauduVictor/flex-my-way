@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flex_my_way/util/size-config.dart';
+import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../util/constants/constants.dart';
-import '../util/constants/strings.dart';
-import 'find-a-flex.dart';
+import '../util/size-config.dart';
+import 'dashboard/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -13,80 +14,43 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  /// Function to navigate after the splash screen loader ends
+  /// Function to navigate to the next screen after the splash screen is completed
   void _navigate() {
-    Timer(const Duration(microseconds: 10), () {
-      setState(() {
-        _width = 0;
-      });
-      _navigateTo();
+    Timer(const Duration(seconds: 5), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.getBool('loggedIn') == true
+          ? Navigator.pushReplacementNamed(context, Dashboard.id)
+          : Navigator.pushNamed(context, OnboardingScreen.id);
     });
   }
-
-  void _navigateTo() {
-    Timer(const Duration(seconds: 5), () {
-      Navigator.pushNamed(context, FindAFlex.id);
-    });
-  }
-
-  double  _width = 1;
 
   @override
   void initState() {
     _navigate();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: splashBackgroundColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Spacer(),
-            Text(
-              AppStrings.celebrateTogether,
-              style: textTheme.headline5!.copyWith(color: whiteColor),
+      body: Container(
+        height: SizeConfig.screenHeight,
+        width: SizeConfig.screenWidth,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+              splashImage,
             ),
-            const SizedBox(height: 24),
-            Text(
-              AppStrings.flexMyWay,
-              style: textTheme.headline1!.copyWith(
-                fontSize: 100,
-                color: whiteColor, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              height: 10,
-              width: SizeConfig.screenWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white12,
-              ),
-              child: AnimatedContainer(
-                margin: EdgeInsets.only(right: SizeConfig.screenWidth!.toDouble() * _width),
-                curve: Curves.bounceInOut,
-                duration: const Duration(milliseconds: 4950),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
+            fit: BoxFit.cover
+          ),
         ),
       ),
     );
   }
 }
-

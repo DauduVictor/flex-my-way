@@ -42,15 +42,14 @@ class DatabaseHelper {
     // When creating the db, create the table
     await db.execute('CREATE TABLE $USER_TABLE('
         'id TEXT PRIMARY KEY NOT NULL,'
-        'name TEXT NOT NULL,'
+        'name TEXT PRIMARY KEY NOT NULL,'
         'email TEXT,'
         'phone TEXT,'
         'gender TEXT,'
         'preferredFlex TEXT,'
         'infoSource TEXT,'
         'occupation TEXT,'
-        'flexCreated ARRAY,'
-        'flexAttended ARRAY)');
+        'bearer_token TEXT)');
     print('Created tables');
   }
 

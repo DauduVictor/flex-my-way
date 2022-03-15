@@ -45,7 +45,7 @@ class NetworkHelper {
         final String res = response.body;
         final int statusCode = response.statusCode;
         var result = _decoder.convert(res);
-        if (statusCode < 200 || statusCode > 400) throw result['message'];
+        if (statusCode < 200 || statusCode > 400) throw result['data'];
         return result;
       });
     } catch (e) {
@@ -67,7 +67,7 @@ class NetworkHelper {
       final response = await http.Response.fromStream(streamedResponse);
       final dynamic res = json.decode(response.body);
       final int statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode > 400) throw res['message'];
+      if (statusCode < 200 || statusCode > 400) throw res['status'];
       return res;
     } catch (e) {
       print(e);

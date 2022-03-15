@@ -14,12 +14,16 @@ class PendingInvites extends StatefulWidget {
 }
 
 class _PendingInvitesState extends State<PendingInvites> {
+
+  /// Variable to hold the user's name
+  String userName = 'there';
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context),
+      appBar: buildAppBarWithNotification(textTheme, context, userName),
       drawer: const RefactoredDrawer(),
       body: Column(
         children: [

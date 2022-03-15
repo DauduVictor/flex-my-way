@@ -3,14 +3,18 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import '../screens/notifications.dart';
 import '../util/constants/constants.dart';
 
-AppBar buildAppBarWithNotification(TextTheme textTheme, BuildContext context) {
+AppBar buildAppBarWithNotification(
+    TextTheme textTheme,
+    BuildContext context,
+    String userName
+    ) {
   return AppBar(
     leadingWidth: 70,
     iconTheme: const IconThemeData(
       color: neutralColor,
     ),
     title: Text(
-      'Hi, Kelechi',
+      'Hi, $userName',
       style: textTheme.headline5,
     ),
     actions: [

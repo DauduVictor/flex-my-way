@@ -18,11 +18,23 @@ class UserDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [LOGIN]
   /// It returns a [User] model
-  Future<User> signIn (Map<String, String> body) {
+  Future<dynamic> signIn (Map<String, String> body) {
     return _netUtil.post(LOGIN, headers: {}, body: body).then((dynamic res) {
+      if(res['status'] != 'success') throw res['data'];
+      return User.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for forgot password with [body] as details
+  /// A post request to use the [FORGOT_PASSWORD]
+  /// It returns a [String_Message] model
+  Future<dynamic> forgotPassword (Map<String, String> body) {
+    return _netUtil.post(FORGOT_PASSWORD, headers: {}, body: body).then((dynamic res) {
       if(res['error']) throw res['message'];
       print(res);
-      return User.fromJson(res['data']);
+      return (res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
     });

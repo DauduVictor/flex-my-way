@@ -14,6 +14,7 @@ class User {
     this.occupation,
     this.flexCreated,
     this.flexAttended,
+    this.bearer_token,
   });
 
   /// This variable holds the user id
@@ -43,8 +44,11 @@ class User {
   /// This variable holds the list of user flexCreated
   List<String>? flexCreated;
 
-  /// This variable holds the list of user flexAttendec
+  /// This variable holds the list of user flexAttended
   List<FlexAttended>? flexAttended;
+
+  /// This variable holds the user token
+  String? bearer_token;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["_id"],
@@ -55,12 +59,13 @@ class User {
     preferredFlex: json["preferredFlex"],
     infoSource: json["infoSource"],
     occupation: json["occupation"],
-    flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
-    flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
+    // flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
+    // flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
+    bearer_token: json["bearer_token"],
   );
 
   Map<String, dynamic> toJson() => {
-    "_id": id,
+    "id": id,
     "name": name,
     "email": email,
     "phone": phone,
@@ -68,8 +73,9 @@ class User {
     "preferredFlex": preferredFlex,
     "infoSource": infoSource,
     "occupation": occupation,
-    "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
-    "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
+    // "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
+    // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
+    "bearer_token": bearer_token,
   };
 }
 
