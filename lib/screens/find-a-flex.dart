@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
 import '../util/size-config.dart';
+import 'join/join.dart';
 
 class FindAFlex extends StatelessWidget {
 
@@ -64,17 +65,20 @@ class FindAFlex extends StatelessWidget {
                     ),
                   ),
                 ),
-                CircleAvatar(
-                  backgroundColor: whiteColor,
-                  radius: 42,
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, Join.id),
                   child: CircleAvatar(
-                    radius: 40,
                     backgroundColor: whiteColor,
-                    child: Text(
-                      AppStrings.join,
-                      style: textTheme.headline6!.copyWith(
-                          color: splashBackgroundColor,
-                          fontWeight: FontWeight.w600),
+                    radius: 42,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundColor: whiteColor,
+                      child: Text(
+                        AppStrings.join,
+                        style: textTheme.headline6!.copyWith(
+                            color: splashBackgroundColor,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ),

@@ -11,6 +11,7 @@ const errorColor = Color(0xFFDB3704);
 const greenColor = Color(0xFF00A41A);
 const splashBackgroundColor = Color(0xFF86CBF0);
 const lightTextColor = Color(0xFF374957);
+const lightButtonColor = Color(0xFF7D9AA5);
 
 // images
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';

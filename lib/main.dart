@@ -6,6 +6,9 @@ import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
 import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
 import 'package:flex_my_way/screens/host/host_registration.dart';
+import 'package:flex_my_way/screens/join/join-flex.dart';
+import 'package:flex_my_way/screens/join/join.dart';
+import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flex_my_way/screens/notifications.dart';
 import 'package:flex_my_way/screens/onboarding/forgot_password.dart';
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const FlexHistoryDetail(),
+      home: const SplashScreen(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         OnboardingScreen.id: (context) => const OnboardingScreen(),
@@ -61,6 +64,9 @@ class MyApp extends StatelessWidget {
         PendingInvites.id: (context) => const PendingInvites(),
         FlexHistory.id: (context) => const FlexHistory(),
         FlexHistoryDetail.id: (context) => const FlexHistoryDetail(),
+        Join.id: (context) => const Join(),
+        JoinFlex.id: (context) => const JoinFlex(),
+        JoinedFlexDetails.id: (context) => const JoinedFlexDetails(),
       },
     );
   }
