@@ -118,7 +118,7 @@ class _JoinFlexState extends State<JoinFlex> {
                               ),
                               const SizedBox(width: 26),
                               Container(
-                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(23),
                                   color: whiteColor,
@@ -178,14 +178,15 @@ class _JoinFlexState extends State<JoinFlex> {
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
-                                  padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
+                                  padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 24),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                 ),
                                 child: Text(
-                                  'Join this flex',
+                                  'Buy Flex Ticket',
                                   style: textTheme.button!.copyWith(
+                                    fontSize: 15,
                                     color: whiteColor,
                                   ),
                                 ),

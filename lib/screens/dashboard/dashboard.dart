@@ -240,8 +240,8 @@ class ReusableDashBoardCard extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: SizeConfig.screenWidth! * 0.235,
-                height: SizeConfig.screenHeight! * 0.11,
+                width: SizeConfig.screenWidth! * 0.237,
+                height: SizeConfig.screenHeight! * 0.104,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   image: const DecorationImage(

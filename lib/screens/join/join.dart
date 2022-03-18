@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/constants/constants.dart';
 import '../../util/size-config.dart';
 
@@ -13,6 +16,19 @@ class Join extends StatefulWidget {
 }
 
 class _JoinState extends State<Join> {
+
+  /// Google map controller
+  Completer<GoogleMapController> _mapController = Completer();
+
+  /// Function for _onMapCreated
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController.complete(controller);
+  }
+
+  CameraPosition userPosition = const CameraPosition(
+    target: LatLng(6.519314, 3.396336),
+    zoom: 16.0,
+  );
 
   /// Variable to hold the state of the pay button
   bool _pay = true;
@@ -28,11 +44,13 @@ class _JoinState extends State<Join> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Container(
-            height: SizeConfig.screenHeight,
-            width: SizeConfig.screenWidth,
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: userPosition,
+            onMapCreated: _onMapCreated,
+          ),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            color: Colors.grey,
             child: Column(
               children: [
                 const SizedBox(height: 50),
@@ -98,17 +116,17 @@ class _JoinState extends State<Join> {
                     ),
                   ),
                 ),
-                //body
               ],
             ),
           ),
           DraggableScrollableSheet(
             maxChildSize: 0.5,
+            initialChildSize: 0.3,
             minChildSize: 0.1,
             builder: (context, controller) {
               return Container(
                 width: SizeConfig.screenWidth,
-                padding: const EdgeInsets.fromLTRB(30, 17, 5, 35),
+                clipBehavior: Clip.hardEdge,
                 decoration:  const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
@@ -118,145 +136,132 @@ class _JoinState extends State<Join> {
                 ),
                 child: SingleChildScrollView(
                   controller: controller,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: Center(
-                          child: Container(
-                            height: 5,
-                            width: 45,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF000000).withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(4),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 17, 5, 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25.0),
+                          child: Center(
+                            child: Container(
+                              height: 5,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF000000).withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 25),
-                      Text(
-                        'Filters',
-                        style: textTheme.headline5!.copyWith(fontSize: 28),
-                      ),
-                      const SizedBox(height: 17),
-                      Text(
-                        'Preferred Age Range',
-                        style: textTheme.headline5!.copyWith(fontSize: 17),
-                      ),
-                      const SizedBox(height: 17),
-                      Row(
-                        children: [
-                          ReuableMapFilterButton(
-                            text: '18 - 25',
-                            onPressed: () {},
-                            color: primaryColor,
-                          ),
-                          ReuableMapFilterButton(
-                            text: '25+',
-                            onPressed: () {},
-                          ),
-                          ReuableMapFilterButton(
-                            text: '18+',
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      //occupation
-                      Text(
-                        'Occupation',
-                        style: textTheme.headline5!.copyWith(fontSize: 17),
-                      ),
-                      const SizedBox(height: 17),
-                      Row(
-                        children: [
-                          ReuableMapFilterButton(
-                            text: 'Student',
-                            onPressed: () {},
-                          ),
-                          ReuableMapFilterButton(
-                            text: 'Working',
-                            onPressed: () {},
-                          ),
-                          ReuableMapFilterButton(
-                            text: 'Don\'t mind',
-                            onPressed: () {},
-                            color: primaryColor,
-                          ),
-                        ],
-                      ),
-                      //cost of entry
-                      const SizedBox(height: 30),
-                      Text(
-                        'Cost of Entry',
-                        style: textTheme.headline5!.copyWith(fontSize: 17),
-                      ),
-                      const SizedBox(height: 17),
-                      Row(
-                        children: [
-                          ReuableMapFilterButton(
-                            text: 'Free',
-                            onPressed: () {},
-                          ),
-                          ReuableMapFilterButton(
-                            text: 'Paid',
-                            onPressed: () {},
-                            color: primaryColor,
-                          ),
-                        ],
-                      ),
-                      _pay == true
-                        ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        const SizedBox(height: 25),
+                        Text(
+                          'Filters',
+                          style: textTheme.headline5!.copyWith(fontSize: 28),
+                        ),
+                        const SizedBox(height: 17),
+                        Text(
+                          'Preferred Age Range',
+                          style: textTheme.headline5!.copyWith(fontSize: 17),
+                        ),
+                        const SizedBox(height: 17),
+                        Row(
                           children: [
-                            const SizedBox(height: 17),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'N5,000',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: primaryColor,
-                                    fontSize: 19,
-                                  ),
-                                ),
-                                Text(
-                                  'N50,000',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: primaryColor,
-                                    fontSize: 19,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 21.0),
-                                  child: Text(
-                                    'N100,000',
-                                    style: textTheme.headline5!.copyWith(
-                                      color: primaryColor,
-                                      fontSize: 19,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            ReuableMapFilterButton(
+                              text: '18 - 25',
+                              onPressed: () {},
+                              color: primaryColor,
                             ),
-                            const SizedBox(height: 9),
-                            Theme(
-                              data: ThemeData(
-                                sliderTheme: const SliderThemeData(
-                                  trackHeight: 1.2,
-                                  thumbColor: primaryColor,
-                                  activeTrackColor: primaryColor,
-                                  overlayShape: RoundSliderThumbShape(
-                                    enabledThumbRadius: 10,
-                                  ),
-                                  thumbShape: RoundSliderThumbShape(
-                                    disabledThumbRadius: 5.5,
-                                    enabledThumbRadius: 5.5,
-                                  ),
+                            ReuableMapFilterButton(
+                              text: '25+',
+                              onPressed: () {},
+                            ),
+                            ReuableMapFilterButton(
+                              text: '18+',
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+                        //occupation
+                        Text(
+                          'Occupation',
+                          style: textTheme.headline5!.copyWith(fontSize: 17),
+                        ),
+                        const SizedBox(height: 17),
+                        Row(
+                          children: [
+                            ReuableMapFilterButton(
+                              text: 'Student',
+                              onPressed: () {},
+                            ),
+                            ReuableMapFilterButton(
+                              text: 'Working',
+                              onPressed: () {},
+                            ),
+                            ReuableMapFilterButton(
+                              text: 'Don\'t mind',
+                              onPressed: () {},
+                              color: primaryColor,
+                            ),
+                          ],
+                        ),
+                        //cost of entry
+                        const SizedBox(height: 30),
+                        Text(
+                          'Cost of Entry',
+                          style: textTheme.headline5!.copyWith(fontSize: 17),
+                        ),
+                        const SizedBox(height: 17),
+                        Row(
+                          children: [
+                            ReuableMapFilterButton(
+                              text: 'Free',
+                              onPressed: () {},
+                            ),
+                            ReuableMapFilterButton(
+                              text: 'Paid',
+                              onPressed: () {},
+                              color: primaryColor,
+                            ),
+                          ],
+                        ),
+                        _pay == true
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 17),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'N5,000',
+                                      style: textTheme.headline5!.copyWith(
+                                        color: primaryColor,
+                                        fontSize: 19,
+                                      ),
+                                    ),
+                                    Text(
+                                      'N50,000',
+                                      style: textTheme.headline5!.copyWith(
+                                        color: primaryColor,
+                                        fontSize: 19,
+                                      ),
+                                    ),
+                                    Text(
+                                      'N100,000',
+                                      style: textTheme.headline5!.copyWith(
+                                        color: primaryColor,
+                                        fontSize: 19,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Slider(
+                              const SizedBox(height: 9),
+                              Slider(
                                 value: priceRange,
                                 max: 100000,
                                 onChanged: (value) {
@@ -264,12 +269,12 @@ class _JoinState extends State<Join> {
                                     priceRange = value;
                                   });
                               }),
-                            ),
-                            const SizedBox(height: 30),
-                        ],
-                      )
-                        : Container(),
-                    ],
+                              const SizedBox(height: 10),
+                          ],
+                        )
+                          : Container(),
+                      ],
+                    ),
                   ),
                 ),
               );

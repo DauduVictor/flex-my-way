@@ -318,26 +318,44 @@ class _HostAFlexState extends State<HostAFlex> {
                   Button(
                     label: 'Host Flex',
                     onPressed: () {
-                      if(_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
+                      // if(_formKey.currentState!.validate()) {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) {
+                      //         return HostFlexTermsAndConditions(
+                      //           paid: _paid,
+                      //           body: {
+                      //             'name': _nameFlexController.text,
+                      //             'date': "2021-12-04T10:57:25.509Z",
+                      //             'capacity': _numberOfPeopleController.text,
+                      //             'ageRating': '$_ageRating+',
+                      //             'flexType': _typeOfFlex,
+                      //             "hashtag": _eventHashTagController.text,
+                      //             "consumablesPolicy": "Food and drinks free"
+                      //           }
+                      //         );
+                      //       }),
+                      //   );
+                      // }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
                             builder: (context) {
                               return HostFlexTermsAndConditions(
-                                paid: _paid,
-                                body: {
-                                  'name': _nameFlexController.text,
-                                  'date': "2021-12-04T10:57:25.509Z",
-                                  'capacity': _numberOfPeopleController.text,
-                                  'ageRating': '$_ageRating+',
-                                  'flexType': _typeOfFlex,
-                                  "hashtag": _eventHashTagController.text,
-                                  "consumablesPolicy": "Food and drinks free"
-                                }
+                                  paid: _paid,
+                                  body: {
+                                    'name': _nameFlexController.text,
+                                    'date': "2021-12-04T10:57:25.509Z",
+                                    'capacity': _numberOfPeopleController.text,
+                                    'ageRating': '$_ageRating+',
+                                    'flexType': _typeOfFlex,
+                                    "hashtag": _eventHashTagController.text,
+                                    "consumablesPolicy": "Food and drinks free"
+                                  }
                               );
                             }),
-                        );
-                      }
+                      );
                     },
                   ),
                   const SizedBox(height: 25),

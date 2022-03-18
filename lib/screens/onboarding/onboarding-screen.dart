@@ -30,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _navigateTo() {
     Timer(const Duration(seconds: 5), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('Onboarded', true);
+      prefs.setBool('onBoarded', true);
       Navigator.pushNamed(context, FindAFlex.id);
     });
   }
@@ -54,7 +54,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              onBoardingImage,
+              splashImage,
             ),
             fit: BoxFit.cover,
           ),

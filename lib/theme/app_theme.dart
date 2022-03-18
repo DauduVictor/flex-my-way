@@ -11,6 +11,7 @@ class AppTheme {
     toggleableActiveColor: primaryColor,
     primaryColor: primaryColor,
     fontFamily: 'Gilroy',
+    highlightColor: Colors.transparent,
     scaffoldBackgroundColor: backgroundColor,
     dialogTheme: _dialogTheme,
     checkboxTheme: CheckboxThemeData(
@@ -22,10 +23,16 @@ class AppTheme {
         color: const Color(0xFF000000).withOpacity(0.4),
       ),
     ),
-    // scrollbarTheme: ScrollbarThemeData(
-    //   thumbColor: MaterialStateProperty.all(primaryColor),
-    //   trackColor: MaterialStateProperty.all(primaryColor.withOpacity(0.3)),
-    // ),
+    sliderTheme: SliderThemeData(
+      trackHeight: 1.2,
+      thumbColor: primaryColor,
+      activeTrackColor: primaryColor,
+      overlayColor: primaryColor.withOpacity(0.1),
+      thumbShape: const RoundSliderThumbShape(
+        disabledThumbRadius: 5.5,
+        enabledThumbRadius: 5.5,
+      ),
+    ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
       backgroundColor: whiteColor,

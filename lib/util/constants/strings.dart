@@ -9,6 +9,8 @@ class AppStrings {
 
   //Find a Flex
   static const youDeyGround = 'you dey ground, you no wan flex?';
+  static const inviteAFriend = 'bring your clique onboard with easy invites';
+  static const hostPartyWithEase = 'come host that party with your own banners';
   static const host = 'Host';
   static const join = 'Join';
 

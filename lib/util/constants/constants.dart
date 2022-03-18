@@ -17,13 +17,13 @@ const lightButtonColor = Color(0xFF7D9AA5);
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
 const successImage = 'assets/images/svgs/success.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
+const splashScreenLocationImage = 'assets/images/svgs/location.svg';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
 const flexBackgroundImage = 'assets/images/jpegs/flex-history-background-image.png';
 const hostImage = 'assets/images/jpegs/host-image.png';
 const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
-const splashImage = 'assets/images/jpegs/splash-screen-image.png';
-const onBoardingImage = 'assets/images/jpegs/splash-image-2.png';
+const splashImage = 'assets/images/jpegs/splash-image.png';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),
@@ -59,3 +59,8 @@ List<String> yesOrNo = ['Yes', 'No'];
 List<String> foodAndDrinkPolicy = ['Food', 'Drink'];
 List<String> genders = ['Male', 'Female'];
 List<String> occupations = ['Architect', 'Lawyer', 'Mobile Developer'];
+
+//first criteria - ability to have an ltb > 5000,
+//second - how frequent the site is visited
+// array of customers -- item will contain an object that will contain the ltb of the customer
+// index of array == order of apperarance

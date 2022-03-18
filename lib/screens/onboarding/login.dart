@@ -102,9 +102,10 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         FocusScopeNode currentFocus = FocusScope.of(context);
                         if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        if(_formKey.currentState!.validate()){
-                          _login();
-                        }
+                        // if(_formKey.currentState!.validate()){
+                        //   _login();
+                        // }
+                        Navigator.pushNamed(context, Dashboard.id);
                       },
                       child: _showSpinner == true
                         ? const SizedBox(
