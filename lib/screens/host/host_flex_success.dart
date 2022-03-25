@@ -1,12 +1,16 @@
 import 'package:flex_my_way/components/button.dart';
+import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 import '../dashboard/dashboard.dart';
 import '../onboarding/login.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HostFlexSuccess extends StatelessWidget {
 
@@ -103,10 +107,15 @@ class HostFlexSuccess extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 24),
-                          Text(
-                            AppStrings.flexURL,
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyText2!.copyWith(color: primaryColor),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, FlexHistoryDetail.id);
+                            },
+                            child: Text(
+                              AppStrings.flexURL,
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodyText2!.copyWith(color: primaryColor),
+                            ),
                           )
                         ],
                       ),
@@ -135,7 +144,9 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         const SizedBox(width: 24),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Share.share('check out my app https://flexmyway.com.com');
+                          },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),
                             backgroundColor: primaryColorVariant,
@@ -151,7 +162,15 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         const SizedBox(width: 24),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Clipboard.setData(
+                              const ClipboardData(
+                                text: AppStrings.flexURL)).then((value) {
+                                  Functions.showMessage('Link copied');
+                            }).catchError((e){
+                              Functions.showMessage('Could not copy link');
+                            });
+                          },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(19),
                               backgroundColor: primaryColorVariant,

@@ -23,6 +23,7 @@ dependencies:
   fluttertoast: ^8.0.9
   google_maps_flutter: ^2.1.2
   animated_text_kit: ^4.2.1
+  share_plus: ^4.0.3
 
 dev_dependencies:
   flutter_lints: ^1.0.0
@@ -41,3 +42,9 @@ flutter:
         - asset: assets/fonts/Gilroy-Light.otf
         - asset: assets/fonts/Gilroy-ExtraBold.otf
           weight: 700
+
+    - family: Neon
+      fonts:
+        - asset: assets/fonts/Neon.ttf
+          weight: 600
+

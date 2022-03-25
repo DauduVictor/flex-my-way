@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/constants/constants.dart';
@@ -60,8 +59,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Flexmyway',
                 style: textTheme.headline2!.copyWith(
                   color: whiteColor,
+                  fontFamily: 'Neon',
                 ),
               ),
+              SvgPicture.asset(splashScreenLocationImage),
               // SvgPicture.asset(uploadIcon),
             ],
           ),

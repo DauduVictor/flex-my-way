@@ -164,12 +164,13 @@ class _FindAFlexState extends State<FindAFlex> {
                       ),
                     ],
                   ),
-                  SizedBox(height: SizeConfig.screenHeight! * 0.05),
+                  SizedBox(height: SizeConfig.screenHeight! * 0.08),
                   Text(
                     'Have an account already?',
                     style: textTheme.bodyText1!.copyWith(
                       color: whiteColor,
-                      fontSize: 17
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -181,6 +182,7 @@ class _FindAFlexState extends State<FindAFlex> {
                       'Login here',
                       style: textTheme.button!.copyWith(
                         color: whiteColor,
+                        fontSize: 20,
                       ),
                     ),
                   ),

@@ -173,6 +173,9 @@ class _SettingsState extends State<Settings> {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: whiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
         title: Text(
           AppStrings.logOut,
           style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
@@ -196,18 +199,21 @@ class _SettingsState extends State<Settings> {
               'Cancel',
             ),
           ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setBool('loggedIn', false);
-              Navigator.pushNamedAndRemoveUntil(context, Login.id, (route) => false);
-            },
-            style: TextButton.styleFrom(
-              primary: primaryColor,
-            ),
-            child: const Text(
-              AppStrings.logOut,
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool('loggedIn', false);
+                Navigator.pushNamedAndRemoveUntil(context, Login.id, (route) => false);
+              },
+              style: TextButton.styleFrom(
+                primary: primaryColor,
+              ),
+              child: const Text(
+                AppStrings.logOut,
+              ),
             ),
           ),
         ],
