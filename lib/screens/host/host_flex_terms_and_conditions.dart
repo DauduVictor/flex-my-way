@@ -3,8 +3,9 @@ import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/text-form-field.dart';
-import '../../networking/user-datasource.dart';
+import '../../networking/flex-datasource.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
@@ -13,7 +14,7 @@ class HostFlexTermsAndConditions extends StatefulWidget {
   static const String id = "hostFlexTermsAndConditions";
 
   final String? paid;
-  final Map<String, String>? body;
+  final Map<String, dynamic>? body;
 
   const HostFlexTermsAndConditions ({
     Key? key,
@@ -59,14 +60,14 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: AbsorbPointer(
-          absorbing: _showSpinner,
+        child: SizedBox(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
           child: SingleChildScrollView(
-            child: SizedBox(
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.screenHeight,
+            child: AbsorbPointer(
+              absorbing: _showSpinner,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 30, 30, 15),
+                padding: const EdgeInsets.all(30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,7 +92,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         thumbColor: primaryColor,
                         radius: Radius.circular(8.0),
                         thickness: 4.0,
-                        isAlwaysShown: false,
+                        isAlwaysShown: true,
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 15),
                           child: SingleChildScrollView(
@@ -159,28 +160,32 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                     const SizedBox(height: 24),
                     Align(
                       alignment: Alignment.center,
-                      child: Button(
-                        label: AppStrings.finish,
-                        onPressed: () {
-                          if(widget.paid == 'Paid') {
-                            if(_formKey.currentState!.validate()) {
+                      child: Opacity(
+                        opacity: (_termsAndConditionsAccepted && _privacyPolicyAccepted) == true
+                            ? 1.0 : 0.7,
+                        child: Button(
+                          label: AppStrings.finish,
+                          onPressed: () {
+                            if(widget.paid == 'Paid') {
+                              if(_formKey.currentState!.validate()) {
+                                if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
+                                  _hostFlex();
+                                }
+                              }
+                            }
+                            else {
                               if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
                                 _hostFlex();
                               }
                             }
-                          }
-                          else {
-                            if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                              _hostFlex();
-                            }
-                          }
-                        },
-                        child: _showSpinner == false
-                            ?  null
-                            : const SizedBox(
-                                height: 19,
-                                width: 19,
-                                child: CircleProgressIndicator(),
+                          },
+                          child: _showSpinner == false
+                              ?  null
+                              : const SizedBox(
+                                  height: 19,
+                                  width: 19,
+                                  child: CircleProgressIndicator(),
+                          ),
                         ),
                       ),
                     )
@@ -196,17 +201,16 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
   void _hostFlex() async {
     if(!mounted) return;
     setState(() => _showSpinner = false);
-    var api = UserDataSource();
     if(widget.paid == 'Paid'){
-      // widget.body!.addAll('bvn', _bvnController.text);
-      print('api call with bvn');
-      print(widget.body);
-      Navigator.pushNamed(context, HostFlexSuccess.id);
+      widget.body!['bvn'] = _bvnController.text;
     }
-    else {
-      // api.signIn(body).then((value) => null);
-      print('api call without bvn');
-      Navigator.pushNamed(context, HostFlexSuccess.id);
-    }
+    print(widget.body!);
+    var api = FlexDataSource();
+    await api.createFlex(widget.body!).then((value) => null).catchError((e){
+      if(!mounted) return;
+      setState(() => _showSpinner = false);
+      Functions.showMessage(e);
+    });
   }
 }
+// Navigator.pushNamed(context, HostFlexSuccess.id);

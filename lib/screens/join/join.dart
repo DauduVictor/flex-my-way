@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,7 +26,7 @@ class _JoinState extends State<Join> {
 
   CameraPosition userPosition = const CameraPosition(
     target: LatLng(6.519314, 3.396336),
-    zoom: 16.0,
+    zoom: 20.0,
   );
 
   /// Variable to hold the state of the pay button
@@ -47,6 +46,7 @@ class _JoinState extends State<Join> {
           GoogleMap(
             mapType: MapType.normal,
             initialCameraPosition: userPosition,
+            myLocationEnabled: false,
             onMapCreated: _onMapCreated,
           ),
           Padding(

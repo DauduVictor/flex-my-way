@@ -1,9 +1,11 @@
 import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import '../dashboard/dashboard.dart';
 import '../onboarding/login.dart';
 
 class HostFlexSuccess extends StatelessWidget {
@@ -168,8 +170,14 @@ class HostFlexSuccess extends StatelessWidget {
                     SizedBox(height: SizeConfig.screenHeight! * 0.05),
                     Button(
                       label: AppStrings.goHome,
-                      onPressed: () {
-                        Navigator.pushNamed(context, Login.id);
+                      onPressed: () async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        if (prefs.getBool('loggedIn') == true) {
+                          Navigator.pushNamed(context, Dashboard.id);
+                        }
+                        else {
+                          Navigator.pushNamed(context, Login.id);
+                        }
                       },
                     ),
                     const SizedBox(height: 25),

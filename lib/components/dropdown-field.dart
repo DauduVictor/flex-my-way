@@ -8,12 +8,14 @@ class CustomDropdownButtonField extends StatelessWidget {
     required this.hintText,
     required this.items,
     required this.onChanged,
+    this.value,
     this.validator
   }) : super(key: key);
 
   final String hintText;
   final List<dynamic> items;
   final Function(Object?)? onChanged;
+  final String? value;
   final String? Function(Object?)? validator;
 
   @override
@@ -25,10 +27,11 @@ class CustomDropdownButtonField extends StatelessWidget {
           onChanged: onChanged,
           isExpanded: true,
           validator: validator,
-          items: items.map((val) => DropdownMenuItem(
-            value: val,
+          value: value,
+          items: items.map((value) => DropdownMenuItem(
+            value: value,
             child: Text(
-              '$val',
+              '$value',
               style: textTheme.bodyText2,
             ),
           ),

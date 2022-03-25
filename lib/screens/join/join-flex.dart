@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
@@ -14,6 +16,20 @@ class JoinFlex extends StatefulWidget {
 }
 
 class _JoinFlexState extends State<JoinFlex> {
+
+  /// Google map controller
+  Completer<GoogleMapController> _mapController = Completer();
+
+  /// Function for _onMapCreated
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController.complete(controller);
+  }
+
+  CameraPosition userPosition = const CameraPosition(
+    target: LatLng(6.519314, 3.396336),
+    zoom: 16.0,
+  );
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -357,7 +373,17 @@ class _JoinFlexState extends State<JoinFlex> {
                             height: SizeConfig.screenHeight! * 0.25,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
-                              color: Colors.black,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: GoogleMap(
+                                mapType: MapType.normal,
+                                initialCameraPosition: userPosition,
+                                onMapCreated: _onMapCreated,
+                                scrollGesturesEnabled: false,
+                                zoomControlsEnabled: false,
+                                zoomGesturesEnabled: false,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 5),

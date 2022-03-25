@@ -45,7 +45,19 @@ class _HostAFlexState extends State<HostAFlex> {
   final TextEditingController _flexRulesController = TextEditingController();
 
   /// A variable to hold the payment status
-  String _paid = 'Free';
+  String _paid = '';
+
+  /// A variable to hold the public or private status
+  String _publicOrPrivate = '';
+
+  /// A variable to hold the flex location
+  String _displayFlexLocation = '';
+
+  /// A variable to hold the gender restriction
+  bool? _genderRestriciton;
+
+  /// A variable to hold the consumable policy
+  String _consumablePolicy = '';
 
   /// A variable to hold the age rate
   String _ageRating = '';
@@ -86,7 +98,8 @@ class _HostAFlexState extends State<HostAFlex> {
                   //name this flex
                   CustomTextFormField(
                     hintText: AppStrings.nameThisFlex,
-                    textCapitalization: TextCapitalization.words,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
                     textEditingController: _nameFlexController,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -95,7 +108,7 @@ class _HostAFlexState extends State<HostAFlex> {
                       return null;
                     },
                   ),
-                  //select a date
+                  /// select a date
                   CustomTextFormField(
                     hintText: AppStrings.selectADate,
                     onChanged: (value) {},
@@ -134,17 +147,17 @@ class _HostAFlexState extends State<HostAFlex> {
                       );
                       if (picked != null && picked != now) {
                         if(!mounted) return;
-                        setState(() => _dateController.text = DateFormat('d / MMM / yyyy').format(picked).toString());
+                        setState(() => _dateController.text = DateFormat('yyyy-MMM-d').format(picked).toString());
                       }
                     },
                   ),
-                  //how many people can come
+                  /// how many people can come
                   CustomTextFormField(
                     hintText: AppStrings.howManyPeople,
                     keyboardType: TextInputType.number,
                     textEditingController: _numberOfPeopleController,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                      FilteringTextInputFormatter.deny(RegExp(' ')),
                     ],
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -153,7 +166,7 @@ class _HostAFlexState extends State<HostAFlex> {
                       return null;
                     },
                   ),
-                  //age rating
+                  /// age rating
                   CustomDropdownButtonField(
                     hintText: AppStrings.whatsAgeRating,
                     items: ageRating,
@@ -170,18 +183,24 @@ class _HostAFlexState extends State<HostAFlex> {
                       });
                     },
                   ),
-                  //type of flex
+                  /// type of flex
                   CustomDropdownButtonField(
                     hintText: AppStrings.typeOfFlex,
-                    items: typeOfFlex,
+                    items: preferredFlex,
                     onChanged: (value) {
                       value = value.toString();
                       setState(() {
                         _typeOfFlex = value.toString();
                       });
                     },
+                    validator: (value) {
+                      if (_typeOfFlex.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
                   ),
-                  //upload banner image
+                  /// upload banner image
                   CustomTextFormField(
                     hintText: AppStrings.uploadBannerImage,
                     onChanged: (value) {},
@@ -218,17 +237,18 @@ class _HostAFlexState extends State<HostAFlex> {
                       }
                     },
                   ),
-                  // add hashtag
+                  /// add hashtag
                   CustomTextFormField(
                     hintText: AppStrings.addAHAshtag,
                     textEditingController: _eventHashTagController,
                     validator: (value) {
-                      if (value!.isEmpty) {
+                      if (value!.isEmpty || value.length < 2) {
                         return 'This field is required';
                       }
                       return null;
                     },
                   ),
+                  /// paid or free
                   CustomDropdownButtonField(
                     hintText: AppStrings.isPaidOrFree,
                     items: paidOrFree,
@@ -237,6 +257,12 @@ class _HostAFlexState extends State<HostAFlex> {
                       setState(() {
                         _paid = value.toString();
                       });
+                    },
+                    validator: (value) {
+                      if (_paid.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
                   _paid == 'Paid'
@@ -268,39 +294,75 @@ class _HostAFlexState extends State<HostAFlex> {
                         ),
                       )
                       : Container(),
-                  // public or private
+                  /// public or private
                   CustomDropdownButtonField(
                     hintText: AppStrings.openToPublicOrPrivate,
                     items: publicOrPrivate,
                     onChanged: (value) {
                       value = value.toString();
+                      setState(() {
+                        _publicOrPrivate = value.toString();
+                      });
+                    },
+                    validator: (value) {
+                      if (_publicOrPrivate.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
-                  //display flex location
+                  /// display flex location
                   CustomDropdownButtonField(
                     hintText: AppStrings.displayToOnlyAccepted,
                     items: yesOrNo,
                     onChanged: (value) {
                       value = value.toString();
+                      setState(() {
+                        _displayFlexLocation = value.toString();
+                      });
+                    },
+                    validator: (value) {
+                      if (_displayFlexLocation.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
-                  // gender restrictions
+                  /// gender restrictions
                   CustomDropdownButtonField(
                     hintText: AppStrings.genderRestrictions,
                     items: isGenderRestrictions,
                     onChanged: (value) {
                       value = value as bool;
+                      setState(() {
+                        _genderRestriciton = value as bool;
+                      });
+                    },
+                    validator: (value) {
+                      if (_genderRestriciton.toString().isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
-                  //food and drinks policy
+                  /// food and drinks policy
                   CustomDropdownButtonField(
                     hintText: AppStrings.foodAndDrinkPolicy,
                     items: foodAndDrinkPolicy,
                     onChanged: (value) {
                       value = value.toString();
+                      setState(() {
+                        _consumablePolicy = value.toString();
+                      });
+                    },
+                    validator: (value) {
+                      if (_consumablePolicy.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
-                  //flex rules
+                  /// flex rules
                   CustomTextFormField(
                     hintText: AppStrings.rulesAboutFlex,
                     textEditingController: _flexRulesController,
@@ -314,48 +376,36 @@ class _HostAFlexState extends State<HostAFlex> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 15),
                   Button(
                     label: 'Host Flex',
                     onPressed: () {
-                      // if(_formKey.currentState!.validate()) {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) {
-                      //         return HostFlexTermsAndConditions(
-                      //           paid: _paid,
-                      //           body: {
-                      //             'name': _nameFlexController.text,
-                      //             'date': "2021-12-04T10:57:25.509Z",
-                      //             'capacity': _numberOfPeopleController.text,
-                      //             'ageRating': '$_ageRating+',
-                      //             'flexType': _typeOfFlex,
-                      //             "hashtag": _eventHashTagController.text,
-                      //             "consumablesPolicy": "Food and drinks free"
-                      //           }
-                      //         );
-                      //       }),
-                      //   );
-                      // }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
+                      if(_formKey.currentState!.validate()) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
                             builder: (context) {
                               return HostFlexTermsAndConditions(
-                                  paid: _paid,
-                                  body: {
-                                    'name': _nameFlexController.text,
-                                    'date': "2021-12-04T10:57:25.509Z",
-                                    'capacity': _numberOfPeopleController.text,
-                                    'ageRating': '$_ageRating+',
-                                    'flexType': _typeOfFlex,
-                                    "hashtag": _eventHashTagController.text,
-                                    "consumablesPolicy": "Food and drinks free"
-                                  }
+                                paid: _paid,
+                                body: {
+                                  'name': _nameFlexController.text,
+                                  'date': _dateController.text,
+                                  'capacity': _numberOfPeopleController.text,
+                                  'ageRating': _ageRating,
+                                  'flexType': _typeOfFlex,
+                                  'bannerImage': [],
+                                  'hashtag': _eventHashTagController.text,
+                                  'paidOrFree': _paid,
+                                  'publicOrPrivate': _publicOrPrivate,
+                                  'displayFlexLocation': _displayFlexLocation,
+                                  'genderRestriction': _genderRestriciton,
+                                  'consumablesPolicy': _consumablePolicy,
+                                  'flexRules': _flexRulesController.text
+                                }
                               );
                             }),
-                      );
+                        );
+                      }
                     },
                   ),
                   const SizedBox(height: 25),

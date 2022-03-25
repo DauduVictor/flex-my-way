@@ -2,7 +2,6 @@ import 'package:flex_my_way/components/list-tile-button.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../bloc/future-values.dart';
 import '../../components/app-bar.dart';
 import '../../util/constants/strings.dart';
@@ -33,6 +32,9 @@ class _DashboardState extends State<Dashboard> {
     await futureValues.getCurrentUser().then((user) {
       setState(() {
         userName = user.name!;
+        print(user.id);
+        print(user.bearer_token);
+        print(user.preferredFlex);
       });
     }).catchError((e){
       print(e);

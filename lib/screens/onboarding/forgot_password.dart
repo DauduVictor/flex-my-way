@@ -125,11 +125,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       }
                     },
                     child: _showSpinner == true
-                        ? const SizedBox(
-                        height: 21,
-                        width: 19,
-                        child: CircleProgressIndicator())
-                        : null,
+                      ? const SizedBox(
+                          height: 21,
+                          width: 19,
+                          child: CircleProgressIndicator()
+                        )
+                      : null,
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
@@ -167,13 +168,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     await api.forgotPassword(body).then((value) async {
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      Functions.showMessage(value);
       Navigator.pushNamed(context, ResetPassword.id);
     }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      Functions.showMessage(e);
-      print(e);
+      Functions.showMessage('Your detail doesn\'t seem to exist on our database');
     });
   }
 

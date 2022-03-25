@@ -1,17 +1,21 @@
-import 'package:flex_my_way/screens/find-a-flex.dart';
+import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/app-bar.dart';
 import '../../components/button.dart';
+import '../../components/circle-indicator.dart';
 import '../../components/list-tile-button.dart';
 import '../../components/text-form-field.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 import '../dashboard/drawer.dart';
+import '../onboarding/login.dart';
 import 'about.dart';
 import 'edit-profile-detail.dart';
 
@@ -35,11 +39,20 @@ class _SettingsState extends State<Settings> {
   /// A [TextEditingController] to control the input text for current password
   final TextEditingController _currentPasswordController = TextEditingController();
 
-  // A [TextEditingController] to control the input text for new password
+  /// A [TextEditingController] to control the input text for new password
   final TextEditingController _newPasswordController = TextEditingController();
 
   /// bool variable to hold the status of show edit password
   bool _showEditPassword = false;
+
+  /// bool variable to hold the bool state of show spinner
+  bool _showSpinner = false;
+
+  /// bool variable to hold the status of current password obscure text
+  bool _obscureCurrentPassword = false;
+
+  /// bool variable to hold the status of current password obscure text
+  bool _obscureNewPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,71 +89,74 @@ class _SettingsState extends State<Settings> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-                  child: Column(
-                    children: [
-                      ReusableSettingsButton(
-                        name: AppStrings.editProfileDetails,
-                        icon: IconlyLight.edit,
-                        onPressed: () {
-                          Navigator.pushNamed(context, EditProfileDetail.id);
-                        },
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.editPassword,
-                        icon: IconlyBroken.unlock,
-                        onPressed: () {
-                          setState(() {
-                            _showEditPassword = !_showEditPassword;
-                          });
-                        },
-                      ),
-                      _showEditPassword == true
-                        ? _showEditPasswordField()
-                        : Container(),
-                      ReusableSettingsButton(
-                        name: AppStrings.inviteYourFriends,
-                        icon: Icons.share_outlined,
-                        onPressed: () {},
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.about,
-                        icon: Icons.lightbulb_outline,
-                        onPressed: () {
-                          Navigator.pushNamed(context, About.id);
-                        },
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.termsAndConditions,
-                        icon: IconlyLight.dangerCircle,
-                        onPressed: () {
-                          Navigator.pushNamed(context, TermsAndCondition.id);
-                        },
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.privacyPolicy,
-                        icon: IconlyLight.paper,
-                        onPressed: () {
-                          Navigator.pushNamed(context, PrivacyPolicy.id);
-                        },
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.helpAndSupport,
-                        icon: IconlyLight.shieldDone,
-                        onPressed: () {
-                          Navigator.pushNamed(context, HelpAndSupport.id);
-                        },
-                      ),
-                      ReusableSettingsButton(
-                        name: AppStrings.logOut,
-                        icon: IconlyLight.logout,
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, FindAFlex.id);
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                    ],
+                child: AbsorbPointer(
+                  absorbing: _showSpinner,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
+                    child: Column(
+                      children: [
+                        ReusableSettingsButton(
+                          name: AppStrings.editProfileDetails,
+                          icon: IconlyLight.edit,
+                          onPressed: () {
+                            Navigator.pushNamed(context, EditProfileDetail.id);
+                          },
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.editPassword,
+                          icon: IconlyBroken.unlock,
+                          onPressed: () {
+                            setState(() {
+                              _showEditPassword = !_showEditPassword;
+                            });
+                          },
+                        ),
+                        _showEditPassword == true
+                          ? _showEditPasswordField(textTheme)
+                          : Container(),
+                        ReusableSettingsButton(
+                          name: AppStrings.inviteYourFriends,
+                          icon: Icons.share_outlined,
+                          onPressed: () {},
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.about,
+                          icon: Icons.lightbulb_outline,
+                          onPressed: () {
+                            Navigator.pushNamed(context, About.id);
+                          },
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.termsAndConditions,
+                          icon: IconlyLight.dangerCircle,
+                          onPressed: () {
+                            Navigator.pushNamed(context, TermsAndCondition.id);
+                          },
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.privacyPolicy,
+                          icon: IconlyLight.paper,
+                          onPressed: () {
+                            Navigator.pushNamed(context, PrivacyPolicy.id);
+                          },
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.helpAndSupport,
+                          icon: IconlyLight.shieldDone,
+                          onPressed: () {
+                            Navigator.pushNamed(context, HelpAndSupport.id);
+                          },
+                        ),
+                        ReusableSettingsButton(
+                          name: AppStrings.logOut,
+                          icon: IconlyLight.logout,
+                          onPressed: () {
+                            _showLogOutDialog(textTheme);
+                          },
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -151,8 +167,56 @@ class _SettingsState extends State<Settings> {
     );
   }
 
+  ///widget to prompt user if they want to logout
+  Future<void> _showLogOutDialog(TextTheme textTheme) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: whiteColor,
+        title: Text(
+          AppStrings.logOut,
+          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          AppStrings.logOutPrompt,
+          style: textTheme.bodyText1!.copyWith(
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(
+              primary: primaryColor,
+            ),
+            child: const Text(
+              'Cancel',
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setBool('loggedIn', false);
+              Navigator.pushNamedAndRemoveUntil(context, Login.id, (route) => false);
+            },
+            style: TextButton.styleFrom(
+              primary: primaryColor,
+            ),
+            child: const Text(
+              AppStrings.logOut,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   ///Widget to show password edit fields
-  Widget _showEditPasswordField () {
+  Widget _showEditPasswordField (TextTheme textTheme) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 16, 15, 16),
       child: Column(
@@ -164,16 +228,58 @@ class _SettingsState extends State<Settings> {
                 CustomTextFormField(
                   hintText: AppStrings.enterCurrentPassword,
                   textInputAction: TextInputAction.next,
+                  obscureText: _obscureCurrentPassword,
                   keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) {},
                   textEditingController: _currentPasswordController,
+                  suffix: GestureDetector(
+                    onTap: () {
+                      setState(() => _obscureCurrentPassword = !_obscureCurrentPassword);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                      child: Text(
+                        _obscureCurrentPassword == true ? 'SHOW' : 'HIDE',
+                        style: textTheme.button!.copyWith(
+                          fontSize: 14,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if(value!.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
                 CustomTextFormField(
                   hintText: AppStrings.enterNewPassword,
                   keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) {},
                   textInputAction: TextInputAction.done,
+                  obscureText: _obscureNewPassword,
                   textEditingController: _newPasswordController,
+                  suffix: GestureDetector(
+                    onTap: () {
+                      setState(() => _obscureNewPassword = !_obscureNewPassword);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                      child: Text(
+                        _obscureNewPassword == true ? 'SHOW' : 'HIDE',
+                        style: textTheme.button!.copyWith(
+                          fontSize: 14,
+                          color: primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if(value!.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
                 ),
               ],
             ),
@@ -181,13 +287,44 @@ class _SettingsState extends State<Settings> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Button(
-              onPressed: () { },
               label: AppStrings.save,
+              onPressed: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
+                if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                if(_formKey.currentState!.validate()){
+                  _editPassword();
+                }
+              },
+              child: _showSpinner == true
+                ? const SizedBox(
+                  height: 21,
+                  width: 19,
+                  child: CircleProgressIndicator())
+                : null,
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// Function to make api call to edit user password
+  void _editPassword() async {
+    if(!mounted) return;
+    setState(() => _showSpinner = true);
+    var api = UserDataSource();
+    Map<String, String> body = {
+      "password": _newPasswordController.text
+    };
+    await api.resetPasswordWithId(body).then((value) {
+      if(!mounted) return;
+      setState(() => _showSpinner = false);
+      Functions.showMessage('Password updated successfully');
+    }).catchError((e){
+      if(!mounted) return;
+      setState(() => _showSpinner = false);
+      Functions.showMessage(e);
+    });
   }
 }
 

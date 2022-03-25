@@ -44,7 +44,6 @@ class _HostRegistrationState extends State<HostRegistration> {
 
   @override
   void initState() {
-    // _formatDate();
     super.initState();
   }
 
@@ -123,6 +122,7 @@ class _HostRegistrationState extends State<HostRegistration> {
                     onChanged: (value) {},
                     textEditingController: _hostPhoneNumberController,
                   ),
+                  /// gender
                   CustomDropdownButtonField(
                     hintText: AppStrings.gender,
                     items: genders,
@@ -130,6 +130,7 @@ class _HostRegistrationState extends State<HostRegistration> {
                       value = value.toString();
                     },
                   ),
+                  /// occupation
                   CustomDropdownButtonField(
                     hintText: AppStrings.occupation,
                     items: occupations,

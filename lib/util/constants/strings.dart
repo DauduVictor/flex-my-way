@@ -6,6 +6,7 @@ class AppStrings {
   static const enterNewPassword = 'Enter New Password';
   static const resetPassword = 'Reset Password';
   static const save = 'Save';
+  static const logOutPrompt = 'Are you sure you want to logout of your account?';
 
   //Find a Flex
   static const youDeyGround = 'you dey ground, you no wan flex?';

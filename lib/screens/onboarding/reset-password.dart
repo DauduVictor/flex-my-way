@@ -25,14 +25,17 @@ class _ResetPasswordState extends State<ResetPassword> {
   /// TextEditingController for email address
   final TextEditingController _emailAddressController = TextEditingController();
 
-  /// TextEditingController for email address
+  /// TextEditingController for password
   final TextEditingController _passwordController = TextEditingController();
+
+  /// TextEditingController for password
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   /// Variable to hold the bool value of show spinner
   bool _showSpinner = false;
 
   ///Variable to hold the bool value of password field obscure text
-  bool _obscureText = true;
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +71,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 21.0),
                       child: Text(
-                        'Enter your Email and we will send a link to your registered email',
+                        'Enter your Email and new Password',
                         textAlign: TextAlign.center,
                         style: textTheme.bodyText1!,
                       ),
@@ -124,20 +127,21 @@ class _ResetPasswordState extends State<ResetPassword> {
               return null;
             },
           ),
+          /// new password
           CustomTextFormField(
             textEditingController: _passwordController,
-            keyboardType: TextInputType.text,
-            obscureText: _obscureText,
-            textInputAction: TextInputAction.done,
-            hintText: 'Your Password',
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: _obscurePassword,
+            textInputAction: TextInputAction.next,
+            hintText: 'New Password',
             suffix: GestureDetector(
               onTap: () {
-                setState(() => _obscureText = !_obscureText);
+                setState(() => _obscurePassword = !_obscurePassword);
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
                 child: Text(
-                  _obscureText == true ? 'SHOW' : 'HIDE',
+                  _obscurePassword == true ? 'SHOW' : 'HIDE',
                   style: textTheme.button!.copyWith(
                     fontSize: 14,
                     color: primaryColor,
@@ -148,6 +152,23 @@ class _ResetPasswordState extends State<ResetPassword> {
             validator: (value) {
               if(value!.isEmpty) {
                 return 'This field is required';
+              }
+              return null;
+            },
+          ),
+          /// confirm new password
+          CustomTextFormField(
+            textEditingController: _confirmPasswordController,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: true,
+            textInputAction: TextInputAction.done,
+            hintText: 'Confirm Password',
+            validator: (value) {
+              if(value!.isEmpty) {
+                return 'This field is required';
+              }
+              if(value != _passwordController.text) {
+                return 'Confirm your password';
               }
               return null;
             },
@@ -166,7 +187,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       'email' : _emailAddressController.text,
       'password' : _passwordController.text
     };
-    await api.signIn(body).then((value) async {
+    await api.resetPassword(body).then((value) async {
       if(!mounted) return;
       setState(() => _showSpinner = false);
       Functions.showMessage(value);

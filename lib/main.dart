@@ -15,6 +15,7 @@ import 'package:flex_my_way/screens/host/host_a_flex.dart';
 import 'package:flex_my_way/screens/host/host_flex_success.dart';
 import 'package:flex_my_way/screens/onboarding/login.dart';
 import 'package:flex_my_way/screens/onboarding/reset-password.dart';
+import 'package:flex_my_way/screens/onboarding/sign-up.dart';
 import 'package:flex_my_way/screens/settings/about.dart';
 import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
@@ -40,13 +41,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      home: const Login(),
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         OnboardingScreen.id: (context) => const OnboardingScreen(),
         Login.id: (context) => const Login(),
         ForgotPassword.id: (context) => const ForgotPassword(),
         ResetPassword.id: (context) => const ResetPassword(),
+        SignUp.id: (context) => const SignUp(),
         FindAFlex.id: (context) => const FindAFlex(),
         HostRegistration.id: (context) => const HostRegistration(),
         HostAFlex.id: (context) => const HostAFlex(),
@@ -71,3 +73,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// for a join user
+// - settings
+// - gallery
+// - history
+// -

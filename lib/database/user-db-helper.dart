@@ -42,7 +42,7 @@ class DatabaseHelper {
     // When creating the db, create the table
     await db.execute('CREATE TABLE $USER_TABLE('
         'id TEXT PRIMARY KEY NOT NULL,'
-        'name TEXT PRIMARY KEY NOT NULL,'
+        'name TEXT,'
         'email TEXT,'
         'phone TEXT,'
         'gender TEXT,'

@@ -1,7 +1,6 @@
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import '../components/app-bar.dart';
-import '../components/list-tile-button.dart';
 
 class Notifications extends StatefulWidget {
 
@@ -22,58 +21,105 @@ class _NotificationsState extends State<Notifications> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
-          child: Column(
-            children: [
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'Afro Nation Flex is happening in 2 hours. Feel the flex.',
-              ),
-              ListTileButton(
-                onPressed: () { },
-                title: 'You’ve got a message from our support team. Head over there.',
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'That’s all you’ve got for now',
-                style: TextStyle(
-                  color: neutralColor.withOpacity(0.4),
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
+          child: Container(
+            color: Colors.black,
+            child: ExpansionPanelList(
+              animationDuration: const Duration(milliseconds:700),
+              expandedHeaderPadding: const EdgeInsets.all(0),
+              children: [
+                ExpansionPanel(
+                  backgroundColor: primaryColor,
+                  canTapOnHeader: true,
+                  body: const Padding(
+                    padding: EdgeInsets.fromLTRB(15, 0, 7, 15),
+                    child: Text(
+                      'You’ve got a text from our sur team. Head over there.This is an example of the expanded body',
+                      style: TextStyle(
+                        color: whiteColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  headerBuilder: (BuildContext context, bool isExpanded) {
+                    return const Padding(
+                      padding: EdgeInsets.fromLTRB(15, 8, 0, 10),
+                      child: Text(
+                        'You’ve got a message from our support team. Head over there.',
+                        style: TextStyle(
+                          color: whiteColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                        ),
+                      ),
+                    );
+                  },
+                  isExpanded: false,
                 ),
-              ),
-              const SizedBox(height: 8),
-            ],
+              ],
+              // expansionCallback: (int item, bool status) {
+              //   setState(() {
+              //   });
+              // },
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+class NotificationButton extends StatelessWidget {
+
+  final void Function() onPressed;
+  final String title;
+
+  const NotificationButton({
+    Key? key,
+    required this.onPressed,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+              backgroundColor: primaryColor,
+              padding: const EdgeInsets.symmetric(vertical: 23, horizontal: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24.0),
+              )
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: whiteColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  size: 21,
+                  color: whiteColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
+  }
+}
+

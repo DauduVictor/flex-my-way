@@ -31,7 +31,7 @@ BorderRadius appBarBottomBorder = const BorderRadius.only(
 );
 
 List<int> ageRating = [10, 13, 15, 16, 18];
-List<String> typeOfFlex = [
+List<String> preferredFlex = [
   'After Party, Ball',
   'Banquet',
   'Birthday',
@@ -58,9 +58,5 @@ List<bool> isGenderRestrictions = [false, true];
 List<String> yesOrNo = ['Yes', 'No'];
 List<String> foodAndDrinkPolicy = ['Food', 'Drink'];
 List<String> genders = ['Male', 'Female'];
-List<String> occupations = ['Architect', 'Lawyer', 'Mobile Developer'];
-
-//first criteria - ability to have an ltb > 5000,
-//second - how frequent the site is visited
-// array of customers -- item will contain an object that will contain the ltb of the customer
-// index of array == order of apperarance
+List<String> occupations = ['Architect', 'Lawyer', 'Mobile Developer', 'Working'];
+List<String> infoSource = ['Social Media', 'Friend', 'Website'];

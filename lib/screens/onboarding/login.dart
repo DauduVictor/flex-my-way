@@ -1,6 +1,7 @@
 import 'package:flex_my_way/bloc/future-values.dart';
 import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/screens/dashboard/dashboard.dart';
+import 'package:flex_my_way/screens/onboarding/sign-up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -102,10 +103,9 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         FocusScopeNode currentFocus = FocusScope.of(context);
                         if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        // if(_formKey.currentState!.validate()){
-                        //   _login();
-                        // }
-                        Navigator.pushNamed(context, Dashboard.id);
+                        if(_formKey.currentState!.validate()){
+                          _login();
+                        }
                       },
                       child: _showSpinner == true
                         ? const SizedBox(
@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
                     const SizedBox(height: 4),
                     GestureDetector(
                       onTap: () {
-
+                        Navigator.pushNamed(context, SignUp.id);
                       },
                       child: Text(
                         'Sign Up',
@@ -176,7 +176,7 @@ class _LoginState extends State<Login> {
               if(value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value.length < 3 || !value.contains('@')){
+              if(value.length < 3 && !value.contains('@') && !value.contains('.')){
                 return 'This field is required';
               }
               return null;
@@ -224,7 +224,7 @@ class _LoginState extends State<Login> {
       'email' : _emailAddressController.text,
       'password' : _passwordController.text
     };
-    await api.signIn(body).then((value) async {
+    await api.signIn(body).then((user) async {
       if(!mounted) return;
       setState(() => _showSpinner = false);
       var db = DatabaseHelper();
@@ -234,7 +234,7 @@ class _LoginState extends State<Login> {
     }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      Functions.showMessage(e.toString());
+      Functions.showMessage('Make sure your details are correct. Please try again!');
       print(e);
     });
   }
@@ -245,6 +245,7 @@ class _LoginState extends State<Login> {
   _addBoolToSP(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', true);
+    await prefs.setString('bearerToken', user.bearer_token!);
     Navigator.pushNamed(context, Dashboard.id);
   }
 }
