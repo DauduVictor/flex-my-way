@@ -7,6 +7,7 @@ import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
 import '../util/size-config.dart';
 import 'join/join.dart';
+import 'onboarding/login.dart';
 
 class FindAFlex extends StatefulWidget {
 
@@ -117,44 +118,69 @@ class _FindAFlexState extends State<FindAFlex> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () async {
-                      isLoggedIn == true
-                        ? Navigator.pushNamed(context, HostAFlex.id)
-                        : Navigator.pushNamed(context, HostRegistration.id);
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: whiteColor,
-                      radius: 42,
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: splashBackgroundColor,
-                        child: Text(
-                          AppStrings.host,
-                          style: textTheme.headline6!.copyWith(
-                              color: whiteColor,
-                              fontWeight: FontWeight.w600),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          isLoggedIn == true
+                            ? Navigator.pushNamed(context, HostAFlex.id)
+                            : Navigator.pushNamed(context, HostRegistration.id);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 42,
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundColor: splashBackgroundColor,
+                            child: Text(
+                              AppStrings.host,
+                              style: textTheme.headline6!.copyWith(
+                                  color: whiteColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, Join.id),
+                        child: CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 42,
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundColor: whiteColor,
+                            child: Text(
+                              AppStrings.join,
+                              style: textTheme.headline6!.copyWith(
+                                  color: splashBackgroundColor,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.screenHeight! * 0.05),
+                  Text(
+                    'Have an account already?',
+                    style: textTheme.bodyText1!.copyWith(
+                      color: whiteColor,
+                      fontSize: 17
                     ),
                   ),
+                  const SizedBox(height: 5),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, Join.id),
-                    child: CircleAvatar(
-                      backgroundColor: whiteColor,
-                      radius: 42,
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: whiteColor,
-                        child: Text(
-                          AppStrings.join,
-                          style: textTheme.headline6!.copyWith(
-                              color: splashBackgroundColor,
-                              fontWeight: FontWeight.w600),
-                        ),
+                    onTap: () {
+                      Navigator.pushNamed(context, Login.id);
+                    },
+                    child: Text(
+                      'Login here',
+                      style: textTheme.button!.copyWith(
+                        color: whiteColor,
                       ),
                     ),
                   ),

@@ -52,12 +52,13 @@ class _JoinedFlexDetailsState extends State<JoinedFlexDetails> {
             ),
             child: Column(
               children: [
-                const SizedBox(height: 50),
+                const SizedBox(height: 55),
                 //appbar
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
+                Hero(
+                  tag: 'joinTag',
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: CircleAvatar(
                       backgroundColor: whiteColor,
                       radius: 22,
                       child: TextButton(
@@ -75,27 +76,7 @@ class _JoinedFlexDetailsState extends State<JoinedFlexDetails> {
                         ),
                       ),
                     ),
-                    Hero(
-                      tag: 'cameraButton',
-                      child: CircleAvatar(
-                        backgroundColor: whiteColor,
-                        radius: 22,
-                        child: TextButton(
-                          onPressed: () {
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(12),
-                            shape: const CircleBorder(),
-                          ),
-                          child: const Icon(
-                            Icons.linked_camera_outlined,
-                            color: primaryColor,
-                            size: 21,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 //body
               ],
