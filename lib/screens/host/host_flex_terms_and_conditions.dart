@@ -169,13 +169,15 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                             if(widget.paid == 'Paid') {
                               if(_formKey.currentState!.validate()) {
                                 if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                                  _hostFlex();
+                                  Navigator.pushNamed(context, HostFlexSuccess.id);
+                                  // _hostFlex();
                                 }
                               }
                             }
                             else {
                               if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                                _hostFlex();
+                                Navigator.pushNamed(context, HostFlexSuccess.id);
+                                // _hostFlex();
                               }
                             }
                           },
@@ -200,13 +202,17 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
   }
   void _hostFlex() async {
     if(!mounted) return;
-    setState(() => _showSpinner = false);
+    setState(() => _showSpinner = true);
     if(widget.paid == 'Paid'){
       widget.body!['bvn'] = _bvnController.text;
     }
     print(widget.body!);
     var api = FlexDataSource();
-    await api.createFlex(widget.body!).then((value) => null).catchError((e){
+    await api.createFlex(widget.body!).then((value) {
+      if(!mounted) return;
+      setState(() => _showSpinner = false);
+      Navigator.pushNamed(context, HostFlexSuccess.id);
+    }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);
       Functions.showMessage(e);

@@ -34,6 +34,9 @@ class _HostRegistrationState extends State<HostRegistration> {
   /// A [TextEditingController] to control the input text for host phone number
   final TextEditingController _hostPhoneNumberController = TextEditingController();
 
+  /// A [TextEditingController] to control the input text for occupation
+  final TextEditingController _occupationController = TextEditingController();
+
   /// Bool value to hold the obscure state for password
   bool _obscureText = true;
 
@@ -61,13 +64,6 @@ class _HostRegistrationState extends State<HostRegistration> {
           AppStrings.hostAFlex,
           style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
         ),
-        actions: const [
-          Icon(
-            Icons.close,
-            color: neutralColor,
-          ),
-          SizedBox(width: 24),
-        ],
       ),
       body: GestureDetector(
         onTap: () {
@@ -131,11 +127,16 @@ class _HostRegistrationState extends State<HostRegistration> {
                     },
                   ),
                   /// occupation
-                  CustomDropdownButtonField(
-                    hintText: AppStrings.occupation,
-                    items: occupations,
-                    onChanged: (value) {
-                      value = value.toString();
+                  CustomTextFormField(
+                    textEditingController: _occupationController,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    hintText: 'Your Occupation',
+                    validator: (value) {
+                      if(value!.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return null;
                     },
                   ),
                   // InkWell(

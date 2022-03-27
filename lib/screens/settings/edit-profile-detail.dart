@@ -37,11 +37,11 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
   /// A [TextEditingController] to control the input text for phone number
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  /// Variable to hold the value of the gender
-  String _gender = genders[0];
+  /// A [TextEditingController] to control the input text for occupation
+  final TextEditingController _occuapationController = TextEditingController();
 
   /// Variable to hold the value of the gender
-  String _occupation = occupations[0];
+  String _gender = genders[0];
 
   /// Variable to hold the value of the gender
   String _preferredFlex = preferredFlex[0];
@@ -58,7 +58,7 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
         _emailAddressController.text = user.email!;
         _phoneNumberController.text = user.phone!;
         _gender = user.gender!;
-        _occupation = user.occupation!;
+        _occuapationController.text = user.occupation!;
         _preferredFlex = user.preferredFlex!;
       });
     }).catchError((e){
@@ -131,13 +131,11 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
                             _gender = value.toString();
                           },
                         ),
-                        CustomDropdownButtonField(
+                        CustomTextFormField(
                           hintText: 'Your Occupation',
-                          items: occupations,
-                          value: _occupation,
-                          onChanged: (value) {
-                            _occupation = value.toString();
-                          },
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          textEditingController: _occuapationController,
                         ),
                         CustomDropdownButtonField(
                           hintText: 'What type of flex are you interested in?',
@@ -186,7 +184,7 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
       'email': _emailAddressController.text,
       'phone': _phoneNumberController.text,
       'gender': _gender,
-      'occupation': _occupation,
+      'occupation': _occuapationController.text,
       'preferredFlex': _preferredFlex,
     };
     print(body);

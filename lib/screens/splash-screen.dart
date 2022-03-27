@@ -59,10 +59,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Flexmyway',
                 style: textTheme.headline2!.copyWith(
                   color: whiteColor,
+                  fontSize: 50,
                   fontFamily: 'Neon',
                 ),
               ),
-              SvgPicture.asset(splashScreenLocationImage),
+              SizedBox(
+                height: 75,
+                width: 60,
+                child: Image.asset(
+                  splashScreenLocationImage2,
+                ),
+              ),
               // SvgPicture.asset(uploadIcon),
             ],
           ),

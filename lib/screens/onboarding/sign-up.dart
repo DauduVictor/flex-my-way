@@ -38,14 +38,14 @@ class _SignUpState extends State<SignUp> {
   /// A [TextEditingController] to control the input text for host phone number
   final TextEditingController _phoneNumberController = TextEditingController();
 
+  /// A [TextEditingController] to control the input text for host phone number
+  final TextEditingController _occupationController = TextEditingController();
+
   /// A variable to hold the type of flex
   String _typeOfFlex = '';
 
   /// A variable to hold the gender
   String _gender = '';
-
-  /// A variable to hold the occupation
-  String _occupation = '';
 
   /// A variable to hold the info source
   String _infoSource = '';
@@ -263,17 +263,13 @@ class _SignUpState extends State<SignUp> {
             },
           ),
           /// occupation
-          CustomDropdownButtonField(
-            hintText: AppStrings.occupation,
-            items: occupations,
-            onChanged: (value) {
-              value = value.toString();
-              setState(() {
-                _occupation = value.toString();
-              });
-            },
+          CustomTextFormField(
+            textEditingController: _occupationController,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            hintText: 'Your Occupation',
             validator: (value) {
-              if (_occupation.isEmpty) {
+              if(value!.isEmpty) {
                 return 'This field is required';
               }
               return null;
@@ -331,7 +327,7 @@ class _SignUpState extends State<SignUp> {
       'gender': _gender,
       'preferredFlex': _typeOfFlex,
       'infoSource': _infoSource,
-      'occupation': _occupation
+      'occupation': _occupationController.text
     };
     await api.signUp(body).then((value) async {
       if(!mounted) return;

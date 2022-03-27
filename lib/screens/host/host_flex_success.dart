@@ -192,7 +192,7 @@ class HostFlexSuccess extends StatelessWidget {
                       onPressed: () async {
                         SharedPreferences prefs = await SharedPreferences.getInstance();
                         if (prefs.getBool('loggedIn') == true) {
-                          Navigator.pushNamed(context, Dashboard.id);
+                          Navigator.pushNamedAndRemoveUntil(context, Dashboard.id, (route) => false);
                         }
                         else {
                           Navigator.pushNamed(context, Login.id);

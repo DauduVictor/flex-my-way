@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../bloc/future-values.dart';
 import '../model/user.dart';
 import 'endpoints.dart';
@@ -19,16 +21,19 @@ class FlexDataSource {
   /// It returns a [] model
   Future<dynamic> createFlex (Map<String, dynamic> body) async {
     String? userId;
+    Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) {
+    await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '1234';
+      userId = '61ab5ab0386a493342509fd2';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = '${prefs.getString('bearerToken')}';
     });
-    print(CREATE_A_FLEX+'$userId');
-    return _netUtil.post(CREATE_A_FLEX+'$userId', headers: {}, body: body).then((res) {
+    print(header);
+    return _netUtil.post(CREATE_A_FLEX+'$userId', headers: header, body: body).then((res) {
       print(res);
-      if(res['status'] != 'success') throw res['data'];
-      return null;
+      if(res['status'] != 'success') throw res['message'];
+      return res['message'];
     }).catchError((e){
       errorHandler.handleError(e);
     });

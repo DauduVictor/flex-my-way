@@ -79,7 +79,7 @@ class _JoinState extends State<Join> {
               children: [
                 const SizedBox(height: 50),
                 //appbar
-                isLoggedIn == false
+                isLoggedIn == true
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -161,7 +161,27 @@ class _JoinState extends State<Join> {
                         ),
                       ],
                   )
-                  : Container(),
+                  : Align(
+                    alignment: Alignment.centerLeft,
+                    child: CircleAvatar(
+                      backgroundColor: whiteColor,
+                      radius: 22,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.only(left: 8),
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: neutralColor,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 200),
                 Center(
                   child: CircleAvatar(
@@ -194,7 +214,6 @@ class _JoinState extends State<Join> {
               return Container(
                 width: SizeConfig.screenWidth,
                 clipBehavior: Clip.hardEdge,
-                padding: const EdgeInsets.fromLTRB(30, 17, 5, 15),
                 decoration:  const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
@@ -204,143 +223,148 @@ class _JoinState extends State<Join> {
                 ),
                 child: Column(
                   children: [
-                    Center(
-                      child: Container(
-                        height: 5,
-                        width: 45,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF000000).withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(4),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15, bottom: 10.0),
+                      child: Center(
+                        child: Container(
+                          height: 5,
+                          width: 45,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF000000).withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: SingleChildScrollView(
                         controller: controller,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 25),
-                            Text(
-                              'Filters',
-                              style: textTheme.headline5!.copyWith(fontSize: 28),
-                            ),
-                            const SizedBox(height: 17),
-                            Text(
-                              'Preferred Age Range',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
-                            ),
-                            const SizedBox(height: 17),
-                            Row(
-                              children: [
-                                ReuableMapFilterButton(
-                                  text: '18 - 25',
-                                  onPressed: () {},
-                                  color: primaryColor,
-                                ),
-                                ReuableMapFilterButton(
-                                  text: '25+',
-                                  onPressed: () {},
-                                ),
-                                ReuableMapFilterButton(
-                                  text: '18+',
-                                  onPressed: () {},
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 30),
-                            //occupation
-                            Text(
-                              'Occupation',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
-                            ),
-                            const SizedBox(height: 17),
-                            Row(
-                              children: [
-                                ReuableMapFilterButton(
-                                  text: 'Student',
-                                  onPressed: () {},
-                                ),
-                                ReuableMapFilterButton(
-                                  text: 'Working',
-                                  onPressed: () {},
-                                ),
-                                ReuableMapFilterButton(
-                                  text: 'Don\'t mind',
-                                  onPressed: () {},
-                                  color: primaryColor,
-                                ),
-                              ],
-                            ),
-                            //cost of entry
-                            const SizedBox(height: 30),
-                            Text(
-                              'Cost of Entry',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
-                            ),
-                            const SizedBox(height: 17),
-                            Row(
-                              children: [
-                                ReuableMapFilterButton(
-                                  text: 'Free',
-                                  onPressed: () {},
-                                ),
-                                ReuableMapFilterButton(
-                                  text: 'Paid',
-                                  onPressed: () {},
-                                  color: primaryColor,
-                                ),
-                              ],
-                            ),
-                            _pay == true
-                              ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(26, 17, 5, 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Filters',
+                                style: textTheme.headline5!.copyWith(fontSize: 28),
+                              ),
+                              const SizedBox(height: 17),
+                              Text(
+                                'Preferred Age Range',
+                                style: textTheme.headline5!.copyWith(fontSize: 17),
+                              ),
+                              const SizedBox(height: 17),
+                              Row(
                                 children: [
-                                  const SizedBox(height: 17),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'N5,000',
-                                          style: textTheme.headline5!.copyWith(
-                                            color: primaryColor,
-                                            fontSize: 19,
-                                          ),
-                                        ),
-                                        Text(
-                                          'N50,000',
-                                          style: textTheme.headline5!.copyWith(
-                                            color: primaryColor,
-                                            fontSize: 19,
-                                          ),
-                                        ),
-                                        Text(
-                                          'N100,000',
-                                          style: textTheme.headline5!.copyWith(
-                                            color: primaryColor,
-                                            fontSize: 19,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  ReuableMapFilterButton(
+                                    text: '18 - 25',
+                                    onPressed: () {},
+                                    color: primaryColor,
                                   ),
-                                  const SizedBox(height: 9),
-                                  Slider(
-                                    value: priceRange,
-                                    max: 100000,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        priceRange = value;
-                                      });
-                                  }),
-                                  const SizedBox(height: 10),
-                              ],
-                            )
-                              : Container(),
-                          ],
+                                  ReuableMapFilterButton(
+                                    text: '25+',
+                                    onPressed: () {},
+                                  ),
+                                  ReuableMapFilterButton(
+                                    text: '18+',
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 30),
+                              //occupation
+                              Text(
+                                'Occupation',
+                                style: textTheme.headline5!.copyWith(fontSize: 17),
+                              ),
+                              const SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  ReuableMapFilterButton(
+                                    text: 'Student',
+                                    onPressed: () {},
+                                  ),
+                                  ReuableMapFilterButton(
+                                    text: 'Working',
+                                    onPressed: () {},
+                                  ),
+                                  ReuableMapFilterButton(
+                                    text: 'Don\'t mind',
+                                    onPressed: () {},
+                                    color: primaryColor,
+                                  ),
+                                ],
+                              ),
+                              //cost of entry
+                              const SizedBox(height: 30),
+                              Text(
+                                'Cost of Entry',
+                                style: textTheme.headline5!.copyWith(fontSize: 17),
+                              ),
+                              const SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  ReuableMapFilterButton(
+                                    text: 'Free',
+                                    onPressed: () {},
+                                  ),
+                                  ReuableMapFilterButton(
+                                    text: 'Paid',
+                                    onPressed: () {},
+                                    color: primaryColor,
+                                  ),
+                                ],
+                              ),
+                              _pay == true
+                                ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 17),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'N5,000',
+                                            style: textTheme.headline5!.copyWith(
+                                              color: primaryColor,
+                                              fontSize: 19,
+                                            ),
+                                          ),
+                                          Text(
+                                            'N50,000',
+                                            style: textTheme.headline5!.copyWith(
+                                              color: primaryColor,
+                                              fontSize: 19,
+                                            ),
+                                          ),
+                                          Text(
+                                            'N100,000',
+                                            style: textTheme.headline5!.copyWith(
+                                              color: primaryColor,
+                                              fontSize: 19,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 9),
+                                    Slider(
+                                      value: priceRange,
+                                      max: 100000,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          priceRange = value;
+                                        });
+                                    }),
+                                    const SizedBox(height: 10),
+                                ],
+                              )
+                                : Container(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
