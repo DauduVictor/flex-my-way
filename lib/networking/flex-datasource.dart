@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../bloc/future-values.dart';
+import '../model/flex.dart';
 import '../model/user.dart';
 import 'endpoints.dart';
 import 'error-handler.dart';
@@ -19,7 +20,7 @@ class FlexDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [] model
-  Future<dynamic> createFlex (Map<String, dynamic> body) async {
+  Future<Flexes> createFlex (Map<String, dynamic> body) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
@@ -33,7 +34,7 @@ class FlexDataSource {
     return _netUtil.post(CREATE_A_FLEX+'$userId', headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
-      return res['message'];
+      return Flexes.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
     });

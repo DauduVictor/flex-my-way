@@ -208,10 +208,10 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
     }
     print(widget.body!);
     var api = FlexDataSource();
-    await api.createFlex(widget.body!).then((value) {
+    await api.createFlex(widget.body!).then((flex) {
       if(!mounted) return;
       setState(() => _showSpinner = false);
-      Navigator.pushNamed(context, HostFlexSuccess.id);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HostFlexSuccess(flex: flex)));
     }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);

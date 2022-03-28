@@ -1,4 +1,5 @@
 import 'package:flex_my_way/components/button.dart';
+import 'package:flex_my_way/model/flex.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,13 @@ import 'package:share_plus/share_plus.dart';
 class HostFlexSuccess extends StatelessWidget {
 
   static const String id = "hostFlexSuccess";
-  const HostFlexSuccess({Key? key}) : super(key: key);
+
+  final Flexes? flex;
+
+  const HostFlexSuccess({
+    Key? key,
+    this.flex
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +152,7 @@ class HostFlexSuccess extends StatelessWidget {
                         const SizedBox(width: 24),
                         TextButton(
                           onPressed: () {
-                            Share.share('check out my app https://flexmyway.com.com');
+                            Share.share('check out my app https://flexmyway.com');
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),
