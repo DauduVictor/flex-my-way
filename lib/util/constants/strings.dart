@@ -44,6 +44,7 @@ class AppStrings {
   static const genderRestrictions = 'Any gender restrictions?';
   static const foodAndDrinkPolicy = 'Food and Drinks Policy';
   static const rulesAboutFlex = 'Rules/ About this Flex';
+  static const videoLink = 'Video Link (e.g Youtube)';
   static const weWillTake =
       'We will take a 10% fee for paid events. You can also create an affiliate payment link for all your future events and get benefits when people pay for your events through that link.';
 

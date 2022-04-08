@@ -125,10 +125,8 @@ class _FindAFlexState extends State<FindAFlex> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () async {
-                          isLoggedIn == true
-                            ? Navigator.pushNamed(context, HostAFlex.id)
-                            : Navigator.pushNamed(context, HostRegistration.id);
+                        onTap: () {
+                          Navigator.pushNamed(context, HostAFlex.id);
                         },
                         child: CircleAvatar(
                           backgroundColor: whiteColor,

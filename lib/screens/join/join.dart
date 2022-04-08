@@ -2,9 +2,13 @@ import 'dart:async';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../bloc/future-values.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
+import '../../util/location-permission.dart';
 import '../../util/size-config.dart';
 import '../dashboard/drawer.dart';
 import '../notifications.dart';
@@ -19,6 +23,41 @@ class Join extends StatefulWidget {
 }
 
 class _JoinState extends State<Join> {
+
+  /// Instantiating a class of future values
+  var futureValues = FutureValues();
+
+  var locationPermission = LocationPermissionCheck();
+
+  CameraPosition? userPosition;
+
+  /// Variable to hold latitude
+  double lat = 0.0;
+
+  /// Variable to hold longitude
+  double long = 0.0;
+
+  /// Function to get user location and use [LatLang] in the map
+  void getUserLocation() async {
+    if(!mounted) return;
+    await futureValues.getUserLocation().then((value) {
+      if(!mounted) return;
+      setState(() {
+        lat = double.parse(value[0]);
+        long = double.parse(value[1]);
+      });
+      userPosition = CameraPosition(
+        target: LatLng(lat, long),
+        zoom: 19.5,
+      );
+    }).catchError((e) {
+      print(e);
+      if(!mounted) return;
+      if(e.toString().contains('denied')) {
+        locationPermission.buildLocationRequest(context);
+      }
+    });
+  }
 
   /// Bool variable to hold the bool state if the user is currently logged in
   bool isLoggedIn = false;
@@ -38,13 +77,9 @@ class _JoinState extends State<Join> {
 
   /// Function for _onMapCreated
   void _onMapCreated(GoogleMapController controller) {
+    // controller.animateCamera();
     _mapController.complete(controller);
   }
-
-  CameraPosition userPosition = const CameraPosition(
-    target: LatLng(6.519314, 3.396336),
-    zoom: 19.3,
-  );
 
   /// Variable to hold the state of the pay button
   bool _pay = true;
@@ -54,6 +89,7 @@ class _JoinState extends State<Join> {
 
   @override
   void initState() {
+    getUserLocation();
     checkUserIsLoggedIn();
     super.initState();
   }
@@ -69,7 +105,7 @@ class _JoinState extends State<Join> {
         children: [
           GoogleMap(
             mapType: MapType.normal,
-            initialCameraPosition: userPosition,
+            initialCameraPosition: userPosition!,
             myLocationEnabled: false,
             onMapCreated: _onMapCreated,
           ),
@@ -184,6 +220,27 @@ class _JoinState extends State<Join> {
                   ),
                 const SizedBox(height: 200),
                 Center(
+                  child: CircleAvatar(
+                    backgroundColor: whiteColor,
+                    radius: 18,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, JoinFlex.id);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(6),
+                        shape: const CircleBorder(),
+                      ),
+                      child: const Icon(
+                        Icons.location_pin,
+                        color: primaryColor,
+                        size: 21,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 25, right: 45),
                   child: CircleAvatar(
                     backgroundColor: whiteColor,
                     radius: 18,

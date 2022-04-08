@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:flex_my_way/bloc/future-values.dart';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
@@ -17,6 +20,12 @@ class JoinFlex extends StatefulWidget {
 
 class _JoinFlexState extends State<JoinFlex> {
 
+  CameraPosition userPosition = const CameraPosition(
+    target: LatLng(-2.155, 0.600),
+    zoom: 16.0,
+  );
+
+
   /// Google map controller
   Completer<GoogleMapController> _mapController = Completer();
 
@@ -25,10 +34,16 @@ class _JoinFlexState extends State<JoinFlex> {
     _mapController.complete(controller);
   }
 
-  CameraPosition userPosition = const CameraPosition(
-    target: LatLng(6.519314, 3.396336),
-    zoom: 16.0,
-  );
+  /// Function to launch the url for the video link
+  Future <void> _launchVideo(String url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,26 +67,23 @@ class _JoinFlexState extends State<JoinFlex> {
               children: [
                 const SizedBox(height: 55),
                 //appbar
-                Hero(
-                  tag: 'joinTag',
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: CircleAvatar(
-                      backgroundColor: whiteColor,
-                      radius: 22,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.only(left: 8),
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: neutralColor,
-                          size: 22,
-                        ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: CircleAvatar(
+                    backgroundColor: whiteColor,
+                    radius: 22,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 8),
+                        shape: const CircleBorder(),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: neutralColor,
+                        size: 22,
                       ),
                     ),
                   ),
@@ -234,8 +246,35 @@ class _JoinFlexState extends State<JoinFlex> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 32),
-                          //about
+                          const SizedBox(height: 12),
+                          /// video link button
+                          GestureDetector(
+                            onTap: () {
+                              _launchVideo('https://youtube.com').catchError((e){
+                                Functions.showMessage('Could not launch https://youtube.com');
+                              });
+                            },
+                            child: Stack(
+                              children: const [
+                                Icon(
+                                  Icons.movie,
+                                  color: primaryColor,
+                                  size: 57,
+                                ),
+                                Positioned(
+                                  top: 23,
+                                  left: 19,
+                                  child: Icon(
+                                    Icons.play_arrow,
+                                    color: whiteColor,
+                                    size: 21,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          /// about
+                          const SizedBox(height: 16),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

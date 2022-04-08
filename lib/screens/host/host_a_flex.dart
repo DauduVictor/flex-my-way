@@ -48,6 +48,9 @@ class _HostAFlexState extends State<HostAFlex> {
   /// A [TextEditingController] to control the input text for event amount
   final TextEditingController _flexRulesController = TextEditingController();
 
+  /// A [TextEditingController] to control the input text for event amount
+  final TextEditingController _videoLinkController = TextEditingController();
+
   /// A variable to hold the payment status
   String _paid = '';
 
@@ -390,6 +393,11 @@ class _HostAFlexState extends State<HostAFlex> {
                       return null;
                     },
                   ),
+                  CustomTextFormField(
+                    hintText: AppStrings.videoLink,
+                    textEditingController: _videoLinkController,
+                    textInputAction: TextInputAction.done,
+                  ),
                   const SizedBox(height: 15),
                   Button(
                     label: 'Host Flex',
@@ -414,7 +422,8 @@ class _HostAFlexState extends State<HostAFlex> {
                                   'displayFlexLocation': _displayFlexLocation,
                                   'genderRestriction': _genderRestriciton,
                                   'consumablesPolicy': _consumablePolicy,
-                                  'flexRules': _flexRulesController.text
+                                  'flexRules': _flexRulesController.text,
+                                  'videoLink': _videoLinkController.text
                                 }
                               );
                             }),

@@ -333,6 +333,7 @@ class _SignUpState extends State<SignUp> {
       if(!mounted) return;
       setState(() => _showSpinner = false);
       Functions.showMessage('Registration Successful');
+      Navigator.pop(context);
     }).catchError((e){
       if(!mounted) return;
       setState(() => _showSpinner = false);

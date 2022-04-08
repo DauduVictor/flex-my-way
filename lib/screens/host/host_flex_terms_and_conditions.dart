@@ -1,6 +1,7 @@
 import 'package:flex_my_way/screens/host/host_flex_success.dart';
 import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/text-form-field.dart';
 import '../../networking/flex-datasource.dart';
@@ -8,6 +9,7 @@ import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import '../onboarding/login.dart';
 
 class HostFlexTermsAndConditions extends StatefulWidget {
 
@@ -42,6 +44,25 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
 
   /// bool value to hold the state of privacy policy
   bool _privacyPolicyAccepted = false;
+
+  /// Bool variable to hold the bool state if the user is currently logged in
+  bool isLoggedIn = false;
+
+  /// function to check if the user is currently logged in
+  void checkUserIsLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('loggedIn') == true) {
+      setState(() {
+        isLoggedIn = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    checkUserIsLoggedIn();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +190,19 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                             if(widget.paid == 'Paid') {
                               if(_formKey.currentState!.validate()) {
                                 if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                                  Navigator.pushNamed(context, HostFlexSuccess.id);
-                                  // _hostFlex();
+                                  if (isLoggedIn){
+                                    Navigator.pushNamed(context, HostFlexSuccess.id);
+                                  }
+                                  Navigator.pushNamed(context, Login.id);
                                 }
                               }
                             }
                             else {
                               if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                                Navigator.pushNamed(context, HostFlexSuccess.id);
+                                if (isLoggedIn) {
+                                  Navigator.pushNamed(context, HostFlexSuccess.id);
+                                }
+                                Navigator.pushNamed(context, Login.id);
                                 // _hostFlex();
                               }
                             }
