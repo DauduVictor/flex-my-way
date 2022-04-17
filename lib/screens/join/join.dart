@@ -50,17 +50,17 @@ class _JoinState extends State<Join> {
         target: LatLng(lat, long),
         zoom: 19.5,
       );
-    }).catchError((e) {
+      _getFlexMarkers(lat, long);
+    }).catchError((e) async {
       print(e);
       if(!mounted) return;
       if(e.toString().contains('denied')) {
-        locationPermission.buildLocationRequest(context);
+        await locationPermission.buildLocationRequest(context).then((value) {
+          getUserLocation();
+        });
       }
     });
   }
-
-  /// Bool variable to hold the bool state if the user is currently logged in
-  bool isLoggedIn = false;
 
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
@@ -72,6 +72,26 @@ class _JoinState extends State<Join> {
     }
   }
 
+  /// function to get a list of markers to be displayed to the user
+  void _getFlexMarkers(double lat, double long) {
+     _markers.add(
+       Marker(
+         markerId: const MarkerId('markerId'),
+         position: LatLng(lat, long),
+         icon: BitmapDescriptor.defaultMarker,
+         onTap: () {
+           Navigator.pushNamed(context, JoinFlex.id);
+         }
+       ),
+     );
+  }
+
+  /// Bool variable to hold the bool state if the user is currently logged in
+  bool isLoggedIn = false;
+
+  /// Variable to hold the state of the pay button
+  bool _pay = true;
+
   /// Google map controller
   Completer<GoogleMapController> _mapController = Completer();
 
@@ -81,8 +101,8 @@ class _JoinState extends State<Join> {
     _mapController.complete(controller);
   }
 
-  /// Variable to hold the state of the pay button
-  bool _pay = true;
+  /// Variable to hold a set of markers displayed to the user
+  final Set<Marker> _markers = {};
 
   /// Variable to hold value of price range
   double priceRange = 0;
@@ -108,6 +128,7 @@ class _JoinState extends State<Join> {
             initialCameraPosition: userPosition!,
             myLocationEnabled: false,
             onMapCreated: _onMapCreated,
+            markers: _markers,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

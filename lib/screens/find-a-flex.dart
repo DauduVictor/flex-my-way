@@ -1,6 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
-import 'package:flex_my_way/screens/host/host_registration.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/constants/constants.dart';
@@ -163,33 +162,33 @@ class _FindAFlexState extends State<FindAFlex> {
                     ],
                   ),
                   isLoggedIn == false
-                      ? Column(
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight! * 0.08),
-                      Text(
-                        'Have an account already?',
-                        style: textTheme.bodyText1!.copyWith(
-                          color: whiteColor,
-                          fontSize: 19,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, Login.id);
-                        },
-                        child: Text(
-                          'Login here',
-                          style: textTheme.button!.copyWith(
-                            color: whiteColor,
-                            fontSize: 20,
+                    ? Column(
+                        children: [
+                          SizedBox(height: SizeConfig.screenHeight! * 0.08),
+                          Text(
+                            'Have an account already?',
+                            style: textTheme.bodyText1!.copyWith(
+                              color: whiteColor,
+                              fontSize: 19,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )
-                      : Container(),
+                          const SizedBox(height: 5),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, Login.id);
+                            },
+                            child: Text(
+                              'Login here',
+                              style: textTheme.button!.copyWith(
+                                color: whiteColor,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 ],
               ),
             ),

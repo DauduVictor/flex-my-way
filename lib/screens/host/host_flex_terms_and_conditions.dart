@@ -190,10 +190,12 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                             if(widget.paid == 'Paid') {
                               if(_formKey.currentState!.validate()) {
                                 if(_termsAndConditionsAccepted && _privacyPolicyAccepted) {
-                                  if (isLoggedIn){
+                                  if (isLoggedIn) {
                                     Navigator.pushNamed(context, HostFlexSuccess.id);
                                   }
-                                  Navigator.pushNamed(context, Login.id);
+                                  else {
+                                    Navigator.pushNamed(context, Login.id);
+                                  }
                                 }
                               }
                             }
@@ -202,7 +204,9 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                 if (isLoggedIn) {
                                   Navigator.pushNamed(context, HostFlexSuccess.id);
                                 }
-                                Navigator.pushNamed(context, Login.id);
+                                else {
+                                  Navigator.pushNamed(context, Login.id);
+                                }
                                 // _hostFlex();
                               }
                             }
