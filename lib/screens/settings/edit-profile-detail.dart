@@ -1,76 +1,27 @@
 import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
-import '../../bloc/future-values.dart';
+import 'package:get/get.dart';
 import '../../components/app-bar.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/dropdown-field.dart';
 import '../../components/text-form-field.dart';
+import '../../controllers/setting-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
 
-class EditProfileDetail extends StatefulWidget {
+class EditProfileDetail extends StatelessWidget {
 
   static const String id = "editProfileDetail";
-  const EditProfileDetail({Key? key}) : super(key: key);
+  EditProfileDetail({Key? key}) : super(key: key);
 
-  @override
-  _EditProfileDetailState createState() => _EditProfileDetailState();
-}
-
-class _EditProfileDetailState extends State<EditProfileDetail> {
-
-  /// Instantiating a class of the [FutureValues]
-  var futureValues = FutureValues();
+  /// calling the onboarding controller for [EditProfileDetail]
+  final SettingsController controller = Get.put(SettingsController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// A [TextEditingController] to control the input text for name
-  final TextEditingController _nameController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for email address
-  final TextEditingController _emailAddressController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for phone number
-  final TextEditingController _phoneNumberController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for occupation
-  final TextEditingController _occuapationController = TextEditingController();
-
-  /// Variable to hold the value of the gender
-  String _gender = genders[0];
-
-  /// Variable to hold the value of the gender
-  String _preferredFlex = preferredFlex[0];
-
-  /// Variable to hold the bool value of the spinner
-  bool _showSpinner = false;
-
-  /// Function to get user details from the database
-  void _getCurrentUser() async {
-    if(!mounted) return;
-    await futureValues.getCurrentUser().then((user) {
-      setState(() {
-        _nameController.text = user.name!;
-        _emailAddressController.text = user.email!;
-        _phoneNumberController.text = user.phone!;
-        _gender = user.gender!;
-        _occuapationController.text = user.occupation!;
-        _preferredFlex = user.preferredFlex!;
-      });
-    }).catchError((e){
-      print(e);
-    });
-  }
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +36,7 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
         child: AbsorbPointer(
-          absorbing: _showSpinner,
+          absorbing: controller.showSpinner.value,
           child: SingleChildScrollView(
             child: Container(
               height: SizeConfig.screenHeight,
@@ -109,40 +60,40 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
                           hintText: 'Your Name',
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.name,
-                          textEditingController: _nameController,
+                          textEditingController: controller.nameController,
                         ),
                         CustomTextFormField(
                           hintText: 'Your Email Address',
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.emailAddress,
-                          textEditingController: _emailAddressController,
+                          textEditingController: controller.emailAddressController,
                         ),
                         CustomTextFormField(
                           hintText: 'Your Phone Number',
                           keyboardType: TextInputType.number,
                           textInputAction: TextInputAction.next,
-                          textEditingController: _phoneNumberController,
+                          textEditingController: controller.phoneNumberController,
                         ),
                         CustomDropdownButtonField(
                           hintText: 'Select a Gender',
                           items: genders,
-                          value: _gender,
+                          value: controller.gender,
                           onChanged: (value) {
-                            _gender = value.toString();
+                            controller.gender = value.toString();
                           },
                         ),
                         CustomTextFormField(
                           hintText: 'Your Occupation',
                           textInputAction: TextInputAction.next,
                           keyboardType: TextInputType.text,
-                          textEditingController: _occuapationController,
+                          textEditingController: controller.occuapationController,
                         ),
                         CustomDropdownButtonField(
                           hintText: 'What type of flex are you interested in?',
                           items: preferredFlex,
-                          value: _preferredFlex,
+                          value: controller.preferredFlex,
                           onChanged: (value) {
-                            _preferredFlex = value.toString();
+                            controller.preferredFlex = value.toString();
                           },
                         ),
                       ],
@@ -158,12 +109,12 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
                         updateUserInfo();
                       }
                     },
-                    child: _showSpinner == true
+                    child: controller.showSpinner.value == true
                       ? const SizedBox(
-                        height: 21,
-                        width: 19,
-                        child: CircleProgressIndicator()
-                      )
+                      height: 21,
+                      width: 19,
+                      child: CircleProgressIndicator()
+                  )
                       : null,
                   ),
                 ],
@@ -175,27 +126,30 @@ class _EditProfileDetailState extends State<EditProfileDetail> {
     );
   }
 
+  /// function to make api call Post
   void updateUserInfo() async{
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+    // if(!mounted) return;
+    controller.showSpinner.value = true;
     var api = UserDataSource();
     Map<String, dynamic> body = {
-      'name': _nameController.text,
-      'email': _emailAddressController.text,
-      'phone': _phoneNumberController.text,
-      'gender': _gender,
-      'occupation': _occuapationController.text,
-      'preferredFlex': _preferredFlex,
+      'name': controller.nameController.text,
+      'email': controller.emailAddressController.text,
+      'phone': controller.phoneNumberController.text,
+      'gender': controller.gender,
+      'occupation': controller.occuapationController.text,
+      'preferredFlex': controller.preferredFlex,
     };
     print(body);
     await api.updateUserInfo(body).then((value) {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.showSpinner.value = false;
       Functions.showMessage('Your details have been updated successfully');
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.showSpinner.value = false;
       Functions.showMessage(e);
+      log(e);
     });
   }
+
 }

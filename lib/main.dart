@@ -26,6 +26,7 @@ import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
 import 'package:flex_my_way/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,18 +38,47 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      initialRoute: Dashboard.id,
+      enableLog: true,
+      // getPages: [
+      //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),
+      //   GetPage(name: OnboardingScreen.id, page: () => const OnboardingScreen()),
+      //   GetPage(name: Login.id, page: () => const Login()),
+      //   GetPage(name: ForgotPassword.id, page: () => const ForgotPassword()),
+      //   GetPage(name: ResetPassword.id, page: () => const ResetPassword()),
+      //   GetPage(name: SignUp.id, page: () => const SignUp()),
+      //   GetPage(name: FindAFlex.id, page: () => const FindAFlex()),
+      //   GetPage(name: HostRegistration.id, page: () => const HostRegistration()),
+      //   GetPage(name: HostAFlex.id, page: () => const HostAFlex()),
+      //   GetPage(name: HostFlexTermsAndConditions.id, page: () => const HostFlexTermsAndConditions()),
+      //   GetPage(name: HostFlexSuccess.id, page: () => const HostFlexSuccess()),
+      //   GetPage(name: Dashboard.id, page: () => const Dashboard()),
+      //   GetPage(name: Flexery.id, page: () => const Flexery()),
+      //   GetPage(name: Notifications.id, page: () => const Notifications()),
+      //   GetPage(name: Settings.id, page: () => const Settings()),
+      //   GetPage(name: About.id, page: () => const About()),
+      //   GetPage(name: EditProfileDetail.id, page: () => const EditProfileDetail()),
+      //   GetPage(name: TermsAndCondition.id, page: () => const TermsAndCondition()),
+      //   GetPage(name: PrivacyPolicy.id, page: () => const PrivacyPolicy()),
+      //   GetPage(name: HelpAndSupport.id, page: () => const HelpAndSupport()),
+      //   GetPage(name: PendingInvites.id, page: () => const PendingInvites()),
+      //   GetPage(name: FlexHistory.id, page: () => const FlexHistory()),
+      //   GetPage(name: FlexHistoryDetail.id, page: () => const FlexHistoryDetail()),
+      //   GetPage(name: Join.id, page: () => const Join()),
+      //   GetPage(name: JoinFlex.id, page: () => const JoinFlex()),
+      //   GetPage(name: JoinedFlexDetails.id, page: () => const JoinedFlexDetails()),
+      // ],
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         OnboardingScreen.id: (context) => const OnboardingScreen(),
-        Login.id: (context) => const Login(),
-        ForgotPassword.id: (context) => const ForgotPassword(),
-        ResetPassword.id: (context) => const ResetPassword(),
-        SignUp.id: (context) => const SignUp(),
+        Login.id: (context) => Login(),
+        ForgotPassword.id: (context) => ForgotPassword(),
+        ResetPassword.id: (context) =>  ResetPassword(),
+        SignUp.id: (context) => SignUp(),
         FindAFlex.id: (context) => const FindAFlex(),
         HostRegistration.id: (context) => const HostRegistration(),
         HostAFlex.id: (context) => const HostAFlex(),
@@ -57,7 +87,7 @@ class MyApp extends StatelessWidget {
         Dashboard.id: (context) => const Dashboard(),
         Flexery.id: (context) => const Flexery(),
         Notifications.id: (context) => const Notifications(),
-        Settings.id: (context) => const Settings(),
+        Settings.id: (context) => Settings(),
         About.id: (context) => const About(),
         EditProfileDetail.id: (context) => const EditProfileDetail(),
         TermsAndCondition.id: (context) => const TermsAndCondition(),

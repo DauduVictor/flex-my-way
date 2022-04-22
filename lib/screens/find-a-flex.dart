@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flex_my_way/screens/host/host_a_flex.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
@@ -124,9 +125,7 @@ class _FindAFlexState extends State<FindAFlex> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, HostAFlex.id);
-                        },
+                        onTap: () => Get.toNamed(HostAFlex.id),
                         child: CircleAvatar(
                           backgroundColor: whiteColor,
                           radius: 42,
@@ -143,7 +142,7 @@ class _FindAFlexState extends State<FindAFlex> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, Join.id),
+                        onTap: () => Get.toNamed(Join.id),
                         child: CircleAvatar(
                           backgroundColor: whiteColor,
                           radius: 42,
@@ -175,9 +174,7 @@ class _FindAFlexState extends State<FindAFlex> {
                           ),
                           const SizedBox(height: 5),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, Login.id);
-                            },
+                            onTap: () => Get.toNamed(Login.id),
                             child: Text(
                               'Login here',
                               style: textTheme.button!.copyWith(

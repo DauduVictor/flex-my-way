@@ -1,41 +1,26 @@
+import 'dart:developer';
 import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/text-form-field.dart';
+import '../../controllers/onboarding-controller.dart';
 import '../../networking/user-datasource.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
 
-class ResetPassword extends StatefulWidget {
+class ResetPassword extends StatelessWidget {
 
   static const String id = "resetPassword";
-  const ResetPassword({Key? key}) : super(key: key);
+  ResetPassword({Key? key}) : super(key: key);
 
-  @override
-  _ResetPasswordState createState() => _ResetPasswordState();
-}
-
-class _ResetPasswordState extends State<ResetPassword> {
+  /// calling the onboarding controller for [SignUp]
+  final OnboardingController controller = Get.put(OnboardingController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// TextEditingController for email address
-  final TextEditingController _emailAddressController = TextEditingController();
-
-  /// TextEditingController for password
-  final TextEditingController _passwordController = TextEditingController();
-
-  /// TextEditingController for password
-  final TextEditingController _confirmPasswordController = TextEditingController();
-
-  /// Variable to hold the bool value of show spinner
-  bool _showSpinner = false;
-
-  ///Variable to hold the bool value of password field obscure text
-  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,60 +32,61 @@ class _ResetPasswordState extends State<ResetPassword> {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: AbsorbPointer(
-          absorbing: _showSpinner,
-          child: SingleChildScrollView(
-            child: Container(
-              height: SizeConfig.screenHeight,
-              width: SizeConfig.screenWidth,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(loginDecoratedImage),
+        child: Obx(() => AbsorbPointer(
+            absorbing: controller.loginShowSpinner.value,
+            child: SingleChildScrollView(
+              child: Container(
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(loginDecoratedImage),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 45),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppStrings.resetPassword,
-                      style: textTheme.headline4!.copyWith(fontSize: 30),
-                    ),
-                    const SizedBox(height: 32),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                      child: Text(
-                        'Enter your Email and new Password',
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyText1!,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 45),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppStrings.resetPassword,
+                        style: textTheme.headline4!.copyWith(fontSize: 30),
                       ),
-                    ),
-                    const SizedBox(height: 32),
-                    _buildForm(textTheme),
-                    const SizedBox(height: 24),
-                    Button(
-                      label: AppStrings.resetPassword,
-                      onPressed: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        if(_formKey.currentState!.validate()){
-                          _resetPassword();
-                        }
-                      },
-                      child: _showSpinner == true
+                      const SizedBox(height: 32),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                        child: Text(
+                          'Enter your Email and new Password',
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyText1!,
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      _buildForm(textTheme),
+                      const SizedBox(height: 24),
+                      Button(
+                        label: AppStrings.resetPassword,
+                        onPressed: () {
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                          if(_formKey.currentState!.validate()){
+                            _resetPassword();
+                          }
+                        },
+                        child: controller.loginShowSpinner.value == true
                           ? const SizedBox(
-                              height: 21,
-                              width: 19,
-                              child: CircleProgressIndicator())
+                            height: 21,
+                            width: 19,
+                            child: CircleProgressIndicator())
                           : null,
-                    ),
-                    const SizedBox(height: 24),
-                  ],
+                      ),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ),
       ),
     );
@@ -113,7 +99,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       child: Column(
         children: [
           CustomTextFormField(
-            textEditingController: _emailAddressController,
+            textEditingController: controller.resetPasswordEmailAddressController,
             hintText: 'Your Email Address',
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -129,25 +115,26 @@ class _ResetPasswordState extends State<ResetPassword> {
           ),
           /// new password
           CustomTextFormField(
-            textEditingController: _passwordController,
+            textEditingController: controller.resetPasswordPasswordController,
             keyboardType: TextInputType.visiblePassword,
-            obscureText: _obscurePassword,
+            obscureText: controller.resetPasswordObscurePassword.value,
             textInputAction: TextInputAction.next,
             hintText: 'New Password',
-            suffix: GestureDetector(
-              onTap: () {
-                setState(() => _obscurePassword = !_obscurePassword);
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                child: Text(
-                  _obscurePassword == true ? 'SHOW' : 'HIDE',
-                  style: textTheme.button!.copyWith(
-                    fontSize: 14,
-                    color: primaryColor,
+            suffix: Obx(() => GestureDetector(
+                onTap: () {
+                  controller.resetPasswordObscurePassword.value = !controller.resetPasswordObscurePassword.value;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                  child: Text(
+                    controller.resetPasswordObscurePassword.value == true ? 'SHOW' : 'HIDE',
+                    style: textTheme.button!.copyWith(
+                      fontSize: 14,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-              ),
+              )
             ),
             validator: (value) {
               if(value!.isEmpty) {
@@ -158,7 +145,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           ),
           /// confirm new password
           CustomTextFormField(
-            textEditingController: _confirmPasswordController,
+            textEditingController: controller.resetPasswordConfirmPasswordController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             textInputAction: TextInputAction.done,
@@ -167,7 +154,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               if(value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value != _passwordController.text) {
+              if(value != controller.resetPasswordPasswordController.text) {
                 return 'Confirm your password';
               }
               return null;
@@ -180,22 +167,23 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   /// Function to make api call to login
   void _resetPassword() async {
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+    // if(!mounted) return;
+    controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'email' : _emailAddressController.text,
-      'password' : _passwordController.text
+      'email' : controller.resetPasswordEmailAddressController.text,
+      'password' : controller.resetPasswordPasswordController.text
     };
     await api.resetPassword(body).then((value) async {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
       Functions.showMessage(value);
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
       Functions.showMessage(e);
-      print(e);
+      log(e);
     });
   }
+
 }

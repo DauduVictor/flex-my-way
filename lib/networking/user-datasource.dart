@@ -58,12 +58,6 @@ class UserDataSource {
   /// A post request to use the [RESET_PASSWORD]
   /// It returns a [String_Message]
   Future<dynamic> resetPassword (Map<String, String> body) async {
-    String? userId;
-    Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '1234';
-    });
     return _netUtil.post(RESET_PASSWORD, headers: {}, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return (res['data']);

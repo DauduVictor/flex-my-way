@@ -1,146 +1,93 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/dropdown-field.dart';
 import '../../components/text-form-field.dart';
+import '../../controllers/onboarding-controller.dart';
 import '../../networking/user-datasource.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
-class SignUp extends StatefulWidget {
+class SignUp extends StatelessWidget {
 
   static const String id = "signUp";
-  const SignUp({Key? key}) : super(key: key);
+  SignUp({Key? key}) : super(key: key);
 
-  @override
-  _SignUpState createState() => _SignUpState();
-}
+  /// calling the onboarding controller for [SignUp]
+  final OnboardingController controller = Get.put(OnboardingController());
 
-class _SignUpState extends State<SignUp> {
-
-  /// A [GlobalKey] to hold the form state of my form widget for form validation
+  ///A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// TextEditingController for email address
-  final TextEditingController _emailAddressController = TextEditingController();
-
-  /// TextEditingController for email address
-  final TextEditingController _passwordController = TextEditingController();
-
-  /// TextEditingController for email address
-  final TextEditingController _confirmPasswordController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host name
-  final TextEditingController _nameController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host phone number
-  final TextEditingController _phoneNumberController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host phone number
-  final TextEditingController _occupationController = TextEditingController();
-
-  /// A variable to hold the type of flex
-  String _typeOfFlex = '';
-
-  /// A variable to hold the gender
-  String _gender = '';
-
-  /// A variable to hold the info source
-  String _infoSource = '';
-
-  /// Bool value to hold the obscure state for password
-  bool _obscurePassword = true;
-
-  /// Variable to hold the bool value of show spinner
-  bool _showSpinner = false;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 80,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Sign Up',
+          style: textTheme.headline4!.copyWith(fontSize: 30),
+        ),
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: AbsorbPointer(
-          absorbing: _showSpinner,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(40, 50, 40, 10),
-                child: Text(
-                  'Sign Up',
-                  style: textTheme.headline4!.copyWith(fontSize: 30),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(loginDecoratedImage),
-                        fit: BoxFit.cover,
+        child: Obx(() => AbsorbPointer(
+            absorbing: controller.loginShowSpinner.value,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(loginDecoratedImage),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          _buildForm(textTheme),
-                          const SizedBox(height: 16),
-                          Button(
-                            label: 'Sign Up',
-                            onPressed: () {
-                              FocusScopeNode currentFocus = FocusScope.of(context);
-                              if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                              if(_formKey.currentState!.validate()){
-                                _signUp();
-                              }
-                            },
-                            child: _showSpinner == true
-                              ? const SizedBox(
-                                height: 21,
-                                width: 19,
-                                child: CircleProgressIndicator())
-                              : null,
-                          ),
-                          const SizedBox(height: 24),
-                          Text(
-                            'Already have an account?',
-                            textAlign: TextAlign.center,
-                            style: textTheme.headline5!.copyWith(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            _buildForm(textTheme),
+                            const SizedBox(height: 16),
+                            Button(
+                              label: 'Sign Up',
+                              onPressed: () {
+                                FocusScopeNode currentFocus = FocusScope.of(context);
+                                if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                                if(_formKey.currentState!.validate()){
+                                  _signUp();
+                                }
+                              },
+                              child: controller.loginShowSpinner.value == true
+                                ? const SizedBox(
+                                  height: 21,
+                                  width: 19,
+                                  child: CircleProgressIndicator())
+                                : null,
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'Sign In',
-                              textAlign: TextAlign.center,
-                              style: textTheme.headline5!.copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 28),
-                        ],
+                            const SizedBox(height: 24),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          )
         ),
       ),
     );
@@ -154,7 +101,7 @@ class _SignUpState extends State<SignUp> {
         children: [
           /// name
           CustomTextFormField(
-            textEditingController: _nameController,
+            textEditingController: controller.signupNameController,
             hintText: 'Your Name',
             keyboardType: TextInputType.name,
             textInputAction: TextInputAction.next,
@@ -170,7 +117,7 @@ class _SignUpState extends State<SignUp> {
           ),
           /// email address
           CustomTextFormField(
-            textEditingController: _emailAddressController,
+            textEditingController: controller.signupEmailAddressController,
             hintText: 'Your Email Address',
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -186,25 +133,26 @@ class _SignUpState extends State<SignUp> {
           ),
           /// password
           CustomTextFormField(
-            textEditingController: _passwordController,
+            textEditingController: controller.signupPasswordController,
             keyboardType: TextInputType.visiblePassword,
-            obscureText: _obscurePassword,
+            obscureText: controller.signupObscurePassword.value,
             textInputAction: TextInputAction.next,
             hintText: 'Create Password',
-            suffix: GestureDetector(
-              onTap: () {
-                setState(() => _obscurePassword = !_obscurePassword);
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                child: Text(
-                  _obscurePassword == true ? 'SHOW' : 'HIDE',
-                  style: textTheme.button!.copyWith(
-                    fontSize: 14,
-                    color: primaryColor,
+            suffix: Obx(() => GestureDetector(
+                onTap: () {
+                  controller.signupObscurePassword.value = !controller.signupObscurePassword.value;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                  child: Text(
+                    controller.signupObscurePassword.value == true ? 'SHOW' : 'HIDE',
+                    style: textTheme.button!.copyWith(
+                      fontSize: 14,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-              ),
+              )
             ),
             validator: (value) {
               if(value!.isEmpty) {
@@ -218,7 +166,7 @@ class _SignUpState extends State<SignUp> {
           ),
           /// confirm password
           CustomTextFormField(
-            textEditingController: _confirmPasswordController,
+            textEditingController: controller.signupConfirmPasswordController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             textInputAction: TextInputAction.next,
@@ -227,7 +175,7 @@ class _SignUpState extends State<SignUp> {
               if(value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value != _passwordController.text) {
+              if(value != controller.signupPasswordController.text) {
                 return 'Confirm your password';
               }
               return null;
@@ -235,7 +183,7 @@ class _SignUpState extends State<SignUp> {
           ),
           /// phone number
           CustomTextFormField(
-            textEditingController: _phoneNumberController,
+            textEditingController: controller.signupPhoneNumberController,
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
             hintText: 'Your Phone Number',
@@ -252,19 +200,18 @@ class _SignUpState extends State<SignUp> {
             items: genders,
             onChanged: (value) {
               value = value.toString();
-              setState(() {
-                _gender = value.toString();
-              });
+                controller.signupGender = value.toString();
             },
             validator: (value) {
-              if (_gender.isEmpty) {
+              if (controller.signupGender.isEmpty) {
                 return 'This field is required';
               }
+              return null;
             },
           ),
           /// occupation
           CustomTextFormField(
-            textEditingController: _occupationController,
+            textEditingController: controller.signupOccupationController,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             hintText: 'Your Occupation',
@@ -281,12 +228,10 @@ class _SignUpState extends State<SignUp> {
             items: preferredFlex,
             onChanged: (value) {
               value = value.toString();
-              setState(() {
-                _typeOfFlex = value.toString();
-              });
+                controller.signupTypeOfFlex = value.toString();
             },
             validator: (value) {
-              if (_typeOfFlex.isEmpty) {
+              if (controller.signupTypeOfFlex.isEmpty) {
                 return 'This field is required';
               }
               return null;
@@ -298,12 +243,10 @@ class _SignUpState extends State<SignUp> {
             items: infoSource,
             onChanged: (value) {
               value = value.toString();
-              setState(() {
-                _infoSource = value.toString();
-              });
+              controller.signupInfoSource = value.toString();
             },
             validator: (value) {
-              if (_infoSource.isEmpty) {
+              if (controller.signupInfoSource.isEmpty) {
                 return 'This field is required';
               }
               return null;
@@ -316,29 +259,30 @@ class _SignUpState extends State<SignUp> {
 
   /// Function to make api call to login
   void _signUp() async {
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+    // if(!mounted) return;
+    controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'name': _nameController.text,
-      'phone': _phoneNumberController.text,
-      'email' : _emailAddressController.text,
-      'password' : _passwordController.text,
-      'gender': _gender,
-      'preferredFlex': _typeOfFlex,
-      'infoSource': _infoSource,
-      'occupation': _occupationController.text
+      'name': controller.signupNameController.text,
+      'phone': controller.signupPhoneNumberController.text,
+      'email' : controller.signupEmailAddressController.text,
+      'password' : controller.signupPasswordController.text,
+      'gender': controller.signupGender,
+      'preferredFlex': controller.signupTypeOfFlex,
+      'infoSource': controller.signupInfoSource,
+      'occupation': controller.signupOccupationController.text
     };
     await api.signUp(body).then((value) async {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
       Functions.showMessage('Registration Successful');
-      Navigator.pop(context);
+      Get.back();
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
       Functions.showMessage('It seems a user exists with those details. Try again!');
-      print(e);
+      log(e);
     });
   }
+
 }

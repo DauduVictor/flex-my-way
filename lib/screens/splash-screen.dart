@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/constants/constants.dart';
 import '../util/size-config.dart';
@@ -24,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.getBool('loggedIn') == true
-        ? Navigator.pushReplacementNamed(context, Dashboard.id)
-        : Navigator.pushReplacementNamed(context, FindAFlex.id);
+        ? Get.toNamed(Dashboard.id)
+        : Get.toNamed(FindAFlex.id);
       // if (prefs.getBool('loggedIn') == true) {
       //   Navigator.pushReplacementNamed(context, Dashboard.id);
       // }

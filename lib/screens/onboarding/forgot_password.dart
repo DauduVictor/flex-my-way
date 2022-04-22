@@ -1,58 +1,25 @@
+import 'dart:developer';
 import 'package:flex_my_way/screens/onboarding/reset-password.dart';
 import 'package:flutter/material.dart';
-import '../../bloc/future-values.dart';
+import 'package:get/get.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/text-form-field.dart';
-import '../../model/user.dart';
+import '../../controllers/onboarding-controller.dart';
 import '../../networking/user-datasource.dart';
-import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
 
-class ForgotPassword extends StatefulWidget {
+class ForgotPassword extends StatelessWidget {
 
   static const String id = "forgotPassword";
-  const ForgotPassword({Key? key}) : super(key: key);
+  ForgotPassword({Key? key}) : super(key: key);
 
-  @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
-}
-
-class _ForgotPasswordState extends State<ForgotPassword> {
-
-  /// Instantiating a class of the [FutureValues]
-  var futureValues = FutureValues();
-
-  /// Instantiating the user model
-  var user = User();
-
-  /// Function to get user details from the database
-  void _getCurrentUser() async {
-    if(!mounted) return;
-    await futureValues.getCurrentUser().then((user) {
-      setState(() {
-        _emailAddressController.text = user.email!;
-      });
-    }).catchError((e){
-      print(e);
-    });
-  }
+  /// calling the onboarding controller for [ForgotPassword]
+  final OnboardingController controller = Get.put(OnboardingController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// TextEditingController for email address
-  final TextEditingController _emailAddressController = TextEditingController();
-
-  /// Variable to hold the bool value of show spinner
-  bool _showSpinner = false;
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +32,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
         child: AbsorbPointer(
-          absorbing: _showSpinner,
+          absorbing: controller.loginShowSpinner.value,
           child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 45),
@@ -99,7 +66,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Form(
                     key: _formKey,
                     child: CustomTextFormField(
-                      textEditingController: _emailAddressController,
+                      textEditingController: controller.forgotPasswordEmailAddressController,
                       hintText: 'Your Email Address',
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
@@ -124,26 +91,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         _forgotPassword();
                       }
                     },
-                    child: _showSpinner == true
+                    child: controller.loginShowSpinner.value == true
                       ? const SizedBox(
-                          height: 21,
-                          width: 19,
-                          child: CircleProgressIndicator()
-                        )
+                        height: 21,
+                        width: 19,
+                        child: CircleProgressIndicator()
+                      )
                       : null,
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                    onTap: () => Get.back(),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Back to Login',
                         textAlign: TextAlign.center,
                         style: textTheme.subtitle2!.copyWith(
-                          fontWeight: FontWeight.w500
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -159,20 +125,20 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   /// Function to make api call for forgotPassword
   void _forgotPassword() async {
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+    controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'email' : _emailAddressController.text
+      'email' : controller.forgotPasswordEmailAddressController.text
     };
     await api.forgotPassword(body).then((value) async {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
-      Navigator.pushNamed(context, ResetPassword.id);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
+      Get.toNamed(ResetPassword.id);
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
-      Functions.showMessage('Your detail doesn\'t seem to exist on our database');
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
+      Functions.showMessage(e);
+      log(e);
     });
   }
 

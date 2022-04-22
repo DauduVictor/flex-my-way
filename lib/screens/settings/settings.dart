@@ -1,15 +1,19 @@
+import 'dart:developer';
 import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/app-bar.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/list-tile-button.dart';
+import '../../components/settings-button.dart';
 import '../../components/text-form-field.dart';
+import '../../controllers/setting-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
@@ -19,47 +23,23 @@ import '../onboarding/login.dart';
 import 'about.dart';
 import 'edit-profile-detail.dart';
 
-class Settings extends StatefulWidget {
+class Settings extends StatelessWidget {
 
   static const String id = "settings";
-  const Settings({Key? key}) : super(key: key);
+  Settings({Key? key}) : super(key: key);
 
-  @override
-  _SettingsState createState() => _SettingsState();
-}
-
-class _SettingsState extends State<Settings> {
-
-  /// Variable to hold the user's name
-  String userName = 'there';
+  /// calling the onboarding controller for [SettingsController]
+  final SettingsController controller = Get.put(SettingsController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// A [TextEditingController] to control the input text for current password
-  final TextEditingController _currentPasswordController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for new password
-  final TextEditingController _newPasswordController = TextEditingController();
-
-  /// bool variable to hold the status of show edit password
-  bool _showEditPassword = false;
-
-  /// bool variable to hold the bool state of show spinner
-  bool _showSpinner = false;
-
-  /// bool variable to hold the status of current password obscure text
-  bool _obscureCurrentPassword = false;
-
-  /// bool variable to hold the status of current password obscure text
-  bool _obscureNewPassword = false;
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context, userName),
+      appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
       drawer: const RefactoredDrawer(),
       body: GestureDetector(
         onTap: () {
@@ -89,86 +69,85 @@ class _SettingsState extends State<Settings> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                child: AbsorbPointer(
-                  absorbing: _showSpinner,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-                    child: Column(
-                      children: [
-                        ReusableSettingsButton(
-                          name: AppStrings.editProfileDetails,
-                          icon: IconlyLight.edit,
-                          onPressed: () {
-                            Navigator.pushNamed(context, EditProfileDetail.id);
-                          },
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.editPassword,
-                          icon: IconlyBroken.unlock,
-                          onPressed: () {
-                            setState(() {
-                              _showEditPassword = !_showEditPassword;
-                            });
-                          },
-                        ),
-                        _showEditPassword == true
-                          ? _showEditPasswordField(textTheme)
-                          : Container(),
-                        ReusableSettingsButton(
-                          name: AppStrings.inviteYourFriends,
-                          icon: Icons.share_outlined,
-                          onPressed: () {},
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.about,
-                          icon: Icons.lightbulb_outline,
-                          onPressed: () {
-                            Navigator.pushNamed(context, About.id);
-                          },
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.termsAndConditions,
-                          icon: IconlyLight.dangerCircle,
-                          onPressed: () {
-                            Navigator.pushNamed(context, TermsAndCondition.id);
-                          },
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.privacyPolicy,
-                          icon: IconlyLight.paper,
-                          onPressed: () {
-                            Navigator.pushNamed(context, PrivacyPolicy.id);
-                          },
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.helpAndSupport,
-                          icon: IconlyLight.shieldDone,
-                          onPressed: () {
-                            Navigator.pushNamed(context, HelpAndSupport.id);
-                          },
-                        ),
-                        ReusableSettingsButton(
-                          name: AppStrings.logOut,
-                          icon: IconlyLight.logout,
-                          onPressed: () {
-                            _showLogOutDialog(textTheme);
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                      ],
+                child: Obx(() => AbsorbPointer(
+                    absorbing: controller.showSpinner.value,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
+                      child: Column(
+                        children: [
+                          ReusableSettingsButton(
+                            name: AppStrings.editProfileDetails,
+                            icon: IconlyLight.edit,
+                            onPressed: () {
+                              Get.toNamed(EditProfileDetail.id);
+                            },
+                          ),
+                          ReusableSettingsButton(
+                              name: AppStrings.editPassword,
+                              icon: IconlyBroken.unlock,
+                              onPressed: () {
+                                controller.showEditPassword.value = !controller.showEditPassword.value;
+                              },
+                            ),
+                          controller.showEditPassword.value == true
+                              ? _showEditPasswordField(textTheme, context)
+                              : Container(),
+                          ReusableSettingsButton(
+                            name: AppStrings.inviteYourFriends,
+                            icon: Icons.share_outlined,
+                            onPressed: () {},
+                          ),
+                          ReusableSettingsButton(
+                            name: AppStrings.about,
+                            icon: Icons.lightbulb_outline,
+                            onPressed: () {
+                              Get.toNamed(About.id);
+                            },
+                          ),
+                          ReusableSettingsButton(
+                            name: AppStrings.termsAndConditions,
+                            icon: IconlyLight.dangerCircle,
+                            onPressed: () {
+                              Get.toNamed(TermsAndCondition.id);
+                            },
+                          ),
+                          ReusableSettingsButton(
+                            name: AppStrings.privacyPolicy,
+                            icon: IconlyLight.paper,
+                            onPressed: () {
+                              Get.toNamed(PrivacyPolicy.id);
+                            },
+                          ),
+                          ReusableSettingsButton(
+                            name: AppStrings.helpAndSupport,
+                            icon: IconlyLight.shieldDone,
+                            onPressed: () {
+                              Get.toNamed(HelpAndSupport.id);
+                            },
+                          ),
+                          ReusableSettingsButton(
+                            name: AppStrings.logOut,
+                            icon: IconlyLight.logout,
+                            onPressed: () {
+                              _showLogOutDialog(textTheme, context);
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
                     ),
-                  ),
+                  )
                 ),
               ),
             ),
           ],
-        ),
+        )
       ),
     );
   }
 
   ///widget to prompt user if they want to logout
-  Future<void> _showLogOutDialog(TextTheme textTheme) {
+  Future<void> _showLogOutDialog(TextTheme textTheme, BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -190,7 +169,7 @@ class _SettingsState extends State<Settings> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);
+              Get.back();
             },
             style: TextButton.styleFrom(
               primary: primaryColor,
@@ -203,10 +182,10 @@ class _SettingsState extends State<Settings> {
             padding: const EdgeInsets.only(right: 8.0),
             child: TextButton(
               onPressed: () async {
-                Navigator.pop(context);
+                Get.back();
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setBool('loggedIn', false);
-                Navigator.pushNamedAndRemoveUntil(context, Login.id, (route) => false);
+                Get.offAll(Login.id);
               },
               style: TextButton.styleFrom(
                 primary: primaryColor,
@@ -222,7 +201,7 @@ class _SettingsState extends State<Settings> {
   }
 
   ///Widget to show password edit fields
-  Widget _showEditPasswordField (TextTheme textTheme) {
+  Widget _showEditPasswordField (TextTheme textTheme, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15, 16, 15, 16),
       child: Column(
@@ -234,17 +213,17 @@ class _SettingsState extends State<Settings> {
                 CustomTextFormField(
                   hintText: AppStrings.enterCurrentPassword,
                   textInputAction: TextInputAction.next,
-                  obscureText: _obscureCurrentPassword,
+                  obscureText: controller.obscureCurrentPassword.value,
                   keyboardType: TextInputType.visiblePassword,
-                  textEditingController: _currentPasswordController,
+                  textEditingController: controller.currentPasswordController,
                   suffix: GestureDetector(
                     onTap: () {
-                      setState(() => _obscureCurrentPassword = !_obscureCurrentPassword);
+                      controller.obscureCurrentPassword.value = !controller.obscureCurrentPassword.value;
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
                       child: Text(
-                        _obscureCurrentPassword == true ? 'SHOW' : 'HIDE',
+                        controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
                         style: textTheme.button!.copyWith(
                           fontSize: 14,
                           color: primaryColor,
@@ -263,16 +242,16 @@ class _SettingsState extends State<Settings> {
                   hintText: AppStrings.enterNewPassword,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
-                  obscureText: _obscureNewPassword,
-                  textEditingController: _newPasswordController,
+                  obscureText: controller.obscureNewPassword.value,
+                  textEditingController: controller.newPasswordController,
                   suffix: GestureDetector(
                     onTap: () {
-                      setState(() => _obscureNewPassword = !_obscureNewPassword);
+                      controller.obscureNewPassword.value = !controller.obscureNewPassword.value;
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
                       child: Text(
-                        _obscureNewPassword == true ? 'SHOW' : 'HIDE',
+                        controller.obscureNewPassword.value == true ? 'SHOW' : 'HIDE',
                         style: textTheme.button!.copyWith(
                           fontSize: 14,
                           color: primaryColor,
@@ -301,7 +280,7 @@ class _SettingsState extends State<Settings> {
                   _editPassword();
                 }
               },
-              child: _showSpinner == true
+              child: controller.showSpinner.value == true
                 ? const SizedBox(
                   height: 21,
                   width: 19,
@@ -316,65 +295,22 @@ class _SettingsState extends State<Settings> {
 
   /// Function to make api call to edit user password
   void _editPassword() async {
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+    // if(!mounted) return;
+    controller.showSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      "password": _newPasswordController.text
+      "password": controller.newPasswordController.text
     };
     await api.resetPasswordWithId(body).then((value) {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.showSpinner.value = false;
       Functions.showMessage('Password updated successfully');
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.showSpinner.value = false;
       Functions.showMessage(e);
+      log(e);
     });
   }
-}
 
-class ReusableSettingsButton extends StatelessWidget {
-
-  final String name;
-  final IconData icon;
-  final void Function() onPressed;
-
-  const ReusableSettingsButton({
-    Key? key,
-    required this.name,
-    required this.icon,
-    required this.onPressed
-  }) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        TextButton(
-          onPressed: onPressed,
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            backgroundColor: whiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-          ),
-          child: ListTile(
-            leading: Icon(
-              icon,
-              color: Colors.black,
-            ),
-            title: Text(
-              name,
-              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-      ],
-    );
-  }
 }

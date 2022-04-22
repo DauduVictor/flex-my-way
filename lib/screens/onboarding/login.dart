@@ -1,9 +1,11 @@
-import 'package:flex_my_way/bloc/future-values.dart';
+import 'dart:developer';
+import 'package:flex_my_way/controllers/onboarding-controller.dart';
 import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/onboarding/sign-up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
@@ -15,55 +17,16 @@ import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
 import 'forgot_password.dart';
 
-class Login extends StatefulWidget {
+class Login extends StatelessWidget {
 
   static const String id = 'login';
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
-  @override
-  State<Login> createState() => _LoginState();
-}
+  /// calling the onboarding controller for [Login]
+  final OnboardingController controller = Get.put(OnboardingController());
 
-class _LoginState extends State<Login> {
-
-  /// Instantiating a class of the [FutureValues]
-  var futureValues = FutureValues();
-
-  /// Instantiating the user model
-  var user = User();
-
-  /// Function to get user details from the database
-  void _getCurrentUser() async {
-    if(!mounted) return;
-    await futureValues.getCurrentUser().then((user) {
-      setState(() {
-        _emailAddressController.text = user.email!;
-      });
-    }).catchError((e){
-      print(e);
-    });
-  }
-
-  /// A [GlobalKey] to hold the form state of my form widget for form validation
+  ///A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
-
-  /// TextEditingController for email address
-  final TextEditingController _emailAddressController = TextEditingController();
-
-  /// TextEditingController for email address
-  final TextEditingController _passwordController = TextEditingController();
-
-  /// Variable to hold the bool value of show spinner
-  bool _showSpinner = false;
-
-  ///Variable to hold the bool value of password field obscure text
-  bool _obscureText = true;
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,87 +38,88 @@ class _LoginState extends State<Login> {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: AbsorbPointer(
-          absorbing: _showSpinner,
-          child: SingleChildScrollView(
-            child: Container(
-              height: SizeConfig.screenHeight,
-              width: SizeConfig.screenWidth,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(loginDecoratedImage),
+        child: Obx(() => AbsorbPointer(
+            absorbing: controller.loginShowSpinner.value,
+            child: SingleChildScrollView(
+              child: Container(
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(loginDecoratedImage),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 45),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Login',
-                      style: textTheme.headline4!.copyWith(fontSize: 30),
-                    ),
-                    const SizedBox(height: 32),
-                    _buildForm(textTheme),
-                    const SizedBox(height: 24),
-                    Button(
-                      label: 'Log in',
-                      onPressed: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        if(_formKey.currentState!.validate()){
-                          _login();
-                        }
-                      },
-                      child: _showSpinner == true
-                        ? const SizedBox(
-                          height: 21,
-                          width: 19,
-                          child: CircleProgressIndicator())
-                        : null,
-                    ),
-                    const SizedBox(height: 24),
-                    RichText(
-                      text: TextSpan(
-                        style: textTheme.bodyText1!,
-                        children: [
-                          const TextSpan(
-                            text: 'Forgot your password? ',
-                          ),
-                          TextSpan(
-                            text: 'Click Here',
-                            style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                            recognizer: TapGestureRecognizer()..onTap = () {
-                              Navigator.pushNamed(context, ForgotPassword.id);
-                            },
-                          ),
-                        ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 45),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Login',
+                        style: textTheme.headline4!.copyWith(fontSize: 30),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Don’t have an account?',
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyText1!,
-                    ),
-                    const SizedBox(height: 4),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, SignUp.id);
-                      },
-                      child: Text(
-                        'Sign Up',
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyText1!.copyWith(
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(height: 32),
+                      _buildForm(textTheme),
+                      const SizedBox(height: 24),
+                      Button(
+                        label: 'Log in',
+                        onPressed: () {
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                          if(_formKey.currentState!.validate()){
+                            _login(controller);
+                          }
+                        },
+                        child: controller.loginShowSpinner.value == true
+                          ? const SizedBox(
+                            height: 21,
+                            width: 19,
+                            child: CircleProgressIndicator())
+                          : null,
+                      ),
+                      const SizedBox(height: 24),
+                      RichText(
+                        text: TextSpan(
+                          style: textTheme.bodyText1!,
+                          children: [
+                            const TextSpan(
+                              text: 'Forgot your password? ',
+                            ),
+                            TextSpan(
+                              text: 'Click Here',
+                              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                              recognizer: TapGestureRecognizer()..onTap = () {
+                                Get.toNamed(ForgotPassword.id);
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Text(
+                        'Don’t have an account?',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyText1!,
+                      ),
+                      const SizedBox(height: 4),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(SignUp.id);
+                        },
+                        child: Text(
+                          'Sign Up',
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyText1!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
+          )
         ),
       ),
     );
@@ -168,7 +132,7 @@ class _LoginState extends State<Login> {
       child: Column(
         children: [
           CustomTextFormField(
-            textEditingController: _emailAddressController,
+            textEditingController: controller.loginEmailAddressController,
             hintText: 'Your Email Address',
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
@@ -176,32 +140,33 @@ class _LoginState extends State<Login> {
               if(value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value.length < 3 && !value.contains('@') && !value.contains('.')){
+              if(value.length < 3 && !value.contains('@') && !value.contains('.')) {
                 return 'This field is required';
               }
               return null;
             },
           ),
           CustomTextFormField(
-            textEditingController: _passwordController,
+            textEditingController: controller.loginPasswordController,
             keyboardType: TextInputType.text,
-            obscureText: _obscureText,
+            obscureText: controller.loginObscureText.value,
             textInputAction: TextInputAction.done,
             hintText: 'Your Password',
-            suffix: GestureDetector(
-              onTap: () {
-                setState(() => _obscureText = !_obscureText);
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                child: Text(
-                  _obscureText == true ? 'SHOW' : 'HIDE',
-                  style: textTheme.button!.copyWith(
-                    fontSize: 14,
-                    color: primaryColor,
+            suffix: Obx(() => GestureDetector(
+                onTap: () {
+                  controller.loginObscureText.value = !controller.loginObscureText.value;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                  child: Text(
+                    controller.loginObscureText.value == true ? 'SHOW' : 'HIDE',
+                    style: textTheme.button!.copyWith(
+                      fontSize: 14,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-              ),
+              )
             ),
             validator: (value) {
               if(value!.isEmpty) {
@@ -216,26 +181,26 @@ class _LoginState extends State<Login> {
   }
 
   /// Function to make api call to login
-  void _login() async {
-    if(!mounted) return;
-    setState(() => _showSpinner = true);
+  void _login(OnboardingController controller) async {
+    // if(!mounted) return;
+    controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'email' : _emailAddressController.text,
-      'password' : _passwordController.text
+      'email' : controller.loginEmailAddressController.text,
+      'password' : controller.loginPasswordController.text
     };
     await api.signIn(body).then((user) async {
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
       var db = DatabaseHelper();
       await db.initDb();
       await db.saveUser(user);
       _addBoolToSP(user);
     }).catchError((e){
-      if(!mounted) return;
-      setState(() => _showSpinner = false);
-      Functions.showMessage('Make sure your details are correct. Please try again!');
-      print(e);
+      // if(!mounted) return;
+      controller.loginShowSpinner.value = false;
+      Functions.showMessage(e);
+      log(e);
     });
   }
 
@@ -246,6 +211,7 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', true);
     await prefs.setString('bearerToken', user.bearer_token!);
-    Navigator.pushNamed(context, Dashboard.id);
+    Get.toNamed(Dashboard.id);
   }
+
 }
