@@ -26,6 +26,12 @@ class SettingsController extends GetxController {
   void _getCurrentUser() async {
     await getCurrentUser().then((user) {
       userName.value = user.name!;
+      nameController.text = user.name!;
+      emailAddressController.text = user.email!;
+      phoneNumberController.text = user.phone!;
+      gender = user.gender!;
+      occuapationController.text = user.occupation!;
+      preferredFlex = user.preferredFlex!;
       log(userName.value);
     }).catchError((e){
       log(e);
@@ -34,10 +40,7 @@ class SettingsController extends GetxController {
 
   /*Controllers and Variables for log in*/
   /// Variable to hold the user's name
-  var userName = 'there'.obs;
-
-  /// A [GlobalKey] to hold the form state of my form widget for form validation
-  final formKey = GlobalKey<FormState>();
+  final userName = 'there'.obs;
 
   /// A [TextEditingController] to control the input text for current password
   final TextEditingController currentPasswordController = TextEditingController();
@@ -52,10 +55,10 @@ class SettingsController extends GetxController {
   final showSpinner = false.obs;
 
   /// bool variable to hold the status of current password obscure text
-  final obscureCurrentPassword = false.obs;
+  final obscureCurrentPassword = true.obs;
 
   /// bool variable to hold the status of current password obscure text
-  final obscureNewPassword = false.obs;
+  final obscureNewPassword = true.obs;
 
   /*Controllers and Variable for edit profile details*/
   /// A [TextEditingController] to control the input text for name
@@ -73,7 +76,7 @@ class SettingsController extends GetxController {
   /// Variable to hold the value of the gender
   String gender = genders[0];
 
-  /// Variable to hold the value of the gender
-  String preferredFlex = preferredFlex[0];
+  /// Variable to hold the value of the preferred flex
+  String preferredFlex = preferredFlexes[0];
 
 }

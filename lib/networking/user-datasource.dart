@@ -85,7 +85,7 @@ class UserDataSource {
     String? userId;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       userId = '1234';
     });
     print(body);

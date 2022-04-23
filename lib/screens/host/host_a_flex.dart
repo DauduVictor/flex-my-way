@@ -207,7 +207,7 @@ class _HostAFlexState extends State<HostAFlex> {
                   /// type of flex
                   CustomDropdownButtonField(
                     hintText: AppStrings.typeOfFlex,
-                    items: preferredFlex,
+                    items: preferredFlexes,
                     onChanged: (value) {
                       value = value.toString();
                       setState(() {

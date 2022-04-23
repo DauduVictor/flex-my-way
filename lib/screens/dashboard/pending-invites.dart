@@ -1,100 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../components/app-bar.dart';
+import '../../controllers/dashboard-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/size-config.dart';
 import 'drawer.dart';
 
-class PendingInvites extends StatefulWidget {
+
+class PendingInvites extends StatelessWidget {
 
   static const String id = "pendingInvites";
-  const PendingInvites({Key? key}) : super(key: key);
+  PendingInvites({Key? key}) : super(key: key);
 
-  @override
-  _PendingInvitesState createState() => _PendingInvitesState();
-}
-
-class _PendingInvitesState extends State<PendingInvites> {
-
-  /// Variable to hold the user's name
-  String userName = 'there';
+  /// calling the onboarding controller for [DashboardController]
+  final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context, userName),
-      drawer: const RefactoredDrawer(),
-      body: Column(
-        children: [
-          Container(
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.fromLTRB(27, 12, 20, 15),
-            decoration: BoxDecoration(
-              color: whiteColor,
-              borderRadius: appBarBottomBorder,
+    return Obx(() => Scaffold(
+        appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
+        drawer: const RefactoredDrawer(),
+        body: Column(
+          children: [
+            Container(
+              width: SizeConfig.screenWidth,
+              padding: const EdgeInsets.fromLTRB(27, 12, 20, 15),
+              decoration: BoxDecoration(
+                color: whiteColor,
+                borderRadius: appBarBottomBorder,
+              ),
+              child: Text(
+                'Pending Invites',
+                style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+              ),
             ),
-            child: Text(
-              'Pending Invites',
-              style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  ),
-                  child: Text(
-                    'Accept All',
-                    style: textTheme.button!.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: greenColor,
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    ),
+                    child: Text(
+                      'Accept All',
+                      style: textTheme.button!.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: greenColor,
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  ),
-                  child: Text(
-                    'Deny All',
-                    style: textTheme.button!.copyWith(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: errorColor,
+                  TextButton(
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    ),
+                    child: Text(
+                      'Deny All',
+                      style: textTheme.button!.copyWith(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: errorColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 15, 20, 24),
-                child: Column(
-                  children: const [
-                    ReusablePendingInviteButton(),
-                    ReusablePendingInviteButton(),
-                    ReusablePendingInviteButton(),
-                    ReusablePendingInviteButton(),
-                    ReusablePendingInviteButton(),
-                    ReusablePendingInviteButton(),
-                  ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 24),
+                  child: Column(
+                    children: const [
+                      ReusablePendingInviteButton(),
+                      ReusablePendingInviteButton(),
+                      ReusablePendingInviteButton(),
+                      ReusablePendingInviteButton(),
+                      ReusablePendingInviteButton(),
+                      ReusablePendingInviteButton(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+      )
     );
   }
 }

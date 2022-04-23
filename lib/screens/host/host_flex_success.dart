@@ -4,6 +4,8 @@ import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
@@ -12,6 +14,8 @@ import '../../util/size-config.dart';
 import '../dashboard/dashboard.dart';
 import '../onboarding/login.dart';
 import 'package:share_plus/share_plus.dart';
+
+import 'beta-sms.dart';
 
 class HostFlexSuccess extends StatelessWidget {
 
@@ -116,7 +120,7 @@ class HostFlexSuccess extends StatelessWidget {
                           const SizedBox(height: 24),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, FlexHistoryDetail.id);
+                              Get.toNamed(FlexHistoryDetail.id);
                             },
                             child: Text(
                               AppStrings.flexURL,
@@ -132,7 +136,9 @@ class HostFlexSuccess extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(BetaSms.id);
+                          },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(19),
                               backgroundColor: primaryColorVariant,
@@ -173,9 +179,9 @@ class HostFlexSuccess extends StatelessWidget {
                             Clipboard.setData(
                               const ClipboardData(
                                 text: AppStrings.flexURL)).then((value) {
-                                  Functions.showMessage('Link copied');
+                                  Functions.showMessage('Flex link copied');
                             }).catchError((e){
-                              Functions.showMessage('Could not copy link');
+                              Functions.showMessage('Could not copy flex link');
                             });
                           },
                           style: TextButton.styleFrom(
@@ -196,14 +202,8 @@ class HostFlexSuccess extends StatelessWidget {
                     SizedBox(height: SizeConfig.screenHeight! * 0.05),
                     Button(
                       label: AppStrings.goHome,
-                      onPressed: () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        if (prefs.getBool('loggedIn') == true) {
-                          Navigator.pushNamedAndRemoveUntil(context, Dashboard.id, (route) => false);
-                        }
-                        else {
-                          Navigator.pushNamed(context, Login.id);
-                        }
+                      onPressed: () {
+                        Get.offAllNamed(Dashboard.id);
                       },
                     ),
                     const SizedBox(height: 25),

@@ -4,6 +4,7 @@ import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
+import 'package:flex_my_way/screens/host/beta-sms.dart';
 import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
 import 'package:flex_my_way/screens/host/host_registration.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      initialRoute: Dashboard.id,
+      initialRoute: HostFlexSuccess.id,
       enableLog: true,
       // getPages: [
       //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),
@@ -84,18 +85,19 @@ class MyApp extends StatelessWidget {
         HostAFlex.id: (context) => const HostAFlex(),
         HostFlexTermsAndConditions.id: (context) => const HostFlexTermsAndConditions(),
         HostFlexSuccess.id: (context) => const HostFlexSuccess(),
-        Dashboard.id: (context) => const Dashboard(),
+        BetaSms.id: (context) => BetaSms(),
+        Dashboard.id: (context) => Dashboard(),
         Flexery.id: (context) => const Flexery(),
         Notifications.id: (context) => const Notifications(),
         Settings.id: (context) => Settings(),
         About.id: (context) => const About(),
-        EditProfileDetail.id: (context) => const EditProfileDetail(),
+        EditProfileDetail.id: (context) => EditProfileDetail(),
         TermsAndCondition.id: (context) => const TermsAndCondition(),
         PrivacyPolicy.id: (context) => const PrivacyPolicy(),
         HelpAndSupport.id: (context) => const HelpAndSupport(),
-        PendingInvites.id: (context) => const PendingInvites(),
+        PendingInvites.id: (context) => PendingInvites(),
         FlexHistory.id: (context) => const FlexHistory(),
-        FlexHistoryDetail.id: (context) => const FlexHistoryDetail(),
+        FlexHistoryDetail.id: (context) => FlexHistoryDetail(),
         Join.id: (context) => const Join(),
         JoinFlex.id: (context) => const JoinFlex(),
         JoinedFlexDetails.id: (context) => const JoinedFlexDetails(),

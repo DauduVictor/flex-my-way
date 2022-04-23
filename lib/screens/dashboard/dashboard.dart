@@ -2,146 +2,117 @@ import 'package:flex_my_way/components/list-tile-button.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
-import '../../bloc/future-values.dart';
+import 'package:get/get.dart';
 import '../../components/app-bar.dart';
+import '../../controllers/dashboard-controller.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
-import '../notifications.dart';
 import 'drawer.dart';
 
-class Dashboard extends StatefulWidget {
+class Dashboard extends StatelessWidget {
 
   static const String id = "dashboard";
-  const Dashboard({Key? key}) : super(key: key);
+  Dashboard({Key? key}) : super(key: key);
 
-  @override
-  _DashboardState createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-
-  /// Instantiating a class of the [FutureValues]
-  var futureValues = FutureValues();
-
-  /// Variable to hold the user's name
-  String userName = 'there';
-
-  /// Function to get user details from the database
-  void _getCurrentUser() async {
-    if(!mounted) return;
-    await futureValues.getCurrentUser().then((user) {
-      setState(() {
-        userName = user.name!;
-        print(user.id);
-        print(user.bearer_token);
-        print(user.preferredFlex);
-      });
-    }).catchError((e){
-      print(e);
-    });
-  }
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
+  /// calling the onboarding controller for [DashboardController]
+  final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      appBar: buildAppBarWithNotification(textTheme, context, userName),
-      drawer: const RefactoredDrawer(),
-      body: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            Container(
-              width: SizeConfig.screenWidth,
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-              decoration: BoxDecoration(
-                color: whiteColor,
-                borderRadius: appBarBottomBorder,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppStrings.manageYourFlex,
-                    style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 24),
-                  ListTileButton(
-                    title: 'You have 111 pending invites. How would you like to deal with these?',
-                    onPressed: () {
-                      Navigator.pushNamed(context, PendingInvites.id);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
+    return Obx(() => Scaffold(
+        appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
+        drawer: const RefactoredDrawer(),
+        body: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              Container(
+                width: SizeConfig.screenWidth,
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        borderRadius: BorderRadius.circular(24.0),
-                      ),
-                      child: SizedBox(
-                        height: 42,
-                        child: TabBar(
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: primaryColor,
-                          ),
-                          unselectedLabelColor: neutralColor,
-                          tabs: const [
-                            Tab(
-                              child: Text(
-                                'Scheduled',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Gilroy',
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Text(
-                                'Completed',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Gilroy',
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    Text(
+                      AppStrings.manageYourFlex,
+                      style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 24),
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          _scheduled(),
-                          _completedFlex(),
-                        ],
-                      ),
+                    ListTileButton(
+                      title: 'You have 111 pending invites. How would you like to deal with these?',
+                      onPressed: () {
+                        Navigator.pushNamed(context, PendingInvites.id);
+                      },
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(16.0),
+                        ),
+                        child: SizedBox(
+                          height: 42,
+                          child: TabBar(
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: primaryColor,
+                            ),
+                            unselectedLabelColor: neutralColor,
+                            tabs: const [
+                              Tab(
+                                child: Text(
+                                  'Scheduled',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Gilroy',
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Completed',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Gilroy',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Expanded(
+                        child: TabBarView(
+                          children: [
+                            _scheduled(),
+                            _completedFlex(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 
@@ -209,6 +180,7 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+
 }
 
 class ReusableDashBoardCard extends StatelessWidget {

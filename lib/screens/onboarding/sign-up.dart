@@ -225,7 +225,7 @@ class SignUp extends StatelessWidget {
           /// preferredFlex
           CustomDropdownButtonField(
             hintText: AppStrings.typeOfFlex,
-            items: preferredFlex,
+            items: preferredFlexes,
             onChanged: (value) {
               value = value.toString();
                 controller.signupTypeOfFlex = value.toString();

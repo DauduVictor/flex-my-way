@@ -31,9 +31,10 @@ BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomRight: Radius.circular(30.0),
 );
 
-List<int> ageRating = [10, 13, 15, 16, 18];
-List<String> preferredFlex = [
-  'After Party, Ball',
+List<dynamic> ageRating = [10, 13, 15, 16, '18+'];
+List<String> preferredFlexes = [
+  'After Party',
+  'Ball',
   'Banquet',
   'Birthday',
   'Beach',

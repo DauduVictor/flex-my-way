@@ -1,6 +1,10 @@
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
+import 'package:flex_my_way/screens/settings/privacy-policy.dart';
+import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
@@ -9,15 +13,10 @@ import '../flex-history/flex-history.dart';
 import '../settings/settings.dart';
 import 'dashboard.dart';
 
-class RefactoredDrawer extends StatefulWidget {
+class RefactoredDrawer extends StatelessWidget {
 
   const RefactoredDrawer({Key? key}) : super(key: key);
 
-  @override
-  _RefactoredDrawerState createState() => _RefactoredDrawerState();
-}
-
-class _RefactoredDrawerState extends State<RefactoredDrawer> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -37,7 +36,7 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Get.back();
                       },
                       child: const Padding(
                         padding: EdgeInsets.all(17),
@@ -76,40 +75,40 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                       routeName: 'Home',
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, Dashboard.id);
+                        Get.back();
+                        Get.toNamed(Dashboard.id);
                       },
                     ),
                     DrawerButton(
                       routeName: 'Join/Host a Flex',
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, FindAFlex.id);
+                        Get.back();
+                        Get.toNamed(FindAFlex.id);
                       },
                     ),
                     DrawerButton(
                       routeName: 'Flexery',
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, Flexery.id);
+                        Get.back();
+                        Get.toNamed(Flexery.id);
                       },
                     ),
                     DrawerButton(
                       routeName: AppStrings.settings,
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, Settings.id);
+                        Get.back();
+                        Get.toNamed(Settings.id);
                       },
                     ),
                     DrawerButton(
                       routeName: 'Flex History',
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, FlexHistory.id);
+                        Get.back();
+                        Get.toNamed(FlexHistory.id);
                       },
                     ),
                     // DrawerButton(
@@ -136,27 +135,48 @@ class _RefactoredDrawerState extends State<RefactoredDrawer> {
                 ),
               ),
             ),
-            DrawerButton(
-              routeName: 'Legal',
-              onPressed: () {},
-            ),
+            /// legal
             Container(
               width: SizeConfig.screenWidth,
               padding: const EdgeInsets.fromLTRB(30, 0, 24, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 3.5),
                   Text(
-                    AppStrings.termsAndConditions,
+                    'Legal',
                     style: textTheme.bodyText1!.copyWith(
-                      color: neutralColor.withOpacity(0.5),
+                      fontSize: 21,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Text(
-                    AppStrings.privacyPolicy,
-                    style: textTheme.bodyText1!.copyWith(
-                      color: neutralColor.withOpacity(0.5),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      Get.toNamed(TermsAndCondition.id);
+                    },
+                    child: Text(
+                      AppStrings.termsAndConditions,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: neutralColor.withOpacity(0.5),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      Get.toNamed(PrivacyPolicy.id);
+                    },
+                    child: Text(
+                      AppStrings.privacyPolicy,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: neutralColor.withOpacity(0.5),
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),

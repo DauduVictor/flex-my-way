@@ -4,16 +4,11 @@ import '../../../util/constants/constants.dart';
 import '../../../util/size-config.dart';
 import '../dashboard/drawer.dart';
 
-class FlexHistory extends StatefulWidget {
+class FlexHistory extends StatelessWidget {
 
-  static const String id = "flexHistory";
+  static const String id = 'flexHistory';
   const FlexHistory({Key? key}) : super(key: key);
 
-  @override
-  _FlexHistoryState createState() => _FlexHistoryState();
-}
-
-class _FlexHistoryState extends State<FlexHistory> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -38,29 +33,29 @@ class _FlexHistoryState extends State<FlexHistory> {
               Hero(
                 tag: 'cameraButton',
                 child: Builder(
-                  builder: (context) {
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: CircleAvatar(
-                        backgroundColor: whiteColor,
-                        radius: 22,
-                        child: TextButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(8),
-                            shape: const CircleBorder(),
-                          ),
-                          child: const Icon(
-                            Icons.menu_rounded,
-                            color: neutralColor,
-                            size: 24,
+                    builder: (context) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 22,
+                          child: TextButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(8),
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.menu_rounded,
+                              color: neutralColor,
+                              size: 24,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }
+                      );
+                    }
                 ),
               ),
               //body of media
@@ -242,6 +237,7 @@ class _FlexHistoryState extends State<FlexHistory> {
       ),
     );
   }
+
 }
 
 class ReusableFlexHistoryPastButton extends StatelessWidget {
