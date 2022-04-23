@@ -25,7 +25,7 @@ import 'package:flex_my_way/screens/settings/settings.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
-import 'package:flex_my_way/theme/app_theme.dart';
+import 'package:flex_my_way/screens/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      initialRoute: HostFlexSuccess.id,
+      initialRoute: SplashScreen.id,
       enableLog: true,
       // getPages: [
       //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),
@@ -82,8 +82,8 @@ class MyApp extends StatelessWidget {
         SignUp.id: (context) => SignUp(),
         FindAFlex.id: (context) => const FindAFlex(),
         HostRegistration.id: (context) => const HostRegistration(),
-        HostAFlex.id: (context) => const HostAFlex(),
-        HostFlexTermsAndConditions.id: (context) => const HostFlexTermsAndConditions(),
+        HostAFlex.id: (context) => HostAFlex(),
+        HostFlexTermsAndConditions.id: (context) => HostFlexTermsAndConditions(),
         HostFlexSuccess.id: (context) => const HostFlexSuccess(),
         BetaSms.id: (context) => BetaSms(),
         Dashboard.id: (context) => Dashboard(),

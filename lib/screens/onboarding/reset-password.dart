@@ -122,7 +122,7 @@ class ResetPassword extends StatelessWidget {
             hintText: 'New Password',
             suffix: Obx(() => GestureDetector(
                 onTap: () {
-                  controller.resetPasswordObscurePassword.value = !controller.resetPasswordObscurePassword.value;
+                  controller.resetPasswordObscurePassword.toggle();
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
@@ -167,7 +167,6 @@ class ResetPassword extends StatelessWidget {
 
   /// Function to make api call to login
   void _resetPassword() async {
-    // if(!mounted) return;
     controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
@@ -175,11 +174,9 @@ class ResetPassword extends StatelessWidget {
       'password' : controller.resetPasswordPasswordController.text
     };
     await api.resetPassword(body).then((value) async {
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage(value);
     }).catchError((e){
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage(e);
       log(e);

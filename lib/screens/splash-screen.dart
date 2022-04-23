@@ -25,8 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.getBool('loggedIn') == true
-        ? Get.toNamed(Dashboard.id)
-        : Get.toNamed(FindAFlex.id);
+        ? Get.offAndToNamed(Dashboard.id)
+        : Get.offAndToNamed(FindAFlex.id);
       // if (prefs.getBool('loggedIn') == true) {
       //   Navigator.pushReplacementNamed(context, Dashboard.id);
       // }

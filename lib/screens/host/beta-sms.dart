@@ -14,7 +14,7 @@ class BetaSms extends StatelessWidget {
   static const String id = "betaSms";
   BetaSms({Key? key}) : super(key: key);
 
-  /// calling the onboarding controller for [BetaSms]
+  /// calling the host controller for [BetaSms]
   final HostController controller = Get.put(HostController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
@@ -110,7 +110,11 @@ class BetaSms extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(24, 18, 12, 18),
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
-                border: Border.all(color: neutralColor),
+                border: Border.all(
+                  color: controller.editingContact.value == true
+                    ? primaryColor
+                    : neutralColor
+                ),
               ),
               child: Column(
                 children: [
@@ -137,38 +141,31 @@ class BetaSms extends StatelessWidget {
                     ? TextFormField(
                         textInputAction: TextInputAction.done,
                         maxLines: 5,
+                        style: const TextStyle(fontSize: 14),
                         keyboardType: TextInputType.number,
-                        controller: controller.noOfPeople,
+                        controller: controller.contactController,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Enter a valid phone number';
                           }
                           return null;
                         },
+                        onChanged: (value) => controller.editingContact.value = true,
+                        onEditingComplete: () {
+                          controller.editingContact.value = false;
+                          print('editing complete');
+                        },
+                        decoration: const InputDecoration(
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none
+                        ),
                       )
                     : Container(),
                 ],
               ),
             ),
             const SizedBox(height: 21),
-            // CustomTextFormField(
-            //   hintText: controller.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
-            //   textInputAction: TextInputAction.done,
-            //   maxLines: 5,
-            //   keyboardType: TextInputType.number,
-            //   onTap: () {
-            //     if (controller.isUploaded.value) {
-            //       print('ready to get contacts from the users phone');
-            //     }
-            //   },
-            //   textEditingController: controller.noOfPeople,
-            //   validator: (value) {
-            //     if (value!.isEmpty) {
-            //       return 'Enter a valid phone number';
-            //     }
-            //     return null;
-            //   },
-            // ),
             /// use betasms database
             CustomDropdownButtonField(
               hintText: AppStrings.useDatabase,
@@ -193,7 +190,7 @@ class BetaSms extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       maxLines: 2,
                       keyboardType: TextInputType.number,
-                      textEditingController: controller.noOfPeople,
+                      textEditingController: controller.betasmsNoOfPeople,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter a valid number';

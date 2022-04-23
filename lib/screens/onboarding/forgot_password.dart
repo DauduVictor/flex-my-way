@@ -131,11 +131,9 @@ class ForgotPassword extends StatelessWidget {
       'email' : controller.forgotPasswordEmailAddressController.text
     };
     await api.forgotPassword(body).then((value) async {
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Get.toNamed(ResetPassword.id);
     }).catchError((e){
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage(e);
       log(e);

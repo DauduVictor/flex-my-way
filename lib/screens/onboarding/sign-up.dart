@@ -140,7 +140,7 @@ class SignUp extends StatelessWidget {
             hintText: 'Create Password',
             suffix: Obx(() => GestureDetector(
                 onTap: () {
-                  controller.signupObscurePassword.value = !controller.signupObscurePassword.value;
+                  controller.signupObscurePassword.toggle();
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
@@ -259,7 +259,6 @@ class SignUp extends StatelessWidget {
 
   /// Function to make api call to login
   void _signUp() async {
-    // if(!mounted) return;
     controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
@@ -273,12 +272,10 @@ class SignUp extends StatelessWidget {
       'occupation': controller.signupOccupationController.text
     };
     await api.signUp(body).then((value) async {
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage('Registration Successful');
       Get.back();
     }).catchError((e){
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage('It seems a user exists with those details. Try again!');
       log(e);

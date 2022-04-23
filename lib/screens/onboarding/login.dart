@@ -154,7 +154,7 @@ class Login extends StatelessWidget {
             hintText: 'Your Password',
             suffix: Obx(() => GestureDetector(
                 onTap: () {
-                  controller.loginObscureText.value = !controller.loginObscureText.value;
+                  controller.loginObscureText.toggle();
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
@@ -182,7 +182,6 @@ class Login extends StatelessWidget {
 
   /// Function to make api call to login
   void _login(OnboardingController controller) async {
-    // if(!mounted) return;
     controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
@@ -190,14 +189,12 @@ class Login extends StatelessWidget {
       'password' : controller.loginPasswordController.text
     };
     await api.signIn(body).then((user) async {
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       var db = DatabaseHelper();
       await db.initDb();
       await db.saveUser(user);
       _addBoolToSP(user);
     }).catchError((e){
-      // if(!mounted) return;
       controller.loginShowSpinner.value = false;
       Functions.showMessage(e);
       log(e);

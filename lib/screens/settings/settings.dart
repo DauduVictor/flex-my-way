@@ -93,7 +93,7 @@ class Settings extends StatelessWidget {
                                 name: AppStrings.editPassword,
                                 icon: IconlyBroken.unlock,
                                 onPressed: () {
-                                  controller.showEditPassword.value = !controller.showEditPassword.value;
+                                  controller.showEditPassword.toggle();
                                 },
                               ),
                               secondChild: Column(
@@ -102,7 +102,7 @@ class Settings extends StatelessWidget {
                                     name: AppStrings.editPassword,
                                     icon: IconlyBroken.unlock,
                                     onPressed: () {
-                                      controller.showEditPassword.value = !controller.showEditPassword.value;
+                                      controller.showEditPassword.toggle();
                                     },
                                   ),
                                   Form(
@@ -117,7 +117,7 @@ class Settings extends StatelessWidget {
                                           textEditingController: controller.currentPasswordController,
                                           suffix: GestureDetector(
                                             onTap: () {
-                                              controller.obscureCurrentPassword.value = !controller.obscureCurrentPassword.value;
+                                              controller.obscureCurrentPassword.toggle();
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
@@ -303,18 +303,15 @@ class Settings extends StatelessWidget {
 
   /// Function to make api call to edit user password
   void _editPassword() async {
-    // if(!mounted) return;
     controller.showSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
       "password": controller.newPasswordController.text
     };
     await api.resetPasswordWithId(body).then((value) {
-      // if(!mounted) return;
       controller.showSpinner.value = false;
       Functions.showMessage('Password updated successfully');
     }).catchError((e){
-      // if(!mounted) return;
       controller.showSpinner.value = false;
       Functions.showMessage(e);
       log(e);
