@@ -5,15 +5,15 @@ import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
 import 'package:flex_my_way/screens/host/beta-sms.dart';
-import 'package:flex_my_way/screens/host/host_flex_terms_and_conditions.dart';
-import 'package:flex_my_way/screens/host/host_registration.dart';
+import 'package:flex_my_way/screens/host/host-flex-terms-and-conditions.dart';
+import 'package:flex_my_way/screens/host/host-registration.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flex_my_way/screens/join/join.dart';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
-import 'package:flex_my_way/screens/notifications.dart';
-import 'package:flex_my_way/screens/onboarding/forgot_password.dart';
-import 'package:flex_my_way/screens/host/host_a_flex.dart';
-import 'package:flex_my_way/screens/host/host_flex_success.dart';
+import 'package:flex_my_way/screens/dashboard/notifications.dart';
+import 'package:flex_my_way/screens/onboarding/forgot-password.dart';
+import 'package:flex_my_way/screens/host/host-a-flex.dart';
+import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flex_my_way/screens/onboarding/login.dart';
 import 'package:flex_my_way/screens/onboarding/reset-password.dart';
 import 'package:flex_my_way/screens/onboarding/sign-up.dart';
@@ -25,7 +25,7 @@ import 'package:flex_my_way/screens/settings/settings.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
-import 'package:flex_my_way/screens/theme/app_theme.dart';
+import 'package:flex_my_way/screens/theme/app-theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -81,14 +81,14 @@ class MyApp extends StatelessWidget {
         ResetPassword.id: (context) =>  ResetPassword(),
         SignUp.id: (context) => SignUp(),
         FindAFlex.id: (context) => const FindAFlex(),
-        HostRegistration.id: (context) => const HostRegistration(),
+        HostRegistration.id: (context) => HostRegistration(),
         HostAFlex.id: (context) => HostAFlex(),
         HostFlexTermsAndConditions.id: (context) => HostFlexTermsAndConditions(),
         HostFlexSuccess.id: (context) => const HostFlexSuccess(),
         BetaSms.id: (context) => BetaSms(),
         Dashboard.id: (context) => Dashboard(),
         Flexery.id: (context) => const Flexery(),
-        Notifications.id: (context) => const Notifications(),
+        Notifications.id: (context) => Notifications(),
         Settings.id: (context) => Settings(),
         About.id: (context) => const About(),
         EditProfileDetail.id: (context) => EditProfileDetail(),
@@ -99,8 +99,8 @@ class MyApp extends StatelessWidget {
         FlexHistory.id: (context) => const FlexHistory(),
         FlexHistoryDetail.id: (context) => FlexHistoryDetail(),
         Join.id: (context) => const Join(),
-        JoinFlex.id: (context) => const JoinFlex(),
-        JoinedFlexDetails.id: (context) => const JoinedFlexDetails(),
+        JoinFlex.id: (context) => JoinFlex(),
+        JoinedFlexDetails.id: (context) => JoinedFlexDetails(),
       },
     );
   }

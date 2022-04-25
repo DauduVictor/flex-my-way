@@ -15,7 +15,7 @@ import '../../model/user.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
-import 'forgot_password.dart';
+import 'forgot-password.dart';
 
 class Login extends StatelessWidget {
 

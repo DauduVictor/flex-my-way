@@ -1,4 +1,4 @@
-import 'package:flex_my_way/screens/host/host_flex_success.dart';
+import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
   static const String id = "hostFlexTermsAndConditions";
   HostFlexTermsAndConditions({Key? key}) : super(key: key);
 
-  /// calling the host controller for [BetaSms]
+  /// calling the [HostController] for [HostFlexTermsAndConditions]
   final HostController controller = Get.put(HostController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation

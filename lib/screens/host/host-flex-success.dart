@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
@@ -14,7 +12,6 @@ import '../../util/size-config.dart';
 import '../dashboard/dashboard.dart';
 import '../onboarding/login.dart';
 import 'package:share_plus/share_plus.dart';
-
 import 'beta-sms.dart';
 
 class HostFlexSuccess extends StatelessWidget {

@@ -11,7 +11,8 @@ import '../../util/constants/functions.dart';
 import '../../util/location-permission.dart';
 import '../../util/size-config.dart';
 import '../dashboard/drawer.dart';
-import '../notifications.dart';
+import '../dashboard/notifications.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Join extends StatefulWidget {
 
@@ -72,13 +73,30 @@ class _JoinState extends State<Join> {
     }
   }
 
+  /// variable to hold custom icon used as the marker
+  BitmapDescriptor? customIcon;
+
+  /// Function to create icon with the help of [customIcon]
+  void _createCustomMarkerIcon(context) {
+    if(customIcon == null) {
+      ImageConfiguration configuration = createLocalImageConfiguration(context);
+      BitmapDescriptor.fromAssetImage(configuration, markerImage).then((value) {
+        setState(() {
+          customIcon = value;
+        });
+      }).catchError((e){
+        Functions.showMessage('Unable to connect to google maps at this time, please try again');
+      });
+    }
+  }
+
   /// function to get a list of markers to be displayed to the user
   void _getFlexMarkers(double lat, double long) {
      _markers.add(
        Marker(
          markerId: const MarkerId('markerId'),
          position: LatLng(lat, long),
-         icon: BitmapDescriptor.defaultMarker,
+         icon: customIcon!,
          onTap: () {
            Navigator.pushNamed(context, JoinFlex.id);
          }
@@ -93,7 +111,7 @@ class _JoinState extends State<Join> {
   bool _pay = true;
 
   /// Google map controller
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
 
   /// Function for _onMapCreated
   void _onMapCreated(GoogleMapController controller) {
@@ -117,19 +135,28 @@ class _JoinState extends State<Join> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    _createCustomMarkerIcon(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       drawer: const RefactoredDrawer(),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: userPosition!,
-            myLocationEnabled: false,
-            onMapCreated: _onMapCreated,
-            markers: _markers,
-          ),
+          userPosition == null
+            ? SpinKitDoubleBounce(
+                color: primaryColor.withOpacity(0.6),
+                size: 75,
+                duration: const Duration(milliseconds: 3000),
+            )
+            : GoogleMap(
+              mapType: MapType.normal,
+              initialCameraPosition: userPosition!,
+              myLocationEnabled: true,
+              buildingsEnabled: false,
+              myLocationButtonEnabled: false,
+              onMapCreated: _onMapCreated,
+              markers: _markers,
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
@@ -173,7 +200,7 @@ class _JoinState extends State<Join> {
                                     PageRouteBuilder(
                                       transitionDuration: const Duration(milliseconds: 600),
                                       pageBuilder: (context, animation, secondaryAnimation) {
-                                        return const Notifications();
+                                        return Notifications();
                                       },
                                       transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                         return Container(
@@ -239,53 +266,11 @@ class _JoinState extends State<Join> {
                       ),
                     ),
                   ),
-                const SizedBox(height: 200),
-                Center(
-                  child: CircleAvatar(
-                    backgroundColor: whiteColor,
-                    radius: 18,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, JoinFlex.id);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(6),
-                        shape: const CircleBorder(),
-                      ),
-                      child: const Icon(
-                        Icons.location_pin,
-                        color: primaryColor,
-                        size: 21,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 25, right: 45),
-                  child: CircleAvatar(
-                    backgroundColor: whiteColor,
-                    radius: 18,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, JoinFlex.id);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(6),
-                        shape: const CircleBorder(),
-                      ),
-                      child: const Icon(
-                        Icons.location_pin,
-                        color: primaryColor,
-                        size: 21,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
           DraggableScrollableSheet(
-            maxChildSize: 0.5,
+            maxChildSize: 0.68,
             initialChildSize: 0.3,
             minChildSize: 0.1,
             builder: (context, controller) {

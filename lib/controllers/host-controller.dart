@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/constants/constants.dart';
 
@@ -84,8 +86,32 @@ class HostController extends GetxController {
       isLoggedIn.value = true;
     }
     else {
-      print('User is not logged in');
+      log('User is not logged in');
     }
+  }
+
+  /*Controller and Variables for host registration*/
+  /// A [TextEditingController] to control the input text for host name
+  final TextEditingController hostNameController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for host email
+  final TextEditingController hostEmailAddressController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for host password
+  final TextEditingController hostPasswordController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for host phone number
+  final TextEditingController hostPhoneNumberController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for occupation
+  final TextEditingController occupationController = TextEditingController();
+
+  /// Bool value to hold the obscure state for password
+  final hostObscureText = true.obs;
+
+  /// Function to get the formatted date for date time picker
+  String _formatDate(DateTime date) {
+    return DateFormat.yMd('en_US').format(date);
   }
 
 
@@ -106,6 +132,5 @@ class HostController extends GetxController {
   final editingContact = false.obs;
 
   /*Api Integration*/
-
 
 }

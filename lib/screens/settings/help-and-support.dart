@@ -6,16 +6,11 @@ import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
-class HelpAndSupport extends StatefulWidget {
+class HelpAndSupport extends StatelessWidget {
 
   static const String id = "helpAndSupport";
   const HelpAndSupport({Key? key}) : super(key: key);
 
-  @override
-  _HelpAndSupportState createState() => _HelpAndSupportState();
-}
-
-class _HelpAndSupportState extends State<HelpAndSupport> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

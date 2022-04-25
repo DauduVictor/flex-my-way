@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-
 import '../../components/app-bar.dart';
 import '../../components/list-tile-button.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 
-class About extends StatefulWidget {
+class About extends StatelessWidget {
 
   static const String id = "about";
   const About({Key? key}) : super(key: key);
 
-  @override
-  _AboutState createState() => _AboutState();
-}
-
-class _AboutState extends State<About> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

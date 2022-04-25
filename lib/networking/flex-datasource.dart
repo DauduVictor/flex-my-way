@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../bloc/future-values.dart';
 import '../model/flex.dart';
 import '../model/user.dart';

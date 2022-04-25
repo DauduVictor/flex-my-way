@@ -14,7 +14,7 @@ class BetaSms extends StatelessWidget {
   static const String id = "betaSms";
   BetaSms({Key? key}) : super(key: key);
 
-  /// calling the host controller for [BetaSms]
+  /// calling the [HostController] for [BetaSms]
   final HostController controller = Get.put(HostController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
@@ -221,4 +221,5 @@ class BetaSms extends StatelessWidget {
       ),
     );
   }
+
 }

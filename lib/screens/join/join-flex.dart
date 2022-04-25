@@ -1,49 +1,35 @@
 import 'dart:async';
-import 'package:flex_my_way/bloc/future-values.dart';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../../controllers/join-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import '../onboarding/login.dart';
 
-class JoinFlex extends StatefulWidget {
+class JoinFlex extends StatelessWidget {
 
   static const String id = "joinFlex";
-  const JoinFlex({Key? key}) : super(key: key);
+  JoinFlex({Key? key}) : super(key: key);
 
-  @override
-  _JoinFlexState createState() => _JoinFlexState();
-}
+  /// calling the [JoinController] for [JoinFlex]
+  final JoinController controller = Get.put(JoinController());
 
-class _JoinFlexState extends State<JoinFlex> {
-
-  CameraPosition userPosition = const CameraPosition(
-    target: LatLng(-2.155, 0.600),
+  final CameraPosition userPosition = const CameraPosition(
+    target: LatLng(6.519314, 3.396336),
     zoom: 16.0,
   );
 
-
   /// Google map controller
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
 
   /// Function for _onMapCreated
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
   }
-
-  /// Function to launch the url for the video link
-  Future <void> _launchVideo(String url) async {
-    if (!await launch(url)) throw 'Could not launch $url';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +81,7 @@ class _JoinFlexState extends State<JoinFlex> {
           DraggableScrollableSheet(
               minChildSize: 0.4,
               maxChildSize: 0.7,
-              builder: (context, controller) {
+              builder: (context, scrollController) {
                 return Container(
                   width: SizeConfig.screenWidth,
                   padding: const EdgeInsets.only(top: 4),
@@ -107,7 +93,7 @@ class _JoinFlexState extends State<JoinFlex> {
                     color: backgroundColor,
                   ),
                   child: SingleChildScrollView(
-                    controller: controller,
+                    controller: scrollController,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       child: Column(
@@ -183,7 +169,19 @@ class _JoinFlexState extends State<JoinFlex> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, JoinedFlexDetails.id);
+                                  if (controller.isLoggedIn.value) {
+                                    if(controller.isPaid) {
+                                      Functions.showMessage('You will be redirected to the payment gateway to make payment');
+                                      // controller.isPaid.toggle();
+                                    }
+                                    else {
+                                      Get.toNamed(JoinedFlexDetails.id);
+                                    }
+                                  }
+                                  else {
+                                    Functions.showMessage('Please log in to join a flex.');
+                                    Get.toNamed(Login.id);
+                                  }
                                 },
                                 style: TextButton.styleFrom(
                                   backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
@@ -250,8 +248,8 @@ class _JoinFlexState extends State<JoinFlex> {
                           /// video link button
                           GestureDetector(
                             onTap: () {
-                              _launchVideo('https://youtube.com').catchError((e){
-                                Functions.showMessage('Could not launch https://youtube.com');
+                              controller.launchVideo('https://youtube.com').catchError((e){
+                                Functions.showMessage('Could not launch url');
                               });
                             },
                             child: Stack(
@@ -400,6 +398,8 @@ class _JoinFlexState extends State<JoinFlex> {
                                 mapType: MapType.normal,
                                 initialCameraPosition: userPosition,
                                 onMapCreated: _onMapCreated,
+                                myLocationEnabled: false,
+                                myLocationButtonEnabled: false,
                                 scrollGesturesEnabled: false,
                                 zoomControlsEnabled: false,
                                 zoomGesturesEnabled: false,

@@ -12,7 +12,7 @@ import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
-import 'host_flex_terms_and_conditions.dart';
+import 'host-flex-terms-and-conditions.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HostAFlex extends StatelessWidget {
@@ -20,7 +20,7 @@ class HostAFlex extends StatelessWidget {
   static const String id = "hostAFlex";
   HostAFlex({Key? key}) : super(key: key);
 
-  /// calling the host controller for [HostAFlex]
+  /// calling the [HostController] for [HostAFlex]
   final HostController controller = Get.put(HostController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation

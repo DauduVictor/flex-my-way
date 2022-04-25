@@ -4,16 +4,11 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import '../../util/size-config.dart';
 import '../dashboard/drawer.dart';
 
-class Flexery extends StatefulWidget {
+class Flexery extends StatelessWidget {
 
   static const String id = "flexery";
   const Flexery({Key? key}) : super(key: key);
 
-  @override
-  _FlexeryState createState() => _FlexeryState();
-}
-
-class _FlexeryState extends State<Flexery> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -43,28 +38,28 @@ class _FlexeryState extends State<Flexery> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Builder(
-                      builder: (context) {
-                        return CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 22,
-                          child: TextButton(
-                            onPressed: () {
-                              FocusScopeNode currentFocus = FocusScope.of(context);
-                              if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                              Scaffold.of(context).openDrawer();
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(8),
-                              shape: const CircleBorder(),
+                        builder: (context) {
+                          return CircleAvatar(
+                            backgroundColor: whiteColor,
+                            radius: 22,
+                            child: TextButton(
+                              onPressed: () {
+                                FocusScopeNode currentFocus = FocusScope.of(context);
+                                if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                                Scaffold.of(context).openDrawer();
+                              },
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(8),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.menu_rounded,
+                                color: neutralColor,
+                                size: 24,
+                              ),
                             ),
-                            child: const Icon(
-                              Icons.menu_rounded,
-                              color: neutralColor,
-                              size: 24,
-                            ),
-                          ),
-                        );
-                      }
+                          );
+                        }
                     ),
                     const SizedBox(width: 7),
                     Expanded(
@@ -117,7 +112,7 @@ class _FlexeryState extends State<Flexery> {
                       radius: 22,
                       child: TextButton(
                         onPressed: () {
-                          _showFilterDialog();
+                          _showFilterDialog(context);
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.all(10),
@@ -141,7 +136,7 @@ class _FlexeryState extends State<Flexery> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _showImageDialog(unsplashImage);
+                        _showImageDialog(unsplashImage, context);
                       },
                       child: Container(
                         width: SizeConfig.screenWidth! * 0.3,
@@ -156,7 +151,7 @@ class _FlexeryState extends State<Flexery> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showImageDialog(hostImage);
+                        _showImageDialog(hostImage, context);
                       },
                       child: Container(
                         width: SizeConfig.screenWidth! * 0.3,
@@ -171,7 +166,7 @@ class _FlexeryState extends State<Flexery> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _showImageDialog(unsplashImage);
+                        _showImageDialog(unsplashImage, context);
                       },
                       child: Container(
                         width: SizeConfig.screenWidth! * 0.3,
@@ -195,54 +190,77 @@ class _FlexeryState extends State<Flexery> {
   }
 
   ///widget to show the dialog for image
-  Future<void> _showImageDialog (String image) {
+  Future<void> _showImageDialog (String image, BuildContext context) {
     return showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: '',
-      transitionBuilder: (context, animation, secondaryAnimation, widget) {
-        return Transform.translate(
-          offset: Offset(0, - 60 * animation.value) ,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: '',
+        transitionBuilder: (context, animation, secondaryAnimation, widget) {
+          return Transform.translate(
+            offset: Offset(0, 10 * animation.value),
+            child: Stack(
               children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 15),
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: const Icon(
+                                Icons.close,
+                                color: whiteColor,
+                                size: 31,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight! * 0.7,
+                            child: Image.asset(
+                              image,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.medium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(
-                      Icons.close,
-                      color: whiteColor,
-                      size: 31,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent.withOpacity(0.1),
+                      radius: 22,
+                      child: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: whiteColor,
+                        size: 21,
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight! * 0.68,
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.medium,
                   ),
                 ),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
         transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, animation1, animation2) {
-        return Container();
-      }
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        }
     );
   }
 
   ///widget to show the dialog for filter
-  Future<void> _showFilterDialog () {
+  Future<void> _showFilterDialog (BuildContext context) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -348,6 +366,7 @@ class _FlexeryState extends State<Flexery> {
       ),
     );
   }
+
 }
 // ///List of pictures used in wrap
 // final List<Widget> _pictureList = [

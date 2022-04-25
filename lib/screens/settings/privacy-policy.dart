@@ -4,16 +4,11 @@ import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
-class PrivacyPolicy extends StatefulWidget {
+class PrivacyPolicy extends StatelessWidget {
 
   static const String id = "privacyPolicy";
   const PrivacyPolicy({Key? key}) : super(key: key);
 
-  @override
-  _PrivacyPolicyState createState() => _PrivacyPolicyState();
-}
-
-class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);

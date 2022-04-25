@@ -12,7 +12,7 @@ class PendingInvites extends StatelessWidget {
   static const String id = "pendingInvites";
   PendingInvites({Key? key}) : super(key: key);
 
-  /// calling the onboarding controller for [DashboardController]
+  /// calling the [DashboardController] for [PendingInvites]
   final DashboardController controller = Get.put(DashboardController());
 
   @override

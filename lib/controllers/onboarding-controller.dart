@@ -40,7 +40,7 @@ class OnboardingController extends GetxController {
   final TextEditingController loginPasswordController = TextEditingController();
 
   /// Variable to hold the bool value for login screen password field
-  final loginObscureText = false.obs;
+  final loginObscureText = true.obs;
 
   /// Variable to hold the bool value of show spinner
   final loginShowSpinner = false.obs;

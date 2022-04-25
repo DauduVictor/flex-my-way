@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import '../screens/notifications.dart';
+import '../screens/dashboard/notifications.dart';
 import '../util/constants/constants.dart';
 
 AppBar buildAppBarWithNotification(
@@ -28,7 +28,7 @@ AppBar buildAppBarWithNotification(
                   PageRouteBuilder(
                     transitionDuration: const Duration(milliseconds: 600),
                     pageBuilder: (context, animation, secondaryAnimation) {
-                      return const Notifications();
+                      return Notifications();
                     },
                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                       return Container(

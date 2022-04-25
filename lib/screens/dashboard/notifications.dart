@@ -1,21 +1,19 @@
 import 'package:flex_my_way/util/constants/constants.dart';
+import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import '../components/app-bar.dart';
+import 'package:get/get.dart';
+import '../../components/app-bar.dart';
+import '../../controllers/dashboard-controller.dart';
+import '../../util/size-config.dart';
 
-class Notifications extends StatefulWidget {
+class Notifications extends StatelessWidget {
 
   static const String id = "notifications";
-  const Notifications({Key? key}) : super(key: key);
+  Notifications({Key? key}) : super(key: key);
 
-  @override
-  _NotificationsState createState() => _NotificationsState();
-}
-
-class _NotificationsState extends State<Notifications> {
-
-  /// Bool variable to hold the state of the expanded panel
-  bool _expanded = false;
+  /// calling the [DashboardController] for [Notifications]
+  final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,27 +25,16 @@ class _NotificationsState extends State<Notifications> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
           child: Column(
-            children: [
+            children: const [
               NotificationButton(
-                title: 'Please contact the customer care as we noticed an authorized access to your account',
-                onPressed: () {
-                  setState(() => _expanded = !_expanded);
-                },
-                expanded: _expanded,
+                text: 'Please contact the customer care as we noticed an authorized access to your account\n'
+                    'This is just pure testing of the new implementation that i just did....',
               ),
               NotificationButton(
-                title: 'Please contact the customer care as we noticed an authorized access to your account',
-                onPressed: () {
-                  setState(() => _expanded = !_expanded);
-                },
-                expanded: _expanded,
+                text: AppStrings.loremIpsum,
               ),
               NotificationButton(
-                title: 'Please contact the customer care as we noticed an authorized access to your account',
-                onPressed: () {
-                  setState(() => _expanded = !_expanded);
-                },
-                expanded: _expanded,
+                text: 'Please contact the customer care as we noticed an authorized access to your account',
               ),
             ],
           ),
@@ -57,27 +44,36 @@ class _NotificationsState extends State<Notifications> {
   }
 }
 
-class NotificationButton extends StatelessWidget {
+class NotificationButton extends StatefulWidget {
 
-  final void Function() onPressed;
-  final String title;
-  final bool expanded;
+  final String text;
 
   const NotificationButton({
     Key? key,
-    required this.onPressed,
-    required this.title,
-    required this.expanded,
+    required this.text,
   }) : super(key: key);
 
   @override
+  State<NotificationButton> createState() => _NotificationButtonState();
+}
+
+class _NotificationButtonState extends State<NotificationButton> {
+
+  bool _expanded = false;
+
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Column(
       children: [
         GestureDetector(
-          onTap: onPressed,
+          onTap: () {
+            setState(() => _expanded = !_expanded);
+          },
           child: AnimatedContainer(
-            height: expanded == true ? 125 : 72,
+            height: _expanded == true
+              ? SizeConfig.screenHeight! * 0.17
+              : SizeConfig.screenHeight! * 0.085,
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
             decoration: BoxDecoration(
               color: primaryColor,
@@ -89,12 +85,14 @@ class NotificationButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: whiteColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 17,
+                  child: SingleChildScrollView(
+                    child: Text(
+                      widget.text,
+                      style: const TextStyle(
+                        color: whiteColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17,
+                      ),
                     ),
                   ),
                 ),
@@ -102,15 +100,15 @@ class NotificationButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
-                      expanded == false
+                      _expanded == false
                         ? Icons.keyboard_arrow_down
                         : Icons.keyboard_arrow_up,
                       size: 21,
                       color: whiteColor,
                     ),
-                    expanded == true
+                    _expanded == true
                       ? Padding(
-                          padding: EdgeInsets.only(top: 12.0),
+                          padding: const EdgeInsets.only(top: 12.0),
                           child: GestureDetector(
                             onTap: () {
                               print('delete notification');

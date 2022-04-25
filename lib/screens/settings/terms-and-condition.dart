@@ -4,16 +4,11 @@ import '../../util/constants/constants.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
-class TermsAndCondition extends StatefulWidget {
+class TermsAndCondition extends StatelessWidget {
 
-  static const String id = "termsAndCondition";
+  static const String id = 'termsAndCondition';
   const TermsAndCondition({Key? key}) : super(key: key);
 
-  @override
-  _TermsAndConditionState createState() => _TermsAndConditionState();
-}
-
-class _TermsAndConditionState extends State<TermsAndCondition> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -28,8 +23,8 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
           height: SizeConfig.screenHeight,
           padding: const EdgeInsets.fromLTRB(2, 24, 2, 10),
           decoration: BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.circular(24)),
+              color: whiteColor,
+              borderRadius: BorderRadius.circular(24)),
           child: const RawScrollbar(
             thumbColor: primaryColor,
             radius: Radius.circular(8.0),
@@ -47,3 +42,4 @@ class _TermsAndConditionState extends State<TermsAndCondition> {
     );
   }
 }
+

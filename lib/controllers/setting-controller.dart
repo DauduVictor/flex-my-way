@@ -7,15 +7,11 @@ import '../util/constants/constants.dart';
 
 class SettingsController extends GetxController {
 
-  // @override
-  // void onInit() {
-  //   showEditPassword.value = false;
-  //   currentPasswordController.clear();
-  //   newPasswordController.clear();
-  //   update();
-  //   _getCurrentUser();
-  //   super.onInit();
-  // }
+  @override
+  void onInit() {
+    _getCurrentUser();
+    super.onInit();
+  }
 
   // @override
   // // TODO: implement onStart
