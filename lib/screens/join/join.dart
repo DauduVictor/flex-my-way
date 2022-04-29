@@ -23,7 +23,7 @@ class Join extends StatefulWidget {
   _JoinState createState() => _JoinState();
 }
 
-class _JoinState extends State<Join> {
+class _JoinState extends State<Join> with TickerProviderStateMixin {
 
   /// Instantiating a class of future values
   var futureValues = FutureValues();
@@ -125,8 +125,15 @@ class _JoinState extends State<Join> {
   /// Variable to hold value of price range
   double priceRange = 0;
 
+  late AnimationController _controller;
+
   @override
   void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
+    _controller.repeat(reverse: true);
     getUserLocation();
     checkUserIsLoggedIn();
     super.initState();
@@ -289,13 +296,28 @@ class _JoinState extends State<Join> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15, bottom: 10.0),
                       child: Center(
-                        child: Container(
-                          height: 5,
-                          width: 45,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF000000).withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+                        child: AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            return Container(
+                              height: 5,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF000000).withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: [
+                                  BoxShadow(
+                                    spreadRadius: _controller.value * 10,
+                                    color: const Color(0xFF000000).withOpacity(0.05)
+                                  ),
+                                  // BoxShadow(
+                                  //   spreadRadius: 10,
+                                  //   color: const Color(0xFF000000).withOpacity(0.05)
+                                  // ),
+                                ]
+                              ),
+                            );
+                          }
                         ),
                       ),
                     ),
@@ -304,7 +326,7 @@ class _JoinState extends State<Join> {
                       child: SingleChildScrollView(
                         controller: controller,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(26, 17, 5, 15),
+                          padding: const EdgeInsets.fromLTRB(26, 5, 5, 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -327,10 +349,6 @@ class _JoinState extends State<Join> {
                                   ),
                                   ReuableMapFilterButton(
                                     text: '25+',
-                                    onPressed: () {},
-                                  ),
-                                  ReuableMapFilterButton(
-                                    text: '18+',
                                     onPressed: () {},
                                   ),
                                 ],
@@ -380,51 +398,56 @@ class _JoinState extends State<Join> {
                                 ],
                               ),
                               _pay == true
-                                ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(height: 17),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'N5,000',
-                                            style: textTheme.headline5!.copyWith(
-                                              color: primaryColor,
-                                              fontSize: 19,
-                                            ),
-                                          ),
-                                          Text(
-                                            'N50,000',
-                                            style: textTheme.headline5!.copyWith(
-                                              color: primaryColor,
-                                              fontSize: 19,
-                                            ),
-                                          ),
-                                          Text(
-                                            'N100,000',
-                                            style: textTheme.headline5!.copyWith(
-                                              color: primaryColor,
-                                              fontSize: 19,
-                                            ),
-                                          ),
-                                        ],
+                                  ? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        'What paid flex range are you looking at?',
+                                        style: textTheme.headline5!.copyWith(fontSize: 17),
                                       ),
-                                    ),
-                                    const SizedBox(height: 9),
-                                    Slider(
-                                      value: priceRange,
-                                      max: 100000,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          priceRange = value;
-                                        });
-                                    }),
-                                    const SizedBox(height: 10),
-                                ],
-                              )
+                                      const SizedBox(height: 21),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'N1,000',
+                                              style: textTheme.headline5!.copyWith(
+                                                color: primaryColor,
+                                                fontSize: 19,
+                                              ),
+                                            ),
+                                            Text(
+                                              'N5,000',
+                                              style: textTheme.headline5!.copyWith(
+                                                color: primaryColor,
+                                                fontSize: 19,
+                                              ),
+                                            ),
+                                            Text(
+                                              'N20,000',
+                                              style: textTheme.headline5!.copyWith(
+                                                color: primaryColor,
+                                                fontSize: 19,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 9),
+                                      Slider(
+                                        value: priceRange,
+                                        max: 20000,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            priceRange = value;
+                                          });
+                                      }),
+                                      const SizedBox(height: 10),
+                                  ],
+                                )
                                 : Container(),
                             ],
                           ),

@@ -1,13 +1,20 @@
+import 'dart:io';
+import 'package:app_settings/app_settings.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flex_my_way/util/constants/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
 import '../../components/dropdown-field.dart';
 import '../../components/text-form-field.dart';
 import '../../controllers/host-controller.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
+import 'contact-screen.dart';
 
 class BetaSms extends StatelessWidget {
 
@@ -68,7 +75,7 @@ class BetaSms extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 21),
-                        _buildForm(textTheme),
+                        _buildForm(textTheme, context),
                         const SizedBox(height: 16),
                         Button(
                           label: 'Sign Up',
@@ -101,7 +108,78 @@ class BetaSms extends StatelessWidget {
     );
   }
 
-  Widget _buildForm(TextTheme textTheme) {
+  ///Check contacts permission
+  Future<PermissionStatus> getPermission() async {
+    final PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.denied) {
+      final Map<Permission, PermissionStatus> permissionStatus =
+        await [Permission.contacts].request();
+      return permissionStatus[Permission.contacts] ??
+          PermissionStatus.restricted;
+    } else {
+      return permission;
+    }
+  }
+
+  ///Function to make call to get users contact stored on their device
+  _addContacts(BuildContext context, TextTheme textTheme) async {
+    final PermissionStatus permissionStatus = await getPermission();
+    if (permissionStatus == PermissionStatus.granted) {
+      await ContactsService.getContacts().then((value) {
+        controller.contact = value;
+        Get.toNamed(ContactScreen.id);
+      }).catchError((e){
+        Functions.showMessage('Could not read contacts at this time. Please try again');
+      });
+    } else {
+      return showDialog(
+        context: context,
+        builder: (_) => Platform.isIOS
+          ? CupertinoAlertDialog(
+            title: const Text("Contact access is disabled for \"Flexmyway\""),
+            content: const Text("You can enable contact access for this app in Settings"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                onPressed: (){
+                  Navigator.pop(context);
+                  AppSettings.openLocationSettings();
+                },
+                child: const Text('Settings'),
+              ),
+              CupertinoDialogAction(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                isDefaultAction: true,
+                child: const Text('Ok'),
+              )
+            ],
+          )
+          : AlertDialog(
+              backgroundColor: backgroundColor,
+              title: const Text("Contact access is disabled for \"Flexmyway\""),
+              content: const Text("You can enable contact access for this app in Settings"),
+              actions: [
+                TextButton(
+                  child: const Text('Settings'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    AppSettings.openAppSettings();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+        ),
+      );
+    }
+  }
+
+  /// Widget to hold the form body
+  Widget _buildForm(TextTheme textTheme, BuildContext context) {
     return Form(
       key: _formKey,
       child: Obx(() => Column(
@@ -121,20 +199,23 @@ class BetaSms extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       controller.isUploaded.value
-                        ? print('add more contacts')
+                        ? _addContacts(context, textTheme)
                         : controller.isUploaded.value = true;
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          controller.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
-                          style: textTheme.bodyText2,
-                        ),
-                        const Icon(
-                          Icons.contacts_outlined,
-                        ),
-                      ],
+                    child: Container(
+                      color: transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            controller.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
+                            style: textTheme.bodyText2,
+                          ),
+                          const Icon(
+                            Icons.contacts_outlined,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   controller.isUploaded.value

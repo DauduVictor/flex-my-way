@@ -5,6 +5,7 @@ import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
 import 'package:flex_my_way/screens/host/beta-sms.dart';
+import 'package:flex_my_way/screens/host/contact-screen.dart';
 import 'package:flex_my_way/screens/host/host-flex-terms-and-conditions.dart';
 import 'package:flex_my_way/screens/host/host-registration.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
         Join.id: (context) => const Join(),
         JoinFlex.id: (context) => JoinFlex(),
         JoinedFlexDetails.id: (context) => JoinedFlexDetails(),
+        ContactScreen.id: (context) => ContactScreen(),
       },
     );
   }

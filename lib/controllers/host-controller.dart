@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../model/contact.dart';
 import '../util/constants/constants.dart';
 
 class HostController extends GetxController {
@@ -84,6 +86,7 @@ class HostController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getBool('loggedIn') == true) {
       isLoggedIn.value = true;
+      print('logged in');
     }
     else {
       log('User is not logged in');
@@ -130,6 +133,9 @@ class HostController extends GetxController {
 
   /// Variable to hold the bool value for editing contact numbers
   final editingContact = false.obs;
+
+  /// Variable to hold a list of contact model
+  List<Contact> contact = [];
 
   /*Api Integration*/
 
