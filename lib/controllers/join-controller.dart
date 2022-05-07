@@ -14,6 +14,9 @@ class JoinController extends GetxController {
   /// Bool variable to hold the bool state if the user is currently logged in
   final isLoggedIn = false.obs;
 
+  /// Bool variable to hold the bool state of showSpinner
+  final showSpinner = false.obs;
+
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -32,5 +35,8 @@ class JoinController extends GetxController {
 
   /// tempoary bool value to show that a flex is paid
   final isPaid = false;
+
+  /// tempoary variable to store flex id
+  String flexId = 'yE6FJy';
 
 }

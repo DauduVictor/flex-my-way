@@ -25,12 +25,36 @@ class FlexDataSource {
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '61ab5ab0386a493342509fd2';
+      userId = '623c5f6bc8833e68854c9013';
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = '${prefs.getString('bearerToken')}';
     });
-    print(header);
     return _netUtil.post(CREATE_A_FLEX+'$userId', headers: header, body: body).then((res) {
+      print(res);
+      if(res['status'] != 'success') throw res['message'];
+      return Flexes.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
+  /// A post request to use the [JOIN_FLEX]
+  /// It returns a [] model
+  Future<Flexes> joinFlex (String flexId) async {
+    String? userId;
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = '622da113d44412a303049da6';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = '${prefs.getString('bearerToken')}';
+    });
+    String JOIN_FLEX_URL = JOIN_FLEX+'$userId&code=$flexId';
+    print(JOIN_FLEX_URL);
+    print(header);
+    return _netUtil.get(JOIN_FLEX_URL, headers: header).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
       return Flexes.fromJson(res['data']);

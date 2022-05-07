@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../components/flex-loader.dart';
 import '../../util/constants/constants.dart';
 import '../../util/size-config.dart';
 
@@ -23,6 +24,8 @@ class FlexHistoryDetail extends StatelessWidget {
     target: LatLng(6.519314, 3.396336),
     zoom: 16.0,
   );
+
+  bool _showLoader = true;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,9 @@ class FlexHistoryDetail extends StatelessWidget {
                   ),
                   child: SingleChildScrollView(
                     controller: controller,
-                    child: Padding(
+                    child: _showLoader == true
+                      ? const FlexLoader()
+                      : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

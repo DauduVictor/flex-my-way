@@ -191,25 +191,24 @@ class HostFlexTermsAndConditions extends StatelessWidget {
       'capacity': controller.numberOfPeopleController.text,
       'ageRating': controller.ageRating.value,
       'flexType': controller.typeOfFlex.value,
-      'bannerImage': [],
+      // 'bannerImage': [],
       'hashtag': controller.eventHashTagController.text,
-      'paidOrFree': controller.paid.value,
-      'publicOrPrivate': controller.publicOrPrivate.value,
-      'displayFlexLocation': controller.displayFlexLocation.value,
-      'genderRestriction': controller.genderRestriciton,
+      // 'paidOrFree': controller.paid.value,
+      // 'publicOrPrivate': controller.publicOrPrivate.value,
+      // 'displayFlexLocation': controller.displayFlexLocation.value,
+      // 'genderRestriction': controller.genderRestriciton,
       'consumablesPolicy': controller.consumablePolicy.value,
-      'flexRules': controller.flexRulesController.text,
-      'videoLink': controller.videoLinkController.text
+      // 'flexRules': controller.flexRulesController.text,
+      // 'videoLink': controller.videoLinkController.text
     };
-    print(body);
     var api = FlexDataSource();
     await api.createFlex(body).then((flex) {
       controller.showSpinner.value = false;
       Get.offAllNamed(HostFlexSuccess.id);
     }).catchError((e){
       controller.showSpinner.value = false;
-      Get.offAllNamed(HostFlexSuccess.id);
-      Functions.showMessage(e);
+      print(e);
+      // Functions.showMessage(e);
     });
   }
 
