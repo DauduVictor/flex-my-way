@@ -189,7 +189,7 @@ class JoinFlex extends StatelessWidget {
                                     },
                                     style: TextButton.styleFrom(
                                       backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
-                                      padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 24),
+                                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
@@ -202,11 +202,11 @@ class JoinFlex extends StatelessWidget {
                                               color: whiteColor,
                                             ),
                                           )
-                                        : SizedBox(
-                                            width: SizeConfig.screenWidth! * 0.15,
-                                            child: const SizedBox(
-                                              height: 19,
-                                              width: 19,
+                                        : const Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 18),
+                                            child: SizedBox(
+                                              height: 17,
+                                              width: 17,
                                               child: CircleProgressIndicator(),
                                             ),
                                         ),
@@ -464,9 +464,11 @@ class JoinFlex extends StatelessWidget {
     var api = FlexDataSource();
     await api.joinFlex(controller.flexId).then((flex) {
       controller.showSpinner.value = false;
-
+      //set the controller value for the flex gotten
       Get.toNamed(JoinedFlexDetails.id);
     }).catchError((e){
+      Get.toNamed(JoinedFlexDetails.id);
+      print('here');
       controller.showSpinner.value = false;
       Functions.showMessage(e);
     });

@@ -41,7 +41,6 @@ class NetworkHelper {
     print(url);
     print(headers);
     try {
-      headers!['Content-Type'] = 'application/json';
       return http
           .post(Uri.parse(url), body: jsonEncode(body), headers: headers, encoding: encoding)
           .then((http.Response response) {
@@ -82,12 +81,15 @@ class NetworkHelper {
   /// A function to do any put request with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> put(String url, {Map<String, String>? headers, body, encoding}) {
+    print(headers);
+    print(body);
     try {
       headers!['Content-Type'] = 'application/json';
       return http
           .put(Uri.parse(url), body: jsonEncode(body), headers: headers, encoding: encoding)
           .then((http.Response response) {
         final String res = response.body;
+        print(res);
         final int statusCode = response.statusCode;
         var result = _decoder.convert(res);
         if (statusCode < 200 || statusCode > 400) throw result['message'];

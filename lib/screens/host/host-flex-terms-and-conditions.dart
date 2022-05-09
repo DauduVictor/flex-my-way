@@ -200,6 +200,10 @@ class HostFlexTermsAndConditions extends StatelessWidget {
       'consumablesPolicy': controller.consumablePolicy.value,
       // 'flexRules': controller.flexRulesController.text,
       // 'videoLink': controller.videoLinkController.text
+      'locationCoordinates': {
+        'lat': controller.lat.value,
+        'lng': controller.long.value
+      }
     };
     var api = FlexDataSource();
     await api.createFlex(body).then((flex) {

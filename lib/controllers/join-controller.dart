@@ -37,6 +37,9 @@ class JoinController extends GetxController {
   final isPaid = false;
 
   /// tempoary variable to store flex id
-  String flexId = 'yE6FJy';
+  String flexId = 'X2jdIB';
+
+  /// tempoary bool variable to show the skeleton animation of a flex loading
+  final isFlexLoaded = false;
 
 }

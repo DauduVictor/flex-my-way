@@ -208,7 +208,7 @@ class Login extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', true);
     await prefs.setString('bearerToken', user.bearer_token!);
-    Get.toNamed(Dashboard.id);
+    Get.offAllNamed(Dashboard.id);
   }
 
 }

@@ -9,6 +9,7 @@ import '../../components/circle-indicator.dart';
 import '../../components/dropdown-field.dart';
 import '../../components/text-form-field.dart';
 import '../../controllers/setting-controller.dart';
+import '../../database/user-db-helper.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
@@ -140,10 +141,14 @@ class EditProfileDetail extends StatelessWidget {
       'occupation': controller.occuapationController.text,
       'preferredFlex': controller.preferredFlex,
     };
-    print(body);
-    await api.updateUserInfo(body).then((value) {
+    await api.updateUserInfo(body).then((user) async {
       controller.showSpinner.value = false;
+      var db = DatabaseHelper();
+      await db.initDb();
+      await db.saveUser(user);
       Functions.showMessage('Your details have been updated successfully');
+      controller.update();
+      controller.updateControllers();
     }).catchError((e){
       controller.showSpinner.value = false;
       Functions.showMessage(e);

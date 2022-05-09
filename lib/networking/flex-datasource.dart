@@ -19,7 +19,7 @@ class FlexDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [] model
-  Future<Flexes> createFlex (Map<String, dynamic> body) async {
+  Future<dynamic> createFlex (Map<String, dynamic> body) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
@@ -27,19 +27,22 @@ class FlexDataSource {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       userId = '623c5f6bc8833e68854c9013';
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      header['Authorization'] = '${prefs.getString('bearerToken')}';
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
     });
     return _netUtil.post(CREATE_A_FLEX+'$userId', headers: header, body: body).then((res) {
-      print(res);
       if(res['status'] != 'success') throw res['message'];
-      return Flexes.fromJson(res['data']);
+      print (res['data']);
+      return res['data'];
+      // return Flexes.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
     });
   }
 
   /// A function that sends request for joining a flex
-  /// A post request to use the [JOIN_FLEX]
+  /// A get request to use the [JOIN_FLEX]
   /// It returns a [] model
   Future<Flexes> joinFlex (String flexId) async {
     String? userId;
@@ -49,7 +52,9 @@ class FlexDataSource {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       userId = '622da113d44412a303049da6';
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      header['Authorization'] = '${prefs.getString('bearerToken')}';
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
     });
     String JOIN_FLEX_URL = JOIN_FLEX+'$userId&code=$flexId';
     print(JOIN_FLEX_URL);
@@ -62,4 +67,5 @@ class FlexDataSource {
       errorHandler.handleError(e);
     });
   }
+
 }

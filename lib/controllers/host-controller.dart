@@ -1,14 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../model/contact.dart';
+import '../bloc/future-values.dart';
 import '../util/constants/constants.dart';
 
 class HostController extends GetxController {
+
+  /// Instantiating a class of future values
+  var futureValues = FutureValues();
 
   @override
   void onInit() {
@@ -44,6 +48,12 @@ class HostController extends GetxController {
   /// A [TextEditingController] to control the input text for event amount
   final TextEditingController videoLinkController = TextEditingController();
 
+  /// A [TextEditingController] to control the input text for searching flex address
+  final TextEditingController searchAddress = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for flex address
+  final TextEditingController flexAddress = TextEditingController();
+
   /// A variable to hold the payment status
   final paid = ''.obs;
 
@@ -64,6 +74,12 @@ class HostController extends GetxController {
 
   /// A variable to hold the type of flex
   final typeOfFlex = ''.obs;
+
+  /// A variable to hold the lat of flex
+  final lat = ''.obs;
+
+  /// A variable to hold the long of flex
+  final long = ''.obs;
 
   /// File Variable to hold the file source of the selected image
   File? image;
@@ -91,6 +107,20 @@ class HostController extends GetxController {
     else {
       log('User is not logged in');
     }
+  }
+
+  /// Function to get user location and use [LatLang] in the map
+  void getUserLocation() async {
+    await futureValues.getUserLocation().then((value) async {
+      lat.value = double.parse(value[0]).toString();
+      long.value = double.parse(value[1]).toString();
+      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
+      Placemark place = placeMarks[0];
+      flexAddress.text = ('${place.street}, ${place.locality}, ${place.country}');
+    }).catchError((e) async {
+      log(e);
+      throw e;
+    });
   }
 
   /*Controller and Variables for host registration*/

@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../bloc/future-values.dart';
 import '../model/user.dart';
 import 'endpoints.dart';
@@ -16,12 +18,15 @@ class UserDataSource {
   /// Instantiating a class of the [FutureValues]
   final _futureValue = FutureValues();
 
+  Map<String, String> header = {
+    'Content-Type' : 'application/json'
+  };
+
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [LOGIN]
   /// It returns a [User] model
   Future<User> signIn (Map<String, String> body) {
-    return _netUtil.post(LOGIN, headers: {}, body: body).then((res) {
-      print(res);
+    return _netUtil.post(LOGIN, headers: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['data'];
       return User.fromJson(res['data']);
     }).catchError((e){
@@ -33,7 +38,7 @@ class UserDataSource {
   /// A post request to use the [NEW_USER_SIGNUP]
   /// It returns a string message
   Future<dynamic> signUp (Map<String, String> body) {
-    return _netUtil.post(NEW_USER_SIGNUP, headers: {}, body: body).then((res) {
+    return _netUtil.post(NEW_USER_SIGNUP, headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
       return res['message'];
@@ -46,7 +51,7 @@ class UserDataSource {
   /// A post request to use the [FORGOT_PASSWORD]
   /// It returns a [String_Message]
   Future<dynamic> forgotPassword (Map<String, String> body) {
-    return _netUtil.post(FORGOT_PASSWORD, headers: {}, body: body).then((dynamic res) {
+    return _netUtil.post(FORGOT_PASSWORD, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return (res['data']);
     }).catchError((e){
@@ -58,7 +63,7 @@ class UserDataSource {
   /// A post request to use the [RESET_PASSWORD]
   /// It returns a [String_Message]
   Future<dynamic> resetPassword (Map<String, String> body) async {
-    return _netUtil.post(RESET_PASSWORD, headers: {}, body: body).then((dynamic res) {
+    return _netUtil.post(RESET_PASSWORD, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return (res['data']);
     }).catchError((e){
@@ -70,7 +75,7 @@ class UserDataSource {
   /// A post request to use the [RESET_PASSWORD_WITH_ID]
   /// It returns a [String_Message]
   Future<dynamic> resetPasswordWithId (Map<String, String> body) {
-    return _netUtil.post(RESET_PASSWORD_WITH_ID, headers: {}, body: body).then((dynamic res) {
+    return _netUtil.post(RESET_PASSWORD_WITH_ID, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return (res['data']);
     }).catchError((e){
@@ -81,19 +86,22 @@ class UserDataSource {
   /// A function that sends request for update user details with [body] as details
   /// A post request to use the [UPDATE_USER_INFO]
   /// It returns a [String_Message]
-  Future<dynamic> updateUserInfo (Map<String, dynamic> body) async {
+  Future<User> updateUserInfo (Map<String, dynamic> body) async {
     String? userId;
+    Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) {
+    await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '1234';
+      userId = '623c5f6bc8833e68854c9013';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
     });
-    print(body);
     String UPDATE_USERS_INFO = BASE_URL+'users/$userId'+UPDATE_USER_INFO;
-    print(UPDATE_USERS_INFO);
-    return _netUtil.put(UPDATE_USERS_INFO, headers: {}, body: body).then((dynamic res) {
+    return _netUtil.put(UPDATE_USERS_INFO, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
-      return (res['data']);
+      return User.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
     });

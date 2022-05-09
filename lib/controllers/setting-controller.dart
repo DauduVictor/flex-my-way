@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flex_my_way/controllers/dashboard-controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../database/user-db-helper.dart';
@@ -6,6 +7,8 @@ import '../model/user.dart';
 import '../util/constants/constants.dart';
 
 class SettingsController extends GetxController {
+
+   static DashboardController dashboardController = Get.put(DashboardController());
 
   @override
   void onInit() {
@@ -97,5 +100,10 @@ class SettingsController extends GetxController {
 
   /// Variable to hold the value of the preferred flex
   String preferredFlex = preferredFlexes[0];
+
+  /// Function to update controllers when user details change
+  void updateControllers() {
+    dashboardController.update();
+  }
 
 }

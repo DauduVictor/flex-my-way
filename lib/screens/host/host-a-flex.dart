@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flex_my_way/components/dropdown-field.dart';
 import 'package:flex_my_way/components/button.dart';
@@ -50,7 +51,7 @@ class HostAFlex extends StatelessWidget {
                 key: _formKey,
                 child: Column(
                   children: [
-                    //name this flex
+                    ///name this flex
                     CustomTextFormField(
                       hintText: AppStrings.nameThisFlex,
                       keyboardType: TextInputType.text,
@@ -183,6 +184,35 @@ class HostAFlex extends StatelessWidget {
                         return null;
                       },
                     ),
+                    ///flex address
+                    CustomTextFormField(
+                      hintText: AppStrings.setAddress,
+                      keyboardType: TextInputType.streetAddress,
+                      readOnly: true,
+                      onTap: () {
+                        showModalBottomSheet(
+                          barrierColor: Colors.black.withOpacity(0.5),
+                          elevation: 1.5,
+                          enableDrag: true,
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)
+                          ),
+                          context: context,
+                          builder: (context){
+                            return _showAddressModal(context, textTheme);
+                          },
+                        );
+                      },
+                      textInputAction: TextInputAction.next,
+                      textEditingController: controller.flexAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      },
+                    ),
                     /// add hashtag
                     CustomTextFormField(
                       hintText: AppStrings.addAHAshtag,
@@ -190,6 +220,9 @@ class HostAFlex extends StatelessWidget {
                       validator: (value) {
                         if (value!.isEmpty || value.length < 2) {
                           return 'This field is required';
+                        }
+                        if(!value.contains('#')) {
+                          controller.eventHashTagController.text = '#$value}';
                         }
                         return null;
                       },
@@ -440,6 +473,105 @@ class HostAFlex extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  /// Bottom modal Widget to set flex address
+  Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+      },
+      child: Container(
+        height: SizeConfig.screenHeight! * 0.9,
+        decoration: const BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 21),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 30),
+                Center(
+                  child: Text(
+                    'Search Address',
+                    style: textTheme.headline5!.copyWith(
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 31,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 21),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: CustomTextFormField(
+                hintText: AppStrings.enterAddress,
+                textEditingController: controller.searchAddress,
+                textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.done,
+              ),
+            ),
+            const Divider(
+              color: neutralColor,
+              height: 2.5,
+              thickness: 0.3,
+            ),
+            TextButton(
+              onPressed: () {
+                try {
+                  controller.getUserLocation();
+                  Navigator.pop(context);
+                } catch (e) {
+                  Functions.showMessage(e);
+                }
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.near_me_outlined,
+                    color: neutralColor,
+                    size: 21,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    'Use my location',
+                    style: textTheme.bodyText1,
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              color: primaryColor,
+              height: 0.1,
+              thickness: 0.1,
+            ),
+          ],
+        ),
       ),
     );
   }
