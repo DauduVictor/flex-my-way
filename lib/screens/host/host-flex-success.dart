@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../controllers/host-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
@@ -17,13 +18,10 @@ import 'beta-sms.dart';
 class HostFlexSuccess extends StatelessWidget {
 
   static const String id = "hostFlexSuccess";
+  HostFlexSuccess({Key? key}) : super(key: key);
 
-  final Flexes? flex;
-
-  const HostFlexSuccess({
-    Key? key,
-    this.flex
-  }) : super(key: key);
+  /// calling the [HostController] for [HostFlexSuccess]
+  final HostController controller = Get.put(HostController());
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +92,7 @@ class HostFlexSuccess extends StatelessWidget {
                           RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: AppStrings.kelechiMo,
+                              text: controller.createdFlex!.creator!,
                               style: textTheme.bodyText2!
                                   .copyWith(fontWeight: FontWeight.w600),
                               children: [
@@ -102,7 +100,7 @@ class HostFlexSuccess extends StatelessWidget {
                                     text: AppStrings.isInviting,
                                     style: textTheme.bodyText2),
                                 TextSpan(
-                                  text: AppStrings.invitingDate,
+                                  text: Functions.getFormattedDateTime(DateTime(2021-12-04)),
                                   style: textTheme.bodyText2!
                                       .copyWith(fontWeight: FontWeight.w600),
                                 ),
@@ -173,9 +171,8 @@ class HostFlexSuccess extends StatelessWidget {
                         const SizedBox(width: 24),
                         TextButton(
                           onPressed: () {
-                            Clipboard.setData(
-                              const ClipboardData(
-                                text: AppStrings.flexURL)).then((value) {
+                            Clipboard.setData(ClipboardData(
+                                text: controller.createdFlex!.joinCode!)).then((value) {
                                   Functions.showMessage('Flex link copied');
                             }).catchError((e){
                               Functions.showMessage('Could not copy flex link');

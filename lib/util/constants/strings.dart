@@ -32,6 +32,8 @@ class AppStrings {
   //Host a Flex
   static const nameThisFlex = 'Name this Flex';
   static const selectADate = 'Select a Date';
+  static const startTime = 'Flex Start Time';
+  static const endTine = 'Flex End Time';
   static const howManyPeople = 'How many people can come?';
   static const whatsAgeRating = 'What\'s the age rating?';
   static const typeOfFlex = 'Type of Flex';
@@ -78,7 +80,7 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
       'You can also share to your favourite social media platforms.';
   static const kelechiMo = 'Kelechi Mo ';
   static const isInviting =
-      'is inviting you to flex. Find him this weekend on ';
+      ' is inviting you to flex. Find him this weekend on ';
   static const invitingDate = '24 Oct, 2021.';
   static const clickTheBelow = 'Click the link below to have a view of your created flex.';
   static const flexURL = 'https://www.flexmyway.io/uweb191';

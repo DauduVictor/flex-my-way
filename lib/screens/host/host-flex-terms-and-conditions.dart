@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
   HostFlexTermsAndConditions({Key? key}) : super(key: key);
 
   /// calling the [HostController] for [HostFlexTermsAndConditions]
-  final HostController controller = Get.put(HostController());
+  final HostController hostController = Get.put(HostController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
@@ -45,7 +46,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
           width: SizeConfig.screenWidth,
           child: SingleChildScrollView(
             child: Obx(() => AbsorbPointer(
-                absorbing: controller.showSpinner.value,
+                absorbing: hostController.showSpinner.value,
                 child: Padding(
                   padding: const EdgeInsets.all(30),
                   child: Column(
@@ -82,16 +83,16 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 22),
-                      controller.paid.value == 'Paid'
+                      hostController.paid.value == 'Paid'
                         ? Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Form(
                               key: _formKey,
                               child: CustomTextFormField(
                                 hintText: AppStrings.yourBVN,
-                                textEditingController: controller.bvnController,
+                                textEditingController: hostController.bvnController,
                                 validator: (value) {
-                                  if(value!.isEmpty && controller.paid.value == 'Paid') {
+                                  if(value!.isEmpty && hostController.paid.value == 'Paid') {
                                     return 'This field is required';
                                   }
                                   return null;
@@ -113,9 +114,9 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                           style: textTheme.bodyText2,
                         ),
                         trailing: Checkbox(
-                          value: controller.termsAndConditionsAccepted.value,
+                          value: hostController.termsAndConditionsAccepted.value,
                           onChanged: (value) {
-                            controller.termsAndConditionsAccepted.toggle();
+                            hostController.termsAndConditionsAccepted.toggle();
                           },
                         ),
                       ),
@@ -127,9 +128,9 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                           style: textTheme.bodyText2!,
                         ),
                         trailing: Checkbox(
-                          value: controller.privacyPolicyAccepted.value,
+                          value: hostController.privacyPolicyAccepted.value,
                           onChanged: (value) {
-                            controller.privacyPolicyAccepted.toggle();
+                            hostController.privacyPolicyAccepted.toggle();
                           },
                         ),
                       ),
@@ -137,32 +138,34 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Opacity(
-                          opacity: (controller.termsAndConditionsAccepted.value
-                              && controller.privacyPolicyAccepted.value) == true
+                          opacity: (hostController.termsAndConditionsAccepted.value
+                              && hostController.privacyPolicyAccepted.value) == true
                                 ? 1.0 : 0.7,
                           child: Button(
                             label: AppStrings.finish,
                             onPressed: () {
-                              if(controller.paid.value == 'Paid') {
+                              if(hostController.paid.value == 'Paid') {
                                 if(_formKey.currentState!.validate()) {
-                                  if(controller.termsAndConditionsAccepted.value &&
-                                      controller.privacyPolicyAccepted.value) {
-                                    controller.isLoggedIn.value == true
+                                  if(hostController.termsAndConditionsAccepted.value &&
+                                      hostController.privacyPolicyAccepted.value) {
+                                    hostController.isLoggedIn.value == true
                                       ? _hostFlex()
                                       : Navigator.pushNamed(context, Login.id);
                                   }
                                 }
                               }
                               else {
-                                if(controller.termsAndConditionsAccepted.value
-                                    && controller.privacyPolicyAccepted.value) {
-                                  controller.isLoggedIn.value == true
-                                    ? _hostFlex()
+                                if(hostController.termsAndConditionsAccepted.value
+                                    && hostController.privacyPolicyAccepted.value) {
+                                  hostController.isLoggedIn.value == true
+                                    ? hostController.previewCreatedFlex.value == true
+                                        ? _hostFlex()
+                                        : _showPreviewDialog(context, textTheme)
                                     : Navigator.pushNamed(context, Login.id);
                                 }
                               }
                             },
-                            child: controller.showSpinner.value == false
+                            child: hostController.showSpinner.value == false
                               ?  null
                               : const SizedBox(
                                   height: 19,
@@ -183,36 +186,494 @@ class HostFlexTermsAndConditions extends StatelessWidget {
     );
   }
 
+  _showPreviewDialog(BuildContext context, TextTheme textTheme) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.9),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 50),
+                Text(
+                  'Flex Preview',
+                  style: textTheme.headline2!.copyWith(
+                    color: whiteColor,
+                    fontSize: 27,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    color: whiteColor,
+                    size: 31,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    width: 3.0,
+                    color: whiteColor,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: SizeConfig.screenHeight! * 0.4,
+                        width: SizeConfig.screenWidth,
+                        clipBehavior: Clip.hardEdge,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(unsplashImage),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.screenHeight! * 0.55,
+                        child: DraggableScrollableSheet(
+                            minChildSize: 0.6,
+                            initialChildSize: 0.6,
+                            maxChildSize: 0.7,
+                            builder: (context, scrollController) {
+                              return Container(
+                                width: SizeConfig.screenWidth,
+                                padding: const EdgeInsets.only(top: 4),
+                                decoration:  const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(30),
+                                  ),
+                                  color: backgroundColor,
+                                ),
+                                child: SingleChildScrollView(
+                                  controller: scrollController,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                hostController.nameFlexController.text,
+                                                style: textTheme.headline4!.copyWith(
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 30,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 26),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(23),
+                                                color: whiteColor,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    Functions.getFlexDayAndMonth(
+                                                      DateTime.parse(hostController.dateController.text))[0],
+                                                    style: textTheme.headline5!.copyWith(
+                                                      color: primaryColor,
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    Functions.getFlexDayAndMonth(
+                                                        DateTime.parse(hostController.dateController.text))[1],
+                                                    style: textTheme.headline5!.copyWith(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 30),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Time',
+                                                    style: textTheme.bodyText1!.copyWith(
+                                                      fontSize: 16,
+                                                      color: neutralColor.withOpacity(0.5),
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${hostController.startTimeController.text} '
+                                                        '- ${hostController.endTimeController.text}',
+                                                    style: textTheme.bodyText1!.copyWith(
+                                                      fontSize: 18.5,
+                                                      color: neutralColor,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {},
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
+                                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                ),
+                                              ),
+                                              child: hostController.showSpinner.value == false
+                                                  ? Text(
+                                                hostController.paid.value == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
+                                                style: textTheme.button!.copyWith(
+                                                  fontSize: 15,
+                                                  color: whiteColor,
+                                                ),
+                                              )
+                                                  : const Padding(
+                                                      padding: EdgeInsets.symmetric(horizontal: 18),
+                                                      child: SizedBox(
+                                                        height: 17,
+                                                        width: 17,
+                                                        child: CircleProgressIndicator(),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 32),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  AppStrings.host,
+                                                  style: textTheme.headline5!.copyWith(
+                                                    color: neutralColor.withOpacity(0.5),
+                                                    fontSize: 16.5,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  'Kelechi Mo.',
+                                                  style: textTheme.bodyText1!.copyWith(
+                                                    fontSize: 18.5,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'First Time Hoster',
+                                                  style: textTheme.headline5!.copyWith(
+                                                    color: primaryColor,
+                                                    fontSize: 16.5,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 72,
+                                              height: 72,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(16),
+                                                image: const DecorationImage(
+                                                  image: AssetImage(hostImage),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 12),
+                                        /// video link button
+                                        GestureDetector(
+                                          onTap: () {
+                                            hostController.launchVideo().catchError((e){
+                                              Functions.showMessage('Could not launch url');
+                                            });
+                                          },
+                                          child: Stack(
+                                            children: const [
+                                              Icon(
+                                                Icons.movie,
+                                                color: primaryColor,
+                                                size: 57,
+                                              ),
+                                              Positioned(
+                                                top: 23,
+                                                left: 19,
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: whiteColor,
+                                                  size: 21,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        /// about
+                                        const SizedBox(height: 16),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'About/Rules',
+                                              style: textTheme.bodyText1!.copyWith(
+                                                fontSize: 18.5,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              hostController.flexRulesController.text,
+                                              style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            //guest
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Guests',
+                                                    style: textTheme.bodyText1!.copyWith(
+                                                      fontSize: 18.5,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Text(
+                                                    '1 / ${hostController.numberOfPeopleController.text} Total',
+                                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            //provided
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  hostController.consumablePolicy.value,
+                                                  style: textTheme.bodyText1!.copyWith(
+                                                    fontSize: 18.5,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  'Will be Provided',
+                                                  style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 25),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            //nature of flex
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Nature of Flex',
+                                                    style: textTheme.bodyText1!.copyWith(
+                                                      fontSize: 18.5,
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 10),
+                                                  Text(
+                                                    hostController.typeOfFlex.value,
+                                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(width: 10),
+                                            //rsvp
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'RSVP',
+                                                  style: textTheme.bodyText1!.copyWith(
+                                                    fontSize: 18.5,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  hostController.hostPhoneNumberController.text,
+                                                  style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 32),
+                                        Container(
+                                          width: SizeConfig.screenWidth,
+                                          height: SizeConfig.screenHeight! * 0.25,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          // child: ClipRRect(
+                                          //   borderRadius: BorderRadius.circular(16),
+                                          //   child: GoogleMap(
+                                          //     mapType: MapType.normal,
+                                          //     initialCameraPosition: userPosition,
+                                          //     onMapCreated: _onMapCreated,
+                                          //     myLocationEnabled: false,
+                                          //     myLocationButtonEnabled: false,
+                                          //     scrollGesturesEnabled: false,
+                                          //     zoomControlsEnabled: false,
+                                          //     zoomGesturesEnabled: false,
+                                          //   ),
+                                          // ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(
+                                                  Icons.content_copy_outlined,
+                                                  color: primaryColor,
+                                                  size: 12,
+                                                ),
+                                                const SizedBox(width: 6),
+                                                Text(
+                                                  'Click to Copy Address',
+                                                  style: textTheme.headline5!.copyWith(
+                                                    color: primaryColor,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: SizeConfig.screenWidth! * 0.4,
+              child: Button(
+                label: '',
+                color: whiteColor,
+                labelColor: primaryColor,
+                onPressed: () {
+                  _hostFlex();
+                  Navigator.pop(context);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Go live',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    const Icon(
+                      Icons.rss_feed_outlined,
+                      color: primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+
   void _hostFlex() async {
-    controller.showSpinner.value = true;
+    hostController.showSpinner.value = true;
     Map<String, dynamic> body = {
-      'name': controller.nameFlexController.text,
-      'date': controller.dateController.text,
-      'capacity': controller.numberOfPeopleController.text,
-      'ageRating': controller.ageRating.value,
-      'flexType': controller.typeOfFlex.value,
-      // 'bannerImage': [],
-      'hashtag': controller.eventHashTagController.text,
-      // 'paidOrFree': controller.paid.value,
-      // 'publicOrPrivate': controller.publicOrPrivate.value,
-      // 'displayFlexLocation': controller.displayFlexLocation.value,
-      // 'genderRestriction': controller.genderRestriciton,
-      'consumablesPolicy': controller.consumablePolicy.value,
-      // 'flexRules': controller.flexRulesController.text,
-      // 'videoLink': controller.videoLinkController.text
+      'name': hostController.nameFlexController.text,
+      'date': hostController.dateController.text,
+      'capacity': hostController.numberOfPeopleController.text,
+      'ageRating': hostController.ageRating.value,
+      'flexType': hostController.typeOfFlex.value,
+      'hashtag': hostController.eventHashTagController.text,
+      'payStatus': hostController.paid.value,
+      'viewStatus': hostController.publicOrPrivate.value,
+      'showOnAccepted': hostController.displayFlexLocation.value,
+      'genderRestriction': hostController.genderRestriciton,
+      'consumablesPolicy': hostController.consumablePolicy.value,
+      'flexRules': hostController.flexRulesController.text,
+      'videoLink': hostController.videoLinkController.text,
       'locationCoordinates': {
-        'lat': controller.lat.value,
-        'lng': controller.long.value
+        'lat': hostController.lat.value,
+        'lng': hostController.long.value
       }
     };
     var api = FlexDataSource();
-    await api.createFlex(body).then((flex) {
-      controller.showSpinner.value = false;
+    await api.createFlex(/*controller.image!,*/ body).then((flexSuccess) {
+      hostController.createdFlex = flexSuccess;
+      hostController.showSpinner.value = false;
       Get.offAllNamed(HostFlexSuccess.id);
     }).catchError((e){
-      controller.showSpinner.value = false;
-      print(e);
-      // Functions.showMessage(e);
+      hostController.showSpinner.value = false;
+      log(e);
+      Functions.showMessage(e);
     });
   }
 

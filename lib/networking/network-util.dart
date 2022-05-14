@@ -61,6 +61,9 @@ class NetworkHelper {
   /// then sends back a json decoded result
   Future<dynamic> postForm(String url, List<http.MultipartFile>? files, {Map<String, String>? header, body, encoding}) async {
     try {
+      print(body);
+      print(header);
+      print(files!.first.filename);
       var request = http.MultipartRequest('POST', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
       if(body != null) request.fields.addAll(body);

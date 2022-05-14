@@ -1,14 +1,18 @@
 import 'dart:developer';
 import 'package:flex_my_way/controllers/dashboard-controller.dart';
+import 'package:flex_my_way/controllers/host-controller.dart';
+import 'package:flex_my_way/controllers/join-controller.dart';
+import 'package:flex_my_way/controllers/onboarding-controller.dart';
+import 'package:flex_my_way/controllers/user-controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../database/user-db-helper.dart';
 import '../model/user.dart';
+import '../screens/splash-screen.dart';
 import '../util/constants/constants.dart';
 
 class SettingsController extends GetxController {
-
-   static DashboardController dashboardController = Get.put(DashboardController());
 
   @override
   void onInit() {
@@ -64,6 +68,7 @@ class SettingsController extends GetxController {
   /// Variable to hold the user's name
   final userName = 'there'.obs;
 
+
   /// A [TextEditingController] to control the input text for current password
   final TextEditingController currentPasswordController = TextEditingController();
 
@@ -102,8 +107,16 @@ class SettingsController extends GetxController {
   String preferredFlex = preferredFlexes[0];
 
   /// Function to update controllers when user details change
-  void updateControllers() {
-    dashboardController.update();
+  void logOut() async {
+    Get.delete<DashboardController>();
+    Get.delete<HostController>();
+    Get.delete<JoinController>();
+    Get.delete<OnboardingController>();
+    Get.delete<UserController>();
+    Get.delete<SettingsController>();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('loggedIn', false);
+    Get.offAllNamed(SplashScreen.id);
   }
 
 }

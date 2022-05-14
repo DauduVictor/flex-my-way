@@ -46,7 +46,7 @@ class HostAFlex extends StatelessWidget {
         },
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+            padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
             child: Obx(() => Form(
                 key: _formKey,
                 child: Column(
@@ -102,10 +102,102 @@ class HostAFlex extends StatelessWidget {
                               }
                           );
                           if (picked != null && picked != now) {
-                            controller.dateController.text = DateFormat('yyyy-MMM-d').format(picked).toString();
+                            controller.dateController.text = DateFormat('yyyy-MM-dd').format(picked).toString();
                           }
                         },
                       ),
+                    /// pick flex time
+                    Row(
+                      children: [
+                        /// start time
+                        Expanded(
+                          child: CustomTextFormField(
+                            hintText: AppStrings.startTime,
+                            onChanged: (value) {},
+                            readOnly: true,
+                            textEditingController: controller.startTimeController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                            suffix: const Padding(
+                              padding: EdgeInsets.only(right: 12.0),
+                              child: Icon(
+                                IconlyLight.timeCircle,
+                                color: neutralColor,
+                              ),
+                            ),
+                            onTap: () async {
+                              DateTime now = DateTime.now();
+                              TimeOfDay? picked = await showTimePicker(
+                                context: context,
+                                helpText: 'SELECT FLEX START TIME',
+                                initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: const ColorScheme.light().copyWith(
+                                        primary: primaryColor,
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                }
+                              );
+                              if (picked != null) {
+                                controller.startTimeController.text =
+                                  TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width:  15),
+                        Expanded(
+                          child: CustomTextFormField(
+                            hintText: AppStrings.endTine,
+                            onChanged: (value) {},
+                            readOnly: true,
+                            textEditingController: controller.endTimeController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                            suffix: const Padding(
+                              padding: EdgeInsets.only(right: 12.0),
+                              child: Icon(
+                                IconlyLight.timeCircle,
+                                color: neutralColor,
+                              ),
+                            ),
+                            onTap: () async {
+                              TimeOfDay? picked = await showTimePicker(
+                                  context: context,
+                                  helpText: 'SELECT FLEX END TIME',
+                                  initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                  builder: (context, child) {
+                                    return Theme(
+                                      data: ThemeData.light().copyWith(
+                                        colorScheme: const ColorScheme.light().copyWith(
+                                          primary: primaryColor,
+                                        ),
+                                      ),
+                                      child: child!,
+                                    );
+                                  }
+                              );
+                              if (picked != null) {
+                              controller.endTimeController.text =
+                                TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                              }
+                            },
+                          ),
+                        ),
+                      ]
+                    ),
                     /// how many people can come
                     CustomTextFormField(
                       hintText: AppStrings.howManyPeople,
@@ -177,12 +269,12 @@ class HostAFlex extends StatelessWidget {
                           },
                         );
                       },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Upload your flex banner image';
-                        }
-                        return null;
-                      },
+                      // validator: (value) {
+                      //   if (value!.isEmpty) {
+                      //     return 'Upload your flex banner image';
+                      //   }
+                      //   return null;
+                      // },
                     ),
                     ///flex address
                     CustomTextFormField(
@@ -373,15 +465,20 @@ class HostAFlex extends StatelessWidget {
   /// function to pick image from the users gallery
   Future<void> _pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: source);
-      if(image == null) {
-        return;
-      }
-      else {
-        final fileTemp = File(image.path);
-        controller.bannerImageController.text = fileTemp.path;
-        Functions.showMessage('Image upload successful');
-      }
+      File image = (await ImagePicker().pickImage(source: source)) as File;
+      controller.image = image;
+      final fileTemp = File(image.path);
+      controller.bannerImageController.text = fileTemp.path;
+      Functions.showMessage('Image upload successful');
+      // if(image == null) {
+      //   return;
+      // }
+      // else {
+      //   controller.image = image as File?;
+      //   final fileTemp = File(image.path);
+      //   controller.bannerImageController.text = fileTemp.path;
+      //   Functions.showMessage('Image upload successful');
+      // }
     }
     on PlatformException {
       Functions.showMessage('Image upload failed');
@@ -531,6 +628,11 @@ class HostAFlex extends StatelessWidget {
                 textEditingController: controller.searchAddress,
                 textCapitalization: TextCapitalization.sentences,
                 textInputAction: TextInputAction.done,
+                onChanged: (value) {
+                  if (value!.length > 2) {
+                    controller.getUserLatLongByAddress(value);
+                  }
+                },
               ),
             ),
             const Divider(
@@ -570,10 +672,49 @@ class HostAFlex extends StatelessWidget {
               height: 0.1,
               thickness: 0.1,
             ),
+            _buildLocationSuggestions(textTheme),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildLocationSuggestions(TextTheme textTheme) {
+    List<Widget> locationSuggestionContainer = [];
+    if (controller.location.isNotEmpty) {
+      for (int i = 0; i < controller.location.length; i++) {
+        locationSuggestionContainer.add(
+          TextButton(
+            onPressed: () async {
+              controller.flexAddress.text = await controller.formatLocation(
+                controller.location[i].latitude,
+                controller.location[i].longitude);
+              controller.lat.value = controller.location[i].latitude.toString();
+              controller.long.value = controller.location[i].longitude.toString();
+            },
+            style: TextButton.styleFrom(
+              minimumSize: Size(SizeConfig.screenWidth!, 5),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+            ),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                '${controller.formatLocation(controller.location[i].latitude,
+                    controller.location[i].longitude)}',
+                style: textTheme.bodyText1!.copyWith(
+                  fontSize: 16.5,
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+      return Column(
+        children: locationSuggestionContainer,
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
 }

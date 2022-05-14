@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../components/flex-loader.dart';
 import '../../controllers/join-controller.dart';
 import '../../util/constants/constants.dart';
+import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 
@@ -106,7 +107,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'Afro Nation Festival',
+                                      joinController.joinedFlex!.name!,
                                       style: textTheme.headline4!.copyWith(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w600,
@@ -124,7 +125,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          'DEC',
+                                          // 'DEC',
+                                          Functions.getFlexDayAndMonth(DateTime(2021-12-04))[0],
                                           style: textTheme.headline5!.copyWith(
                                             color: primaryColor,
                                             fontSize: 20,
@@ -132,7 +134,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '25',
+                                          // '25'
+                                          Functions.getFlexDayAndMonth(DateTime(2021-12-04))[1],
                                           style: textTheme.headline5!.copyWith(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
@@ -201,7 +204,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Kelechi Mo.',
+                                        // 'Kelechi Mo.',
+                                        joinController.joinedFlex!.name!,
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,
@@ -243,10 +247,11 @@ class JoinedFlexDetails extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                                        'Amet lorem tellus viverra venenatis dui id vitae phasellus odio. '
-                                        'Viverra diam venenatis aliquet imperdiet ultrices nullam gravida viverra faucibus.'
-                                        ' Donec varius tortor mauris gravida sed amet ligula tempus.',
+                                    // 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                                    //     'Amet lorem tellus viverra venenatis dui id vitae phasellus odio. '
+                                    //     'Viverra diam venenatis aliquet imperdiet ultrices nullam gravida viverra faucibus.'
+                                    //     ' Donec varius tortor mauris gravida sed amet ligula tempus.',
+                                    joinController.joinedFlex!.name!,
                                     style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                   ),
                                 ],
@@ -270,7 +275,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          '100/200 Total',
+                                          // '100/200 Total',
+                                          '${joinController.joinedFlex!.capacity!} Total',
                                           style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                         ),
                                       ],
@@ -282,7 +288,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Food & Drinks',
+                                        // 'Food & Drinks',
+                                        joinController.joinedFlex!.consumablesPolicy!,
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,
@@ -316,7 +323,8 @@ class JoinedFlexDetails extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          'Beach Flex',
+                                          // 'Beach Flex',
+                                          joinController.joinedFlex!.flexType!,
                                           style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                         ),
                                       ],

@@ -51,6 +51,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         target: LatLng(lat, long),
         zoom: 19.5,
       );
+      // get
       _getFlexMarkers(lat, long);
     }).catchError((e) async {
       print(e);

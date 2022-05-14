@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -464,11 +465,10 @@ class JoinFlex extends StatelessWidget {
     var api = FlexDataSource();
     await api.joinFlex(controller.flexId).then((flex) {
       controller.showSpinner.value = false;
-      //set the controller value for the flex gotten
+      controller.joinedFlex = flex;
       Get.toNamed(JoinedFlexDetails.id);
     }).catchError((e){
-      Get.toNamed(JoinedFlexDetails.id);
-      print('here');
+      log(e);
       controller.showSpinner.value = false;
       Functions.showMessage(e);
     });

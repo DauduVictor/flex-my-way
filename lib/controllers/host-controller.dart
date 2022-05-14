@@ -6,8 +6,12 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
+import '../model/flex-success.dart';
+import '../model/flex.dart';
 import '../util/constants/constants.dart';
+import '../util/constants/functions.dart';
 
 class HostController extends GetxController {
 
@@ -29,6 +33,12 @@ class HostController extends GetxController {
 
   /// A [TextEditingController] to control the input text for select a date
   final TextEditingController dateController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for select a date
+  final TextEditingController startTimeController = TextEditingController();
+
+  /// A [TextEditingController] to control the input text for select a date
+  final TextEditingController endTimeController = TextEditingController();
 
   /// A [TextEditingController] to control the input text for event hash tag
   final TextEditingController eventHashTagController = TextEditingController();
@@ -94,8 +104,16 @@ class HostController extends GetxController {
   /// bool value to hold the state of privacy policy
   final privacyPolicyAccepted = false.obs;
 
+  /// bool value to hold the state of previewed created flex
+  final previewCreatedFlex = false.obs;
+
   /// Bool variable to hold the bool state if the user is currently logged in
   final isLoggedIn = false.obs;
+
+  /// Variable to hold a list of location that user types
+  List <Location> location = [];
+
+  FlexSuccess? createdFlex;
 
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
@@ -117,10 +135,31 @@ class HostController extends GetxController {
       List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
       flexAddress.text = ('${place.street}, ${place.locality}, ${place.country}');
+      print(lat.value);
+      print(long.value);
     }).catchError((e) async {
-      log(e);
-      throw e;
+      print(e);
+      throw(e);
     });
+  }
+
+  /// Function to launch the url for the video link
+  Future <void> launchVideo() async {
+    if (!await launch(videoLinkController.text)) throw 'Could not launch ${videoLinkController.text}';
+  }
+
+  /// Function to get user location and use [LatLang] in the map
+  Future<String> formatLocation(double lat, double lon) async {
+    List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lon);
+    Placemark place = placeMarks[0];
+    return ('${place.street}, ${place.locality}, ${place.country}');
+  }
+
+  /// Function to get user location and use [LatLang] in the map
+  void getUserLatLongByAddress(String address) async {
+    List<Location> locations = await locationFromAddress(address);
+    print(locations);
+    location = locations;
   }
 
   /*Controller and Variables for host registration*/

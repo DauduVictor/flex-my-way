@@ -6,6 +6,7 @@ class Button extends StatelessWidget {
   final String label;
   final void Function() onPressed;
   final Color labelColor;
+  final Color? color;
   final Widget? child;
 
   const Button({
@@ -13,7 +14,8 @@ class Button extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.labelColor = whiteColor,
-    this.child
+    this.child,
+    this.color
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class Button extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         elevation: 1,
         padding: const EdgeInsets.symmetric(vertical: 21),
-        primary: primaryColor,
+        primary: color ?? primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

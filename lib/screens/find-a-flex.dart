@@ -64,7 +64,7 @@ class _FindAFlexState extends State<FindAFlex> {
               ? Align(
                 alignment: Alignment.topLeft,
                 child: CircleAvatar(
-                    backgroundColor: whiteColor,
+                    backgroundColor: Colors.transparent,
                     radius: 22,
                     child: TextButton(
                       onPressed: () {

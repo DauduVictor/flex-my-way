@@ -130,7 +130,7 @@ class EditProfileDetail extends StatelessWidget {
   }
 
   /// function to make api call Post
-  void updateUserInfo() async{
+  void updateUserInfo() async {
     controller.showSpinner.value = true;
     var api = UserDataSource();
     Map<String, dynamic> body = {
@@ -147,8 +147,7 @@ class EditProfileDetail extends StatelessWidget {
       await db.initDb();
       await db.saveUser(user);
       Functions.showMessage('Your details have been updated successfully');
-      controller.update();
-      controller.updateControllers();
+      // controller.getCurrentUser();
     }).catchError((e){
       controller.showSpinner.value = false;
       Functions.showMessage(e);

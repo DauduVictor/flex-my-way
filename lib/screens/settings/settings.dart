@@ -3,11 +3,9 @@ import 'package:flex_my_way/networking/user-datasource.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
-import 'package:flex_my_way/screens/splash-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../components/app-bar.dart';
 import '../../components/button.dart';
 import '../../components/circle-indicator.dart';
@@ -20,6 +18,7 @@ import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 import '../dashboard/drawer.dart';
+import '../splash-screen.dart';
 import 'about.dart';
 import 'edit-profile-detail.dart';
 
@@ -284,9 +283,7 @@ class Settings extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: TextButton(
               onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.setBool('loggedIn', false);
-                Get.offAllNamed(SplashScreen.id);
+                controller.logOut();
               },
               style: TextButton.styleFrom(
                 primary: primaryColor,
