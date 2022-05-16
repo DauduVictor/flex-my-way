@@ -19,7 +19,7 @@ class EditProfileDetail extends StatelessWidget {
   static const String id = "editProfileDetail";
   EditProfileDetail({Key? key}) : super(key: key);
 
-  /// calling the onboarding controller for [EditProfileDetail]
+  /// calling the setting controller for [EditProfileDetail]
   final SettingsController controller = Get.put(SettingsController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
@@ -69,6 +69,7 @@ class EditProfileDetail extends StatelessWidget {
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.emailAddress,
                             textEditingController: controller.emailAddressController,
+                            readOnly: true,
                           ),
                           CustomTextFormField(
                             hintText: 'Your Phone Number',
@@ -135,7 +136,7 @@ class EditProfileDetail extends StatelessWidget {
     var api = UserDataSource();
     Map<String, dynamic> body = {
       'name': controller.nameController.text,
-      'email': controller.emailAddressController.text,
+      // 'email': controller.emailAddressController.text,
       'phone': controller.phoneNumberController.text,
       'gender': controller.gender,
       'occupation': controller.occuapationController.text,
@@ -147,7 +148,7 @@ class EditProfileDetail extends StatelessWidget {
       await db.initDb();
       await db.saveUser(user);
       Functions.showMessage('Your details have been updated successfully');
-      // controller.getCurrentUser();
+      controller.refreshUserDetails();
     }).catchError((e){
       controller.showSpinner.value = false;
       Functions.showMessage(e);

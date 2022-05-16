@@ -76,7 +76,7 @@ class _FindAFlexState extends State<FindAFlex> {
                       ),
                       child: const Icon(
                         Icons.arrow_back_ios,
-                        color: neutralColor,
+                        color: whiteColor,
                         size: 22,
                       ),
                     ),

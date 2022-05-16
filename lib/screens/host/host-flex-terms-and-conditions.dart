@@ -197,7 +197,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 50),
+                const SizedBox(width: 60),
                 Text(
                   'Flex Preview',
                   style: textTheme.headline2!.copyWith(
@@ -229,13 +229,14 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                     color: whiteColor,
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: SizeConfig.screenHeight! * 0.4,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        height: SizeConfig.screenHeight! * 0.8,
                         width: SizeConfig.screenWidth,
-                        clipBehavior: Clip.hardEdge,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         decoration: const BoxDecoration(
                           image: DecorationImage(
@@ -244,207 +245,253 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: SizeConfig.screenHeight! * 0.55,
-                        child: DraggableScrollableSheet(
-                            minChildSize: 0.6,
-                            initialChildSize: 0.6,
-                            maxChildSize: 0.7,
-                            builder: (context, scrollController) {
-                              return Container(
-                                width: SizeConfig.screenWidth,
-                                padding: const EdgeInsets.only(top: 4),
-                                decoration:  const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(30),
-                                  ),
-                                  color: backgroundColor,
-                                ),
-                                child: SingleChildScrollView(
-                                  controller: scrollController,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    DraggableScrollableSheet(
+                        minChildSize: 0.6,
+                        initialChildSize: 0.6,
+                        maxChildSize: 0.7,
+                        builder: (context, scrollController) {
+                          return Container(
+                            width: SizeConfig.screenWidth,
+                            padding: const EdgeInsets.only(top: 4),
+                            decoration:  const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                                bottomLeft: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                              ),
+                              color: backgroundColor,
+                            ),
+                            child: SingleChildScrollView(
+                              controller: scrollController,
+                              physics: const BouncingScrollPhysics(),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                hostController.nameFlexController.text,
-                                                style: textTheme.headline4!.copyWith(
+                                        Expanded(
+                                          child: Text(
+                                            hostController.nameFlexController.text,
+                                            style: textTheme.headline4!.copyWith(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 30,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 26),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(23),
+                                            color: whiteColor,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                Functions.getFlexDayAndMonth(
+                                                  DateTime.parse(hostController.dateController.text))[0],
+                                                style: textTheme.headline5!.copyWith(
                                                   color: primaryColor,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w600,
-                                                  fontSize: 30,
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(width: 26),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(23),
-                                                color: whiteColor,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    Functions.getFlexDayAndMonth(
-                                                      DateTime.parse(hostController.dateController.text))[0],
-                                                    style: textTheme.headline5!.copyWith(
-                                                      color: primaryColor,
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    Functions.getFlexDayAndMonth(
-                                                        DateTime.parse(hostController.dateController.text))[1],
-                                                    style: textTheme.headline5!.copyWith(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 30),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Time',
-                                                    style: textTheme.bodyText1!.copyWith(
-                                                      fontSize: 16,
-                                                      color: neutralColor.withOpacity(0.5),
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    '${hostController.startTimeController.text} '
-                                                        '- ${hostController.endTimeController.text}',
-                                                    style: textTheme.bodyText1!.copyWith(
-                                                      fontSize: 18.5,
-                                                      color: neutralColor,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {},
-                                              style: TextButton.styleFrom(
-                                                backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
-                                                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(16),
-                                                ),
-                                              ),
-                                              child: hostController.showSpinner.value == false
-                                                  ? Text(
-                                                hostController.paid.value == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
-                                                style: textTheme.button!.copyWith(
-                                                  fontSize: 15,
-                                                  color: whiteColor,
-                                                ),
-                                              )
-                                                  : const Padding(
-                                                      padding: EdgeInsets.symmetric(horizontal: 18),
-                                                      child: SizedBox(
-                                                        height: 17,
-                                                        width: 17,
-                                                        child: CircleProgressIndicator(),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 32),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  AppStrings.host,
-                                                  style: textTheme.headline5!.copyWith(
-                                                    color: neutralColor.withOpacity(0.5),
-                                                    fontSize: 16.5,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  'Kelechi Mo.',
-                                                  style: textTheme.bodyText1!.copyWith(
-                                                    fontSize: 18.5,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'First Time Hoster',
-                                                  style: textTheme.headline5!.copyWith(
-                                                    color: primaryColor,
-                                                    fontSize: 16.5,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
-                                              width: 72,
-                                              height: 72,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(16),
-                                                image: const DecorationImage(
-                                                  image: AssetImage(hostImage),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 12),
-                                        /// video link button
-                                        GestureDetector(
-                                          onTap: () {
-                                            hostController.launchVideo().catchError((e){
-                                              Functions.showMessage('Could not launch url');
-                                            });
-                                          },
-                                          child: Stack(
-                                            children: const [
-                                              Icon(
-                                                Icons.movie,
-                                                color: primaryColor,
-                                                size: 57,
-                                              ),
-                                              Positioned(
-                                                top: 23,
-                                                left: 19,
-                                                child: Icon(
-                                                  Icons.play_arrow,
-                                                  color: whiteColor,
-                                                  size: 21,
+                                              Text(
+                                                Functions.getFlexDayAndMonth(
+                                                    DateTime.parse(hostController.dateController.text))[1],
+                                                style: textTheme.headline5!.copyWith(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                        /// about
-                                        const SizedBox(height: 16),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 30),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Time',
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 16,
+                                                  color: neutralColor.withOpacity(0.5),
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Text(
+                                                '${hostController.startTimeController.text} '
+                                                    '- ${hostController.endTimeController.text}',
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 18.5,
+                                                  color: neutralColor,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {},
+                                          style: TextButton.styleFrom(
+                                            backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
+                                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(16),
+                                            ),
+                                          ),
+                                          child: hostController.showSpinner.value == false
+                                              ? Text(
+                                            hostController.paid.value == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
+                                            style: textTheme.button!.copyWith(
+                                              fontSize: 15,
+                                              color: whiteColor,
+                                            ),
+                                          )
+                                              : const Padding(
+                                                  padding: EdgeInsets.symmetric(horizontal: 18),
+                                                  child: SizedBox(
+                                                    height: 17,
+                                                    width: 17,
+                                                    child: CircleProgressIndicator(),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 32),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'About/Rules',
+                                              AppStrings.host,
+                                              style: textTheme.headline5!.copyWith(
+                                                color: neutralColor.withOpacity(0.5),
+                                                fontSize: 16.5,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              'Kelechi Mo.',
+                                              style: textTheme.bodyText1!.copyWith(
+                                                fontSize: 18.5,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            Text(
+                                              'First Time Hoster',
+                                              style: textTheme.headline5!.copyWith(
+                                                color: primaryColor,
+                                                fontSize: 16.5,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          width: 72,
+                                          height: 72,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                            image: const DecorationImage(
+                                              image: AssetImage(hostImage),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    /// video link button
+                                    GestureDetector(
+                                      onTap: () {
+                                        hostController.launchVideo().catchError((e){
+                                          Functions.showMessage('Could not launch url');
+                                        });
+                                      },
+                                      child: Stack(
+                                        children: const [
+                                          Icon(
+                                            Icons.movie,
+                                            color: primaryColor,
+                                            size: 57,
+                                          ),
+                                          Positioned(
+                                            top: 23,
+                                            left: 19,
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              color: whiteColor,
+                                              size: 21,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    /// about
+                                    const SizedBox(height: 16),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'About/Rules',
+                                          style: textTheme.bodyText1!.copyWith(
+                                            fontSize: 18.5,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          hostController.flexRulesController.text,
+                                          style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 25),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        //guest
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Guests',
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 18.5,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                '1 / ${hostController.numberOfPeopleController.text} Total',
+                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        //provided
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              hostController.consumablePolicy.value,
                                               style: textTheme.bodyText1!.copyWith(
                                                 fontSize: 18.5,
                                                 fontWeight: FontWeight.w600,
@@ -452,159 +499,113 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                                             ),
                                             const SizedBox(height: 10),
                                             Text(
-                                              hostController.flexRulesController.text,
+                                              'Will be Provided',
                                               style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 25),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            //guest
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Guests',
-                                                    style: textTheme.bodyText1!.copyWith(
-                                                      fontSize: 18.5,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    '1 / ${hostController.numberOfPeopleController.text} Total',
-                                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            //provided
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  hostController.consumablePolicy.value,
-                                                  style: textTheme.bodyText1!.copyWith(
-                                                    fontSize: 18.5,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  'Will be Provided',
-                                                  style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 25),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            //nature of flex
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Nature of Flex',
-                                                    style: textTheme.bodyText1!.copyWith(
-                                                      fontSize: 18.5,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    hostController.typeOfFlex.value,
-                                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            //rsvp
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'RSVP',
-                                                  style: textTheme.bodyText1!.copyWith(
-                                                    fontSize: 18.5,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  hostController.hostPhoneNumberController.text,
-                                                  style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 32),
-                                        Container(
-                                          width: SizeConfig.screenWidth,
-                                          height: SizeConfig.screenHeight! * 0.25,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                          // child: ClipRRect(
-                                          //   borderRadius: BorderRadius.circular(16),
-                                          //   child: GoogleMap(
-                                          //     mapType: MapType.normal,
-                                          //     initialCameraPosition: userPosition,
-                                          //     onMapCreated: _onMapCreated,
-                                          //     myLocationEnabled: false,
-                                          //     myLocationButtonEnabled: false,
-                                          //     scrollGesturesEnabled: false,
-                                          //     zoomControlsEnabled: false,
-                                          //     zoomGesturesEnabled: false,
-                                          //   ),
-                                          // ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Icon(
-                                                  Icons.content_copy_outlined,
-                                                  color: primaryColor,
-                                                  size: 12,
-                                                ),
-                                                const SizedBox(width: 6),
-                                                Text(
-                                                  'Click to Copy Address',
-                                                  style: textTheme.headline5!.copyWith(
-                                                    color: primaryColor,
-                                                    fontSize: 12,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 12),
                                       ],
                                     ),
-                                  ),
+                                    const SizedBox(height: 25),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        //nature of flex
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Nature of Flex',
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 18.5,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                hostController.typeOfFlex.value,
+                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        //rsvp
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'RSVP',
+                                              style: textTheme.bodyText1!.copyWith(
+                                                fontSize: 18.5,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              hostController.hostPhoneNumberController.text,
+                                              style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 32),
+                                    Container(
+                                      width: SizeConfig.screenWidth,
+                                      height: SizeConfig.screenHeight! * 0.25,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      // child: ClipRRect(
+                                      //   borderRadius: BorderRadius.circular(16),
+                                      //   child: GoogleMap(
+                                      //     mapType: MapType.normal,
+                                      //     initialCameraPosition: userPosition,
+                                      //     onMapCreated: _onMapCreated,
+                                      //     myLocationEnabled: false,
+                                      //     myLocationButtonEnabled: false,
+                                      //     scrollGesturesEnabled: false,
+                                      //     zoomControlsEnabled: false,
+                                      //     zoomGesturesEnabled: false,
+                                      //   ),
+                                      // ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(
+                                              Icons.content_copy_outlined,
+                                              color: primaryColor,
+                                              size: 12,
+                                            ),
+                                            const SizedBox(width: 6),
+                                            Text(
+                                              'Click to Copy Address',
+                                              style: textTheme.headline5!.copyWith(
+                                                color: primaryColor,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
                                 ),
-                              );
-                            }),
-                      ),
-                    ],
-                  ),
+                              ),
+                            ),
+                          );
+                        }),
+                  ],
                 ),
               ),
             ),

@@ -4,15 +4,17 @@ import 'package:flex_my_way/controllers/host-controller.dart';
 import 'package:flex_my_way/controllers/join-controller.dart';
 import 'package:flex_my_way/controllers/onboarding-controller.dart';
 import 'package:flex_my_way/controllers/user-controller.dart';
+import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../database/user-db-helper.dart';
-import '../model/user.dart';
 import '../screens/splash-screen.dart';
 import '../util/constants/constants.dart';
 
 class SettingsController extends GetxController {
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.put(UserController());
 
   @override
   void onInit() {
@@ -20,48 +22,16 @@ class SettingsController extends GetxController {
     super.onInit();
   }
 
-  // @override
-  // // TODO: implement onStart
-  // InternalFinalCallback<void> get onStart {
-  //   showEditPassword.value = false;
-  //   currentPasswordController.clear();
-  //   newPasswordController.clear();
-  //   update();
-  //   return super.onStart;
-  // }
-
-  // @override
-  // void onClose() {
-  //   showEditPassword.value = false;
-  //   currentPasswordController.clear();
-  //   newPasswordController.clear();
-  //   update();
-  //   super.onClose();
-  // }
-
-  /// Instantiating the user model
-  var user = User();
-
-  Future<User> getCurrentUser() async {
-    var db = DatabaseHelper();
-    Future<User> user = db.getUser();
-    return user;
-  }
-
   /// Function to get user details from the database
-  void _getCurrentUser() async {
-    await getCurrentUser().then((user) {
-      userName.value = user.name!;
-      nameController.text = user.name!;
-      emailAddressController.text = user.email!;
-      phoneNumberController.text = user.phone!;
-      gender = user.gender!;
-      occuapationController.text = user.occupation!;
-      preferredFlex = user.preferredFlex!;
-      log(userName.value);
-    }).catchError((e){
-      log(e);
-    });
+  void _getCurrentUser() {
+    userName.value = userController.username.value;
+    nameController.text = userController.username.value;
+    emailAddressController.text = userController.emailAddress.value;
+    phoneNumberController.text = userController.phoneNumber.value;
+    gender = userController.gender.value;
+    occuapationController.text = userController.occupation.value;
+    preferredFlex = userController.preferredFlex.value;
+    // log(userName.value);
   }
 
   /*Controllers and Variables for log in*/
@@ -105,6 +75,11 @@ class SettingsController extends GetxController {
 
   /// Variable to hold the value of the preferred flex
   String preferredFlex = preferredFlexes[0];
+
+  /// Function to refresh user details after [EditProfileDetail]
+  void refreshUserDetails() {
+    userController.getCurrentUserDetail();
+  }
 
   /// Function to update controllers when user details change
   void logOut() async {

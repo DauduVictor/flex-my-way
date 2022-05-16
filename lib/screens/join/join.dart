@@ -6,6 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../bloc/future-values.dart';
+import '../../model/flex.dart';
+import '../../networking/flex-datasource.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/location-permission.dart';
@@ -30,13 +32,36 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
 
   var locationPermission = LocationPermissionCheck();
 
+  var api = FlexDataSource();
+
   CameraPosition? userPosition;
+
+  /// Google map controller
+  final Completer<GoogleMapController> _mapController = Completer();
+
+  /// Function for _onMapCreated
+  void _onMapCreated(GoogleMapController controller) {
+    // controller.animateCamera();
+    _mapController.complete(controller);
+  }
+
+  /// Variable to hold a set of markers displayed to the user
+  final Set<Marker> _markers = {};
+
+  /// variable to hold custom icon used as the marker
+  BitmapDescriptor? customIcon;
 
   /// Variable to hold latitude
   double lat = 0.0;
 
   /// Variable to hold longitude
   double long = 0.0;
+
+  /// Variable to hold flex list
+  List<Flexes> flex = [];
+
+  /// Variable to hold flex length
+  int flexLength = 0;
 
   /// Function to get user location and use [LatLang] in the map
   void getUserLocation() async {
@@ -47,12 +72,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         lat = double.parse(value[0]);
         long = double.parse(value[1]);
       });
+      _getFlexByLocation(lat, long);
       userPosition = CameraPosition(
         target: LatLng(lat, long),
         zoom: 19.5,
       );
-      // get
-      _getFlexMarkers(lat, long);
+      // _getFlexMarkers(lat, long);
     }).catchError((e) async {
       print(e);
       if(!mounted) return;
@@ -64,6 +89,46 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     });
   }
 
+  /// Function to make api call to get flex by [LatLang]
+  void _getFlexByLocation(double lat, double long) async {
+    await api.getFlexByLocation(lat, long).then((value) {
+      setState(() {
+        flex = value;
+        flexLength = flex.length;
+      });
+      _buildFlexOnMap();
+    }).catchError((e) {
+      if (!mounted) return;
+      print(e);
+      Functions.showMessage(e);
+    });
+  }
+
+  /// Function to build markers on the map from [List<Flexes>]
+  void _buildFlexOnMap() {
+    if (flex.isNotEmpty && flexLength > 0) {
+      for (int i = 0; i < flex.length; i++) {
+        _markers.add(
+          Marker(
+            markerId: MarkerId('markerId$i'),
+            position: LatLng(
+              lat,
+              long,
+            ),
+            icon: customIcon!,
+            onTap: () {
+              Navigator.pushNamed(context, JoinFlex.id);
+            }
+          ),
+        );
+      }
+    } else {
+      Functions.showMessage('It seems like we couldn\'t find flexes close to you. Try again!');
+    }
+  }
+
+
+
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,9 +138,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       });
     }
   }
-
-  /// variable to hold custom icon used as the marker
-  BitmapDescriptor? customIcon;
 
   /// Function to create icon with the help of [customIcon]
   void _createCustomMarkerIcon(context) {
@@ -110,18 +172,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
 
   /// Variable to hold the state of the pay button
   bool _pay = true;
-
-  /// Google map controller
-  final Completer<GoogleMapController> _mapController = Completer();
-
-  /// Function for _onMapCreated
-  void _onMapCreated(GoogleMapController controller) {
-    // controller.animateCamera();
-    _mapController.complete(controller);
-  }
-
-  /// Variable to hold a set of markers displayed to the user
-  final Set<Marker> _markers = {};
 
   /// Variable to hold value of price range
   double priceRange = 0;

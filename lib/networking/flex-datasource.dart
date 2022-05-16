@@ -22,7 +22,7 @@ class FlexDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [] model
-  Future<FlexSuccess> createFlex (/*File uploads, Map<String, dynamic>*/ body) async {
+  Future<FlexSuccess> createFlex(/*File uploads, Map<String, dynamic>*/ body) async {
     String? userId;
     List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
@@ -50,7 +50,7 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A get request to use the [JOIN_FLEX]
   /// It returns a [] model
-  Future<Flexes> joinFlex (String flexId) async {
+  Future<Flexes> joinFlex(String flexId) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
@@ -68,6 +68,33 @@ class FlexDataSource {
       print(res);
       if(res['status'] != 'success') throw res['data'];
       return Flexes.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
+  /// A get request to use the [GET_FLEX_BY_LOCATION]
+  /// It returns a [List<Flexes>] model
+  Future<List<Flexes>> getFlexByLocation(double lat, double long) async {
+    Map<String, String> header = {};
+    List<Flexes> flexes;
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+    });
+    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long';
+    print(GET_FLEX_BY_LOCATION_URL);
+    print(header);
+    return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {
+      print(res);
+      if(res['status'] != 'success') throw res['data'];
+      var rest = res['data'] as List;
+      flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
     });

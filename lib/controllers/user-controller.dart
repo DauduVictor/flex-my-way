@@ -16,27 +16,44 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
-    _getCurrentUser();
+    getCurrentUserDetail();
     super.onInit();
   }
 
   /// Function to get user details from the database
-  void _getCurrentUser() async {
+  void getCurrentUserDetail() async {
     await getCurrentUser().then((user) {
-      userName.value = user.name!;
-      // nameController.text = user.name!;
-      // emailAddressController.text = user.email!;
-      // phoneNumberController.text = user.phone!;
-      // gender = user.gender!;
-      // occuapationController.text = user.occupation!;
-      // preferredFlex = user.preferredFlex!;
-      log(userName.value);
+      username.value = user.name!;
+      emailAddress.value = user.email!;
+      phoneNumber.value = user.phone!;
+      gender.value = user.gender!;
+      preferredFlex.value = user.preferredFlex!;
+      infoSource.value = user.infoSource!;
+      occupation.value = user.occupation!;
     }).catchError((e){
       log(e);
     });
   }
 
   /// Variable to hold the user's name
-  final userName = 'there'.obs;
+  final username = 'there'.obs;
+
+  /// Variable to hold user's email
+  final emailAddress = ''.obs;
+
+  /// Variable to hold user's phone number
+  final phoneNumber = ''.obs;
+
+  /// Variable to hold user's gender
+  final gender = ''.obs;
+
+  /// Variable to hold user's preferred flex
+  final preferredFlex = ''.obs;
+
+  /// Variable to hold user's info source
+  final infoSource = ''.obs;
+
+  /// Variable to hold user's occupation
+  final occupation = ''.obs;
 
 }

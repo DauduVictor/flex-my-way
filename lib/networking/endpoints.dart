@@ -14,3 +14,4 @@ const DELETE_A_USER = 'id/delete';
 // Endpoints regarding flex
 const CREATE_A_FLEX = BASE_URL + 'flex/new?userid=';
 const JOIN_FLEX = BASE_URL + 'flex/';
+const GET_FLEX_BY_LOCATION = BASE_URL + 'flex/locate?';
