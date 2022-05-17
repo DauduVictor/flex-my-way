@@ -4,7 +4,7 @@ import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../components/app-bar.dart';
-import '../../controllers/dashboard-controller.dart';
+import '../../controllers/user-controller.dart';
 import '../../util/constants/strings.dart';
 import '../../util/size-config.dart';
 import 'drawer.dart';
@@ -14,15 +14,15 @@ class Dashboard extends StatelessWidget {
   static const String id = "dashboard";
   Dashboard({Key? key}) : super(key: key);
 
-  /// calling the onboarding controller for [DashboardController]
-  final DashboardController controller = Get.put(DashboardController());
+  /// calling the user controller [UserController]
+  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
-        appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
+        appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
         drawer: const RefactoredDrawer(),
         body: DefaultTabController(
           length: 2,

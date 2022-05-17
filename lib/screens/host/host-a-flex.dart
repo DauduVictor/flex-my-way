@@ -314,7 +314,7 @@ class HostAFlex extends StatelessWidget {
                           return 'This field is required';
                         }
                         if(!value.contains('#')) {
-                          controller.eventHashTagController.text = '#$value}';
+                          controller.eventHashTagController.text = '#$value';
                         }
                         return null;
                       },

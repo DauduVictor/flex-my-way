@@ -4,13 +4,10 @@ import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../components/circle-indicator.dart';
-import '../../controllers/join-controller.dart';
-import '../../networking/flex-datasource.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:flex_my_way/networking/networking.dart';
 import '../onboarding/login.dart';
 
 class JoinFlex extends StatelessWidget {
@@ -20,6 +17,9 @@ class JoinFlex extends StatelessWidget {
 
   /// calling the [JoinController] for [JoinFlex]
   final JoinController controller = Get.put(JoinController());
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   final CameraPosition userPosition = const CameraPosition(
     target: LatLng(6.519314, 3.396336),
@@ -174,7 +174,7 @@ class JoinFlex extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      if (controller.isLoggedIn.value) {
+                                      if (userController.isLoggedIn.value) {
                                         if(controller.isPaid) {
                                           Functions.showMessage('You will be redirected to the payment gateway to make payment');
                                           // controller.isPaid.toggle();

@@ -277,7 +277,7 @@ class SignUp extends StatelessWidget {
       Get.back();
     }).catchError((e){
       controller.loginShowSpinner.value = false;
-      Functions.showMessage('It seems a user exists with those details. Try again!');
+      Functions.showMessage(e);
       log(e);
     });
   }

@@ -1,9 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
-import '../model/user.dart';
-import 'endpoints.dart';
-import 'error-handler.dart';
-import 'network-util.dart';
+import 'networking.dart';
+import 'package:flex_my_way/model/model.dart';
 
 /// Class to hold all function for [UserDataSource]
 class UserDataSource {
@@ -37,6 +35,7 @@ class UserDataSource {
   /// A post request to use the [NEW_USER_SIGNUP]
   /// It returns a string message
   Future<dynamic> signUp (Map<String, String> body) {
+    header['Accept'] = '*/*';
     return _netUtil.post(NEW_USER_SIGNUP, headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];

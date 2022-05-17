@@ -6,12 +6,7 @@ import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
-import '../../components/app-bar.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/list-tile-button.dart';
-import '../../components/settings-button.dart';
-import '../../components/text-form-field.dart';
+import 'package:flex_my_way/components/components.dart';
 import '../../controllers/setting-controller.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
@@ -63,7 +58,9 @@ class Settings extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                   child: ListTileButton(
                     title: AppStrings.becomeAHost,
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.refreshUserDetails();
+                    },
                   ),
                 ),
                 Expanded(

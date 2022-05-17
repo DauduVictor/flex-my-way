@@ -59,6 +59,14 @@ List<String> publicOrPrivate = ['Public', 'Private'];
 List<bool> displayToOnlyAcceptedParticipants = [false, true];
 List<bool> isGenderRestrictions = [false, true];
 List<String> yesOrNo = ['Yes', 'No'];
-List<String> foodAndDrinkPolicy = ['Food', 'Drink'];
+List<String> foodAndDrinkPolicy = [
+  'Food & Drinks @ a cost',
+  'Come with your Drinks',
+  'You can come with your Food and Drinks',
+  'Food and Drinks are not allowed',
+  'Free Food and Drink',
+  'Men come with a bottle of Drink',
+  'Women come with a bottle of Drink'
+];
 List<String> genders = ['Male', 'Female'];
 List<String> infoSource = ['Social Media', 'Friend', 'Website'];

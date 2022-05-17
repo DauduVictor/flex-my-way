@@ -1,14 +1,12 @@
 import 'dart:developer';
-import 'package:flex_my_way/controllers/user-controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../database/user-db-helper.dart';
-import '../model/user.dart';
+import 'controllers.dart';
 
 class OnboardingController extends GetxController {
 
   /// calling the user controller [UserController]
-  final UserController userController = Get.put(UserController());
+  final UserController userController = Get.find<UserController>();
 
   @override
   void onInit() {
@@ -21,7 +19,7 @@ class OnboardingController extends GetxController {
     loginEmailAddressController.text = userController.emailAddress.value;
     forgotPasswordEmailAddressController.text = userController.emailAddress.value;
     resetPasswordEmailAddressController.text = userController.emailAddress.value;
-    print(loginEmailAddressController.text);
+    log(loginEmailAddressController.text);
   }
 
   /*Controllers and Variables for log in*/

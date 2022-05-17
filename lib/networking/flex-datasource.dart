@@ -1,11 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
-import '../model/flex-success.dart';
-import '../model/flex.dart';
-import '../model/user.dart';
-import 'endpoints.dart';
-import 'error-handler.dart';
-import 'network-util.dart';
+import 'networking.dart';
+import 'package:flex_my_way/model/model.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
@@ -95,6 +91,54 @@ class FlexDataSource {
       var rest = res['data'] as List;
       flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
       return flexes;
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
+  /// A post request to use the [APPROVE_ATTENDEE]
+  /// It returns a dynamic response
+  Future<dynamic> acceptAttendee(String flexCode, Map<String, dynamic> body) async {
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+    });
+    String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + '$flexCode/approve';
+    print(APPROVE_ATTENDEE_URL);
+    print(header);
+    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
+      print(res);
+      if(res['status'] != 'success') throw res['data'];
+      return res['data'];
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
+  /// A post request to use the [APPROVE_ATTENDEE]
+  /// It returns a dynamic response
+  Future<dynamic> rejectAttendee(String flexCode, Map<String, dynamic> body) async {
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+    });
+    String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + '$flexCode/reject';
+    print(REJECT_ATTENDEE_URL);
+    print(header);
+    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {
+      print(res);
+      if(res['status'] != 'success') throw res['data'];
+      return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
     });

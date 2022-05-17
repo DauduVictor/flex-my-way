@@ -15,3 +15,5 @@ const DELETE_A_USER = 'id/delete';
 const CREATE_A_FLEX = BASE_URL + 'flex/new?userid=';
 const JOIN_FLEX = BASE_URL + 'flex/';
 const GET_FLEX_BY_LOCATION = BASE_URL + 'flex/locate?';
+const APPROVE_ATTENDEE = BASE_URL + 'flex/';
+const REJECT_ATTENDEE = BASE_URL + 'flex/';

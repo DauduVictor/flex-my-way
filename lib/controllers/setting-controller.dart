@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:flex_my_way/controllers/dashboard-controller.dart';
 import 'package:flex_my_way/controllers/host-controller.dart';
 import 'package:flex_my_way/controllers/join-controller.dart';
 import 'package:flex_my_way/controllers/onboarding-controller.dart';
@@ -14,7 +13,7 @@ import '../util/constants/constants.dart';
 class SettingsController extends GetxController {
 
   /// calling the user controller [UserController]
-  final UserController userController = Get.put(UserController());
+  final UserController userController = Get.find<UserController>();
 
   @override
   void onInit() {
@@ -31,7 +30,7 @@ class SettingsController extends GetxController {
     gender = userController.gender.value;
     occuapationController.text = userController.occupation.value;
     preferredFlex = userController.preferredFlex.value;
-    // log(userName.value);
+    log(userName.value);
   }
 
   /*Controllers and Variables for log in*/
@@ -83,7 +82,6 @@ class SettingsController extends GetxController {
 
   /// Function to update controllers when user details change
   void logOut() async {
-    Get.delete<DashboardController>();
     Get.delete<HostController>();
     Get.delete<JoinController>();
     Get.delete<OnboardingController>();

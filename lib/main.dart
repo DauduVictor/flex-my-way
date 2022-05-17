@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      initialRoute: SplashScreen.id,
+      initialRoute: Dashboard.id,
       enableLog: true,
       // getPages: [
       //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         ForgotPassword.id: (context) => ForgotPassword(),
         ResetPassword.id: (context) =>  ResetPassword(),
         SignUp.id: (context) => SignUp(),
-        FindAFlex.id: (context) => const FindAFlex(),
+        FindAFlex.id: (context) => FindAFlex(),
         HostRegistration.id: (context) => HostRegistration(),
         HostAFlex.id: (context) => HostAFlex(),
         HostFlexTermsAndConditions.id: (context) => HostFlexTermsAndConditions(),

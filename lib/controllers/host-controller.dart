@@ -5,7 +5,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
 import '../model/flex-success.dart';
@@ -17,12 +16,6 @@ class HostController extends GetxController {
 
   /// Instantiating a class of future values
   var futureValues = FutureValues();
-
-  @override
-  void onInit() {
-    checkUserIsLoggedIn();
-    super.onInit();
-  }
 
   /// Variable to hold the bool state of spinner
   final showSpinner = false.obs;
@@ -107,25 +100,10 @@ class HostController extends GetxController {
   /// bool value to hold the state of previewed created flex
   final previewCreatedFlex = false.obs;
 
-  /// Bool variable to hold the bool state if the user is currently logged in
-  final isLoggedIn = false.obs;
-
   /// Variable to hold a list of location that user types
   List <Location> location = [];
 
   FlexSuccess? createdFlex;
-
-  /// function to check if the user is currently logged in
-  void checkUserIsLoggedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('loggedIn') == true) {
-      isLoggedIn.value = true;
-      print('logged in');
-    }
-    else {
-      log('User is not logged in');
-    }
-  }
 
   /// Function to get user location and use [LatLang] in the map
   void getUserLocation() async {

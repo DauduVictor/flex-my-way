@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/app-bar.dart';
-import '../../controllers/dashboard-controller.dart';
-import '../../util/constants/constants.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'drawer.dart';
 
 
@@ -12,15 +11,15 @@ class PendingInvites extends StatelessWidget {
   static const String id = "pendingInvites";
   PendingInvites({Key? key}) : super(key: key);
 
-  /// calling the [DashboardController] for [PendingInvites]
-  final DashboardController controller = Get.put(DashboardController());
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
-        appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
+        appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
         drawer: const RefactoredDrawer(),
         body: Column(
           children: [
@@ -97,93 +96,3 @@ class PendingInvites extends StatelessWidget {
   }
 }
 
-class ReusablePendingInviteButton extends StatelessWidget {
-
-  const ReusablePendingInviteButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.fromLTRB(32, 28, 5, 28),
-          decoration: BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        style: textTheme.bodyText2!,
-                        children: [
-                          TextSpan(
-                            text: '#12345678',
-                            style: textTheme.bodyText1!.copyWith(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const TextSpan(
-                            text: ' wants in.',
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      'Afro Nation Festival',
-                      style: textTheme.bodyText2!.copyWith(
-                        fontSize: 14,
-                        color: neutralColor.withOpacity(0.5),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Icon(
-                        Icons.check,
-                        color: greenColor,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Icon(
-                        Icons.close,
-                        color: errorColor,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const  SizedBox(height: 15),
-      ],
-    );
-  }
-}

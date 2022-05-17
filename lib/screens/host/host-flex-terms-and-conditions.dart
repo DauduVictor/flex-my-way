@@ -1,16 +1,11 @@
 import 'dart:developer';
 import 'package:flex_my_way/screens/host/host-flex-success.dart';
-import 'package:flex_my_way/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/text-form-field.dart';
-import '../../controllers/host-controller.dart';
-import '../../networking/flex-datasource.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/networking/networking.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 import '../onboarding/login.dart';
 
 class HostFlexTermsAndConditions extends StatelessWidget {
@@ -20,6 +15,9 @@ class HostFlexTermsAndConditions extends StatelessWidget {
 
   /// calling the [HostController] for [HostFlexTermsAndConditions]
   final HostController hostController = Get.put(HostController());
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
@@ -148,7 +146,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                                 if(_formKey.currentState!.validate()) {
                                   if(hostController.termsAndConditionsAccepted.value &&
                                       hostController.privacyPolicyAccepted.value) {
-                                    hostController.isLoggedIn.value == true
+                                    userController.isLoggedIn.value == true
                                       ? _hostFlex()
                                       : Navigator.pushNamed(context, Login.id);
                                   }
@@ -157,7 +155,7 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                               else {
                                 if(hostController.termsAndConditionsAccepted.value
                                     && hostController.privacyPolicyAccepted.value) {
-                                  hostController.isLoggedIn.value == true
+                                  userController.isLoggedIn.value == true
                                     ? hostController.previewCreatedFlex.value == true
                                         ? _hostFlex()
                                         : _showPreviewDialog(context, textTheme)

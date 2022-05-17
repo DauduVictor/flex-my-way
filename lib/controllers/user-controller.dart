@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../database/user-db-helper.dart';
 import '../model/user.dart';
 
@@ -17,6 +18,7 @@ class UserController extends GetxController {
   @override
   void onInit() {
     getCurrentUserDetail();
+    checkUserIsLoggedIn();
     super.onInit();
   }
 
@@ -30,10 +32,27 @@ class UserController extends GetxController {
       preferredFlex.value = user.preferredFlex!;
       infoSource.value = user.infoSource!;
       occupation.value = user.occupation!;
+      log(username.value);
+      log(emailAddress.value);
     }).catchError((e){
       log(e);
     });
   }
+
+  /// function to check if the user is currently logged in
+  void checkUserIsLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('loggedIn') == true) {
+      isLoggedIn.value = true;
+      log('logged in');
+    }
+    else {
+      log('User is not logged in');
+    }
+  }
+
+  /// Bool variable to hold the bool state if the user is currently logged in
+  final isLoggedIn = false.obs;
 
   /// Variable to hold the user's name
   final username = 'there'.obs;

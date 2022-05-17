@@ -4,16 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import '../../components/app-bar.dart';
-import '../../controllers/dashboard-controller.dart';
 import '../../util/size-config.dart';
 
 class Notifications extends StatelessWidget {
 
   static const String id = "notifications";
   Notifications({Key? key}) : super(key: key);
-
-  /// calling the [DashboardController] for [Notifications]
-  final DashboardController controller = Get.put(DashboardController());
 
   @override
   Widget build(BuildContext context) {
