@@ -1,10 +1,12 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/networking/networking.dart';
 import 'drawer.dart';
-
 
 class PendingInvites extends StatelessWidget {
 
@@ -35,14 +37,16 @@ class PendingInvites extends StatelessWidget {
                 style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      acceptAll('', []);
+                    },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                     ),
@@ -56,7 +60,9 @@ class PendingInvites extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      rejectAll('', []);
+                    },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                     ),
@@ -73,22 +79,44 @@ class PendingInvites extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 15, 20, 24),
-                  child: Column(
-                    children: const [
-                      ReusablePendingInviteButton(),
-                      ReusablePendingInviteButton(),
-                      ReusablePendingInviteButton(),
-                      ReusablePendingInviteButton(),
-                      ReusablePendingInviteButton(),
-                      ReusablePendingInviteButton(),
-                    ],
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 15, 20, 24),
+                child: userController.invites.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: userController.invites.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var invites = userController.invitesList.elementAt(index);
+                        return ReusablePendingInviteButton(invites: invites);
+                      },
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SpinKitCircle(
+                          color: primaryColor.withOpacity(0.9),
+                          size: 65,
+                        ),
+                      ],
                   ),
-                ),
               ),
             ),
+            // Expanded(
+            //   child: SingleChildScrollView(
+            //     child: Padding(
+            //       padding: const EdgeInsets.fromLTRB(20, 15, 20, 24),
+            //       child: Column(
+            //         children: const [
+            //           ReusablePendingInviteButton(),
+            //           ReusablePendingInviteButton(),
+            //           ReusablePendingInviteButton(),
+            //           ReusablePendingInviteButton(),
+            //           ReusablePendingInviteButton(),
+            //           ReusablePendingInviteButton(),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       )
@@ -96,3 +124,32 @@ class PendingInvites extends StatelessWidget {
   }
 }
 
+/// Function to make api POST request
+/// To accept attendee
+void acceptAll(String flexCode, List<String>? participants) async {
+  Map<String, dynamic> body = {
+    'participants': participants
+  };
+  var api = FlexDataSource();
+  await api.acceptAttendee(flexCode, body).then((flex) {
+    /// update the controller here
+  }).catchError((e){
+    log(e);
+    Functions.showMessage(e);
+  });
+}
+
+/// Function to make api POST request
+/// To reject attendee
+void rejectAll(String flexCode, List<String> participants) async {
+  Map<String, dynamic> body = {
+    'participants': participants
+  };
+  var api = FlexDataSource();
+  await api.rejectAttendee(flexCode, body).then((flex) {
+    /// update the controller here
+  }).catchError((e){
+    log(e);
+    Functions.showMessage(e);
+  });
+}

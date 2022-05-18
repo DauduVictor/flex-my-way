@@ -1,15 +1,21 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
-
+import 'package:get/get.dart';
+import '../controllers/user-controller.dart';
 import '../networking/flex-datasource.dart';
 
 class ReusablePendingInviteButton extends StatelessWidget {
 
-  const ReusablePendingInviteButton({
+  final String? invites;
+
+  ReusablePendingInviteButton({
     Key? key,
+    this.invites
   }) : super(key: key);
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,13 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        acceptAttendee('', []);
+                        print(userController.invitesList);
+                        print(invites);
+                        userController.invitesList.removeAt(int.parse(invites!));
+                        print(userController.invitesList);
+                        // userController.update();
+                        // print(userController.invitesList);
+                        // acceptAttendee('', []);
                       },
                       child: const Icon(
                         Icons.check,
@@ -79,7 +91,13 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     width: 50,
                     height: 50,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print(userController.invitesList);
+                        print(invites);
+                        userController.invitesList.removeAt(int.parse(invites!));
+                        print(userController.invitesList);
+                        // rejectAttendee('', []);
+                      },
                       child: const Icon(
                         Icons.close,
                         color: errorColor,

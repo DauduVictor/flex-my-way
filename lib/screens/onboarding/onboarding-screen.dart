@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'package:flex_my_way/util/size-config.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/strings.dart';
+import 'package:flex_my_way/util/util.dart';
 import '../find-a-flex.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -19,7 +18,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   /// Function to navigate after the splash screen loader ends
   void _navigate()  {
-    Timer(const Duration(microseconds: 10), () {
+    Timer(const Duration(microseconds: 6), () {
       setState(() {
         _width = 0;
       });
@@ -31,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Timer(const Duration(seconds: 5), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('onBoarded', true);
-      Navigator.pushNamed(context, FindAFlex.id);
+      Get.offAndToNamed(FindAFlex.id);
     });
   }
 

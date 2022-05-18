@@ -3,10 +3,8 @@ import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../util/constants/constants.dart';
-import '../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'dashboard/dashboard.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,19 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   /// Function to navigate to the next screen after the splash screen is completed
   void _navigate() {
-    Timer(const Duration(seconds: 3), () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.getBool('loggedIn') == true
-        ? Get.offAndToNamed(Dashboard.id)
-        : Get.offAndToNamed(FindAFlex.id);
-      // if (prefs.getBool('loggedIn') == true) {
-      //   Navigator.pushReplacementNamed(context, Dashboard.id);
-      // }
-      // else if (prefs.getBool('onBoarded') == false) {
-      //   Navigator.pushReplacementNamed(context, OnboardingScreen.id);
-      // }
-      // Navigator.pushReplacementNamed(context, FindAFlex.id);
-    });
+    Timer(const Duration(milliseconds: 1500), () => getBoolFromSp());
   }
 
   @override
@@ -77,5 +63,20 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+}
+///Function to get if user has been onboarded with help of
+/// [SharedPreferences]
+void getBoolFromSp() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool('onBoarded') == true) {
+    if (prefs.getBool('loggedIn') == true) {
+      Get.offAndToNamed(Dashboard.id);
+    }
+    else {
+      Get.offAndToNamed(FindAFlex.id);
+    }
+  } else {
+    Get.offAndToNamed(OnboardingScreen.id);
   }
 }

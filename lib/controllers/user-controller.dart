@@ -75,4 +75,27 @@ class UserController extends GetxController {
   /// Variable to hold user's occupation
   final occupation = ''.obs;
 
+  /*api integration*/
+  /// Tempral map to hold the invite length
+  Map<String, String> invites = {
+    '1' : 'oiwjnowfe782',
+    '2' : 'posf232',
+    '3' : 'oisjdfe23',
+    '4' : '09uoisf',
+    '5' : 'oisf789w',
+    '6' : 'svhriubw63',
+    '7' : '023jnsfss',
+  };
+
+  /// Tempral list to hold the list of invites
+  List<String> invitesList = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+  ];
+
 }
