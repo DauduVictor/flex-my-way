@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      initialRoute: Dashboard.id,
+      initialRoute: SplashScreen.id,
       enableLog: true,
       // getPages: [
       //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),

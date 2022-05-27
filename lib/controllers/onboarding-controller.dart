@@ -82,4 +82,9 @@ class OnboardingController extends GetxController {
 
   ///Variable to hold the bool value of password field obscure text
   final resetPasswordObscurePassword = true.obs;
+
+  /// Function to update [UserController] that a user is logged in
+  void updateLoginStatus() {
+    userController.checkUserIsLoggedIn();
+  }
 }

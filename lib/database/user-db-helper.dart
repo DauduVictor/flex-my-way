@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:path/path.dart';
 import 'dart:io' as io;
 import 'dart:async';
@@ -41,7 +42,7 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute('CREATE TABLE $USER_TABLE('
-        'id TEXT PRIMARY KEY NOT NULL,'
+        '_id TEXT PRIMARY KEY NOT NULL,'
         'name TEXT,'
         'email TEXT,'
         'phone TEXT,'
@@ -50,21 +51,21 @@ class DatabaseHelper {
         'infoSource TEXT,'
         'occupation TEXT,'
         'bearer_token TEXT)');
-    print('Created tables');
+    log('Created tables');
   }
 
   /// This function insert user's details into the database records
   Future<int> saveUser(User user) async {
     var dbClient = await db;
     await dbClient.delete(USER_TABLE);
-    int res = await dbClient.insert(USER_TABLE, user.toJson());
+    int res = await dbClient.insert(USER_TABLE, user.toSql());
     return res;
   }
 
   /// This function update user's details in the database records
   Future<int> updateUser(User user) async {
     var dbClient = await db;
-    int res = await dbClient.update(USER_TABLE, user.toJson());
+    int res = await dbClient.update(USER_TABLE, user.toSql());
     return res;
   }
 

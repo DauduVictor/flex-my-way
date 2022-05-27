@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../bloc/future-values.dart';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/util/util.dart';
-import '../../networking/flex-datasource.dart';
+import 'package:flex_my_way/networking/networking.dart';
 import '../dashboard/drawer.dart';
 import '../dashboard/notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -74,7 +74,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         target: LatLng(lat, long),
         zoom: 19.5,
       );
-      // _getFlexMarkers(lat, long);
+      _getFlexMarkers(lat, long);
     }).catchError((e) async {
       print(e);
       if(!mounted) return;
@@ -107,7 +107,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       for (int i = 0; i < flex.length; i++) {
         _markers.add(
           Marker(
-            markerId: MarkerId('markerId$i'),
+            markerId: MarkerId('markerFlexId$i'),
             position: LatLng(
               lat,
               long,

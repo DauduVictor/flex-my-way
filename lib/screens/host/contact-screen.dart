@@ -29,6 +29,7 @@ class ContactScreen extends StatelessWidget {
             itemCount: controller.contact.length,
             itemBuilder: (BuildContext context, int index) {
               Contact contact = controller.contact.elementAt(index);
+              bool isContactPicked = false;
               return ListTile(
                 contentPadding:
                 const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
@@ -44,15 +45,18 @@ class ContactScreen extends StatelessWidget {
                   contact.displayName ?? '',
                   style: textTheme.bodyText1,
                 ),
-                trailing: Obx(() => Checkbox(
-                    value: controller.termsAndConditionsAccepted.value,
-                    onChanged: (value) {
-                      controller.termsAndConditionsAccepted.toggle();
-                    },
-                  )
+                trailing: Checkbox(
+                  value: isContactPicked,
+                  onChanged: (value) {
+                    isContactPicked = !isContactPicked;
+                    print(isContactPicked);
+                    // controller.termsAndConditionsAccepted.toggle();
+                  },
                 ),
                 onTap: () {
-                  controller.termsAndConditionsAccepted.toggle();
+                  isContactPicked = !isContactPicked;
+                  print(isContactPicked);
+                  // controller.termsAndConditionsAccepted.toggle();
                 },
               );
             },

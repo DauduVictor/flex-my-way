@@ -7,14 +7,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/text-form-field.dart';
+import 'package:flex_my_way/components/components.dart';
 import '../../database/user-db-helper.dart';
 import '../../model/user.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'forgot-password.dart';
 
 class Login extends StatelessWidget {
@@ -208,6 +204,7 @@ class Login extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', true);
     await prefs.setString('bearerToken', user.bearer_token!);
+    // controller.updateLoginStatus();
     Get.offAllNamed(Dashboard.id);
   }
 

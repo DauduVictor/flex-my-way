@@ -19,7 +19,7 @@ class JoinFlex extends StatelessWidget {
   final JoinController controller = Get.put(JoinController());
 
   /// calling the user controller [UserController]
-  final UserController userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
 
   final CameraPosition userPosition = const CameraPosition(
     target: LatLng(6.519314, 3.396336),

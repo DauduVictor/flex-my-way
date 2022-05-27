@@ -64,6 +64,20 @@ class User {
     bearer_token: json["bearer_token"],
   );
 
+  factory User.fromSql(Map<String, dynamic> json) => User(
+    id: json["_id"],
+    name: json["name"],
+    email: json["email"],
+    phone: json["phone"],
+    gender: json["gender"],
+    preferredFlex: json["preferredFlex"],
+    infoSource: json["infoSource"],
+    occupation: json["occupation"],
+    // flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
+    // flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
+    bearer_token: json["bearer_token"],
+  );
+
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
@@ -77,7 +91,23 @@ class User {
     // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
     "bearer_token": bearer_token,
   };
+
+  Map<String, dynamic> toSql() => {
+    "id": id,
+    "name": name,
+    "email": email,
+    "phone": phone,
+    "gender": gender,
+    "preferredFlex": preferredFlex,
+    "infoSource": infoSource,
+    "occupation": occupation,
+    // "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
+    // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
+    "bearer_token": bearer_token,
+  };
 }
+
+
 
 class FlexAttended {
 

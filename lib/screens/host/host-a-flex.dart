@@ -1,18 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:flex_my_way/components/dropdown-field.dart';
-import 'package:flex_my_way/components/button.dart';
-import 'package:flex_my_way/components/text-form-field.dart';
+import 'package:flex_my_way/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/host-controller.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'host-flex-terms-and-conditions.dart';
 import 'package:image_picker/image_picker.dart';
 
