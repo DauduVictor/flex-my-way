@@ -14,7 +14,7 @@ class FlexHistory extends StatelessWidget {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: const RefactoredDrawer(),
+      drawer: RefactoredDrawer(),
       body: Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,

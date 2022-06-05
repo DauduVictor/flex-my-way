@@ -1,25 +1,33 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'controllers.dart';
+import 'package:flex_my_way/model/model.dart';
+
+import '../database/user-db-helper.dart';
 
 class OnboardingController extends GetxController {
 
-  /// calling the user controller [UserController]
-  final UserController userController = Get.find<UserController>();
-
   @override
   void onInit() {
+    getCurrentUser();
     _getCurrentUser();
     super.onInit();
   }
 
+  Future<User> getCurrentUser() async {
+    var db = DatabaseHelper();
+    Future<User> user = db.getUser();
+    return user;
+  }
+
   /// Function to get user details from the database
   void _getCurrentUser() async {
-    loginEmailAddressController.text = userController.emailAddress.value;
-    forgotPasswordEmailAddressController.text = userController.emailAddress.value;
-    resetPasswordEmailAddressController.text = userController.emailAddress.value;
-    log(loginEmailAddressController.text);
+    await getCurrentUser().then((user) {
+      loginEmailAddressController.text = user.email!;
+      forgotPasswordEmailAddressController.text = user.email!;
+      resetPasswordEmailAddressController.text = user.email!;
+      log(loginEmailAddressController.text);
+    });
   }
 
   /*Controllers and Variables for log in*/
@@ -74,6 +82,9 @@ class OnboardingController extends GetxController {
   /// TextEditingController for email address
   final TextEditingController resetPasswordEmailAddressController = TextEditingController();
 
+  /// TextEditingController for code
+  final TextEditingController resetCodeController = TextEditingController();
+
   /// TextEditingController for password
   final TextEditingController resetPasswordPasswordController = TextEditingController();
 
@@ -83,8 +94,4 @@ class OnboardingController extends GetxController {
   ///Variable to hold the bool value of password field obscure text
   final resetPasswordObscurePassword = true.obs;
 
-  /// Function to update [UserController] that a user is logged in
-  void updateLoginStatus() {
-    userController.checkUserIsLoggedIn();
-  }
 }

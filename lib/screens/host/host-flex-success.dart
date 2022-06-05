@@ -115,7 +115,7 @@ class HostFlexSuccess extends StatelessWidget {
                           const SizedBox(height: 24),
                           GestureDetector(
                             onTap: () {
-                              Get.toNamed(FlexHistoryDetail.id);
+                              Get.to(() => FlexHistoryDetail(flexSuccess: controller.createdFlex!));
                             },
                             child: Text(
                               AppStrings.flexURL,

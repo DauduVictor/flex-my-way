@@ -10,6 +10,7 @@ import '../../networking/user-datasource.dart';
 import '../../util/constants/constants.dart';
 import '../../util/constants/functions.dart';
 import '../../util/size-config.dart';
+import 'login.dart';
 
 class ResetPassword extends StatelessWidget {
 
@@ -53,13 +54,10 @@ class ResetPassword extends StatelessWidget {
                         style: textTheme.headline4!.copyWith(fontSize: 30),
                       ),
                       const SizedBox(height: 32),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                        child: Text(
-                          'Enter your Email and new Password',
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyText1!,
-                        ),
+                      Text(
+                        'We have sent a code to your registered Email. \nEnter your Email, Code and new Password to reset your password',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyText1!,
                       ),
                       const SizedBox(height: 32),
                       _buildForm(textTheme),
@@ -108,6 +106,18 @@ class ResetPassword extends StatelessWidget {
                 return 'This field is required';
               }
               if(value.length < 3 || !value.contains('@')){
+                return 'This field is required';
+              }
+              return null;
+            },
+          ),
+          CustomTextFormField(
+            textEditingController: controller.resetCodeController,
+            hintText: 'Code',
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            validator: (value) {
+              if(value!.isEmpty) {
                 return 'This field is required';
               }
               return null;
@@ -171,14 +181,16 @@ class ResetPassword extends StatelessWidget {
     var api = UserDataSource();
     Map<String, String> body = {
       'email' : controller.resetPasswordEmailAddressController.text,
-      'password' : controller.resetPasswordPasswordController.text
+      'password' : controller.resetPasswordPasswordController.text,
+      'code' : controller.resetCodeController.text
     };
     await api.resetPassword(body).then((value) async {
       controller.loginShowSpinner.value = false;
       Functions.showMessage(value);
+      Get.toNamed(Login.id);
     }).catchError((e){
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showMessage(e.toString());
       log(e);
     });
   }

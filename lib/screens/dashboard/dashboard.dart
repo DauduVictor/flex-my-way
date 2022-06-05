@@ -1,12 +1,9 @@
-import 'package:flex_my_way/components/list-tile-button.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
-import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/app-bar.dart';
+import 'package:flex_my_way/components/components.dart';
 import '../../controllers/user-controller.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'drawer.dart';
 
 class Dashboard extends StatelessWidget {
@@ -23,7 +20,7 @@ class Dashboard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
         appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
-        drawer: const RefactoredDrawer(),
+        drawer: RefactoredDrawer(),
         body: DefaultTabController(
           length: 2,
           child: Column(

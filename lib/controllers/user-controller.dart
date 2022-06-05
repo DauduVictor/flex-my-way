@@ -32,8 +32,10 @@ class UserController extends GetxController {
       preferredFlex.value = user.preferredFlex!;
       infoSource.value = user.infoSource!;
       occupation.value = user.occupation!;
+      canHostFlex.value = user.canHostFlex!;
       log(username.value);
       log(emailAddress.value);
+      log(canHostFlex.value.toString());
     }).catchError((e){
       log(e);
     });
@@ -74,6 +76,9 @@ class UserController extends GetxController {
 
   /// Variable to hold user's occupation
   final occupation = ''.obs;
+
+  /// Variable to hold user's type
+  final canHostFlex = false.obs;
 
   /*api integration*/
   /// Tempral map to hold the invite length

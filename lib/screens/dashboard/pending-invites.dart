@@ -22,7 +22,7 @@ class PendingInvites extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
         appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
-        drawer: const RefactoredDrawer(),
+        drawer: RefactoredDrawer(),
         body: Column(
           children: [
             Container(

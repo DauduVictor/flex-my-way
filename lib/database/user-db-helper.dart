@@ -42,15 +42,16 @@ class DatabaseHelper {
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute('CREATE TABLE $USER_TABLE('
-        '_id TEXT PRIMARY KEY NOT NULL,'
-        'name TEXT,'
-        'email TEXT,'
-        'phone TEXT,'
-        'gender TEXT,'
-        'preferredFlex TEXT,'
-        'infoSource TEXT,'
-        'occupation TEXT,'
-        'bearer_token TEXT)');
+        'id TEXT PRIMARY KEY NOT NULL,'
+        'name TEXT NOT NULL,'
+        'email TEXT NOT NULL,'
+        'phone TEXT NOT NULL,'
+        'gender TEXT NOT NULL,'
+        'preferredFlex TEXT NOT NULL,'
+        'infoSource TEXT NOT NULL,'
+        'occupation TEXT NOT NULL,'
+        'canHostFlex NUM NOT NULL,'
+        'bearerToken TEXT NOT NULL)');
     log('Created tables');
   }
 
@@ -73,7 +74,7 @@ class DatabaseHelper {
   Future<User> getUser() async {
     var dbConnection = await db;
     List<Map<String, dynamic>> users = await dbConnection.rawQuery('SELECT * FROM $USER_TABLE');
-    if (users.isNotEmpty) return User.fromJson(users[0]);
+    if (users.isNotEmpty) return User.fromSql(users[0]);
     throw 'No user';
   }
 

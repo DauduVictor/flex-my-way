@@ -31,90 +31,91 @@ class ForgotPassword extends StatelessWidget {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
-        child: AbsorbPointer(
-          absorbing: controller.loginShowSpinner.value,
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 45),
-              height: SizeConfig.screenHeight,
-              width: SizeConfig.screenWidth,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      'assets/images/jpegs/login-decorated-screen.png'
+        child: Obx(() => AbsorbPointer(
+            absorbing: controller.loginShowSpinner.value,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 45),
+                height: SizeConfig.screenHeight,
+                width: SizeConfig.screenWidth,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                        'assets/images/jpegs/login-decorated-screen.png'
+                    ),
                   ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Forgot your password?',
-                    textAlign: TextAlign.center,
-                    style: textTheme.headline4!.copyWith(fontSize: 30),
-                  ),
-                  const SizedBox(height: 32),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 21.0),
-                    child: Text(
-                      'Enter your Email and we will send a link to your registered email',
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Forgot your password?',
                       textAlign: TextAlign.center,
-                      style: textTheme.bodyText1!,
+                      style: textTheme.headline4!.copyWith(fontSize: 30),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  Form(
-                    key: _formKey,
-                    child: CustomTextFormField(
-                      textEditingController: controller.forgotPasswordEmailAddressController,
-                      hintText: 'Your Email Address',
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      validator: (value) {
-                        if(value!.isEmpty) {
-                          return 'This field is required';
-                        }
-                        if(value.length < 3 || !value.contains('@')){
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Button(
-                    label: 'Send Recovery Email',
-                    onPressed: () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                      if(_formKey.currentState!.validate()){
-                        _forgotPassword();
-                      }
-                    },
-                    child: controller.loginShowSpinner.value == true
-                      ? const SizedBox(
-                        height: 21,
-                        width: 19,
-                        child: CircleProgressIndicator()
-                      )
-                      : null,
-                  ),
-                  const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () => Get.back(),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const SizedBox(height: 32),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21.0),
                       child: Text(
-                        'Back to Login',
+                        'Enter your Email and we will send a link to your registered email',
                         textAlign: TextAlign.center,
-                        style: textTheme.subtitle2!.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                        style: textTheme.bodyText1!,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Form(
+                      key: _formKey,
+                      child: CustomTextFormField(
+                        textEditingController: controller.forgotPasswordEmailAddressController,
+                        hintText: 'Your Email Address',
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        validator: (value) {
+                          if(value!.isEmpty) {
+                            return 'This field is required';
+                          }
+                          if(value.length < 3 || !value.contains('@')){
+                            return 'This field is required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Button(
+                      label: 'Send Recovery Email',
+                      onPressed: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                        if(_formKey.currentState!.validate()){
+                          _forgotPassword();
+                        }
+                      },
+                      child: controller.loginShowSpinner.value == true
+                        ? const SizedBox(
+                          height: 21,
+                          width: 19,
+                          child: CircleProgressIndicator()
+                        )
+                        : null,
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Back to Login',
+                          textAlign: TextAlign.center,
+                          style: textTheme.subtitle2!.copyWith(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -133,6 +134,7 @@ class ForgotPassword extends StatelessWidget {
     await api.forgotPassword(body).then((value) async {
       controller.loginShowSpinner.value = false;
       Get.toNamed(ResetPassword.id);
+      Functions.showMessage(value.toString());
     }).catchError((e){
       controller.loginShowSpinner.value = false;
       Functions.showMessage(e);

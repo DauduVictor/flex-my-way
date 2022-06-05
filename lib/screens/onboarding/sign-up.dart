@@ -221,7 +221,6 @@ class SignUp extends StatelessWidget {
               return null;
             },
           ),
-          /// preferredFlex
           CustomDropdownButtonField(
             hintText: AppStrings.typeOfFlex,
             items: preferredFlexes,

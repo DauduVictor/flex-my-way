@@ -35,6 +35,12 @@ class _FlexLoaderState extends State<FlexLoader>  with TickerProviderStateMixin 
     _animationController.repeat(reverse: false);
   }
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
 
 
   @override

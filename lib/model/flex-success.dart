@@ -40,7 +40,7 @@ class FlexSuccess {
     viewStatus: json["viewStatus"],
     showOnAccepted: json["showOnAccepted"],
     joinCode: json["joinCode"],
-    locationCoordinates: LocationCoordinates.fromJson(json["locationCoordinates"]),
+    // locationCoordinates: LocationCoordinates.fromJson(json["locationCoordinates"]),
     id: json["_id"],
   );
 
@@ -50,7 +50,7 @@ class FlexSuccess {
     "viewStatus": viewStatus,
     "showOnAccepted": showOnAccepted,
     "joinCode": joinCode,
-    "locationCoordinates": locationCoordinates!.toJson(),
+    // "locationCoordinates": locationCoordinates!.toJson(),
     "_id": id,
   };
 }

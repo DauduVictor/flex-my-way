@@ -1,8 +1,5 @@
 import 'dart:developer';
-import 'package:flex_my_way/controllers/host-controller.dart';
-import 'package:flex_my_way/controllers/join-controller.dart';
-import 'package:flex_my_way/controllers/onboarding-controller.dart';
-import 'package:flex_my_way/controllers/user-controller.dart';
+import 'controllers.dart';
 import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,13 +27,14 @@ class SettingsController extends GetxController {
     gender = userController.gender.value;
     occuapationController.text = userController.occupation.value;
     preferredFlex = userController.preferredFlex.value;
+    canHostFlex.value = userController.canHostFlex.value;
     log(userName.value);
+    log(canHostFlex.value.toString());
   }
 
   /*Controllers and Variables for log in*/
   /// Variable to hold the user's name
   final userName = 'there'.obs;
-
 
   /// A [TextEditingController] to control the input text for current password
   final TextEditingController currentPasswordController = TextEditingController();
@@ -75,6 +73,9 @@ class SettingsController extends GetxController {
   /// Variable to hold the value of the preferred flex
   String preferredFlex = preferredFlexes[0];
 
+  /// Variable to hold user's type
+  final canHostFlex = false.obs;
+
   /// Function to refresh user details after [EditProfileDetail]
   void refreshUserDetails() {
     userController.getCurrentUserDetail();
@@ -89,6 +90,7 @@ class SettingsController extends GetxController {
     Get.delete<SettingsController>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('loggedIn', false);
+    prefs.remove('bearerToken');
     Get.offAllNamed(SplashScreen.id);
   }
 

@@ -4,18 +4,19 @@ import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import '../find-a-flex.dart';
 import '../flex-history/flex-history.dart';
 import '../settings/settings.dart';
 import 'dashboard.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 
 class RefactoredDrawer extends StatelessWidget {
 
-  const RefactoredDrawer({Key? key}) : super(key: key);
+  RefactoredDrawer({Key? key}) : super(key: key);
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {

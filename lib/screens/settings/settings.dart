@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:flex_my_way/networking/user-datasource.dart';
+import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
@@ -8,10 +8,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
 import '../../controllers/setting-controller.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import '../dashboard/drawer.dart';
 import '../splash-screen.dart';
 import 'about.dart';
@@ -34,7 +31,7 @@ class Settings extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
           appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
-          drawer: const RefactoredDrawer(),
+          drawer: RefactoredDrawer(),
           body: GestureDetector(
             onTap: () {
               FocusScopeNode currentFocus = FocusScope.of(context);
@@ -54,12 +51,12 @@ class Settings extends StatelessWidget {
                     style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
-                Padding(
+                if (controller.canHostFlex.value == false) Padding(
                   padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                   child: ListTileButton(
                     title: AppStrings.becomeAHost,
                     onPressed: () {
-                      controller.refreshUserDetails();
+
                     },
                   ),
                 ),

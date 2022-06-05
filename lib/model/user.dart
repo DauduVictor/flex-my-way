@@ -12,9 +12,10 @@ class User {
     this.preferredFlex,
     this.infoSource,
     this.occupation,
+    this.canHostFlex,
     this.flexCreated,
     this.flexAttended,
-    this.bearer_token,
+    this.bearerToken,
   });
 
   /// This variable holds the user id
@@ -41,6 +42,9 @@ class User {
   /// This variable holds the user occupation
   String? occupation;
 
+  /// This variable holds the canHostFlex
+  bool? canHostFlex;
+
   /// This variable holds the list of user flexCreated
   List<String>? flexCreated;
 
@@ -48,10 +52,10 @@ class User {
   List<FlexAttended>? flexAttended;
 
   /// This variable holds the user token
-  String? bearer_token;
+  String? bearerToken;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["_id"],
+    id: json["id"],
     name: json["name"],
     email: json["email"],
     phone: json["phone"],
@@ -59,13 +63,14 @@ class User {
     preferredFlex: json["preferredFlex"],
     infoSource: json["infoSource"],
     occupation: json["occupation"],
+    canHostFlex: json["canHostFlex"] ?? false,
     // flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
     // flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
-    bearer_token: json["bearer_token"],
+    bearerToken: json["bearerToken"],
   );
 
   factory User.fromSql(Map<String, dynamic> json) => User(
-    id: json["_id"],
+    id: json["id"],
     name: json["name"],
     email: json["email"],
     phone: json["phone"],
@@ -73,9 +78,10 @@ class User {
     preferredFlex: json["preferredFlex"],
     infoSource: json["infoSource"],
     occupation: json["occupation"],
+    canHostFlex: json["canHostFlex"] == 1 ? true : false,
     // flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
     // flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
-    bearer_token: json["bearer_token"],
+    bearerToken: json["bearerToken"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -87,9 +93,10 @@ class User {
     "preferredFlex": preferredFlex,
     "infoSource": infoSource,
     "occupation": occupation,
+    "canHostFlex": canHostFlex,
     // "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
     // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
-    "bearer_token": bearer_token,
+    "bearerToken": bearerToken,
   };
 
   Map<String, dynamic> toSql() => {
@@ -101,9 +108,10 @@ class User {
     "preferredFlex": preferredFlex,
     "infoSource": infoSource,
     "occupation": occupation,
+    "canHostFlex": canHostFlex! ? 1 : 0,
     // "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
     // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
-    "bearer_token": bearer_token,
+    "bearerToken": bearerToken,
   };
 }
 
@@ -127,13 +135,13 @@ class FlexAttended {
     attendeeId: json["attendeeId"],
     flexCode: json["flexCode"],
     canAttend: json["canAttend"],
-    id: json["_id"],
+    id: json["id"],
   );
 
   Map<String, dynamic> toJson() => {
     "attendeeId": attendeeId,
     "flexCode": flexCode,
     "canAttend": canAttend,
-    "_id": id,
+    "id": id,
   };
 }

@@ -1,6 +1,8 @@
 import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 
+
+/// This class holds the dropdown button styles and code
 class CustomDropdownButtonField extends StatelessWidget {
 
   const CustomDropdownButtonField({

@@ -6,21 +6,48 @@ import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../onboarding/login.dart';
 
-class HostFlexTermsAndConditions extends StatelessWidget {
+class HostFlexTermsAndConditions extends StatefulWidget {
 
   static const String id = "hostFlexTermsAndConditions";
-  HostFlexTermsAndConditions({Key? key}) : super(key: key);
+  const HostFlexTermsAndConditions({Key? key}) : super(key: key);
+
+  @override
+  State<HostFlexTermsAndConditions> createState() => _HostFlexTermsAndConditionsState();
+}
+
+class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions> {
 
   /// calling the [HostController] for [HostFlexTermsAndConditions]
   final HostController hostController = Get.put(HostController());
 
-  /// calling the user controller [UserController]
-  final UserController userController = Get.find<UserController>();
-
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
+
+  /// bool value to hold the state of user logged in
+  bool isLoggedIn = false;
+
+  @override
+  void initState() {
+    checkUserIsLoggedIn();
+    super.initState();
+  }
+
+  /// function to check if the user is currently logged in
+  void checkUserIsLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('loggedIn') == true) {
+      setState(() {
+        isLoggedIn = true;
+        log('logged in');
+      });
+    }
+    else {
+      log('User is not logged in');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,24 +169,24 @@ class HostFlexTermsAndConditions extends StatelessWidget {
                           child: Button(
                             label: AppStrings.finish,
                             onPressed: () {
-                              if(hostController.paid.value == 'Paid') {
-                                if(_formKey.currentState!.validate()) {
-                                  if(hostController.termsAndConditionsAccepted.value &&
+                              if (hostController.paid.value == 'Paid') {
+                                if (_formKey.currentState!.validate()) {
+                                  if (hostController.termsAndConditionsAccepted.value &&
                                       hostController.privacyPolicyAccepted.value) {
-                                    userController.isLoggedIn.value == true
-                                      ? _hostFlex()
-                                      : Navigator.pushNamed(context, Login.id);
+                                        isLoggedIn == true
+                                          ? _hostFlex()
+                                          : Navigator.pushNamed(context, Login.id);
                                   }
                                 }
                               }
                               else {
                                 if(hostController.termsAndConditionsAccepted.value
                                     && hostController.privacyPolicyAccepted.value) {
-                                  userController.isLoggedIn.value == true
-                                    ? hostController.previewCreatedFlex.value == true
-                                        ? _hostFlex()
-                                        : _showPreviewDialog(context, textTheme)
-                                    : Navigator.pushNamed(context, Login.id);
+                                      isLoggedIn == true
+                                        ? hostController.previewCreatedFlex.value == true
+                                            ? _hostFlex()
+                                            : _showPreviewDialog(context, textTheme)
+                                        : Navigator.pushNamed(context, Login.id);
                                 }
                               }
                             },
@@ -675,5 +702,4 @@ class HostFlexTermsAndConditions extends StatelessWidget {
       Functions.showMessage(e);
     });
   }
-
 }

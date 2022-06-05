@@ -5,12 +5,11 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
-import '../model/flex-success.dart';
-import '../model/flex.dart';
 import '../util/constants/constants.dart';
-import '../util/constants/functions.dart';
+import 'package:flex_my_way/model/model.dart';
 
 class HostController extends GetxController {
 
@@ -104,6 +103,7 @@ class HostController extends GetxController {
   List <Location> location = [];
 
   FlexSuccess? createdFlex;
+  //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
 
   /// Function to get user location and use [LatLang] in the map
   void getUserLocation() async {

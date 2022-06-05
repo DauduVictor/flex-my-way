@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -92,6 +93,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       setState(() {
         flex = value;
         flexLength = flex.length;
+        log(flexLength.toString());
       });
       _buildFlexOnMap();
     }).catchError((e) {
@@ -209,7 +211,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     _createCustomMarkerIcon(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: const RefactoredDrawer(),
+      drawer: RefactoredDrawer(),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [

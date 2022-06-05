@@ -203,7 +203,7 @@ class Login extends StatelessWidget {
   _addBoolToSP(User user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('loggedIn', true);
-    await prefs.setString('bearerToken', user.bearer_token!);
+    await prefs.setString('bearerToken', user.bearerToken!);
     // controller.updateLoginStatus();
     Get.offAllNamed(Dashboard.id);
   }

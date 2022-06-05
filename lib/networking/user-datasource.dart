@@ -85,19 +85,12 @@ class UserDataSource {
   /// A post request to use the [UPDATE_USER_INFO]
   /// It returns a [String_Message]
   Future<User> updateUserInfo (Map<String, dynamic> body) async {
-    String? userId;
     Map<String, String> header = {};
-    Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '623c5f6bc8833e68854c9013';
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
-      header['Accept'] = '*/*';
-    });
-    String UPDATE_USERS_INFO = BASE_URL+'users/$userId'+UPDATE_USER_INFO;
-    return _netUtil.put(UPDATE_USERS_INFO, headers: header, body: body).then((dynamic res) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    header['Content-Type'] = 'text/plain';
+    header['Accept'] = '*/*';
+    return _netUtil.put(UPDATE_USER_INFO, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return User.fromJson(res['data']);
     }).catchError((e){

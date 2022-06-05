@@ -1,16 +1,21 @@
 import 'dart:async';
-import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../../components/flex-loader.dart';
-import '../../util/constants/constants.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/model/model.dart';
 
 
 class FlexHistoryDetail extends StatelessWidget {
 
   static const String id = "flexHistoryDetail";
-  FlexHistoryDetail({Key? key}) : super(key: key);
+
+  final FlexSuccess? flexSuccess;
+
+  FlexHistoryDetail({
+    Key? key,
+    this.flexSuccess,
+  }) : super(key: key);
 
   /// Google map controller
   Completer<GoogleMapController> _mapController = Completer();
@@ -25,7 +30,7 @@ class FlexHistoryDetail extends StatelessWidget {
     zoom: 16.0,
   );
 
-  bool _showLoader = true;
+  bool _showLoader = false;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +128,7 @@ class FlexHistoryDetail extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Afro Nation Festival',
+                                  flexSuccess!.joinCode!,
                                   style: textTheme.headline4!.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,

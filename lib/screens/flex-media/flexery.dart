@@ -14,7 +14,7 @@ class Flexery extends StatelessWidget {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: const RefactoredDrawer(),
+      drawer: RefactoredDrawer(),
       body: GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
