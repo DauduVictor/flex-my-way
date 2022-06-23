@@ -304,6 +304,7 @@ class HostAFlex extends StatelessWidget {
                     CustomTextFormField(
                       hintText: AppStrings.addAHAshtag,
                       textEditingController: controller.eventHashTagController,
+                      autoValidateMode: AutovalidateMode.disabled,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 2) {
                           return 'This field is required';

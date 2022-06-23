@@ -1,19 +1,13 @@
 import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:flex_my_way/util/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/dropdown-field.dart';
-import '../../components/text-form-field.dart';
-import '../../controllers/host-controller.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 import 'contact-screen.dart';
 
 class BetaSms extends StatelessWidget {
@@ -22,7 +16,10 @@ class BetaSms extends StatelessWidget {
   BetaSms({Key? key}) : super(key: key);
 
   /// calling the [HostController] for [BetaSms]
-  final HostController controller = Get.put(HostController());
+  final HostController hostController = Get.put(HostController());
+
+  /// calling the [AccountController] for [HostFlexSuccess]
+  final UserController accountController = Get.put(UserController());
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
@@ -49,7 +46,7 @@ class BetaSms extends StatelessWidget {
           if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
         },
         child: Obx(() => AbsorbPointer(
-          absorbing: controller.showSpinner.value,
+          absorbing: hostController.showSpinner.value,
           child: Column(
             children: [
               Expanded(
@@ -66,12 +63,15 @@ class BetaSms extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(24)),
                             border: Border.all(color: neutralColor),
                           ),
-                          child: const Text(
-                            'Kelechi Mo is inviting you to flex\n\n'
-                             'Find him this weekend on\n'
-                             '24 Oct, 2021.\n\n'
-                             'Click the link below to join the flex.\n'
-                              'https://www.flexmyway.io/uweb191',
+                          child: Obx(() {
+                              return Text(
+                                '${accountController.username.value} is inviting you to a flex\n\n'
+                                 'Find them this weekend on\n'
+                                 '${Functions.getFormattedDateTimeText(hostController.dateController.text)}.\n\n'
+                                 'Click the link below to join the flex.\n'
+                                  'https://www.flexmyway.io/uweb191',
+                              );
+                            }
                           ),
                         ),
                         const SizedBox(height: 21),
@@ -86,7 +86,7 @@ class BetaSms extends StatelessWidget {
                               // _signUp();
                             }
                           },
-                          child: controller.showSpinner.value == true
+                          child: hostController.showSpinner.value == true
                             ? const SizedBox(
                               height: 21,
                               width: 19,
@@ -127,7 +127,7 @@ class BetaSms extends StatelessWidget {
     final PermissionStatus permissionStatus = await getPermission();
     if (permissionStatus == PermissionStatus.granted) {
       await ContactsService.getContacts().then((value) {
-        controller.contact = value;
+        hostController.contact = value;
         Get.toNamed(ContactScreen.id);
       }).catchError((e){
         Functions.showMessage('Could not read contacts at this time. Please try again');
@@ -189,7 +189,7 @@ class BetaSms extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
                 border: Border.all(
-                  color: controller.editingContact.value == true
+                  color: hostController.editingContact.value == true
                     ? primaryColor
                     : neutralColor
                 ),
@@ -198,9 +198,9 @@ class BetaSms extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      controller.isUploaded.value
+                      hostController.isUploaded.value
                         ? _addContacts(context, textTheme)
-                        : controller.isUploaded.value = true;
+                        : hostController.isUploaded.value = true;
                     },
                     child: Container(
                       color: transparent,
@@ -208,7 +208,7 @@ class BetaSms extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            controller.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
+                            hostController.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
                             style: textTheme.bodyText2,
                           ),
                           const Icon(
@@ -218,22 +218,22 @@ class BetaSms extends StatelessWidget {
                       ),
                     ),
                   ),
-                  controller.isUploaded.value
+                  hostController.isUploaded.value
                     ? TextFormField(
                         textInputAction: TextInputAction.done,
                         maxLines: 5,
                         style: const TextStyle(fontSize: 14),
                         keyboardType: TextInputType.number,
-                        controller: controller.contactController,
+                        controller: hostController.contactController,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Enter a valid phone number';
                           }
                           return null;
                         },
-                        onChanged: (value) => controller.editingContact.value = true,
+                        onChanged: (value) => hostController.editingContact.value = true,
                         onEditingComplete: () {
-                          controller.editingContact.value = false;
+                          hostController.editingContact.value = false;
                           print('editing complete');
                         },
                         decoration: const InputDecoration(
@@ -253,17 +253,17 @@ class BetaSms extends StatelessWidget {
               items: yesOrNo,
               onChanged: (value) {
                 value = value.toString();
-                controller.useDatabase.value = value.toString();
-                print(controller.useDatabase.value);
+                hostController.useDatabase.value = value.toString();
+                print(hostController.useDatabase.value);
               },
               validator: (value) {
-                if (controller.useDatabase.value.isEmpty) {
+                if (hostController.useDatabase.value.isEmpty) {
                   return 'This field is required';
                 }
                 return null;
               },
             ),
-            controller.useDatabase.value == 'Yes'
+            hostController.useDatabase.value == 'Yes'
               ? Column(
                   children: [
                     CustomTextFormField(
@@ -271,7 +271,7 @@ class BetaSms extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       maxLines: 2,
                       keyboardType: TextInputType.number,
-                      textEditingController: controller.betasmsNoOfPeople,
+                      textEditingController: hostController.betasmsNoOfPeople,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Enter a valid number';

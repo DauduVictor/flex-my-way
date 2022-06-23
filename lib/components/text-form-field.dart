@@ -18,7 +18,8 @@ class CustomTextFormField extends StatelessWidget {
     this.suffix,
     this.readOnly = false,
     this.onTap,
-    this.inputFormatters
+    this.inputFormatters,
+    this.autoValidateMode = AutovalidateMode.onUserInteraction,
   }) : super(key: key);
 
   final String? hintText;
@@ -34,6 +35,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool readOnly;
   final void Function()? onTap;
   final List<TextInputFormatter>? inputFormatters;
+  final AutovalidateMode? autoValidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           maxLines: maxLines,
           cursorColor: neutralColor,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          autovalidateMode: autoValidateMode,
           readOnly: readOnly,
           textInputAction: textInputAction,
           textCapitalization: textCapitalization,

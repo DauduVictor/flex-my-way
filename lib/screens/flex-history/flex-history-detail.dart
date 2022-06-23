@@ -128,7 +128,7 @@ class FlexHistoryDetail extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  flexSuccess!.joinCode!,
+                                  '0o0ohuh',
                                   style: textTheme.headline4!.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,

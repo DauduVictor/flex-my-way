@@ -24,6 +24,13 @@ class Functions {
     return DateFormat('dd MMM, yyyy').format(dateTime).toString();
   }
 
+  /// Converting a string to return a formatted time
+  /// of day, month, hour with am or pm
+  static String getFormattedDateTimeText(String date) { // 23, May, 2000
+    DateTime dateTime = DateTime.parse(date);
+    return DateFormat('dd MMM, yyyy').format(dateTime).toString();
+  }
+
   /// Converting [dateTime] to return a formatted time
   /// of day, month, hour with am or pm
   static List<String> getFlexDayAndMonth(DateTime dateTime) { // Dec \n 25

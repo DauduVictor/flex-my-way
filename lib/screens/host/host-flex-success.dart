@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import '../../controllers/host-controller.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
 import '../dashboard/dashboard.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 import '../onboarding/login.dart';
 import 'package:share_plus/share_plus.dart';
 import 'beta-sms.dart';
@@ -21,7 +18,10 @@ class HostFlexSuccess extends StatelessWidget {
   HostFlexSuccess({Key? key}) : super(key: key);
 
   /// calling the [HostController] for [HostFlexSuccess]
-  final HostController controller = Get.put(HostController());
+  final HostController hostController = Get.put(HostController());
+
+  /// calling the [AccountController] for [HostFlexSuccess]
+  final UserController accountController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -89,23 +89,26 @@ class HostFlexSuccess extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: controller.createdFlex!.creator!,
-                              style: textTheme.bodyText2!
-                                  .copyWith(fontWeight: FontWeight.w600),
-                              children: [
-                                TextSpan(
-                                    text: AppStrings.isInviting,
-                                    style: textTheme.bodyText2),
-                                TextSpan(
-                                  text: Functions.getFormattedDateTime(DateTime(2021-12-04)),
+                          Obx(() {
+                              return RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  text: accountController.username.value,
                                   style: textTheme.bodyText2!
                                       .copyWith(fontWeight: FontWeight.w600),
+                                  children: [
+                                    TextSpan(
+                                        text: AppStrings.isInviting,
+                                        style: textTheme.bodyText2),
+                                    TextSpan(
+                                      text: Functions.getFormattedDateTimeText(hostController.dateController.text),
+                                      style: textTheme.bodyText2!
+                                          .copyWith(fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              );
+                            }
                           ),
                           const SizedBox(height: 24),
                           const Text(
@@ -115,7 +118,7 @@ class HostFlexSuccess extends StatelessWidget {
                           const SizedBox(height: 24),
                           GestureDetector(
                             onTap: () {
-                              Get.to(() => FlexHistoryDetail(flexSuccess: controller.createdFlex!));
+                              Get.to(() => FlexHistoryDetail(flexSuccess: hostController.createdFlex!));
                             },
                             child: Text(
                               AppStrings.flexURL,
@@ -172,7 +175,7 @@ class HostFlexSuccess extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(
-                                text: controller.createdFlex!.joinCode!)).then((value) {
+                                text: hostController.createdFlex!.joinCode!)).then((value) {
                                   Functions.showMessage('Flex link copied');
                             }).catchError((e){
                               Functions.showMessage('Could not copy flex link');

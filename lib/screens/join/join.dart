@@ -75,9 +75,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         target: LatLng(lat, long),
         zoom: 19.5,
       );
-      _getFlexMarkers(lat, long);
+      //_getFlexMarkers(lat, long);
     }).catchError((e) async {
-      print(e);
+      log(e);
       if(!mounted) return;
       if(e.toString().contains('denied')) {
         await locationPermission.buildLocationRequest(context).then((value) {
@@ -98,11 +98,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       _buildFlexOnMap();
     }).catchError((e) {
       if (!mounted) return;
-      print(e);
+      log(e);
       Functions.showMessage(e);
     });
   }
 
+  ///TODO: working here
   /// Function to build markers on the map from [List<Flexes>]
   void _buildFlexOnMap() {
     if (flex.isNotEmpty && flexLength > 0) {

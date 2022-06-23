@@ -136,7 +136,7 @@ class EditProfileDetail extends StatelessWidget {
     var api = UserDataSource();
     Map<String, dynamic> body = {
       'name': controller.nameController.text,
-      'email': controller.emailAddressController.text,
+      // 'email': controller.emailAddressController.text,
       'phone': controller.phoneNumberController.text,
       'gender': controller.gender,
       'occupation': controller.occuapationController.text,

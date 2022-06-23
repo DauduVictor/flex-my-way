@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
 import 'networking.dart';
@@ -24,8 +25,9 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '623c5f6bc8833e68854c9013';
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+      log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
@@ -51,8 +53,8 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = '627dbd766574da21c342819d';
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
@@ -86,7 +88,7 @@ class FlexDataSource {
     print(GET_FLEX_BY_LOCATION_URL);
     print(header);
     return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {
-      print(res);
+      print(':::getFlexByLocation: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
       flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();

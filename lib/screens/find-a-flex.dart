@@ -41,7 +41,7 @@ class _FindAFlexState extends State<FindAFlex> {
 
   @override
   void initState() {
-
+    checkUserIsLoggedIn();
     super.initState();
   }
 
