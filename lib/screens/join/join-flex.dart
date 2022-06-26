@@ -9,11 +9,17 @@ import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import '../onboarding/login.dart';
+import 'package:flex_my_way/model/model.dart';
 
 class JoinFlex extends StatelessWidget {
 
+  final Flexes? flex;
+
   static const String id = "joinFlex";
-  JoinFlex({Key? key}) : super(key: key);
+  JoinFlex({
+    Key? key,
+    this.flex,
+  }) : super(key: key);
 
   /// calling the [JoinController] for [JoinFlex]
   final JoinController controller = Get.put(JoinController());
@@ -63,7 +69,7 @@ class JoinFlex extends StatelessWidget {
                     radius: 22,
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Get.back();
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.only(left: 8),
@@ -108,7 +114,7 @@ class JoinFlex extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      'Afro Nation Festival',
+                                      flex!.name!,
                                       style: textTheme.headline4!.copyWith(
                                         color: primaryColor,
                                         fontWeight: FontWeight.w600,
@@ -126,7 +132,7 @@ class JoinFlex extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          'DEC',
+                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
                                           style: textTheme.headline5!.copyWith(
                                             color: primaryColor,
                                             fontSize: 20,
@@ -134,7 +140,7 @@ class JoinFlex extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '25',
+                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
                                           style: textTheme.headline5!.copyWith(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,

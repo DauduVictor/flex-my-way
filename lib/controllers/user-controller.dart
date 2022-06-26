@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:flex_my_way/model/model.dart';
+import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/screens/dashboard/notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/user-db-helper.dart';
@@ -19,6 +22,9 @@ class UserController extends GetxController {
   void onInit() {
     getCurrentUserDetail();
     checkUserIsLoggedIn();
+    getDashboardFlex();
+    getFlexHistory();
+    getNotifications();
     super.onInit();
   }
 
@@ -80,6 +86,8 @@ class UserController extends GetxController {
   /// Variable to hold user's type
   final canHostFlex = false.obs;
 
+  RxList<Notification> notification = <Notification>[].obs;
+
   /*api integration*/
   /// Tempral map to hold the invite length
   Map<String, String> invites = {
@@ -102,5 +110,62 @@ class UserController extends GetxController {
     '6',
     '7',
   ];
+
+  /// Function to get dashboard flex [with param - scheduled, completed]
+  void getDashboardFlex() async {
+    var api = FlexDataSource();
+
+    /// get scheduled flex tab
+    await api.getDashboardFlex('scheduled').then((value) {
+      return null;
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+
+    ///get completed flex tab
+    await api.getDashboardFlex('completed').then((value) {
+      return null;
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+
+  }
+
+  /// Function to get dashboard flex [with param - scheduled, completed]
+  void getFlexHistory() async {
+    var api = FlexDataSource();
+
+    ///get past flex tab
+    await api.getFlexHistory('past').then((value) {
+      return null;
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+
+    ///get present flex tab
+    await api.getFlexHistory('present').then((value) {
+      return null;
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+
+    ///get future flex tab
+    await api.getFlexHistory('future').then((value) {
+      return null;
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+  }
+
+  /// Function to get notifications
+  void getNotifications() async {
+    var api = FlexDataSource();
+    await api.getNotifications('scheduled').then((value) {
+      notification.value = value;
+      log(':::notificationLength: ${notification.length}');
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+  }
 
 }
