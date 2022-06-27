@@ -4,6 +4,8 @@ import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../bloc/future-values.dart';
@@ -112,12 +114,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
           Marker(
             markerId: MarkerId('markerFlexId$i'),
             position: LatLng(
-              lat,
-              long,
+              flex[i].locationCoordinates?.lat ?? lat,
+              flex[i].locationCoordinates?.lng ?? long,
             ),
             icon: customIcon!,
             onTap: () {
-              Navigator.pushNamed(context, JoinFlex.id);
+              Get.to(JoinFlex(flex: flex[i]));
             }
           ),
         );
