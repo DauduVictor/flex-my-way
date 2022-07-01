@@ -1,20 +1,32 @@
-import 'package:flex_my_way/util/constants/constants.dart';
+import 'dart:async';
+import 'dart:developer';
+import 'package:flex_my_way/networking/flex-datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import '../../util/size-config.dart';
-import '../dashboard/drawer.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 
 class Flexery extends StatelessWidget {
 
   static const String id = "flexery";
-  const Flexery({Key? key}) : super(key: key);
+  Flexery({Key? key}) : super(key: key);
+
+  /// dynamic variable to hold an instance of flexDataSource
+  var api = FlexDataSource();
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
+
+  /// A [TextEditingController] to control the input text for search
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: RefactoredDrawer(),
       body: GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -30,158 +42,176 @@ class Flexery extends StatelessWidget {
                 image: AssetImage(darkBackgroundImage),
               ),
             ),
-            child: Column(
-              children: [
-                const SizedBox(height: 50),
-                //appbar
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Obx(() {
+                return Column(
                   children: [
-                    Builder(
-                        builder: (context) {
-                          return CircleAvatar(
-                            backgroundColor: whiteColor,
-                            radius: 22,
-                            child: TextButton(
-                              onPressed: () {
-                                FocusScopeNode currentFocus = FocusScope.of(context);
-                                if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                                Scaffold.of(context).openDrawer();
-                              },
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.all(8),
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Icon(
-                                Icons.menu_rounded,
-                                color: neutralColor,
-                                size: 24,
-                              ),
-                            ),
-                          );
-                        }
-                    ),
-                    const SizedBox(width: 7),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24),
-                          color: whiteColor,
+                    const SizedBox(height: 50),
+                    //appbar
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Builder(
+                            builder: (context) {
+                              return CircleAvatar(
+                                backgroundColor: whiteColor,
+                                radius: 22,
+                                child: TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+                                    shape: const CircleBorder(),
+                                  ),
+                                  child: const Icon(
+                                    Icons.arrow_back_ios,
+                                    color: neutralColor,
+                                    size: 22,
+                                  ),
+                                ),
+                              );
+                            }
                         ),
-                        child: TextField(
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.search,
-                          style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.fromLTRB(5, 18, 5, 5),
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              IconlyLight.search,
-                              color: neutralColor.withOpacity(0.3),
-                              size: 16,
+                        const SizedBox(width: 7),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: whiteColor,
                             ),
-                            hintText: 'Search flex hashtags',
-                            hintStyle: textTheme.bodyText1!.copyWith(
-                              fontSize: 13,
-                              color: neutralColor.withOpacity(0.3),
+                            child: TextField(
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.search,
+                                style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                                controller: searchController,
+                                onChanged: (value) {
+                                  getFlexeryByHashTag(value);
+                                },
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.fromLTRB(5, 18, 5, 5),
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    IconlyLight.search,
+                                    color: neutralColor.withOpacity(0.3),
+                                    size: 16,
+                                  ),
+                                  hintText: 'Search flex hashtags',
+                                  hintStyle: textTheme.bodyText1!.copyWith(
+                                    fontSize: 13,
+                                    color: neutralColor.withOpacity(0.3),
+                                  ),
+                                  suffixIcon: userController.showSearchSpinner.value == true
+                                    ? SizedBox(
+                                        width: 5,
+                                        height: 5,
+                                        child: SpinKitCircle(
+                                          color: primaryColor.withOpacity(0.9),
+                                          size: 25,
+                                        ),
+                                      )
+                                    : const SizedBox(
+                                        width: 2,
+                                      height: 2,
+                                    ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        const SizedBox(width: 7),
+                        CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 22,
+                          child: TextButton(
+                            onPressed: () {},
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(12),
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.linked_camera_outlined,
+                              color: primaryColor,
+                              size: 21,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 7),
+                        CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 22,
+                          child: TextButton(
+                            onPressed: () {
+                              _showFilterDialog(context);
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(10),
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              IconlyLight.filter2,
+                              color: primaryColor,
+                              size: 21,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 7),
-                    CircleAvatar(
-                      backgroundColor: whiteColor,
-                      radius: 22,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(12),
-                          shape: const CircleBorder(),
+                    const SizedBox(height: 20),
+                    //body of media
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 5,
+                      runSpacing: 5,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _showImageDialog(unsplashImage, context);
+                          },
+                          child: Container(
+                            width: SizeConfig.screenWidth! * 0.3,
+                            height: SizeConfig.screenHeight! * 0.155,
+                            color: Colors.grey,
+                            child: Image.asset(
+                              unsplashImage,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.medium,
+                            ),
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.linked_camera_outlined,
-                          color: primaryColor,
-                          size: 21,
+                        GestureDetector(
+                          onTap: () {
+                            _showImageDialog(hostImage, context);
+                          },
+                          child: Container(
+                            width: SizeConfig.screenWidth! * 0.3,
+                            height: SizeConfig.screenHeight! * 0.155,
+                            color: Colors.grey,
+                            child: Image.asset(
+                              hostImage,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.medium,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 7),
-                    CircleAvatar(
-                      backgroundColor: whiteColor,
-                      radius: 22,
-                      child: TextButton(
-                        onPressed: () {
-                          _showFilterDialog(context);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(10),
-                          shape: const CircleBorder(),
+                        GestureDetector(
+                          onTap: () {
+                            _showImageDialog(unsplashImage, context);
+                          },
+                          child: Container(
+                            width: SizeConfig.screenWidth! * 0.3,
+                            height: SizeConfig.screenHeight! * 0.155,
+                            color: Colors.grey,
+                            child: Image.asset(
+                              unsplashImage,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.medium,
+                            ),
+                          ),
                         ),
-                        child: const Icon(
-                          IconlyLight.filter2,
-                          color: primaryColor,
-                          size: 21,
-                        ),
-                      ),
+                      ],
                     ),
                   ],
-                ),
-                const SizedBox(height: 20),
-                //body of media
-                Wrap(
-                  alignment: WrapAlignment.spaceBetween,
-                  spacing: 5,
-                  runSpacing: 5,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _showImageDialog(unsplashImage, context);
-                      },
-                      child: Container(
-                        width: SizeConfig.screenWidth! * 0.3,
-                        height: SizeConfig.screenHeight! * 0.155,
-                        color: Colors.grey,
-                        child: Image.asset(
-                          unsplashImage,
-                          fit: BoxFit.cover,
-                          filterQuality: FilterQuality.medium,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _showImageDialog(hostImage, context);
-                      },
-                      child: Container(
-                        width: SizeConfig.screenWidth! * 0.3,
-                        height: SizeConfig.screenHeight! * 0.155,
-                        color: Colors.grey,
-                        child: Image.asset(
-                          hostImage,
-                          fit: BoxFit.cover,
-                          filterQuality: FilterQuality.medium,
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _showImageDialog(unsplashImage, context);
-                      },
-                      child: Container(
-                        width: SizeConfig.screenWidth! * 0.3,
-                        height: SizeConfig.screenHeight! * 0.155,
-                        color: Colors.grey,
-                        child: Image.asset(
-                          unsplashImage,
-                          fit: BoxFit.cover,
-                          filterQuality: FilterQuality.medium,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                );
+              }
             ),
           ),
         ),
@@ -367,7 +397,29 @@ class Flexery extends StatelessWidget {
     );
   }
 
+  Timer? _debounce;
+
+  ///Function to get images by search
+  void getFlexeryByHashTag(String hashTag) {
+    if (_debounce?.isActive ?? false) {
+      print('here');
+      _debounce?.cancel();
+    } else {
+      _debounce = Timer(const Duration(milliseconds: 1000), () async {
+        userController.showSearchSpinner.value = true;
+       await api.getFlexeryByHashTag(hashTag).then((value) {
+         userController.showSearchSpinner.value = false;
+         print(value);
+       }).catchError((e) {
+         userController.showSearchSpinner.value = false;
+         log(':::error: $e');
+         Functions.showMessage(e.toString());
+       });
+      });
+    }
+  }
 }
+
 // ///List of pictures used in wrap
 // final List<Widget> _pictureList = [
 //   for (int i = 0; i < 8; i++){

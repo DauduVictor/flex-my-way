@@ -129,6 +129,7 @@ class NetworkHelper {
   /// A function to do any delete request with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> delete(String url, {Map<String, String>? headers, body}) {
+    print(url);
     try {
       headers!['Content-Type'] = 'application/json';
       return http

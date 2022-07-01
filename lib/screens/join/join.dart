@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../bloc/future-values.dart';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/networking/networking.dart';
-import '../dashboard/drawer.dart';
 import '../dashboard/notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -119,7 +117,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
             ),
             icon: customIcon!,
             onTap: () {
-              Get.to(JoinFlex(flex: flex[i]));
+              Get.to(() => JoinFlex(flex: flex[i]));
             }
           ),
         );
@@ -214,7 +212,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     _createCustomMarkerIcon(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: RefactoredDrawer(),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -250,16 +247,16 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                 radius: 22,
                                 child: TextButton(
                                   onPressed: () {
-                                    Scaffold.of(context).openDrawer();
+                                    Get.back();
                                   },
                                   style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.all(8),
+                                    padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
                                     shape: const CircleBorder(),
                                   ),
                                   child: const Icon(
-                                    Icons.menu_rounded,
+                                    Icons.arrow_back_ios,
                                     color: neutralColor,
-                                    size: 24,
+                                    size: 22,
                                   ),
                                 ),
                               );

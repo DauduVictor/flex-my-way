@@ -4,6 +4,7 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/host-controller.dart';
@@ -314,6 +315,9 @@ class HostAFlex extends StatelessWidget {
                         }
                         return null;
                       },
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(RegExp('[ ]')),
+                      ],
                     ),
                     /// paid or free
                     CustomDropdownButtonField(
@@ -380,10 +384,12 @@ class HostAFlex extends StatelessWidget {
                       items: yesOrNo,
                       onChanged: (value) {
                         value = value.toString();
-                        controller.displayFlexLocation.value = value.toString();
+                        value == 'Yes'
+                          ? controller.displayFlexLocation.value = true
+                          : controller.displayFlexLocation.value = false;
                       },
                       validator: (value) {
-                        if (controller.displayFlexLocation.value.isEmpty) {
+                        if (value == null) {
                           return 'This field is required';
                         }
                         return null;
@@ -461,10 +467,11 @@ class HostAFlex extends StatelessWidget {
   /// function to pick image from the users gallery
   Future<void> _pickImage(ImageSource source) async {
     try {
-      File image = (await ImagePicker().pickImage(source: source)) as File;
-      controller.image = image;
+      var image = (await ImagePicker().pickImage(source: source));
+      controller.image = File(image!.path);
+      print(':::imagePath: ${controller.image!.path}');
       final fileTemp = File(image.path);
-      controller.bannerImageController.text = fileTemp.path;
+      controller.bannerImageController.text = fileTemp.path.split('/').last;
       Functions.showMessage('Image upload successful');
       // if(image == null) {
       //   return;
@@ -572,110 +579,116 @@ class HostAFlex extends StatelessWidget {
 
   /// Bottom modal Widget to set flex address
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-      },
-      child: Container(
-        height: SizeConfig.screenHeight! * 0.9,
-        decoration: const BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            topLeft: Radius.circular(20),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 21),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return StatefulBuilder(
+      builder: (context, StateSetter setDialogState) {
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+          },
+          child: Container(
+            height: SizeConfig.screenHeight! * 0.9,
+            decoration: const BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 21),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(width: 30),
-                Center(
-                  child: Text(
-                    'Search Address',
-                    style: textTheme.headline5!.copyWith(
-                      fontSize: 17,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 30),
+                    Center(
+                      child: Text(
+                        'Search Address',
+                        style: textTheme.headline5!.copyWith(
+                          fontSize: 17,
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 31,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 21),
                 Padding(
-                  padding: const EdgeInsets.only(right: 20),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomTextFormField(
+                    hintText: AppStrings.enterAddress,
+                    textEditingController: controller.searchAddress,
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (value) {
+                      if (value!.length > 2) {
+                        setDialogState(() {
+                          controller.getUserLatLongByAddress(value);
+                        });
+                      }
                     },
-                    child: const Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 31,
-                    ),
                   ),
                 ),
+                const Divider(
+                  color: neutralColor,
+                  height: 2.5,
+                  thickness: 0.3,
+                ),
+                TextButton(
+                  onPressed: () {
+                    try {
+                      controller.getUserLocation();
+                      Navigator.pop(context);
+                    } catch (e) {
+                      Functions.showMessage(e);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.near_me_outlined,
+                        color: neutralColor,
+                        size: 21,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Use my location',
+                        style: textTheme.bodyText1,
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  color: primaryColor,
+                  height: 0.1,
+                  thickness: 0.1,
+                ),
+                _buildLocationSuggestions(textTheme, setDialogState),
               ],
             ),
-            const SizedBox(height: 21),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: CustomTextFormField(
-                hintText: AppStrings.enterAddress,
-                textEditingController: controller.searchAddress,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                onChanged: (value) {
-                  if (value!.length > 2) {
-                    controller.getUserLatLongByAddress(value);
-                  }
-                },
-              ),
-            ),
-            const Divider(
-              color: neutralColor,
-              height: 2.5,
-              thickness: 0.3,
-            ),
-            TextButton(
-              onPressed: () {
-                try {
-                  controller.getUserLocation();
-                  Navigator.pop(context);
-                } catch (e) {
-                  Functions.showMessage(e);
-                }
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.near_me_outlined,
-                    color: neutralColor,
-                    size: 21,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Use my location',
-                    style: textTheme.bodyText1,
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              color: primaryColor,
-              height: 0.1,
-              thickness: 0.1,
-            ),
-            _buildLocationSuggestions(textTheme),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 
-  Widget _buildLocationSuggestions(TextTheme textTheme) {
+  Widget _buildLocationSuggestions(TextTheme textTheme, StateSetter setDialogState) {
     List<Widget> locationSuggestionContainer = [];
     if (controller.location.isNotEmpty) {
       for (int i = 0; i < controller.location.length; i++) {
@@ -709,7 +722,12 @@ class HostAFlex extends StatelessWidget {
         children: locationSuggestionContainer,
       );
     } else {
-      return const SizedBox();
+      return SizedBox(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 5,
+        ),
+      );
     }
   }
 

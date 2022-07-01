@@ -1,20 +1,22 @@
+import 'dart:developer';
+import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../../util/constants/constants.dart';
 import '../../../util/size-config.dart';
-import '../dashboard/drawer.dart';
+import 'package:flex_my_way/model/model.dart';
 
 class FlexHistory extends StatelessWidget {
 
   static const String id = 'flexHistory';
-  const FlexHistory({Key? key}) : super(key: key);
+  FlexHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      drawer: RefactoredDrawer(),
       body: Container(
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
@@ -41,17 +43,17 @@ class FlexHistory extends StatelessWidget {
                           radius: 22,
                           child: TextButton(
                             onPressed: () {
-                              Scaffold.of(context).openDrawer();
+                              Get.back();
                             },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(8),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.menu_rounded,
-                              color: neutralColor,
-                              size: 24,
-                            ),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                Icons.arrow_back_ios,
+                                color: neutralColor,
+                                size: 22,
+                              ),
                           ),
                         ),
                       );
@@ -121,12 +123,17 @@ class FlexHistory extends StatelessWidget {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: TabBarView(
-                                  children: [
-                                    _pastFlex(),
-                                    _presentFlex(),
-                                    _futureFlex(),
-                                  ],
+                                child: GetBuilder<UserController>(
+                                  init: UserController(),
+                                  builder: (controller) {
+                                    return TabBarView(
+                                      children: [
+                                        _pastFlex(controller.pastFlex),
+                                        _presentFlex(controller.presentFlex),
+                                        _futureFlex(controller.futureFlex),
+                                      ],
+                                    );
+                                  }
                                 ),
                               ),
                             ),
@@ -145,7 +152,8 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _pastFlex() {
+  Widget _pastFlex(List<Flexes> data) {
+    log(':::pastFlexLength: ${data.length}');
     return SingleChildScrollView(
       child: Column(
         children: const [
@@ -165,7 +173,8 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _presentFlex() {
+  Widget _presentFlex(List<Flexes> data) {
+    log(':::presentFlexLength: ${data.length}');
     return SingleChildScrollView(
       child: Column(
         children: const [
@@ -205,7 +214,8 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _futureFlex() {
+  Widget _futureFlex(List<Flexes> data) {
+    log(':::futureFlexLength: ${data.length}');
     return SingleChildScrollView(
       child: Column(
         children: const [

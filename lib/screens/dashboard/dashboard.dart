@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:flex_my_way/components/components.dart';
 import '../../controllers/user-controller.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'drawer.dart';
+import 'package:flex_my_way/model/model.dart';
 
 class Dashboard extends StatelessWidget {
 
@@ -41,7 +43,9 @@ class Dashboard extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     ListTileButton(
-                      title: 'You have 111 pending invites. How would you like to deal with these?',
+                      title: userController.notification.isEmpty
+                        ? 'You have ${userController.notification.length} pending invites. How would you like to deal with these?'
+                        : 'No pending invites at the moment. Create Flex and invite your friends',
                       onPressed: () {
                         Navigator.pushNamed(context, PendingInvites.id);
                       },
@@ -97,8 +101,8 @@ class Dashboard extends StatelessWidget {
                       Expanded(
                         child: TabBarView(
                           children: [
-                            _scheduled(),
-                            _completedFlex(),
+                            _scheduled(userController.scheduledFlex),
+                            _completedFlex(userController.completedFlex),
                           ],
                         ),
                       ),
@@ -114,7 +118,8 @@ class Dashboard extends StatelessWidget {
   }
 
   /// Widget to hold column view for scheduled flex
-  Widget _scheduled() {
+  Widget _scheduled(List<Flexes> data) {
+    log(':::scheduledFlexLength: ${data.length}');
     return SingleChildScrollView(
       child: Column(
         children: const [
@@ -139,7 +144,8 @@ class Dashboard extends StatelessWidget {
   }
 
   /// Widget to hold column view for completed flex
-  Widget _completedFlex() {
+  Widget _completedFlex(List<Flexes> data) {
+    log(':::completedFlexLength: ${data.length}');
     return SingleChildScrollView(
       child: Column(
         children: const [

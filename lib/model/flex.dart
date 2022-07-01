@@ -12,6 +12,7 @@ class Flexes {
     this.capacity,
     this.ageRating,
     this.flexType,
+    this.bannerImage,
     this.hashtag,
     this.payStatus,
     this.viewStatus,
@@ -21,6 +22,7 @@ class Flexes {
     this.joinCode,
     this.distance,
     this.id,
+    this.videoLink,
   });
 
   /// This variable holds the flex coordinates
@@ -46,6 +48,9 @@ class Flexes {
 
   /// This variable holds the flexType
   String? flexType;
+
+  /// This variable holds the bannerImage
+  String? bannerImage;
 
   /// This variable holds the flex hashtag
   String? hashtag;
@@ -74,6 +79,9 @@ class Flexes {
   /// This variable holds the flex id
   String? id;
 
+  /// This variable holds the flex id
+  String? videoLink;
+
   factory Flexes.fromJson(Map<String, dynamic> json) => Flexes(
     locationCoordinates: json['locationCoordinates'] != null ? FlexLocationCoordinates.fromJson(json["locationCoordinates"]) : null,
     name: json["name"] ?? '',
@@ -83,6 +91,7 @@ class Flexes {
     capacity: json["capacity"] ?? 0,
     ageRating: json["ageRating"] ?? '',
     flexType: json["flexType"] ?? '',
+    bannerImage: json["bannerImage"] ?? '',
     hashtag: json["hashtag"] ?? '',
     payStatus: json["payStatus"] ?? '',
     viewStatus: json["viewStatus"] ?? '',
@@ -92,6 +101,7 @@ class Flexes {
     joinCode: json["joinCode"] ?? '',
     distance: json['distance'] != null ? json["distance"].toDouble() : 0.0,
     id: json["id"] ?? '',
+    videoLink: json["videoLink"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -103,6 +113,7 @@ class Flexes {
     "capacity": capacity,
     "ageRating": ageRating,
     "flexType": flexType,
+    "bannerImage": bannerImage,
     "hashtag": hashtag,
     "payStatus": payStatus,
     "viewStatus": viewStatus,
@@ -112,6 +123,7 @@ class Flexes {
     "joinCode": joinCode,
     "distance": distance,
     "id": id,
+    "videoLink": videoLink,
   };
 }
 

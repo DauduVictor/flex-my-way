@@ -63,7 +63,7 @@ class HostController extends GetxController {
   final publicOrPrivate = ''.obs;
 
   /// A variable to hold the flex location
-  final displayFlexLocation = ''.obs;
+  final displayFlexLocation = false.obs;
 
   /// A variable to hold the gender restriction
   bool? genderRestriciton;
@@ -100,7 +100,7 @@ class HostController extends GetxController {
   final previewCreatedFlex = false.obs;
 
   /// Variable to hold a list of location that user types
-  List <Location> location = [];
+  RxList<Location> location = <Location>[].obs;
 
   FlexSuccess? createdFlex;
   //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
@@ -137,7 +137,7 @@ class HostController extends GetxController {
   void getUserLatLongByAddress(String address) async {
     List<Location> locations = await locationFromAddress(address);
     print(locations);
-    location = locations;
+    location.value = locations;
   }
 
   /*Controller and Variables for host registration*/

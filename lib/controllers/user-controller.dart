@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/dashboard/notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,7 @@ class UserController extends GetxController {
     getDashboardFlex();
     getFlexHistory();
     getNotifications();
+    getFlexInvites();
     super.onInit();
   }
 
@@ -86,9 +88,22 @@ class UserController extends GetxController {
   /// Variable to hold user's type
   final canHostFlex = false.obs;
 
-  RxList<Notification> notification = <Notification>[].obs;
+  //notifications
+  /// Variable to hold notification delete spinner
+  final showNotificationSpinner = false.obs;
 
-  /*api integration*/
+  //notifications
+  /// Variable to hold notification delete spinner
+  final showInvitesSpinner = false.obs;
+
+  RxList<Notification> notification = <Notification>[].obs;
+  RxList<Flexes> scheduledFlex = <Flexes>[].obs;
+  RxList<Flexes> completedFlex = <Flexes>[].obs;
+  RxList<Flexes> pastFlex = <Flexes>[].obs;
+  RxList<Flexes> presentFlex = <Flexes>[].obs;
+  RxList<Flexes> futureFlex = <Flexes>[].obs;
+
+  /*invites integration*/
   /// Tempral map to hold the invite length
   Map<String, String> invites = {
     '1' : 'oiwjnowfe782',
@@ -111,6 +126,7 @@ class UserController extends GetxController {
     '7',
   ];
 
+  /* Dashboard integration*/
   /// Function to get dashboard flex [with param - scheduled, completed]
   void getDashboardFlex() async {
     var api = FlexDataSource();
@@ -131,27 +147,27 @@ class UserController extends GetxController {
 
   }
 
-  /// Function to get dashboard flex [with param - scheduled, completed]
+  /* Flex History Integration*/
   void getFlexHistory() async {
     var api = FlexDataSource();
 
     ///get past flex tab
     await api.getFlexHistory('past').then((value) {
-      return null;
+      pastFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
     });
 
     ///get present flex tab
     await api.getFlexHistory('present').then((value) {
-      return null;
+      presentFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
     });
 
     ///get future flex tab
     await api.getFlexHistory('future').then((value) {
-      return null;
+      futureFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
     });
@@ -167,5 +183,20 @@ class UserController extends GetxController {
       log(':::error: $e');
     });
   }
+
+  /// Function to get flex invitees
+  void getFlexInvites() async {
+    var api = FlexDataSource();
+    await api.getFlexInvites().then((value) {
+      notification.value = value;
+      log(':::notificationLength: ${notification.length}');
+    }).catchError((e) {
+      log(':::error: $e');
+    });
+  }
+
+  /*flexery*/
+  /// Variable to hold notification delete spinner
+  final showSearchSpinner = false.obs;
 
 }

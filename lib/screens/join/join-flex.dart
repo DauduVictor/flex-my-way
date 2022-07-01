@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -10,6 +13,8 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import '../onboarding/login.dart';
 import 'package:flex_my_way/model/model.dart';
+
+import '../web-view.dart';
 
 class JoinFlex extends StatelessWidget {
 
@@ -28,7 +33,10 @@ class JoinFlex extends StatelessWidget {
   final UserController userController = Get.put(UserController());
 
   final CameraPosition userPosition = const CameraPosition(
-    target: LatLng(6.519314, 3.396336),
+    target: LatLng(
+      6.519314,
+      3.396336,
+    ),
     zoom: 16.0,
   );
 
@@ -40,6 +48,8 @@ class JoinFlex extends StatelessWidget {
     _mapController.complete(controller);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -48,42 +58,55 @@ class JoinFlex extends StatelessWidget {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Container(
+          SizedBox(
             height: SizeConfig.screenHeight,
             width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(unsplashImage),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
+            child: Stack(
               children: [
-                const SizedBox(height: 55),
-                //appbar
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: CircleAvatar(
-                    backgroundColor: whiteColor,
-                    radius: 22,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.only(left: 8),
-                        shape: const CircleBorder(),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: neutralColor,
-                        size: 22,
+                CachedNetworkImage(
+                  width: SizeConfig.screenWidth!,
+                  height: SizeConfig.screenHeight! * 0.65,
+                  alignment: Alignment.topCenter,
+                  imageUrl: flex!.bannerImage!,
+                  progressIndicatorBuilder: (context, url, downloadProgress) {
+                    return SpinKitCircle(
+                      color: primaryColor.withOpacity(0.7),
+                    );
+                  },
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
+                Column(
+                  children: [
+                    const SizedBox(height: 55),
+                    //appbar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: CircleAvatar(
+                          backgroundColor: whiteColor,
+                          radius: 22,
+                          child: TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.only(left: 8),
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios,
+                              color: neutralColor,
+                              size: 22,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    //body
+                  ],
                 ),
-                //body
               ],
             ),
           ),
@@ -132,7 +155,8 @@ class JoinFlex extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
+                                          'Dec',
+                                          // Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
                                           style: textTheme.headline5!.copyWith(
                                             color: primaryColor,
                                             fontSize: 20,
@@ -140,7 +164,8 @@ class JoinFlex extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
+                                          '20',
+                                          // Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
                                           style: textTheme.headline5!.copyWith(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
@@ -181,12 +206,11 @@ class JoinFlex extends StatelessWidget {
                                   TextButton(
                                     onPressed: () {
                                       if (userController.isLoggedIn.value) {
-                                        if(controller.isPaid) {
+                                        if(flex!.payStatus! == 'Paid') {
                                           Functions.showMessage('You will be redirected to the payment gateway to make payment');
-                                          // controller.isPaid.toggle();
                                         }
                                         else {
-                                          _joinFlex();
+                                          _joinFlex(flex!.joinCode!);
                                         }
                                       }
                                       else {
@@ -203,7 +227,7 @@ class JoinFlex extends StatelessWidget {
                                     ),
                                     child: controller.showSpinner.value == false
                                         ? Text(
-                                            controller.isPaid == false ? 'Join Flex' : 'Buy Flex Ticket',
+                                            flex!.payStatus! == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
                                             style: textTheme.button!.copyWith(
                                               fontSize: 15,
                                               color: whiteColor,
@@ -236,14 +260,14 @@ class JoinFlex extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Kelechi Mo.',
+                                        flex!.creator!.name!,
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                       Text(
-                                        'First Time Hoster',
+                                        'Multiple Time Hoster',
                                         style: textTheme.headline5!.copyWith(
                                           color: primaryColor,
                                           fontSize: 16.5,
@@ -268,9 +292,10 @@ class JoinFlex extends StatelessWidget {
                               /// video link button
                               GestureDetector(
                                 onTap: () {
-                                  controller.launchVideo('https://youtube.com').catchError((e){
-                                    Functions.showMessage('Could not launch url');
-                                  });
+                                  // controller.launchVideo('https://youtube.com').catchError((e){
+                                  //   Functions.showMessage('Could not launch url');
+                                  // });
+                                  Get.to(() => WebViewer(url: flex!.videoLink!));
                                 },
                                 child: Stack(
                                   children: const [
@@ -305,10 +330,7 @@ class JoinFlex extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                                        'Amet lorem tellus viverra venenatis dui id vitae phasellus odio. '
-                                        'Viverra diam venenatis aliquet imperdiet ultrices nullam gravida viverra faucibus.'
-                                        ' Donec varius tortor mauris gravida sed amet ligula tempus.',
+                                    flex!.flexRules!,
                                     style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                   ),
                                 ],
@@ -338,13 +360,13 @@ class JoinFlex extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
+                                  const SizedBox(width: 15),
                                   //provided
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Food & Drinks',
+                                        flex!.consumablesPolicy!,
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,
@@ -378,7 +400,7 @@ class JoinFlex extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          'Beach Flex',
+                                          flex!.flexType!,
                                           style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                         ),
                                       ],
@@ -428,7 +450,19 @@ class JoinFlex extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () async {
+                                  Clipboard.setData(
+                                    ClipboardData(
+                                      text: await controller.formatLocation(
+                                        flex!.locationCoordinates!.lat!,
+                                        flex!.locationCoordinates!.lng!
+                                      ))
+                                    ).then((value) {
+                                    Functions.showMessage('Flex location copied');
+                                  }).catchError((e){
+                                    Functions.showMessage('Could not copy flex link');
+                                  });
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                                   child: Row(
@@ -466,10 +500,10 @@ class JoinFlex extends StatelessWidget {
   }
 
   /// Function to make api call to join flex
-  void _joinFlex() async {
+  void _joinFlex(String joinCode) async {
     controller.showSpinner.value = true;
     var api = FlexDataSource();
-    await api.joinFlex(controller.flexId).then((flex) {
+    await api.joinFlex(joinCode).then((flex) {
       controller.showSpinner.value = false;
       controller.joinedFlex = flex;
       Get.toNamed(JoinedFlexDetails.id);

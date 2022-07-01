@@ -8,6 +8,7 @@ import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../onboarding/login.dart';
+import '../web-view.dart';
 
 class HostFlexTermsAndConditions extends StatefulWidget {
 
@@ -255,17 +256,18 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                   ),
                 ),
                 child: Stack(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.topCenter,
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
-                        height: SizeConfig.screenHeight! * 0.8,
+                        height: SizeConfig.screenHeight! * 0.4,
                         width: SizeConfig.screenWidth,
                         padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(unsplashImage),
+                            image: FileImage(hostController.image!),
+                            // image: AssetImage(unsplashImage),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -378,12 +380,12 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                           ),
                                           child: hostController.showSpinner.value == false
                                               ? Text(
-                                            hostController.paid.value == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
-                                            style: textTheme.button!.copyWith(
-                                              fontSize: 15,
-                                              color: whiteColor,
-                                            ),
-                                          )
+                                                  hostController.paid.value == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
+                                                  style: textTheme.button!.copyWith(
+                                                    fontSize: 15,
+                                                    color: whiteColor,
+                                                  ),
+                                                )
                                               : const Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: 18),
                                                   child: SizedBox(
@@ -443,9 +445,10 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                     /// video link button
                                     GestureDetector(
                                       onTap: () {
-                                        hostController.launchVideo().catchError((e){
-                                          Functions.showMessage('Could not launch url');
-                                        });
+                                        // hostController.launchVideo().catchError((e){
+                                        //   Functions.showMessage('Could not launch url');
+                                        // });
+                                        Get.to(() => WebViewer(url: hostController.videoLinkController.text));
                                       },
                                       child: Stack(
                                         children: const [
@@ -672,7 +675,9 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
 
   void _hostFlex() async {
     hostController.showSpinner.value = true;
-    Map<String, dynamic> body = {
+    Map<String, String> body = {
+      'lat': hostController.lat.value,
+      'lng': hostController.long.value,
       'name': hostController.nameFlexController.text,
       'date': hostController.dateController.text,
       'capacity': hostController.numberOfPeopleController.text,
@@ -681,25 +686,22 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       'hashtag': hostController.eventHashTagController.text,
       'payStatus': hostController.paid.value,
       'viewStatus': hostController.publicOrPrivate.value,
-      'showOnAccepted': hostController.displayFlexLocation.value,
-      'genderRestriction': hostController.genderRestriciton,
+      'showOnAccepted': '${hostController.displayFlexLocation.value}',
+      'genderRestriction': '${hostController.genderRestriciton}',
       'consumablesPolicy': hostController.consumablePolicy.value,
       'flexRules': hostController.flexRulesController.text,
       'videoLink': hostController.videoLinkController.text,
-      'locationCoordinates': {
-        'lat': hostController.lat.value,
-        'lng': hostController.long.value
-      }
     };
     var api = FlexDataSource();
-    await api.createFlex(/*controller.image!,*/ body).then((flexSuccess) {
+    await api.createFlex(hostController.image!, body).then((flexSuccess) {
       hostController.createdFlex = flexSuccess;
       hostController.showSpinner.value = false;
       Get.offAllNamed(HostFlexSuccess.id);
     }).catchError((e){
       hostController.showSpinner.value = false;
-      log(e);
-      Functions.showMessage(e);
+      log(':::error: $e');
+      print(e);
+      Functions.showMessage(e.toString());
     });
   }
 }
