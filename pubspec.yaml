@@ -22,6 +22,7 @@ dependencies:
   path_provider: ^2.0.9
   fluttertoast: ^8.0.9
   google_maps_flutter: ^2.1.2
+  webview_flutter: ^3.0.4
   animated_text_kit: ^4.2.1
   share_plus: ^4.0.3
   image_picker: ^0.8.4+11
@@ -32,6 +33,7 @@ dependencies:
   flutter_spinkit: ^5.1.0
   contacts_service: ^0.6.3
   permission_handler: ^9.2.0
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0

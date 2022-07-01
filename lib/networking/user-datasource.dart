@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
 import 'networking.dart';
@@ -50,7 +52,7 @@ class UserDataSource {
   /// It returns a [String_Message]
   Future<dynamic> forgotPassword (Map<String, String> body) {
     return _netUtil.post(FORGOT_PASSWORD, headers: header, body: body).then((dynamic res) {
-      if(res['status'] != 'success') throw res['data'];
+      if(res['status'] != 'success') throw res['message'];
       return (res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
@@ -72,9 +74,14 @@ class UserDataSource {
   /// A function that sends request for reset password with [body] as details
   /// A post request to use the [RESET_PASSWORD_WITH_ID]
   /// It returns a [String_Message]
-  Future<dynamic> resetPasswordWithId (Map<String, String> body) {
-    return _netUtil.post(RESET_PASSWORD_WITH_ID, headers: header, body: body).then((dynamic res) {
-      if(res['status'] != 'success') throw res['data'];
+  Future<dynamic> editPassword (Map<String, String> body) async  {
+    Map<String, String> header = {};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    header['Content-Type'] = 'application/json';
+    header['Accept'] = '*/*';
+    return _netUtil.post(EDIT_PASSWORD, headers: header, body: body).then((dynamic res) {
+      if(res['status'] != 'success') throw res['message'];
       return (res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
@@ -93,6 +100,32 @@ class UserDataSource {
     return _netUtil.put(UPDATE_USER_INFO, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
       return User.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for update user details with [body] as details
+  /// A post request to use the [UPDATE_USER_INFO]
+  /// It returns a [String_Message]
+  Future<dynamic> deleteNotification (String id) async {
+    String? userId;
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+      log(':::userId: $userId');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
+    });
+    String DELETE_NOTIFICATION_URL = DELETE_NOTIFICATION + '$id/delete';
+    return _netUtil.delete(DELETE_NOTIFICATION_URL, headers: header).then((res) {
+      log(':::deleteNotification: $res');
+      if(res['status'] != 'success') throw res['message'];
+      return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
     });

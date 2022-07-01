@@ -42,6 +42,9 @@ class SettingsController extends GetxController {
   /// A [TextEditingController] to control the input text for new password
   final TextEditingController newPasswordController = TextEditingController();
 
+  /// A [TextEditingController] to control the input text for new password
+  final TextEditingController confirmPasswordController = TextEditingController();
+
   /// bool variable to hold the status of show edit password
   final showEditPassword = false.obs;
 
@@ -51,8 +54,11 @@ class SettingsController extends GetxController {
   /// bool variable to hold the status of current password obscure text
   final obscureCurrentPassword = true.obs;
 
-  /// bool variable to hold the status of current password obscure text
+  /// bool variable to hold the status of new password obscure text
   final obscureNewPassword = true.obs;
+
+  /// bool variable to hold the status of confirm password obscure text
+  final obscureConfirmPassword = true.obs;
 
   /*Controllers and Variable for edit profile details*/
   /// A [TextEditingController] to control the input text for name

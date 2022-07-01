@@ -16,7 +16,7 @@ class RefactoredDrawer extends StatelessWidget {
   RefactoredDrawer({Key? key}) : super(key: key);
 
   /// calling the user controller [UserController]
-  final UserController userController = Get.find<UserController>();
+  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {

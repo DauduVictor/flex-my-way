@@ -4,6 +4,7 @@ class AppStrings {
   static const flexMyWay = 'flex\nmy\nway';
   static const enterCurrentPassword = 'Enter Current Password';
   static const enterNewPassword = 'Enter New Password';
+  static const enterConfirmPassword = 'Confirm Password';
   static const resetPassword = 'Reset Password';
   static const save = 'Save';
   static const logOutPrompt = 'Are you sure you want to logout of your account?';

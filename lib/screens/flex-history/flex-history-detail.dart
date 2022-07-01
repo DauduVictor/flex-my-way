@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -62,7 +63,7 @@ class FlexHistoryDetail extends StatelessWidget {
                       radius: 22,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Get.back();
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.only(left: 8),
