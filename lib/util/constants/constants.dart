@@ -4,7 +4,7 @@ const primaryColor = Color(0xFF7259F7);
 const primaryColorVariant = Color(0xFFDDD7FD);
 const backgroundColor = Color(0xFFF8F7FE);
 const whiteColor = Colors.white;
-const transparent = Colors.transparent;
+const transparentColor = Colors.transparent;
 const neutralColor = Color(0xFF003951);
 const neutralColorLight = Color(0xFFDBDDE0);
 const errorColor = Color(0xFFDB3704);
@@ -15,6 +15,7 @@ const lightButtonColor = Color(0xFF7D9AA5);
 
 // images
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
+const empty = 'assets/images/svgs/empty.svg';
 const successImage = 'assets/images/svgs/success.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';

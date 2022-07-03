@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
 import '../../controllers/user-controller.dart';
@@ -16,8 +18,90 @@ class Dashboard extends StatelessWidget {
   /// calling the user controller [UserController]
   final UserController userController = Get.put(UserController());
 
+  ///widget to show the dialog for flex reminder
+  Future<void> checkFlexReminder (BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: whiteColor,
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(16, 30, 16, 21),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: whiteColor,
+            ),
+            child: Material(
+              borderRadius: BorderRadius.circular(4),
+              color: whiteColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.notification_important,
+                    color: Color(0xFF17B899),
+                    size: 55,
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Reminder!',
+                    style: TextStyle(
+
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    child: Text(
+                      'We saved the flex you were trying to create. Click "Continue" to finish your flex and go live now!! ',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          primary: primaryColor,
+                        ),
+                        child: const Text(
+                          'Cancel',
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: TextButton(
+                          onPressed: () async {
+
+                          },
+                          style: TextButton.styleFrom(
+                            primary: primaryColor,
+                          ),
+                          child: const Text(
+                            'Continue',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // checkFlexReminder(context);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
@@ -120,7 +204,47 @@ class Dashboard extends StatelessWidget {
   /// Widget to hold column view for scheduled flex
   Widget _scheduled(List<Flexes> data) {
     log(':::scheduledFlexLength: ${data.length}');
-    return SingleChildScrollView(
+    if (userController.isScheduledLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no scheduled flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableDashBoardCard(
+              eventName: 'Afro Nation Festival',
+              noOfAttendees: '10',
+              maxNoOfAttendees: '50',
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
+    /*return SingleChildScrollView(
       child: Column(
         children: const [
           ReusableDashBoardCard(
@@ -140,48 +264,52 @@ class Dashboard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   /// Widget to hold column view for completed flex
   Widget _completedFlex(List<Flexes> data) {
     log(':::completedFlexLength: ${data.length}');
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableDashBoardCard(
-            eventName: 'Afro Nation Festival',
-            noOfAttendees: '10',
-            maxNoOfAttendees: '50',
+    if (userController.isScheduledLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no completed flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
-          ReusableDashBoardCard(
-            eventName: 'Kelechi\'s Birthday Party',
-            noOfAttendees: '43',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Champions league final live at abule',
-            noOfAttendees: '50',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Afro Nation Festival',
-            noOfAttendees: '10',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Kelechi\'s Birthday Party',
-            noOfAttendees: '43',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Champions league final live at abule',
-            noOfAttendees: '50',
-            maxNoOfAttendees: '50',
-          ),
-        ],
-      ),
-    );
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableDashBoardCard(
+              eventName: 'Afro Nation Festival',
+              noOfAttendees: '10',
+              maxNoOfAttendees: '50',
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
   }
 
 }

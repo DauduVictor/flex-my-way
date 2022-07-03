@@ -203,7 +203,7 @@ class BetaSms extends StatelessWidget {
                         : hostController.isUploaded.value = true;
                     },
                     child: Container(
-                      color: transparent,
+                      color: transparentColor,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

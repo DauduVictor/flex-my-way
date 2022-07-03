@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flex_my_way/util/util.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../components/app-bar.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
@@ -28,16 +29,35 @@ class Notifications extends StatelessWidget {
               appBar: buildAppBar(context, textTheme, 'Notifications'),
               body: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
-                child: ListView.builder(
-                  itemCount: userController.notification.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return NotificationButton(
-                      text: userController.notification[index].message!,
-                      id: userController.notification[index].id!,
-                      index: index,
-                    );
-                  },
-                ),
+                child: userController.notification.isEmpty
+                  ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          empty,
+                          width: 70,
+                          height: 70,
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'You have no new notifications',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  )
+                  : ListView.builder(
+                      itemCount: userController.notification.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return NotificationButton(
+                          text: userController.notification[index].message!,
+                          id: userController.notification[index].id!,
+                          index: index,
+                        );
+                      },
+                    ),
               ),
             ),
             userController.showNotificationSpinner.value == true
@@ -51,7 +71,7 @@ class Notifications extends StatelessWidget {
                   ),
                   color: userController.showNotificationSpinner.value == true
                       ? whiteColor.withOpacity(0.2)
-                      : transparent,
+                      : transparentColor,
                 )
               : Container(),
           ],

@@ -8,11 +8,16 @@ import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 
-class Flexery extends StatelessWidget {
+class Flexery extends StatefulWidget {
 
   static const String id = "flexery";
   Flexery({Key? key}) : super(key: key);
 
+  @override
+  State<Flexery> createState() => _FlexeryState();
+}
+
+class _FlexeryState extends State<Flexery> {
   /// dynamic variable to hold an instance of flexDataSource
   var api = FlexDataSource();
 
@@ -21,6 +26,31 @@ class Flexery extends StatelessWidget {
 
   /// A [TextEditingController] to control the input text for search
   final TextEditingController searchController = TextEditingController();
+
+  ///Function to get images by search
+  void getFlexery(String? filter) async {
+    userController.showSpinner.value = true;
+    print(filter);
+    await api.getFlexery(filter ?? 'time').then((value) {
+      userController.showSpinner.value = false;
+      print(value);
+      if (filter == 'likes') {
+        userController.flexeryFilter.value = 0;
+      } else {
+        userController.flexeryFilter.value = 1;
+      }
+    }).catchError((e) {
+      userController.showSpinner.value = false;
+      log(':::error: $e');
+      Functions.showMessage(e.toString());
+    });
+  }
+
+  @override
+  void initState() {
+    getFlexery('time');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,16 +364,24 @@ class Flexery extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (userController.flexeryFilter.value != 0) {
+                          Get.back();
+                          getFlexery('likes');
+                        }
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
+                        color: userController.flexeryFilter.value == 0
+                            ? primaryColorVariant : transparentColor,
                         width: SizeConfig.screenWidth,
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Most Recent',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: userController.flexeryFilter.value == 0
+                                  ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: 'Gilroy',
                             ),
                           ),
@@ -352,17 +390,24 @@ class Flexery extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (userController.flexeryFilter.value != 1) {
+                          Get.back();
+                          getFlexery('time');
+                        }
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        color: primaryColorVariant,
+                        color: userController.flexeryFilter.value == 1
+                          ? primaryColorVariant : transparentColor,
                         width: SizeConfig.screenWidth,
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'Most Popular Flex',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: userController.flexeryFilter.value == 1
+                                ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: 'Gilroy',
                             ),
                           ),
@@ -405,7 +450,7 @@ class Flexery extends StatelessWidget {
       print('here');
       _debounce?.cancel();
     } else {
-      _debounce = Timer(const Duration(milliseconds: 1000), () async {
+      _debounce = Timer(const Duration(milliseconds: 800), () async {
         userController.showSearchSpinner.value = true;
        await api.getFlexeryByHashTag(hashTag).then((value) {
          userController.showSearchSpinner.value = false;

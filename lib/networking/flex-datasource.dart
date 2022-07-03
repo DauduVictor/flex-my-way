@@ -276,7 +276,31 @@ class FlexDataSource {
     log(GET_FLEXERY_URL);
     print(header);
     return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
-      res(':::flexery: $res');
+      log(':::flexery: $res');
+      if (res['status'] != 'success') throw res['data'];
+      return res['data'];
+    }).catchError((e) {
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function to get flexery images
+  /// A post request to use the [GET_FLEXERY]
+  /// It returns a dynamic response
+  Future<dynamic> getFlexery(String filter) async {
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'application/json';
+    });
+    String GET_FLEXERY_URL = GET_FLEXERY + '?filter=$filter';
+    log(GET_FLEXERY_URL);
+    print(header);
+    return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
+      log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
       return res['data'];
     }).catchError((e) {
