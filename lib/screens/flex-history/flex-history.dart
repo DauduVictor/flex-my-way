@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import '../../../util/constants/constants.dart';
 import '../../../util/size-config.dart';
@@ -11,6 +13,9 @@ class FlexHistory extends StatelessWidget {
 
   static const String id = 'flexHistory';
   FlexHistory({Key? key}) : super(key: key);
+
+  /// calling the user controller [UserController]
+  final UserController userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +159,47 @@ class FlexHistory extends StatelessWidget {
   /// Widget to hold column view for past flex
   Widget _pastFlex(List<Flexes> data) {
     log(':::pastFlexLength: ${data.length}');
-    return SingleChildScrollView(
+    if (userController.isPastLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no past flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableFlexHistoryPastButton(
+              title: 'Afro Nation Wide Festival',
+              month: 'DEC',
+              day: '25',
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
+    /*return SingleChildScrollView(
       child: Column(
         children: const [
           ReusableFlexHistoryPastButton(
@@ -169,13 +214,54 @@ class FlexHistory extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   /// Widget to hold column view for past flex
   Widget _presentFlex(List<Flexes> data) {
     log(':::presentFlexLength: ${data.length}');
-    return SingleChildScrollView(
+    if (userController.isPresentLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no present flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableFlexHistoryButton(
+              title: 'Bee Beach Party',
+              month: 'DEC',
+              day: '25',
+              ishost: false,
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
+    /*return SingleChildScrollView(
       child: Column(
         children: const [
           ReusableFlexHistoryButton(
@@ -210,13 +296,54 @@ class FlexHistory extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   /// Widget to hold column view for past flex
   Widget _futureFlex(List<Flexes> data) {
     log(':::futureFlexLength: ${data.length}');
-    return SingleChildScrollView(
+    if (userController.isFutureLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no future flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableFlexHistoryButton(
+              title: 'Bee Beach Party',
+              month: 'DEC',
+              day: '25',
+              ishost: false,
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
+    /*return SingleChildScrollView(
       child: Column(
         children: const [
           ReusableFlexHistoryButton(
@@ -245,7 +372,7 @@ class FlexHistory extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
 }

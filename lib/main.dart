@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
         HostFlexTermsAndConditions.id: (context) => HostFlexTermsAndConditions(),
         HostFlexSuccess.id: (context) => HostFlexSuccess(),
         BetaSms.id: (context) => BetaSms(),
-        Dashboard.id: (context) => Dashboard(),
+        Dashboard.id: (context) => const Dashboard(),
         Flexery.id: (context) => Flexery(),
         Notifications.id: (context) => Notifications(),
         Settings.id: (context) => Settings(),

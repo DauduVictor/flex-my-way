@@ -1,20 +1,135 @@
 import 'dart:developer';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/user-controller.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../host/host-a-flex.dart';
 import 'drawer.dart';
 import 'package:flex_my_way/model/model.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
 
   static const String id = "dashboard";
-  Dashboard({Key? key}) : super(key: key);
+  const Dashboard({Key? key}) : super(key: key);
 
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   /// calling the user controller [UserController]
   final UserController userController = Get.put(UserController());
+
+
+  /// Function to check if the user was trying to host a flex
+  void checkFlexReminderFromSp() {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool('flexReminder') == true) checkFlexReminder();
+    });
+  }
+
+  ///widget to show the dialog for flex reminder
+  checkFlexReminder () {
+    return showDialog<void> (
+      context: context,
+      barrierDismissible: true,
+      barrierColor: neutralColor.withOpacity(0.6),
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(16, 30, 16, 21),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: whiteColor,
+            ),
+            child: Material(
+              borderRadius: BorderRadius.circular(4),
+              color: whiteColor,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Icon(
+                    Icons.notification_important,
+                    color: Color(0xFF17B899),
+                    size: 55,
+                  ),
+                  const SizedBox(height: 5),
+                  const Text(
+                    'Reminder',
+                    style: TextStyle(
+                      color: neutralColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      'Flexmyway got your back. Click "Continue" to finish your flex and go live!!',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: TextButton.styleFrom(
+                          primary: primaryColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        ),
+                        child: const Text(
+                          'Cancel',
+                        ),
+                      ),
+                      const SizedBox(width: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: TextButton(
+                          onPressed: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('flexReminder', false);
+                            Get.back();
+                            Get.toNamed(HostAFlex.id);
+                          },
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            backgroundColor: primaryColor,
+                          ),
+                          child: const Text(
+                            'Continue',
+                            style: TextStyle(color: whiteColor),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    checkFlexReminderFromSp();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +162,7 @@ class Dashboard extends StatelessWidget {
                         ? 'You have ${userController.notification.length} pending invites. How would you like to deal with these?'
                         : 'No pending invites at the moment. Create Flex and invite your friends',
                       onPressed: () {
-                        Navigator.pushNamed(context, PendingInvites.id);
+                         Navigator.pushNamed(context, PendingInvites.id);
                       },
                     ),
                   ],
@@ -120,7 +235,47 @@ class Dashboard extends StatelessWidget {
   /// Widget to hold column view for scheduled flex
   Widget _scheduled(List<Flexes> data) {
     log(':::scheduledFlexLength: ${data.length}');
-    return SingleChildScrollView(
+    if (userController.isScheduledLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no scheduled flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableDashBoardCard(
+              eventName: 'Afro Nation Festival',
+              noOfAttendees: '10',
+              maxNoOfAttendees: '50',
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
+    /*return SingleChildScrollView(
       child: Column(
         children: const [
           ReusableDashBoardCard(
@@ -140,50 +295,53 @@ class Dashboard extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   /// Widget to hold column view for completed flex
   Widget _completedFlex(List<Flexes> data) {
     log(':::completedFlexLength: ${data.length}');
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableDashBoardCard(
-            eventName: 'Afro Nation Festival',
-            noOfAttendees: '10',
-            maxNoOfAttendees: '50',
+    if (userController.isScheduledLoaded.value == true) {
+      if (data.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                empty,
+                width: 70,
+                height: 70,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'You have no completed flex',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
-          ReusableDashBoardCard(
-            eventName: 'Kelechi\'s Birthday Party',
-            noOfAttendees: '43',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Champions league final live at abule',
-            noOfAttendees: '50',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Afro Nation Festival',
-            noOfAttendees: '10',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Kelechi\'s Birthday Party',
-            noOfAttendees: '43',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Champions league final live at abule',
-            noOfAttendees: '50',
-            maxNoOfAttendees: '50',
-          ),
-        ],
-      ),
-    );
+        );
+      } else {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return const ReusableDashBoardCard(
+              eventName: 'Afro Nation Festival',
+              noOfAttendees: '10',
+              maxNoOfAttendees: '50',
+            );
+          },
+        );
+      }
+    } else {
+      return Center(
+        child: SpinKitCircle(
+          color: primaryColor.withOpacity(0.9),
+          size: 50,
+        ),
+      );
+    }
   }
-
 }
 
 class ReusableDashBoardCard extends StatelessWidget {

@@ -176,7 +176,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                       hostController.privacyPolicyAccepted.value) {
                                         isLoggedIn == true
                                           ? _hostFlex()
-                                          : Navigator.pushNamed(context, Login.id);
+                                          : login();
                                   }
                                 }
                               }
@@ -187,7 +187,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         ? hostController.previewCreatedFlex.value == true
                                             ? _hostFlex()
                                             : _showPreviewDialog(context, textTheme)
-                                        : Navigator.pushNamed(context, Login.id);
+                                        : login();
                                 }
                               }
                             },
@@ -673,6 +673,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
     );
   }
 
+  /// Function to make api call to host flex
   void _hostFlex() async {
     hostController.showSpinner.value = true;
     Map<String, String> body = {
@@ -703,5 +704,12 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       print(e);
       Functions.showMessage(e.toString());
     });
+  }
+
+  /// Function to login and set a notifier of re - hosting saved flex
+  void login() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('flexReminder', true);
+    Navigator.pushNamed(context, Login.id);
   }
 }

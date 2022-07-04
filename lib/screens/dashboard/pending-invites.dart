@@ -120,7 +120,7 @@ class PendingInvites extends StatelessWidget {
                   ),
                   color: userController.showInvitesSpinner.value == true
                     ? primaryColor.withOpacity(0.15)
-                    : transparent,
+                    : transparentColor,
                 )
               : Container(),
           ],

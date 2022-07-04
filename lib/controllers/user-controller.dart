@@ -1,12 +1,10 @@
 import 'dart:developer';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
-import 'package:flex_my_way/screens/dashboard/dashboard.dart';
-import 'package:flex_my_way/screens/dashboard/notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/user-db-helper.dart';
-import '../model/user.dart';
+import 'package:flex_my_way/util/util.dart';
 
 class UserController extends GetxController {
 
@@ -61,6 +59,18 @@ class UserController extends GetxController {
     }
   }
 
+  /// function to check if the user is currently logged in
+  void checkFlexReminder() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('flexReminder') == true) {
+      flexReminder.value = true;
+      log('remind user');
+    }
+    else {
+      log('no reminder');
+    }
+  }
+
   /// Bool variable to hold the bool state if the user is currently logged in
   final isLoggedIn = false.obs;
 
@@ -88,6 +98,9 @@ class UserController extends GetxController {
   /// Variable to hold user's type
   final canHostFlex = false.obs;
 
+  /// Variable to hold flex reminder
+  final flexReminder = false.obs;
+
   //notifications
   /// Variable to hold notification delete spinner
   final showNotificationSpinner = false.obs;
@@ -102,6 +115,7 @@ class UserController extends GetxController {
   RxList<Flexes> pastFlex = <Flexes>[].obs;
   RxList<Flexes> presentFlex = <Flexes>[].obs;
   RxList<Flexes> futureFlex = <Flexes>[].obs;
+  RxList<Flexes> flexInvites = <Flexes>[].obs;
 
   /*invites integration*/
   /// Tempral map to hold the invite length
@@ -128,48 +142,67 @@ class UserController extends GetxController {
 
   /* Dashboard integration*/
   /// Function to get dashboard flex [with param - scheduled, completed]
+
+  final isScheduledLoaded = false.obs;
+  final isCompletedLoaded = false.obs;
+
   void getDashboardFlex() async {
     var api = FlexDataSource();
 
     /// get scheduled flex tab
     await api.getDashboardFlex('scheduled').then((value) {
-      return null;
+      isScheduledLoaded.value = true;
+      print(value);
     }).catchError((e) {
       log(':::error: $e');
+      Functions.showMessage(e);
     });
 
     ///get completed flex tab
     await api.getDashboardFlex('completed').then((value) {
-      return null;
+      isCompletedLoaded.value = true;
+      print(value);
     }).catchError((e) {
       log(':::error: $e');
+      Functions.showMessage(e);
     });
 
   }
 
   /* Flex History Integration*/
+
+  final isPastLoaded = false.obs;
+  final isPresentLoaded = false.obs;
+  final isFutureLoaded = false.obs;
+
   void getFlexHistory() async {
     var api = FlexDataSource();
 
     ///get past flex tab
     await api.getFlexHistory('past').then((value) {
+      isPastLoaded.value = true;
       pastFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
+      Functions.showMessage(e);
     });
 
     ///get present flex tab
     await api.getFlexHistory('present').then((value) {
+      isPresentLoaded.value = true;
       presentFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
+      // Functions.showMessage(e);
     });
 
     ///get future flex tab
     await api.getFlexHistory('future').then((value) {
+      isFutureLoaded.value = true;
       futureFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
+      // Functions.showMessage(e);
     });
   }
 
@@ -188,7 +221,7 @@ class UserController extends GetxController {
   void getFlexInvites() async {
     var api = FlexDataSource();
     await api.getFlexInvites().then((value) {
-      notification.value = value;
+      // flexInvites.value = value;
       log(':::notificationLength: ${notification.length}');
     }).catchError((e) {
       log(':::error: $e');
@@ -198,5 +231,8 @@ class UserController extends GetxController {
   /*flexery*/
   /// Variable to hold notification delete spinner
   final showSearchSpinner = false.obs;
+  final showSpinner = false.obs;
+
+  final flexeryFilter = 1.obs;
 
 }
