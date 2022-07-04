@@ -5,25 +5,41 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/user-controller.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../host/host-a-flex.dart';
 import 'drawer.dart';
 import 'package:flex_my_way/model/model.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
 
   static const String id = "dashboard";
-  Dashboard({Key? key}) : super(key: key);
+  const Dashboard({Key? key}) : super(key: key);
 
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
   /// calling the user controller [UserController]
   final UserController userController = Get.put(UserController());
 
+
+  /// Function to check if the user was trying to host a flex
+  void checkFlexReminderFromSp() {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool('flexReminder') == true) checkFlexReminder();
+    });
+  }
+
   ///widget to show the dialog for flex reminder
-  Future<void> checkFlexReminder (BuildContext context) {
-    return showDialog(
+  checkFlexReminder () {
+    return showDialog<void> (
       context: context,
       barrierDismissible: true,
-      barrierColor: whiteColor,
+      barrierColor: neutralColor.withOpacity(0.6),
       builder: (context) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -46,45 +62,55 @@ class Dashboard extends StatelessWidget {
                     size: 55,
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    'Reminder!',
+                  const Text(
+                    'Reminder',
                     style: TextStyle(
-
+                      color: neutralColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      'We saved the flex you were trying to create. Click "Continue" to finish your flex and go live now!! ',
+                      'Flexmyway got your back. Click "Continue" to finish your flex and go live!!',
                       textAlign: TextAlign.center,
                     ),
                   ),
                   const SizedBox(height: 30),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Get.back();
                         },
                         style: TextButton.styleFrom(
                           primary: primaryColor,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         ),
                         child: const Text(
                           'Cancel',
                         ),
                       ),
+                      const SizedBox(width: 30),
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: TextButton(
                           onPressed: () async {
-
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setBool('flexReminder', false);
+                            Get.back();
+                            Get.toNamed(HostAFlex.id);
                           },
                           style: TextButton.styleFrom(
-                            primary: primaryColor,
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            backgroundColor: primaryColor,
                           ),
                           child: const Text(
                             'Continue',
+                            style: TextStyle(color: whiteColor),
                           ),
                         ),
                       ),
@@ -100,8 +126,13 @@ class Dashboard extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    checkFlexReminderFromSp();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // checkFlexReminder(context);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
@@ -131,7 +162,7 @@ class Dashboard extends StatelessWidget {
                         ? 'You have ${userController.notification.length} pending invites. How would you like to deal with these?'
                         : 'No pending invites at the moment. Create Flex and invite your friends',
                       onPressed: () {
-                        Navigator.pushNamed(context, PendingInvites.id);
+                         Navigator.pushNamed(context, PendingInvites.id);
                       },
                     ),
                   ],
@@ -311,7 +342,6 @@ class Dashboard extends StatelessWidget {
       );
     }
   }
-
 }
 
 class ReusableDashBoardCard extends StatelessWidget {
