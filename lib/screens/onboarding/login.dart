@@ -5,6 +5,7 @@ import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/onboarding/sign-up.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -141,6 +142,9 @@ class Login extends StatelessWidget {
               }
               return null;
             },
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp('[ ]'))
+            ],
           ),
           CustomTextFormField(
             textEditingController: controller.loginPasswordController,
