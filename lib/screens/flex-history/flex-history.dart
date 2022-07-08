@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import '../../../util/constants/constants.dart';
-import '../../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/model/model.dart';
 
 class FlexHistory extends StatelessWidget {
@@ -183,10 +182,11 @@ class FlexHistory extends StatelessWidget {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return const ReusableFlexHistoryPastButton(
-              title: 'Afro Nation Wide Festival',
-              month: 'DEC',
-              day: '25',
+            return  ReusableFlexHistoryPastButton(
+              title: data[index].name!,
+              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
+              flex: data[index],
             );
           },
         );
@@ -199,22 +199,6 @@ class FlexHistory extends StatelessWidget {
         ),
       );
     }
-    /*return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableFlexHistoryPastButton(
-            title: 'Afro Nation Wide Festival',
-            month: 'DEC',
-            day: '25',
-          ),
-          ReusableFlexHistoryPastButton(
-            title: 'Bee Beach Party',
-            month: 'DEC',
-            day: '25',
-          ),
-        ],
-      ),
-    );*/
   }
 
   /// Widget to hold column view for past flex
@@ -244,11 +228,12 @@ class FlexHistory extends StatelessWidget {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return const ReusableFlexHistoryButton(
-              title: 'Bee Beach Party',
-              month: 'DEC',
-              day: '25',
+            return ReusableFlexHistoryButton(
+              title: data[index].name!,
+              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
               ishost: false,
+              flex: data[index],
             );
           },
         );
@@ -261,42 +246,6 @@ class FlexHistory extends StatelessWidget {
         ),
       );
     }
-    /*return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableFlexHistoryButton(
-            title: 'Afro Nation Festival',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Bee Beach Party',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Synopsis Hangout',
-            month: 'DEC',
-            day: '25',
-            ishost: true,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Mainland Block Party',
-            month: 'DEC',
-            day: '25',
-            ishost: true,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Acumen House Party',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-        ],
-      ),
-    );*/
   }
 
   /// Widget to hold column view for past flex
@@ -326,11 +275,12 @@ class FlexHistory extends StatelessWidget {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return const ReusableFlexHistoryButton(
-              title: 'Bee Beach Party',
-              month: 'DEC',
-              day: '25',
+            return ReusableFlexHistoryButton(
+              title: data[index].name!,
+              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
               ishost: false,
+              flex: data[index],
             );
           },
         );
@@ -343,36 +293,6 @@ class FlexHistory extends StatelessWidget {
         ),
       );
     }
-    /*return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableFlexHistoryButton(
-            title: 'Bee Beach Party',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Synopsis Hangout',
-            month: 'DEC',
-            day: '25',
-            ishost: true,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Mainland Block Party',
-            month: 'DEC',
-            day: '25',
-            ishost: true,
-          ),
-          ReusableFlexHistoryButton(
-            title: 'Acumen House Party',
-            month: 'DEC',
-            day: '25',
-            ishost: false,
-          ),
-        ],
-      ),
-    );*/
   }
 
 }
@@ -382,12 +302,14 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
   final String title;
   final String month;
   final String day;
+  final Flexes flex;
 
   const ReusableFlexHistoryPastButton({
     Key? key,
     required this.title,
     required this.month,
-    required this.day
+    required this.day,
+    required this.flex
   }) : super(key: key);
 
   @override
@@ -398,7 +320,7 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, FlexHistoryDetail.id);
+            Get.to(() => FlexHistoryDetail(flex: flex, past: true));
           },
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -463,13 +385,15 @@ class ReusableFlexHistoryButton extends StatelessWidget {
   final String month;
   final String day;
   final bool ishost;
+  final Flexes flex;
 
   const ReusableFlexHistoryButton({
     Key? key,
     required this.title,
     required this.month,
     required this.day,
-    required this.ishost
+    required this.ishost,
+    required this.flex
   }) : super(key: key);
 
   @override
@@ -480,7 +404,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
       children: [
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, FlexHistoryDetail.id);
+            Get.to(() => FlexHistoryDetail(flex: flex, past: false,));
           },
           style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),

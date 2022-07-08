@@ -194,7 +194,7 @@ class Login extends StatelessWidget {
       await db.initDb();
       await db.saveUser(user);
       _addBoolToSP(user);
-    }).catchError((e){
+    }).catchError((e) {
       controller.loginShowSpinner.value = false;
       Functions.showMessage(e);
       log(e);
