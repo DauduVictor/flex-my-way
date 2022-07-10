@@ -213,6 +213,8 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.whatsAgeRating,
                       items: ageRating,
+                      value: controller.ageRating.value != ''
+                        ? controller.ageRating.value : null,
                       validator: (value) {
                         if(controller.ageRating.value.isEmpty) {
                           return 'This field is required';
@@ -228,6 +230,8 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.typeOfFlex,
                       items: preferredFlexes,
+                      value: controller.typeOfFlex.value != ''
+                        ? controller.typeOfFlex.value : null,
                       onChanged: (value) {
                         value = value.toString();
                         controller.typeOfFlex.value = value.toString();
@@ -323,6 +327,8 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.isPaidOrFree,
                       items: paidOrFree,
+                      value: controller.paid.value != ''
+                        ? controller.paid.value : null,
                       onChanged: (value) {
                         value = value.toString();
                         controller.paid.value = value.toString();
@@ -366,6 +372,8 @@ class HostAFlex extends StatelessWidget {
                     /// public or private
                     CustomDropdownButtonField(
                       hintText: AppStrings.openToPublicOrPrivate,
+                      value: controller.publicOrPrivate.value != ''
+                          ? controller.publicOrPrivate.value : null,
                       items: publicOrPrivate,
                       onChanged: (value) {
                         value = value.toString();
@@ -382,6 +390,9 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.displayToOnlyAccepted,
                       items: yesOrNo,
+                      value: controller.displayFlexLocation.value == true
+                        ? 'Yes'
+                        : controller.displayFlexLocation.value == false ? 'No': null,
                       onChanged: (value) {
                         value = value.toString();
                         value == 'Yes'
@@ -399,6 +410,8 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.genderRestrictions,
                       items: isGenderRestrictions,
+                      value: controller.genderRestriciton.isBlank!
+                        ? controller.genderRestriciton.toString() : null,
                       onChanged: (value) {
                         value = value as bool;
                         controller.genderRestriciton = value;
@@ -414,6 +427,8 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.foodAndDrinkPolicy,
                       items: foodAndDrinkPolicy,
+                      value: controller.consumablePolicy.value != ''
+                        ? controller.consumablePolicy.value : null,
                       onChanged: (value) {
                         value = value.toString();
                         controller.consumablePolicy.value = value.toString();

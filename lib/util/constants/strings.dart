@@ -45,7 +45,7 @@ class AppStrings {
   static const howMuchAreYouCharging = 'How much are you charging?';
   static const openToPublicOrPrivate = 'Open to the public or private?';
   static const displayToOnlyAccepted =
-      'Display the location of Flex to only accepted participants?';
+      'Display Flex location to only accepted participants?';
   static const genderRestrictions = 'Any gender restrictions?';
   static const foodAndDrinkPolicy = 'Food and Drinks Policy';
   static const rulesAboutFlex = 'Rules/ About this Flex';

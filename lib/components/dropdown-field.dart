@@ -38,29 +38,31 @@ class CustomDropdownButtonField extends StatelessWidget {
             ),
           ),
           ).toList(),
-          hint: FittedBox(
-            child: Text(
-              hintText,
-              style: textTheme.bodyText2,
-            ),
-          ),
+          // hint: FittedBox(
+          //   child: Text(
+          //     hintText,
+          //     style: textTheme.bodyText2,
+          //   ),
+          // ),
           icon: const Icon(Icons.expand_more),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.fromLTRB(24, 24, 12, 16),
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
             focusColor: neutralColor,
-            border: OutlineInputBorder(
+            labelText: hintText,
+            labelStyle:textTheme.bodyText2,
+            border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(24)),
               borderSide: BorderSide(color: neutralColor),
             ),
-            disabledBorder: OutlineInputBorder(
+            disabledBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(24)),
               borderSide: BorderSide(color: neutralColor),
             ),
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(24)),
               borderSide: BorderSide(color: neutralColor),
             ),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(24)),
               borderSide: BorderSide(color: neutralColor),
             ),

@@ -506,6 +506,7 @@ class JoinFlex extends StatelessWidget {
     await api.joinFlex(joinCode).then((flex) {
       controller.showSpinner.value = false;
       controller.joinedFlex = flex;
+      Functions.showMessage('Successfully joined flex!');
       Get.toNamed(JoinedFlexDetails.id);
     }).catchError((e){
       log(e);

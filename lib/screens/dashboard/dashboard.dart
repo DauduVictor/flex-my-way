@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -259,10 +260,11 @@ class _DashboardState extends State<Dashboard> {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return const ReusableDashBoardCard(
-              eventName: 'Afro Nation Festival',
-              noOfAttendees: '10',
+            return ReusableDashBoardCard(
+              eventName: data[index].name ?? 'Flex Name',
+              noOfAttendees: '1',
               maxNoOfAttendees: '50',
+              flexImage: 'data[index].videoLink!',
             );
           },
         );
@@ -325,10 +327,11 @@ class _DashboardState extends State<Dashboard> {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
-            return const ReusableDashBoardCard(
-              eventName: 'Afro Nation Festival',
+            return ReusableDashBoardCard(
+              eventName: data[index].name ?? 'Flex name',
               noOfAttendees: '10',
               maxNoOfAttendees: '50',
+              flexImage: data[index].videoLink!,
             );
           },
         );
@@ -351,13 +354,15 @@ class ReusableDashBoardCard extends StatelessWidget {
     this.image,
     required this.eventName,
     required this.noOfAttendees,
-    required this.maxNoOfAttendees
+    required this.maxNoOfAttendees,
+    required this.flexImage
   }) : super(key: key);
 
   final String? image;
   final String eventName;
   final String noOfAttendees;
   final String maxNoOfAttendees;
+  final String flexImage;
 
   @override
   Widget build(BuildContext context) {
@@ -377,12 +382,31 @@ class ReusableDashBoardCard extends StatelessWidget {
               Container(
                 width: SizeConfig.screenWidth! * 0.237,
                 height: SizeConfig.screenHeight! * 0.104,
+                clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  image: const DecorationImage(
-                    image: AssetImage(unsplashImage),
-                    fit: BoxFit.cover,
+                ),
+                child: CachedNetworkImage(
+                  alignment: Alignment.topCenter,
+                  imageUrl: flexImage,
+                  progressIndicatorBuilder: (context, url, downloadProgress) {
+                    return SpinKitCircle(
+                      color: primaryColor.withOpacity(0.7),
+                      size: 30,
+                    );
+                  },
+                  errorWidget: (context, url, error) => Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(unsplashImage,fit: BoxFit.cover),
+                      Icon(
+                        Icons.error,
+                        color: whiteColor.withOpacity(0.4),
+                        size: 30,
+                      ),
+                    ],
                   ),
+                  fit: BoxFit.cover,
                 ),
               ),
               const SizedBox(width: 24),
@@ -400,7 +424,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '10/50',
+                          '$noOfAttendees / $maxNoOfAttendees',
                           style: textTheme.bodyText2!.copyWith(
                             fontSize: 15,
                             color: neutralColor.withOpacity(0.5),
