@@ -59,8 +59,9 @@ class CustomTextFormField extends StatelessWidget {
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
             suffixIcon: suffix,
-            hintText: hintText,
+            // hintText: hintText,
             hintStyle: textTheme.bodyText2,
+            labelText: hintText,
             focusColor: neutralColor,
             contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
             border: const OutlineInputBorder(
