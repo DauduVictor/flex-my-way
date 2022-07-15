@@ -110,11 +110,11 @@ class UserController extends GetxController {
   final showInvitesSpinner = false.obs;
 
   RxList<Notification> notification = <Notification>[].obs;
-  RxList<Flexes> scheduledFlex = <Flexes>[].obs;
-  RxList<Flexes> completedFlex = <Flexes>[].obs;
-  RxList<Flexes> pastFlex = <Flexes>[].obs;
-  RxList<Flexes> presentFlex = <Flexes>[].obs;
-  RxList<Flexes> futureFlex = <Flexes>[].obs;
+  RxList<DashboardFLex> scheduledFlex = <DashboardFLex>[].obs;
+  RxList<DashboardFLex> completedFlex = <DashboardFLex>[].obs;
+  RxList<SettingsFlex> pastFlex = <SettingsFlex>[].obs;
+  RxList<SettingsFlex> presentFlex = <SettingsFlex>[].obs;
+  RxList<SettingsFlex> futureFlex = <SettingsFlex>[].obs;
   RxList<Flexes> flexInvites = <Flexes>[].obs;
 
   /*invites integration*/
@@ -152,6 +152,7 @@ class UserController extends GetxController {
     /// get scheduled flex tab
     await api.getDashboardFlex('scheduled').then((value) {
       isScheduledLoaded.value = true;
+      scheduledFlex.value = value;
       print(value);
     }).catchError((e) {
       log(':::error: $e');
@@ -161,6 +162,7 @@ class UserController extends GetxController {
     ///get completed flex tab
     await api.getDashboardFlex('completed').then((value) {
       isCompletedLoaded.value = true;
+      completedFlex.value = value;
       print(value);
     }).catchError((e) {
       log(':::error: $e');

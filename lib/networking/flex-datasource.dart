@@ -21,10 +21,10 @@ class FlexDataSource {
   /// A function that gets the dashboard flexes
   /// A get request to use the [GET_DASHBOARD_FLEX]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getDashboardFlex(String filter) async {
+  Future<List<DashboardFLex>> getDashboardFlex(String filter) async {
     String? userId;
     Map<String, String> header = {};
-    List<Flexes> flexes;
+    List<DashboardFLex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -39,7 +39,7 @@ class FlexDataSource {
       print(':::getDashboardFlex: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      flexes = rest.map<DashboardFLex>((json) => DashboardFLex.fromJson(json)).toList();
       return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
@@ -49,10 +49,10 @@ class FlexDataSource {
   /// A function that gets the history flexes
   /// A get request to use the [GET_FLEX_HISTORY]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getFlexHistory(String filter) async {
+  Future<List<SettingsFlex>> getFlexHistory(String filter) async {
     String? userId;
     Map<String, String> header = {};
-    List<Flexes> flexes;
+    List<SettingsFlex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -67,7 +67,7 @@ class FlexDataSource {
       print(':::getFlexHistory: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      flexes = rest.map<SettingsFlex>((json) => SettingsFlex.fromJson(json)).toList();
       return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
