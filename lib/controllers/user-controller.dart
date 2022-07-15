@@ -112,9 +112,9 @@ class UserController extends GetxController {
   RxList<Notification> notification = <Notification>[].obs;
   RxList<DashboardFLex> scheduledFlex = <DashboardFLex>[].obs;
   RxList<DashboardFLex> completedFlex = <DashboardFLex>[].obs;
-  RxList<SettingsFlex> pastFlex = <SettingsFlex>[].obs;
-  RxList<SettingsFlex> presentFlex = <SettingsFlex>[].obs;
-  RxList<SettingsFlex> futureFlex = <SettingsFlex>[].obs;
+  RxList<HistoryFlex> pastFlex = <HistoryFlex>[].obs;
+  RxList<HistoryFlex> presentFlex = <HistoryFlex>[].obs;
+  RxList<HistoryFlex> futureFlex = <HistoryFlex>[].obs;
   RxList<Flexes> flexInvites = <Flexes>[].obs;
 
   /*invites integration*/

@@ -156,7 +156,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _pastFlex(List<SettingsFlex> data) {
+  Widget _pastFlex(List<HistoryFlex> data) {
     log(':::pastFlexLength: ${data.length}');
     if (userController.isPastLoaded.value == true) {
       if (data.isEmpty) {
@@ -202,7 +202,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _presentFlex(List<SettingsFlex> data) {
+  Widget _presentFlex(List<HistoryFlex> data) {
     log(':::presentFlexLength: ${data.length}');
     if (userController.isPresentLoaded.value == true) {
       if (data.isEmpty) {
@@ -249,7 +249,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _futureFlex(List<SettingsFlex> data) {
+  Widget _futureFlex(List<HistoryFlex> data) {
     log(':::futureFlexLength: ${data.length}');
     if (userController.isFutureLoaded.value == true) {
       if (data.isEmpty) {

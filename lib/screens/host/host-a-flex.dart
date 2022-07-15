@@ -98,7 +98,9 @@ class HostAFlex extends StatelessWidget {
                               }
                           );
                           if (picked != null && picked != now) {
+                            controller.pickedDate = picked;
                             controller.dateController.text = DateFormat('yyyy-MM-dd').format(picked).toString();
+                            controller.allowPickTime.value = true;
                           }
                         },
                       ),
@@ -126,14 +128,18 @@ class HostAFlex extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              DateTime now = DateTime.now();
-                              TimeOfDay? picked = await showTimePicker(
-                                context: context,
-                                helpText: 'SELECT FLEX START TIME',
-                                initialTime: const TimeOfDay(hour: 00, minute: 00)
-                                builder: (context, child) {
+                              if (controller.allowPickTime.value == false) {
+                                Functions.showMessage('Pick a flex date first');
+                              } else {
+                                DateTime now = DateTime.now();
+                                TimeOfDay? picked = await showTimePicker(
+                                    context: context,
+                                    helpText: 'SELECT FLEX START TIME',
+                                    initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                    builder: (context, child) {
                                   return Theme(
                                     data: ThemeData.light().copyWith(
+                                      platform: TargetPlatform.iOS,
                                       colorScheme: const ColorScheme.light().copyWith(
                                         primary: primaryColor,
                                       ),
@@ -142,9 +148,18 @@ class HostAFlex extends StatelessWidget {
                                   );
                                 }
                               );
-                              if (picked != null) {
-                                controller.startTimeController.text =
+                                if (picked != null) {
+                                  controller.startTimeController.text =
                                   TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                                  controller.startTime = DateTime(
+                                    controller.pickedDate!.year,
+                                    controller.pickedDate!.month,
+                                    controller.pickedDate!.day,
+                                    picked.hour,
+                                    picked.minute,
+                                  );
+                                  print(controller.startTime);
+                                }
                               }
                             },
                           ),
@@ -170,13 +185,17 @@ class HostAFlex extends StatelessWidget {
                               ),
                             ),
                             onTap: () async {
-                              TimeOfDay? picked = await showTimePicker(
-                                  context: context,
-                                  helpText: 'SELECT FLEX END TIME',
-                                  initialTime: const TimeOfDay(hour: 00, minute: 00)
-                                  builder: (context, child) {
+                              if (controller.allowPickTime.value == false) {
+                                Functions.showMessage('Pick a flex date first');
+                              } else {
+                                  TimeOfDay? picked = await showTimePicker(
+                                      context: context,
+                                      helpText: 'SELECT FLEX END TIME',
+                                      initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                      builder: (context, child) {
                                     return Theme(
                                       data: ThemeData.light().copyWith(
+                                        platform: TargetPlatform.iOS,
                                         colorScheme: const ColorScheme.light().copyWith(
                                           primary: primaryColor,
                                         ),
@@ -184,10 +203,19 @@ class HostAFlex extends StatelessWidget {
                                       child: child!,
                                     );
                                   }
-                              );
-                              if (picked != null) {
-                              controller.endTimeController.text =
-                                TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                                );
+                                  if (picked != null) {
+                                    controller.endTimeController.text =
+                                    TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                                    controller.endTime = DateTime(
+                                      controller.pickedDate!.year,
+                                      controller.pickedDate!.month,
+                                      controller.pickedDate!.day,
+                                      picked.hour,
+                                      picked.minute,
+                                    );
+                                    print(controller.endTime);
+                                  }
                               }
                             },
                           ),
@@ -390,14 +418,11 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.displayToOnlyAccepted,
                       items: yesOrNo,
-                      value: controller.displayFlexLocation.value == true
-                        ? 'Yes'
-                        : controller.displayFlexLocation.value == false ? 'No': null,
+                      value: controller.displayFlexLocation.value != ''
+                          ? controller.displayFlexLocation.value : null,
                       onChanged: (value) {
                         value = value.toString();
-                        value == 'Yes'
-                          ? controller.displayFlexLocation.value = true
-                          : controller.displayFlexLocation.value = false;
+                        controller.displayFlexLocation.value = value.toString();
                       },
                       validator: (value) {
                         if (value == null) {

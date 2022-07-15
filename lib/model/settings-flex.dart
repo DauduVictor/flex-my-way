@@ -1,16 +1,16 @@
 import 'flex.dart';
 
-class SettingsFlex {
+class HistoryFlex {
 
   /// setting constructor for the flex class
-  SettingsFlex({
+  HistoryFlex({
     this.flexDetails,
   });
 
   /// This variable holds the flex locationCoordinates
   Flexes? flexDetails;
 
-  factory SettingsFlex.fromJson(Map<String, dynamic> json) => SettingsFlex(
+  factory HistoryFlex.fromJson(Map<String, dynamic> json) => HistoryFlex(
     flexDetails: Flexes.fromJson(json["flexDetails"]),
   );
 

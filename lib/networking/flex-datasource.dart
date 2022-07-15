@@ -49,10 +49,10 @@ class FlexDataSource {
   /// A function that gets the history flexes
   /// A get request to use the [GET_FLEX_HISTORY]
   /// It returns a [List<Flexes>] model
-  Future<List<SettingsFlex>> getFlexHistory(String filter) async {
+  Future<List<HistoryFlex>> getFlexHistory(String filter) async {
     String? userId;
     Map<String, String> header = {};
-    List<SettingsFlex> flexes;
+    List<HistoryFlex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -63,11 +63,13 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
+    print(header);
+    print(GET_FLEX_HISTORY);
     return _netUtil.get(GET_FLEX_HISTORY+'?filter=$filter', headers: header).then((res) {
       print(':::getFlexHistory: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<SettingsFlex>((json) => SettingsFlex.fromJson(json)).toList();
+      flexes = rest.map<HistoryFlex>((json) => HistoryFlex.fromJson(json)).toList();
       return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
@@ -133,7 +135,7 @@ class FlexDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [] model
-  Future<FlexSuccess> createFlex(File uploads, Map<String, dynamic> body) async {
+  Future<FlexSuccess> createFlex(File uploads, Map<String, String> body) async {
     String? userId;
     List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
