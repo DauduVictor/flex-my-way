@@ -339,7 +339,7 @@ class HostAFlex extends StatelessWidget {
                       textEditingController: controller.eventHashTagController,
                       autoValidateMode: AutovalidateMode.disabled,
                       validator: (value) {
-                        if (value!.isEmpty || value.length < 2) {
+                        if (value!.isEmpty) {
                           return 'This field is required';
                         }
                         if(!value.contains('#')) {

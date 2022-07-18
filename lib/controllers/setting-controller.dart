@@ -94,6 +94,7 @@ class SettingsController extends GetxController {
     Get.delete<OnboardingController>();
     Get.delete<UserController>();
     Get.delete<SettingsController>();
+    Get.delete<FlexeryController>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('loggedIn', false);
     prefs.remove('bearerToken');

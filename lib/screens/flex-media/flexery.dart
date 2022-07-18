@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/screens/flex-media/upload-image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -152,7 +153,31 @@ class _FlexeryState extends State<Flexery> {
                           backgroundColor: whiteColor,
                           radius: 22,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  transitionDuration: const Duration(milliseconds: 500),
+                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                    return UploadImage();
+                                  },
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    return Container(
+                                      color: whiteColor.withOpacity(animation.value),
+                                      child: SlideTransition(
+                                        position: animation.drive(
+                                          Tween(
+                                            begin: const Offset(0.0, 1.0),
+                                            end: Offset.zero,
+                                          ).chain(CurveTween(curve: Curves.linear)),
+                                        ),
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(12),
                               shape: const CircleBorder(),

@@ -20,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onTap,
     this.inputFormatters,
     this.autoValidateMode = AutovalidateMode.onUserInteraction,
+    this.bottomSpacing = true,
   }) : super(key: key);
 
   final String? hintText;
@@ -36,6 +37,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function()? onTap;
   final List<TextInputFormatter>? inputFormatters;
   final AutovalidateMode? autoValidateMode;
+  final bool? bottomSpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,9 @@ class CustomTextFormField extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        bottomSpacing == true
+          ? const SizedBox(height: 24)
+          : const SizedBox(),
       ],
     );
   }
