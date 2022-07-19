@@ -56,6 +56,18 @@ class HostController extends GetxController {
   /// A [TextEditingController] to control the input text for flex address
   final TextEditingController flexAddress = TextEditingController();
 
+  /// A variable to hold the flex start time
+  DateTime? pickedDate;
+
+  /// A variable to hold the flex start time
+  DateTime? startTime;
+
+  /// A variable to hold the flex end time
+  DateTime? endTime;
+
+  /// A variable to check if user can pick time or not
+  final allowPickTime = false.obs;
+
   /// A variable to hold the payment status
   final paid = ''.obs;
 
@@ -63,7 +75,7 @@ class HostController extends GetxController {
   final publicOrPrivate = ''.obs;
 
   /// A variable to hold the flex location
-  final displayFlexLocation = false.obs;
+  final displayFlexLocation = ''.obs;
 
   /// A variable to hold the gender restriction
   bool? genderRestriciton;

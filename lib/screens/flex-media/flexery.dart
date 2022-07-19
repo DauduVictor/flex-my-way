@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/screens/flex-media/upload-image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -22,33 +24,11 @@ class _FlexeryState extends State<Flexery> {
   var api = FlexDataSource();
 
   /// calling the user controller [UserController]
-  final UserController userController = Get.find<UserController>();
-
-  /// A [TextEditingController] to control the input text for search
-  final TextEditingController searchController = TextEditingController();
-
-  ///Function to get images by search
-  void getFlexery(String? filter) async {
-    userController.showSpinner.value = true;
-    print(filter);
-    await api.getFlexery(filter ?? 'time').then((value) {
-      userController.showSpinner.value = false;
-      print(value);
-      if (filter == 'likes') {
-        userController.flexeryFilter.value = 0;
-      } else {
-        userController.flexeryFilter.value = 1;
-      }
-    }).catchError((e) {
-      userController.showSpinner.value = false;
-      log(':::error: $e');
-      Functions.showMessage(e.toString());
-    });
-  }
+  final FlexeryController controller = Get.put(FlexeryController());
 
   @override
   void initState() {
-    getFlexery('time');
+    controller.getFlexery('times');
     super.initState();
   }
 
@@ -113,7 +93,7 @@ class _FlexeryState extends State<Flexery> {
                                 keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.search,
                                 style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                                controller: searchController,
+                                controller: controller.searchController,
                                 onChanged: (value) {
                                   getFlexeryByHashTag(value);
                                 },
@@ -130,7 +110,7 @@ class _FlexeryState extends State<Flexery> {
                                     fontSize: 13,
                                     color: neutralColor.withOpacity(0.3),
                                   ),
-                                  suffixIcon: userController.showSearchSpinner.value == true
+                                  suffixIcon: controller.showSearchSpinner.value == true
                                     ? SizedBox(
                                         width: 5,
                                         height: 5,
@@ -152,7 +132,31 @@ class _FlexeryState extends State<Flexery> {
                           backgroundColor: whiteColor,
                           radius: 22,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  transitionDuration: const Duration(milliseconds: 500),
+                                  pageBuilder: (context, animation, secondaryAnimation) {
+                                    return UploadImage();
+                                  },
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    return Container(
+                                      color: whiteColor.withOpacity(animation.value),
+                                      child: SlideTransition(
+                                        position: animation.drive(
+                                          Tween(
+                                            begin: const Offset(0.0, 1.0),
+                                            end: Offset.zero,
+                                          ).chain(CurveTween(curve: Curves.linear)),
+                                        ),
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(12),
                               shape: const CircleBorder(),
@@ -187,57 +191,47 @@ class _FlexeryState extends State<Flexery> {
                     ),
                     const SizedBox(height: 20),
                     //body of media
-                    Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      spacing: 5,
-                      runSpacing: 5,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _showImageDialog(unsplashImage, context);
-                          },
-                          child: Container(
-                            width: SizeConfig.screenWidth! * 0.3,
-                            height: SizeConfig.screenHeight! * 0.155,
-                            color: Colors.grey,
-                            child: Image.asset(
-                              unsplashImage,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
+                    Expanded(
+                      child: GridView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return GestureDetector(
+                            onTap: () {
+                              _showImageDialog(controller.flexery[index].url!, context);
+                            },
+                            child: Container(
+                              width: SizeConfig.screenWidth! * 0.3,
+                              height: SizeConfig.screenHeight! * 0.155,
+                              color: Colors.grey,
+                              child: CachedNetworkImage(
+                                alignment: Alignment.topCenter,
+                                imageUrl: controller.flexery[index].url!,
+                                progressIndicatorBuilder: (context, url, downloadProgress) {
+                                  return SpinKitCircle(
+                                    color: primaryColor.withOpacity(0.7),
+                                    size: 30,
+                                  );
+                                },
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  color: neutralColor.withOpacity(0.4),
+                                  size: 30,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
+                          );
+                        },
+                        itemCount: controller.flexery.length,
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.6,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            _showImageDialog(hostImage, context);
-                          },
-                          child: Container(
-                            width: SizeConfig.screenWidth! * 0.3,
-                            height: SizeConfig.screenHeight! * 0.155,
-                            color: Colors.grey,
-                            child: Image.asset(
-                              hostImage,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            _showImageDialog(unsplashImage, context);
-                          },
-                          child: Container(
-                            width: SizeConfig.screenWidth! * 0.3,
-                            height: SizeConfig.screenHeight! * 0.155,
-                            color: Colors.grey,
-                            child: Image.asset(
-                              unsplashImage,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 );
@@ -282,10 +276,21 @@ class _FlexeryState extends State<Flexery> {
                           SizedBox(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight! * 0.7,
-                            child: Image.asset(
-                              image,
+                            child: CachedNetworkImage(
+                              alignment: Alignment.topCenter,
+                              imageUrl: image,
+                              progressIndicatorBuilder: (context, url, downloadProgress) {
+                                return SpinKitCircle(
+                                  color: primaryColor.withOpacity(0.7),
+                                  size: 30,
+                                );
+                              },
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                color: neutralColor.withOpacity(0.4),
+                                size: 30,
+                              ),
                               fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
                             ),
                           ),
                         ],
@@ -365,14 +370,14 @@ class _FlexeryState extends State<Flexery> {
                     const SizedBox(height: 25),
                     InkWell(
                       onTap: () {
-                        if (userController.flexeryFilter.value != 0) {
+                        if (controller.flexeryFilter.value != 0) {
                           Get.back();
-                          getFlexery('likes');
+                          controller.getFlexery('likes');
                         }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        color: userController.flexeryFilter.value == 0
+                        color: controller.flexeryFilter.value == 0
                             ? primaryColorVariant : transparentColor,
                         width: SizeConfig.screenWidth,
                         child: Center(
@@ -380,7 +385,7 @@ class _FlexeryState extends State<Flexery> {
                             'Most Recent',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: userController.flexeryFilter.value == 0
+                              fontWeight: controller.flexeryFilter.value == 0
                                   ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: 'Gilroy',
                             ),
@@ -391,14 +396,14 @@ class _FlexeryState extends State<Flexery> {
                     const SizedBox(height: 5),
                     InkWell(
                       onTap: () {
-                        if (userController.flexeryFilter.value != 1) {
+                        if (controller.flexeryFilter.value != 1) {
                           Get.back();
-                          getFlexery('time');
+                          controller.getFlexery('time');
                         }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
-                        color: userController.flexeryFilter.value == 1
+                        color: controller.flexeryFilter.value == 1
                           ? primaryColorVariant : transparentColor,
                         width: SizeConfig.screenWidth,
                         child: Center(
@@ -406,7 +411,7 @@ class _FlexeryState extends State<Flexery> {
                             'Most Popular Flex',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: userController.flexeryFilter.value == 1
+                              fontWeight: controller.flexeryFilter.value == 1
                                 ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: 'Gilroy',
                             ),
@@ -447,16 +452,16 @@ class _FlexeryState extends State<Flexery> {
   ///Function to get images by search
   void getFlexeryByHashTag(String hashTag) {
     if (_debounce?.isActive ?? false) {
-      print('here');
       _debounce?.cancel();
     } else {
       _debounce = Timer(const Duration(milliseconds: 800), () async {
-        userController.showSearchSpinner.value = true;
+        controller.showSearchSpinner.value = true;
        await api.getFlexeryByHashTag(hashTag).then((value) {
-         userController.showSearchSpinner.value = false;
-         print(value);
+         controller.showSearchSpinner.value = false;
+         controller.flexery.clear();
+         controller.flexery.value = value;
        }).catchError((e) {
-         userController.showSearchSpinner.value = false;
+         controller.showSearchSpinner.value = false;
          log(':::error: $e');
          Functions.showMessage(e.toString());
        });
@@ -464,19 +469,3 @@ class _FlexeryState extends State<Flexery> {
     }
   }
 }
-
-// ///List of pictures used in wrap
-// final List<Widget> _pictureList = [
-//   for (int i = 0; i < 8; i++){
-//     return GestureDetector(
-//       onTap: () {
-//         _showImageDialog();
-//       },
-//       child: Container(
-//         width: SizeConfig.screenWidth! * 0.28,
-//         height: SizeConfig.screenHeight! * 0.13,
-//         color: Colors.black.withOpacity(0.7),
-//       ),
-//     ),
-//   }
-// ];

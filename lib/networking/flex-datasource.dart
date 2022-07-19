@@ -21,10 +21,10 @@ class FlexDataSource {
   /// A function that gets the dashboard flexes
   /// A get request to use the [GET_DASHBOARD_FLEX]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getDashboardFlex(String filter) async {
+  Future<List<DashboardFLex>> getDashboardFlex(String filter) async {
     String? userId;
     Map<String, String> header = {};
-    List<Flexes> flexes;
+    List<DashboardFLex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -39,7 +39,7 @@ class FlexDataSource {
       print(':::getDashboardFlex: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      flexes = rest.map<DashboardFLex>((json) => DashboardFLex.fromJson(json)).toList();
       return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
@@ -49,10 +49,10 @@ class FlexDataSource {
   /// A function that gets the history flexes
   /// A get request to use the [GET_FLEX_HISTORY]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getFlexHistory(String filter) async {
+  Future<List<HistoryFlex>> getFlexHistory(String filter) async {
     String? userId;
     Map<String, String> header = {};
-    List<Flexes> flexes;
+    List<HistoryFlex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -63,11 +63,13 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
+    print(header);
+    print(GET_FLEX_HISTORY);
     return _netUtil.get(GET_FLEX_HISTORY+'?filter=$filter', headers: header).then((res) {
       print(':::getFlexHistory: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      flexes = rest.map<HistoryFlex>((json) => HistoryFlex.fromJson(json)).toList();
       return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
@@ -133,7 +135,7 @@ class FlexDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [] model
-  Future<FlexSuccess> createFlex(File uploads, Map<String, dynamic> body) async {
+  Future<FlexSuccess> createFlex(File uploads, Map<String, String> body) async {
     String? userId;
     List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
@@ -263,9 +265,10 @@ class FlexDataSource {
   /// A function to get flexery images
   /// A post request to use the [GET_FLEXERY]
   /// It returns a dynamic response
-  Future<dynamic> getFlexeryByHashTag(String hashTag) async {
+  Future<List<FlexeryModel>> getFlexeryByHashTag(String hashTag) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
+    List<FlexeryModel> flexery= [];
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -278,7 +281,9 @@ class FlexDataSource {
     return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
-      return res['data'];
+      var rest = res['data'] as List;
+      flexery = rest.map<FlexeryModel>((json) => FlexeryModel.fromJson(json)).toList();
+      return flexery;
     }).catchError((e) {
       errorHandler.handleError(e);
     });
@@ -287,9 +292,10 @@ class FlexDataSource {
   /// A function to get flexery images
   /// A post request to use the [GET_FLEXERY]
   /// It returns a dynamic response
-  Future<dynamic> getFlexery(String filter) async {
+  Future<List<FlexeryModel>> getFlexery(String filter) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
+    List<FlexeryModel> flexery= [];
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -302,8 +308,35 @@ class FlexDataSource {
     return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
-      return res['data'];
+      var rest = res['data'] as List;
+      flexery = rest.map<FlexeryModel>((json) => FlexeryModel.fromJson(json)).toList();
+      return flexery;
     }).catchError((e) {
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for uploading flex [body] as details
+  /// A post request to use the [ADD_FLEXERY]
+  /// It returns a [] model
+  Future<dynamic> addFlexery(List<http.MultipartFile> uploads, Map<String, String> body) async {
+    String? userId;
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+      log(':::userId: $userId');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
+    });
+    return _netUtil.postForm(ADD_FLEXERY, uploads, header: header, body: body).then((res) {
+      if(res['status'] != 'success') throw res['message'];
+      print (res['data']);
+      return res['data'];
+    }).catchError((e){
       errorHandler.handleError(e);
     });
   }

@@ -200,7 +200,7 @@ class HostFlexSuccess extends StatelessWidget {
                     Button(
                       label: AppStrings.goHome,
                       onPressed: () {
-                        hostController.dispose();
+                        Get.delete<HostController>();
                         Get.offAllNamed(Dashboard.id);
                       },
                     ),

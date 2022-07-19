@@ -24,6 +24,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
   /// calling the [HostController] for [HostFlexTermsAndConditions]
   final HostController hostController = Get.put(HostController());
 
+
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
 
@@ -680,14 +681,17 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       'lat': hostController.lat.value,
       'lng': hostController.long.value,
       'name': hostController.nameFlexController.text,
-      'date': hostController.dateController.text,
+      'fromDate': hostController.startTime.toString(),
+      'toDate': hostController.endTime.toString(),
       'capacity': hostController.numberOfPeopleController.text,
       'ageRating': hostController.ageRating.value,
       'flexType': hostController.typeOfFlex.value,
       'hashtag': hostController.eventHashTagController.text,
       'payStatus': hostController.paid.value,
       'viewStatus': hostController.publicOrPrivate.value,
-      'showOnAccepted': '${hostController.displayFlexLocation.value}',
+      'showOnAccepted': hostController.displayFlexLocation.value == 'Yes'
+          ? 'true'
+          : 'false',
       'genderRestriction': '${hostController.genderRestriciton}',
       'consumablesPolicy': hostController.consumablePolicy.value,
       'flexRules': hostController.flexRulesController.text,
@@ -695,6 +699,10 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
     };
     var api = FlexDataSource();
     await api.createFlex(hostController.image!, body).then((flexSuccess) {
+      /// calling the [UserController] for [HostFlexTermsAndConditions]
+      final UserController userController = Get.put(UserController());
+      userController.getDashboardFlex();
+      userController.getFlexHistory();
       hostController.createdFlex = flexSuccess;
       hostController.showSpinner.value = false;
       Get.offAllNamed(HostFlexSuccess.id);

@@ -110,11 +110,11 @@ class UserController extends GetxController {
   final showInvitesSpinner = false.obs;
 
   RxList<Notification> notification = <Notification>[].obs;
-  RxList<Flexes> scheduledFlex = <Flexes>[].obs;
-  RxList<Flexes> completedFlex = <Flexes>[].obs;
-  RxList<Flexes> pastFlex = <Flexes>[].obs;
-  RxList<Flexes> presentFlex = <Flexes>[].obs;
-  RxList<Flexes> futureFlex = <Flexes>[].obs;
+  RxList<DashboardFLex> scheduledFlex = <DashboardFLex>[].obs;
+  RxList<DashboardFLex> completedFlex = <DashboardFLex>[].obs;
+  RxList<HistoryFlex> pastFlex = <HistoryFlex>[].obs;
+  RxList<HistoryFlex> presentFlex = <HistoryFlex>[].obs;
+  RxList<HistoryFlex> futureFlex = <HistoryFlex>[].obs;
   RxList<Flexes> flexInvites = <Flexes>[].obs;
 
   /*invites integration*/
@@ -152,6 +152,7 @@ class UserController extends GetxController {
     /// get scheduled flex tab
     await api.getDashboardFlex('scheduled').then((value) {
       isScheduledLoaded.value = true;
+      scheduledFlex.value = value;
       print(value);
     }).catchError((e) {
       log(':::error: $e');
@@ -161,6 +162,7 @@ class UserController extends GetxController {
     ///get completed flex tab
     await api.getDashboardFlex('completed').then((value) {
       isCompletedLoaded.value = true;
+      completedFlex.value = value;
       print(value);
     }).catchError((e) {
       log(':::error: $e');
@@ -227,12 +229,5 @@ class UserController extends GetxController {
       log(':::error: $e');
     });
   }
-
-  /*flexery*/
-  /// Variable to hold notification delete spinner
-  final showSearchSpinner = false.obs;
-  final showSpinner = false.obs;
-
-  final flexeryFilter = 1.obs;
 
 }

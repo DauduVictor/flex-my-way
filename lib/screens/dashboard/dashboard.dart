@@ -35,6 +35,9 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
+  String img1 = "https://picsum.photos/146";
+  String img2 = "https://picsum.photos/159";
+
   ///widget to show the dialog for flex reminder
   checkFlexReminder () {
     return showDialog<void> (
@@ -234,7 +237,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   /// Widget to hold column view for scheduled flex
-  Widget _scheduled(List<Flexes> data) {
+  Widget _scheduled(List<DashboardFLex> data) {
     log(':::scheduledFlexLength: ${data.length}');
     if (userController.isScheduledLoaded.value == true) {
       if (data.isEmpty) {
@@ -261,10 +264,10 @@ class _DashboardState extends State<Dashboard> {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-              eventName: data[index].name ?? 'Flex Name',
-              noOfAttendees: '1',
-              maxNoOfAttendees: '50',
-              flexImage: 'data[index].videoLink!',
+              eventName: data[index].flexName ?? 'Flex Name',
+              noOfAttendees: data[index].confirmedInvitees ?? '',
+              maxNoOfAttendees: data[index].totalInvitees ?? '',
+              flexImage: data[index].flexImage != '' ? data[index].flexImage! : img1,
             );
           },
         );
@@ -301,7 +304,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   /// Widget to hold column view for completed flex
-  Widget _completedFlex(List<Flexes> data) {
+  Widget _completedFlex(List<DashboardFLex> data) {
     log(':::completedFlexLength: ${data.length}');
     if (userController.isScheduledLoaded.value == true) {
       if (data.isEmpty) {
@@ -328,10 +331,10 @@ class _DashboardState extends State<Dashboard> {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-              eventName: data[index].name ?? 'Flex name',
-              noOfAttendees: '10',
-              maxNoOfAttendees: '50',
-              flexImage: data[index].videoLink!,
+              eventName: data[index].flexName ?? 'Flex Name',
+              noOfAttendees: data[index].confirmedInvitees ?? '',
+              maxNoOfAttendees: data[index].totalInvitees ?? '',
+              flexImage: data[index].flexImage != '' ? data[index].flexImage! : img2,
             );
           },
         );
@@ -395,16 +398,10 @@ class ReusableDashBoardCard extends StatelessWidget {
                       size: 30,
                     );
                   },
-                  errorWidget: (context, url, error) => Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(unsplashImage,fit: BoxFit.cover),
-                      Icon(
-                        Icons.error,
-                        color: whiteColor.withOpacity(0.4),
-                        size: 30,
-                      ),
-                    ],
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                    color: neutralColor.withOpacity(0.4),
+                    size: 30,
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -424,7 +421,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$noOfAttendees / $maxNoOfAttendees',
+                          '$noOfAttendees/$maxNoOfAttendees',
                           style: textTheme.bodyText2!.copyWith(
                             fontSize: 15,
                             color: neutralColor.withOpacity(0.5),

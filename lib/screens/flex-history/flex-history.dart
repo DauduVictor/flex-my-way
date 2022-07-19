@@ -156,7 +156,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _pastFlex(List<Flexes> data) {
+  Widget _pastFlex(List<HistoryFlex> data) {
     log(':::pastFlexLength: ${data.length}');
     if (userController.isPastLoaded.value == true) {
       if (data.isEmpty) {
@@ -183,10 +183,10 @@ class FlexHistory extends StatelessWidget {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return  ReusableFlexHistoryPastButton(
-              title: data[index].name!,
-              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
-              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
-              flex: data[index],
+              title: data[index].flexDetails!.name!,
+              month: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
+              flex: data[index].flexDetails!,
             );
           },
         );
@@ -202,7 +202,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _presentFlex(List<Flexes> data) {
+  Widget _presentFlex(List<HistoryFlex> data) {
     log(':::presentFlexLength: ${data.length}');
     if (userController.isPresentLoaded.value == true) {
       if (data.isEmpty) {
@@ -229,11 +229,11 @@ class FlexHistory extends StatelessWidget {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableFlexHistoryButton(
-              title: data[index].name!,
-              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
-              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
+              title: data[index].flexDetails!.name!,
+              month: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
+              flex: data[index].flexDetails!,
               ishost: false,
-              flex: data[index],
             );
           },
         );
@@ -249,7 +249,7 @@ class FlexHistory extends StatelessWidget {
   }
 
   /// Widget to hold column view for past flex
-  Widget _futureFlex(List<Flexes> data) {
+  Widget _futureFlex(List<HistoryFlex> data) {
     log(':::futureFlexLength: ${data.length}');
     if (userController.isFutureLoaded.value == true) {
       if (data.isEmpty) {
@@ -276,11 +276,11 @@ class FlexHistory extends StatelessWidget {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableFlexHistoryButton(
-              title: data[index].name!,
-              month: Functions.getFlexDayAndMonth(data[index].fromDate!)[0],
-              day: Functions.getFlexDayAndMonth(data[index].fromDate!)[1],
+              title: data[index].flexDetails!.name!,
+              month: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[0],
+              day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
+              flex: data[index].flexDetails!,
               ishost: false,
-              flex: data[index],
             );
           },
         );
