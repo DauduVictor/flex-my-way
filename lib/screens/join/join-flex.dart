@@ -260,7 +260,7 @@ class JoinFlex extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        flex!.creator!.name!,
+                                        flex!.creator?.name ?? 'Victor',
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,

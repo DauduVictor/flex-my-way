@@ -85,7 +85,7 @@ class Flexes {
   factory Flexes.fromJson(Map<String, dynamic> json) => Flexes(
     locationCoordinates: json['locationCoordinates'] != null ? FlexLocationCoordinates.fromJson(json["locationCoordinates"]) : null,
     name: json["name"] ?? '',
-    creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
+    // creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
     fromDate: DateTime.parse(json["fromDate"]),
     toDate: DateTime.parse(json["toDate"]),
     capacity: json["capacity"] ?? 0,

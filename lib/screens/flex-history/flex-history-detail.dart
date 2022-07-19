@@ -67,55 +67,58 @@ class FlexHistoryDetail extends StatelessWidget {
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.cover,
                 ),
-                Column(
-                  children: [
-                    const SizedBox(height: 50),
-                    //appbar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 22,
-                          child: TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.only(left: 8),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_back_ios,
-                              color: neutralColor,
-                              size: 22,
-                            ),
-                          ),
-                        ),
-                        Hero(
-                          tag: 'cameraButton',
-                          child: CircleAvatar(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      //appbar
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvatar(
                             backgroundColor: whiteColor,
                             radius: 22,
                             child: TextButton(
                               onPressed: () {
+                                Get.back();
                               },
                               style: TextButton.styleFrom(
-                                padding: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.only(left: 8),
                                 shape: const CircleBorder(),
                               ),
                               child: const Icon(
-                                Icons.linked_camera_outlined,
-                                color: primaryColor,
-                                size: 21,
+                                Icons.arrow_back_ios,
+                                color: neutralColor,
+                                size: 22,
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //body
-                  ],
+                          Hero(
+                            tag: 'cameraButton',
+                            child: CircleAvatar(
+                              backgroundColor: whiteColor,
+                              radius: 22,
+                              child: TextButton(
+                                onPressed: () {
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.all(12),
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Icon(
+                                  Icons.linked_camera_outlined,
+                                  color: primaryColor,
+                                  size: 21,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      //body
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -217,7 +220,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                       }
                                     },
                                     style: TextButton.styleFrom(
-                                      backgroundColor: const Color(0xFFE9EEF4),
+                                      backgroundColor: past == true ? const Color(0xFFE9EEF4) : primaryColor,
                                       padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
@@ -260,7 +263,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    flex!.creator!.name!,
+                                    flex?.creator?.name ?? 'Victor',
                                     style: textTheme.bodyText1!.copyWith(
                                       fontSize: 18.5,
                                       fontWeight: FontWeight.w600,

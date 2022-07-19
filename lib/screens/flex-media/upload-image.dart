@@ -1,12 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../networking/flex-datasource.dart';
 
 class UploadImage extends StatelessWidget {
 
@@ -65,22 +68,34 @@ class UploadImage extends StatelessWidget {
                             ),
                         child: Stack(
                           children: [
+                            controller.images.isEmpty
+                              ? Center(
+                                child: Icon(
+                                  IconlyLight.image2,
+                                  color: neutralColor.withOpacity(0.3),
+                                  size: 100,
+                                ),
+                              )
+                              : const SizedBox(),
                             GestureDetector(
                               onTap: () {
                                 _showImageDialog(controller.images.value, context);
                               },
-                              child: controller.images.value.length > 1
-                                ? Center(
-                                    child: Text(
-                                      '+${controller.images.value.length -1}',
-                                      style: textTheme.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: neutralColor.withOpacity(0.25),
-                                        fontSize: 110,
+                              child: Container(
+                                color: Colors.black.withOpacity(0.22),
+                                child: controller.images.value.length > 1
+                                  ? Center(
+                                      child: Text(
+                                        '+${controller.images.value.length -1}',
+                                        style: textTheme.bodyMedium!.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: whiteColor.withOpacity(0.3),
+                                          fontSize: 110,
+                                        ),
                                       ),
-                                    ),
-                                  )
-                                : const SizedBox(),
+                                    )
+                                  : const SizedBox(),
+                              ),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -152,32 +167,6 @@ class UploadImage extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     textEditingController: controller.locationController,
                   ),
-                  // CustomTextFormField(
-                  //   hintText: AppStrings.uploadBannerImage,
-                  //   onChanged: (value) {},
-                  //   readOnly: true,
-                  //   textEditingController: controller.bannerImageController,
-                  //   suffix: const Padding(
-                  //     padding: EdgeInsets.only(right: 15.0),
-                  //     child: Icon(
-                  //       Icons.linked_camera_outlined,
-                  //       color: neutralColor,
-                  //     ),
-                  //   ),
-                  //   onTap: () {
-                  //     showModalBottomSheet(
-                  //       barrierColor: Colors.black.withOpacity(0.5),
-                  //       elevation: 1.5,
-                  //       shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(30)
-                  //       ),
-                  //       context: context,
-                  //       builder: (context){
-                  //         return _bottomModalSheet(context, textTheme);
-                  //       },
-                  //     );
-                  //   },
-                  // ),
                   const SizedBox(height: 15),
                   Button(
                     label: 'Upload',
@@ -186,7 +175,7 @@ class UploadImage extends StatelessWidget {
                       if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
 
                       if(_formKey.currentState!.validate()) {
-                        // Get.toNamed(HostFlexTermsAndConditions.id);
+                        uploadImagesToServer(context);
                       }
                     },
                   ),
@@ -204,11 +193,15 @@ class UploadImage extends StatelessWidget {
   Future<void> _pickImage(ImageSource source) async {
     try {
       List<XFile>? image = await ImagePicker().pickMultiImage();
+      controller.images.clear();
+      controller.image = null;
+      controller.update();
       for (int i = 0; i < image!.length; i++) {
         controller.images.add(File(image[i].path));
       }
       controller.image = controller.images.first;
       Functions.showMessage('Image upload successful');
+      controller.convertFileToMultipart();
     }
     on PlatformException {
       Functions.showMessage('Image upload failed');
@@ -250,7 +243,7 @@ class UploadImage extends StatelessWidget {
                               const SizedBox(height: 10),
                               SizedBox(
                                 width: SizeConfig.screenWidth,
-                                height: SizeConfig.screenHeight! * 0.7,
+                                height: SizeConfig.screenHeight! * 0.75,
                                 child: Image.file(
                                   image![imageIndex],
                                   fit: BoxFit.cover,
@@ -266,7 +259,7 @@ class UploadImage extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                         onTap: () {
-                          if (imageIndex < image.length) {
+                          if (imageIndex < image.length -1) {
                             stateSetter(() {
                               imageIndex += 1;
                             });
@@ -294,6 +287,77 @@ class UploadImage extends StatelessWidget {
           return Container();
         }
     );
+  }
+
+  /// function to show upload progress
+  showUploadProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: whiteColor,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Uploading image(s)',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: neutralColor,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 9,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const LinearProgressIndicator(),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Icon(
+                      IconlyLight.arrowUpSquare,
+                      color: primaryColor,
+                      size: 31,
+                    )
+                  ],
+                ),
+              ],
+            ));
+        });
+  }
+
+  /// Api call to upload images and flex name
+  void uploadImagesToServer(BuildContext context) async {
+    showUploadProgress(context);
+    Map<String, String> body = {
+      'hashtag' : controller.hashTagController.text,
+    };
+    var api = FlexDataSource();
+    await api.addFlexery(controller.multiPartImages.value, body).then((value) {
+      print(value);
+      controller.images.clear();
+      controller.image = null;
+      controller.update();
+      Functions.showMessage('Images uploaded successfully!');
+      controller.getFlexery('time');
+     Get.back();
+     Get.back();
+    }).catchError((e) {
+      Get.back();
+      log(':::error: $e');
+      Functions.showMessage(e.toString());
+    });
   }
 
 }

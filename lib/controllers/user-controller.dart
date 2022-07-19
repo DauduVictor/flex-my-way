@@ -230,11 +230,4 @@ class UserController extends GetxController {
     });
   }
 
-  /*flexery*/
-  /// Variable to hold notification delete spinner
-  final showSearchSpinner = false.obs;
-  final showSpinner = false.obs;
-
-  final flexeryFilter = 1.obs;
-
 }
