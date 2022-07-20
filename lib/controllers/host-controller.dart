@@ -98,6 +98,9 @@ class HostController extends GetxController {
   /// File Variable to hold the file source of the selected image
   File? image;
 
+  /// File Variable to hold the file source of the uploaded host selfie
+  File? selfieImage;
+
   /*Controller and Variable for terms and conditions*/
   /// A [TextEditingController] to control the input text for bvn
   final TextEditingController bvnController = TextEditingController();

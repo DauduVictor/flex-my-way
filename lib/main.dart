@@ -47,34 +47,6 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.themeData,
       initialRoute: SplashScreen.id,
       enableLog: true,
-      // getPages: [
-      //   GetPage(name: SplashScreen.id, page: () => const SplashScreen()),
-      //   GetPage(name: OnboardingScreen.id, page: () => const OnboardingScreen()),
-      //   GetPage(name: Login.id, page: () => const Login()),
-      //   GetPage(name: ForgotPassword.id, page: () => const ForgotPassword()),
-      //   GetPage(name: ResetPassword.id, page: () => const ResetPassword()),
-      //   GetPage(name: SignUp.id, page: () => const SignUp()),
-      //   GetPage(name: FindAFlex.id, page: () => const FindAFlex()),
-      //   GetPage(name: HostRegistration.id, page: () => const HostRegistration()),
-      //   GetPage(name: HostAFlex.id, page: () => const HostAFlex()),
-      //   GetPage(name: HostFlexTermsAndConditions.id, page: () => const HostFlexTermsAndConditions()),
-      //   GetPage(name: HostFlexSuccess.id, page: () => const HostFlexSuccess()),
-      //   GetPage(name: Dashboard.id, page: () => const Dashboard()),
-      //   GetPage(name: Flexery.id, page: () => const Flexery()),
-      //   GetPage(name: Notifications.id, page: () => const Notifications()),
-      //   GetPage(name: Settings.id, page: () => const Settings()),
-      //   GetPage(name: About.id, page: () => const About()),
-      //   GetPage(name: EditProfileDetail.id, page: () => const EditProfileDetail()),
-      //   GetPage(name: TermsAndCondition.id, page: () => const TermsAndCondition()),
-      //   GetPage(name: PrivacyPolicy.id, page: () => const PrivacyPolicy()),
-      //   GetPage(name: HelpAndSupport.id, page: () => const HelpAndSupport()),
-      //   GetPage(name: PendingInvites.id, page: () => const PendingInvites()),
-      //   GetPage(name: FlexHistory.id, page: () => const FlexHistory()),
-      //   GetPage(name: FlexHistoryDetail.id, page: () => const FlexHistoryDetail()),
-      //   GetPage(name: Join.id, page: () => const Join()),
-      //   GetPage(name: JoinFlex.id, page: () => const JoinFlex()),
-      //   GetPage(name: JoinedFlexDetails.id, page: () => const JoinedFlexDetails()),
-      // ],
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         OnboardingScreen.id: (context) => const OnboardingScreen(),
@@ -109,6 +81,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 // for a join user
 // - settings
 // - gallery

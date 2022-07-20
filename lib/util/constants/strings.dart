@@ -27,7 +27,7 @@ class AppStrings {
   static const occupation = 'Occupation';
   static const dateOfBirth = 'Date of Birth';
   static const yourBVN = 'Your BVN';
-  static const uploadYourID = 'Upload your ID';
+  static const uploadASelfie = 'Upload a Selfie';
   static const signUp = 'Sign Up';
 
   //Host a Flex

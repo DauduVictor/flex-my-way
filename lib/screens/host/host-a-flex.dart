@@ -297,12 +297,6 @@ class HostAFlex extends StatelessWidget {
                           },
                         );
                       },
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return 'Upload your flex banner image';
-                      //   }
-                      //   return null;
-                      // },
                     ),
                     ///flex address
                     CustomTextFormField(
@@ -513,15 +507,6 @@ class HostAFlex extends StatelessWidget {
       final fileTemp = File(image.path);
       controller.bannerImageController.text = fileTemp.path.split('/').last;
       Functions.showMessage('Image upload successful');
-      // if(image == null) {
-      //   return;
-      // }
-      // else {
-      //   controller.image = image as File?;
-      //   final fileTemp = File(image.path);
-      //   controller.bannerImageController.text = fileTemp.path;
-      //   Functions.showMessage('Image upload successful');
-      // }
     }
     on PlatformException {
       Functions.showMessage('Image upload failed');

@@ -347,6 +347,7 @@ class UploadImage extends StatelessWidget {
     await api.addFlexery(controller.multiPartImages.value, body).then((value) {
       print(value);
       controller.images.clear();
+      controller.multiPartImages.clear();
       controller.image = null;
       controller.update();
       Functions.showMessage('Images uploaded successfully!');

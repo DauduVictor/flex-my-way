@@ -1,15 +1,13 @@
-import 'package:flex_my_way/components/dropdown-field.dart';
-import 'package:flex_my_way/components/button.dart';
-import 'package:flex_my_way/components/text-form-field.dart';
-import 'package:flex_my_way/screens/host/host-a-flex.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import '../../components/circle-indicator.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../controllers/host-controller.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/strings.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/components/components.dart';
 
 class HostRegistration extends StatelessWidget {
 
@@ -29,8 +27,8 @@ class HostRegistration extends StatelessWidget {
       appBar: AppBar(
         leadingWidth: 80,
         title: Text(
-          AppStrings.hostAFlex,
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
+          AppStrings.becomeAHost,
+          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: GestureDetector(
@@ -47,7 +45,7 @@ class HostRegistration extends StatelessWidget {
                   key: _formKey,
                   child: Column(
                     children: [
-                      CustomTextFormField(
+                      /*CustomTextFormField(
                         hintText: AppStrings.hostName,
                         textEditingController: controller.hostNameController,
                         keyboardType: TextInputType.name,
@@ -110,64 +108,63 @@ class HostRegistration extends StatelessWidget {
                           }
                           return null;
                         },
-                      ),
-                      // InkWell(
-                      //   onTap: () async {
-                      //     dateOfBirthState.value = await showDatePicker(
-                      //       context: context,
-                      //       initialDate: DateTime.now(),
-                      //       firstDate: DateTime(1900),
-                      //       lastDate: DateTime.now(),
-                      //     );
-                      //   },
-                      //   child: Container(
-                      //     height: 60,
-                      //     padding: const EdgeInsets.all(10),
-                      //     decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         border: Border.all(color: neutralColor)),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //       children: [
-                      //         Text(
-                      //           dateOfBirthState.value.toString() == 'null'
-                      //               ? AppStrings.dateOfBirth
-                      //               : viewModel.formatDate(dateOfBirthState.value!),
-                      //           style: textTheme.bodyText2,
-                      //         ),
-                      //         SvgPicture.asset(calendar)
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+                      ),*/
                       const SizedBox(height: 24),
                       InkWell(
-                        onTap: () {},
-                        child: Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: neutralColor,
+                        onTap: () {
+                          showModalBottomSheet(
+                            barrierColor: Colors.black.withOpacity(0.5),
+                            elevation: 1.5,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)
                             ),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(uploadIcon),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  AppStrings.uploadYourID,
+                            context: context,
+                            builder: (context){
+                              return _bottomModalSheet(context, textTheme);
+                            },
+                          );
+                        },
+                        child: controller.selfieImage == null
+                          ? Container(
+                              height: 200,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: neutralColor,
                                 ),
-                              ],
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(uploadIcon),
+                                    const SizedBox(height: 13),
+                                    const Text(
+                                      AppStrings.uploadASelfie,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Container(
+                              height: 200,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: neutralColor,
+                                ),
+                                image: DecorationImage(
+                                  image: FileImage(File(controller.selfieImage!.path)),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                       ),
                       const SizedBox(height: 32),
                       Button(
-                        label: AppStrings.signUp,
+                        label: 'Become Host',
                         onPressed: () {
                           if(_formKey.currentState!.validate()) {
                             
@@ -189,6 +186,110 @@ class HostRegistration extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// function to pick image from the users gallery
+  Future<void> _pickImage(ImageSource source) async {
+    controller.selfieImage = null;
+    try {
+      var image = (await ImagePicker().pickImage(source: source));
+      controller.selfieImage = File(image!.path);
+      print(':::imagePath: ${controller.selfieImage!.path}');
+      controller.update();
+      Functions.showMessage('Image upload successful');
+    }
+    on PlatformException {
+      Functions.showMessage('Image upload failed');
+    }
+  }
+
+  /// Bottom modal Widget [PickImageSource]
+  Widget _bottomModalSheet(BuildContext context, TextTheme textTheme) {
+    return Container(
+      height: SizeConfig.screenHeight! * 0.22,
+      decoration: const BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 25),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Continue action using',
+            style: textTheme.headline5!.copyWith(
+              fontSize: 21,
+            ),
+          ),
+          const SizedBox(height: 10),
+          const Divider(
+            color: primaryColor,
+            height: 0.5,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(75, 20, 75, 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.gallery);
+                  },
+                  child: Container(
+                    color: backgroundColor,
+                    child: Column(
+                      children: [
+                        const Icon(
+                          IconlyBold.image,
+                          size: 40,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Gallery',
+                          style: textTheme.headline5!.copyWith(
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.camera);
+                  },
+                  child: Container(
+                    color: backgroundColor,
+                    child: Column(
+                      children: [
+                        const Icon(
+                          IconlyLight.camera,
+                          size: 40,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Camera',
+                          style: textTheme.headline5!.copyWith(
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

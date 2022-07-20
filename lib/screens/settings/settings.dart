@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flex_my_way/networking/networking.dart';
+import 'package:flex_my_way/screens/host/host-registration.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
@@ -9,8 +10,6 @@ import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
 import '../../controllers/setting-controller.dart';
 import 'package:flex_my_way/util/util.dart';
-import '../dashboard/drawer.dart';
-import '../splash-screen.dart';
 import 'about.dart';
 import 'edit-profile-detail.dart';
 
@@ -50,15 +49,17 @@ class Settings extends StatelessWidget {
                   style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
-              if (controller.canHostFlex.value == false) Padding(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                child: ListTileButton(
-                  title: AppStrings.becomeAHost,
-                  onPressed: () {
-
-                  },
-                ),
-              ),
+              controller.canHostFlex.value == false
+                ? Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                    child: ListTileButton(
+                      title: AppStrings.becomeAHost,
+                      onPressed: () {
+                        Get.toNamed(HostRegistration.id);
+                      },
+                    ),
+                )
+                : const SizedBox(height: 20),
               Expanded(
                 child: SingleChildScrollView(
                   child: AbsorbPointer(
