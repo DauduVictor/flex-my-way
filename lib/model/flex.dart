@@ -9,6 +9,7 @@ class Flexes {
     this.creator,
     this.fromDate,
     this.toDate,
+    this.totalInvitees,
     this.capacity,
     this.ageRating,
     this.flexType,
@@ -39,6 +40,9 @@ class Flexes {
 
   /// This variable holds the flex to date
   DateTime? toDate;
+
+  /// This variable holds the flex total invites
+  int? totalInvitees;
 
   /// This variable holds the flex capacity
   int? capacity;
@@ -85,10 +89,11 @@ class Flexes {
   factory Flexes.fromJson(Map<String, dynamic> json) => Flexes(
     locationCoordinates: json['locationCoordinates'] != null ? FlexLocationCoordinates.fromJson(json["locationCoordinates"]) : null,
     name: json["name"] ?? '',
-    // creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
+    creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
     fromDate: DateTime.parse(json["fromDate"]),
     toDate: DateTime.parse(json["toDate"]),
-    capacity: json["capacity"] ?? 0,
+    totalInvitees: json["totalInvitees"] ?? 0,
+    capacity: json["capacity"] ?? 1,
     ageRating: json["ageRating"] ?? '',
     flexType: json["flexType"] ?? '',
     bannerImage: json["bannerImage"] ?? '',
@@ -110,6 +115,7 @@ class Flexes {
     "creator": creator?.toJson(),
     "fromDate": fromDate?.toIso8601String(),
     "toDate": toDate?.toIso8601String(),
+    "totalInvitees": totalInvitees,
     "capacity": capacity,
     "ageRating": ageRating,
     "flexType": flexType,

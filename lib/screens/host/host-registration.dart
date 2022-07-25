@@ -167,7 +167,10 @@ class HostRegistration extends StatelessWidget {
                         label: 'Become Host',
                         onPressed: () {
                           if(_formKey.currentState!.validate()) {
-                            
+                            if (controller.selfieImage == null) {
+                              Functions.showMessage('Please upload a selfie');
+                            }
+                            print('pass');
                           }
                         },
                         child: controller.showSpinner.value == false

@@ -40,4 +40,8 @@ class Functions {
     return date;
   }
 
+  static String getFlexTime(DateTime dateTime) {
+    return DateFormat('hh:mm a').format(dateTime);
+  }
+
 }

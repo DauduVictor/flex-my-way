@@ -55,7 +55,7 @@ class Settings extends StatelessWidget {
                     child: ListTileButton(
                       title: AppStrings.becomeAHost,
                       onPressed: () {
-                        Get.toNamed(HostRegistration.id);
+                        // Get.toNamed(HostRegistration.id);
                       },
                     ),
                 )
@@ -184,7 +184,7 @@ class Settings extends StatelessWidget {
                                         ),
                                         validator: (value) {
                                           if(value.toString() != controller.newPasswordController.text) {
-                                            return 'Confirm your password';
+                                            return 'Confirm your password to chizaram';
                                           }
                                           return null;
                                         },

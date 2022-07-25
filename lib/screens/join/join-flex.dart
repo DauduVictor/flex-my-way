@@ -13,7 +13,6 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import '../onboarding/login.dart';
 import 'package:flex_my_way/model/model.dart';
-
 import '../web-view.dart';
 
 class JoinFlex extends StatelessWidget {
@@ -47,8 +46,6 @@ class JoinFlex extends StatelessWidget {
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +152,7 @@ class JoinFlex extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          'Dec',
-                                          // Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
+                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
                                           style: textTheme.headline5!.copyWith(
                                             color: primaryColor,
                                             fontSize: 20,
@@ -164,8 +160,7 @@ class JoinFlex extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '20',
-                                          // Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
+                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
                                           style: textTheme.headline5!.copyWith(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
@@ -193,7 +188,8 @@ class JoinFlex extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          '1:00PM - 1:00AM',
+                                          '${Functions.getFlexTime(flex!.fromDate!)} - '
+                                              '${Functions.getFlexTime(flex!.toDate!)}',
                                           style: textTheme.bodyText1!.copyWith(
                                             fontSize: 18.5,
                                             color: neutralColor,
@@ -210,7 +206,7 @@ class JoinFlex extends StatelessWidget {
                                           Functions.showMessage('You will be redirected to the payment gateway to make payment');
                                         }
                                         else {
-                                          _joinFlex(flex!.joinCode!);
+                                          _joinFlex(flex!.joinCode!, flex!);
                                         }
                                       }
                                       else {
@@ -260,7 +256,7 @@ class JoinFlex extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        flex!.creator?.name ?? 'Victor',
+                                        flex!.creator?.name ?? 'Host',
                                         style: textTheme.bodyText1!.copyWith(
                                           fontSize: 18.5,
                                           fontWeight: FontWeight.w600,
@@ -290,32 +286,34 @@ class JoinFlex extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               /// video link button
-                              GestureDetector(
-                                onTap: () {
-                                  // controller.launchVideo('https://youtube.com').catchError((e){
-                                  //   Functions.showMessage('Could not launch url');
-                                  // });
-                                  Get.to(() => WebViewer(url: flex!.videoLink!));
-                                },
-                                child: Stack(
-                                  children: const [
-                                    Icon(
-                                      Icons.movie,
-                                      color: primaryColor,
-                                      size: 57,
+                              flex?.videoLink! != ''
+                                ? GestureDetector(
+                                    onTap: () {
+                                      // controller.launchVideo('https://youtube.com').catchError((e){
+                                      //   Functions.showMessage('Could not launch url');
+                                      // });
+                                      Get.to(() => WebViewer(url: flex!.videoLink!));
+                                    },
+                                    child: Stack(
+                                      children: const [
+                                        Icon(
+                                          Icons.movie,
+                                          color: primaryColor,
+                                          size: 57,
+                                        ),
+                                        Positioned(
+                                          top: 23,
+                                          left: 19,
+                                          child: Icon(
+                                            Icons.play_arrow,
+                                            color: whiteColor,
+                                            size: 21,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Positioned(
-                                      top: 23,
-                                      left: 19,
-                                      child: Icon(
-                                        Icons.play_arrow,
-                                        color: whiteColor,
-                                        size: 21,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                )
+                                : const SizedBox(),
                               /// about
                               const SizedBox(height: 16),
                               Column(
@@ -354,30 +352,32 @@ class JoinFlex extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          '100/200 Total',
+                                          '${flex?.totalInvitees}/${flex?.capacity} Total',
                                           style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 15),
+                                  const SizedBox(width: 3),
                                   //provided
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        flex!.consumablesPolicy!,
-                                        style: textTheme.bodyText1!.copyWith(
-                                          fontSize: 18.5,
-                                          fontWeight: FontWeight.w600,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Food & Drink policy',
+                                          style: textTheme.bodyText1!.copyWith(
+                                            fontSize: 18.5,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        'Will be Provided',
-                                        style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          flex!.consumablesPolicy!,
+                                          style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -428,44 +428,73 @@ class JoinFlex extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 32),
-                              Container(
+                              SizedBox(
                                 width: SizeConfig.screenWidth,
                                 height: SizeConfig.screenHeight! * 0.25,
-                                decoration: BoxDecoration(
+                                child: flex?.showOnAccepted == true
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: whiteColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.location_disabled,
+                                        color: neutralColor.withOpacity(0.4),
+                                        size: 55,
+                                      ),
+                                    )
+                                  : ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: GoogleMap(
-                                    mapType: MapType.normal,
-                                    initialCameraPosition: userPosition,
-                                    onMapCreated: _onMapCreated,
-                                    myLocationEnabled: false,
-                                    myLocationButtonEnabled: false,
-                                    scrollGesturesEnabled: false,
-                                    zoomControlsEnabled: false,
-                                    zoomGesturesEnabled: false,
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: [
+                                      GoogleMap(
+                                        mapType: MapType.normal,
+                                        initialCameraPosition: userPosition,
+                                        onMapCreated: _onMapCreated,
+                                        myLocationEnabled: false,
+                                        myLocationButtonEnabled: false,
+                                        scrollGesturesEnabled: false,
+                                        zoomControlsEnabled: false,
+                                        zoomGesturesEnabled: false,
+                                      ),
+                                      flex?.showOnAccepted == true
+                                        ? Container(
+                                            color: whiteColor,
+                                            child: const Icon(
+                                              Icons.location_disabled,
+                                              color: neutralColor,
+                                              size: 21,
+                                            ),
+                                          )
+                                        : Container(
+
+                                        ),
+                                    ],
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 5),
-                              GestureDetector(
-                                onTap: () async {
-                                  Clipboard.setData(
-                                    ClipboardData(
-                                      text: await controller.formatLocation(
-                                        flex!.locationCoordinates!.lat!,
-                                        flex!.locationCoordinates!.lng!
-                                      ))
+                              TextButton(
+                                onPressed: () async {
+                                  if (flex?.showOnAccepted == false) {
+                                    Clipboard.setData(
+                                      ClipboardData(
+                                        text: await controller.formatLocation(
+                                          flex!.locationCoordinates!.lat!,
+                                          flex!.locationCoordinates!.lng!
+                                        ))
                                     ).then((value) {
-                                    Functions.showMessage('Flex location copied');
-                                  }).catchError((e){
-                                    Functions.showMessage('Could not copy flex link');
-                                  });
+                                      Functions.showMessage('Flex location copied');
+                                    }).catchError((e){
+                                      Functions.showMessage('Could not copy flex link');
+                                    });
+                                  }
                                 },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                  child: Row(
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                                ),
+                                child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Icon(
@@ -483,7 +512,6 @@ class JoinFlex extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                ),
                               ),
                               const SizedBox(height: 12),
                             ],
@@ -500,14 +528,14 @@ class JoinFlex extends StatelessWidget {
   }
 
   /// Function to make api call to join flex
-  void _joinFlex(String joinCode) async {
+  void _joinFlex(String joinCode, Flexes flex) async {
     controller.showSpinner.value = true;
     var api = FlexDataSource();
     await api.joinFlex(joinCode).then((flex) {
       controller.showSpinner.value = false;
       controller.joinedFlex = flex;
       Functions.showMessage('Successfully joined flex!');
-      Get.toNamed(JoinedFlexDetails.id);
+      Get.to(() => JoinedFlexDetails(flex: flex));
     }).catchError((e){
       log(e);
       controller.showSpinner.value = false;
