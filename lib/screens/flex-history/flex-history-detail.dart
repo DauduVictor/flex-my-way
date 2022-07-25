@@ -216,7 +216,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   return TextButton(
                                     onPressed: () {
                                       if (!past!) {
-                                        _joinFlex(flex!.joinCode!);
+                                        _joinFlex(flex!.joinCode!, flex!);
                                       }
                                     },
                                     style: TextButton.styleFrom(
@@ -458,14 +458,14 @@ class FlexHistoryDetail extends StatelessWidget {
   }
 
   /// Function to make api call to join flex
-  void _joinFlex(String joinCode) async {
+  void _joinFlex(String joinCode, Flexes flex) async {
     joinController.showSpinner.value = true;
     var api = FlexDataSource();
     await api.joinFlex(joinCode).then((flex) {
       joinController.showSpinner.value = false;
       joinController.joinedFlex = flex;
       Functions.showMessage('Successfully joined flex!');
-      Get.toNamed(JoinedFlexDetails.id);
+      Get.to(() => JoinedFlexDetails(flex: flex));
     }).catchError((e){
       log(e);
       joinController.showSpinner.value = false;

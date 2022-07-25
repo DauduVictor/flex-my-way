@@ -400,51 +400,32 @@ class JoinedFlexDetails extends StatelessWidget {
                             height: SizeConfig.screenHeight! * 0.25,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                children: [
-                                  GoogleMap(
-                                    mapType: MapType.normal,
-                                    initialCameraPosition: userPosition,
-                                    onMapCreated: _onMapCreated,
-                                    myLocationEnabled: false,
-                                    myLocationButtonEnabled: false,
-                                    scrollGesturesEnabled: false,
-                                    zoomControlsEnabled: false,
-                                    zoomGesturesEnabled: false,
-                                  ),
-                                  flex?.showOnAccepted == true
-                                      ? Container(
-                                    color: whiteColor,
-                                    child: const Icon(
-                                      Icons.location_disabled,
-                                      color: neutralColor,
-                                      size: 21,
-                                    ),
-                                  )
-                                      : Container(
-
-                                  ),
-                                ],
+                              child: GoogleMap(
+                                mapType: MapType.normal,
+                                initialCameraPosition: userPosition,
+                                onMapCreated: _onMapCreated,
+                                myLocationEnabled: false,
+                                myLocationButtonEnabled: false,
+                                scrollGesturesEnabled: false,
+                                zoomControlsEnabled: false,
+                                zoomGesturesEnabled: false,
                               ),
                             ),
                           ),
                           const SizedBox(height: 5),
                           TextButton(
                             onPressed: () async {
-                              if (flex?.showOnAccepted == false) {
-                                Clipboard.setData(
-                                    ClipboardData(
-                                        text: await formatLocation(
-                                          flex!.locationCoordinates!.lat!,
-                                          flex!.locationCoordinates!.lng!
-                                        ))
-                                ).then((value) {
-                                  Functions.showMessage('Flex location copied');
-                                }).catchError((e){
-                                  Functions.showMessage('Could not copy flex link');
-                                });
-                              }
+                              Clipboard.setData(
+                                  ClipboardData(
+                                      text: await formatLocation(
+                                        flex!.locationCoordinates!.lat!,
+                                        flex!.locationCoordinates!.lng!
+                                      ))
+                              ).then((value) {
+                                Functions.showMessage('Flex location copied');
+                              }).catchError((e){
+                                Functions.showMessage('Could not copy flex link');
+                              });
                             },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),

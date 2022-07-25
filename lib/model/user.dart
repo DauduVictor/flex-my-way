@@ -60,7 +60,7 @@ class User {
     email: json["email"],
     phone: json["phone"],
     gender: json["gender"],
-    preferredFlex: json["preferredFlex"],
+    preferredFlex: json["preferredFlex"] ?? '',
     infoSource: json["infoSource"],
     occupation: json["occupation"],
     canHostFlex: json["canHostFlex"] ?? false,

@@ -6,6 +6,7 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/networking/networking.dart';
+import 'package:flex_my_way/model/model.dart';
 import 'drawer.dart';
 
 class PendingInvites extends StatelessWidget {
@@ -39,7 +40,7 @@ class PendingInvites extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                userController.invites.isNotEmpty
+                userController.flexInvites.isNotEmpty
                   ? Column(
                       children: [
                         Padding(
@@ -49,7 +50,7 @@ class PendingInvites extends StatelessWidget {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    acceptAll('', []);
+                                    acceptAll();
                                   },
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -65,7 +66,7 @@ class PendingInvites extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    rejectAll('', []);
+                                    rejectAll();
                                   },
                                   style: TextButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
@@ -86,12 +87,12 @@ class PendingInvites extends StatelessWidget {
                           height: SizeConfig.screenHeight! * 0.7,
                           padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
                           child: ListView.builder(
-                            itemCount: userController.invites.length,
+                            itemCount: userController.flexInvites.length,
                             itemBuilder: (BuildContext context, int index) {
                               ///TODO: get the invite object and pass it to the pending invite button
-                              var invites = userController.invitesList.elementAt(index);
+                              var invites = userController.flexInvites.elementAt(index);
                               return ReusablePendingInviteButton(
-                                invites: invites,
+                                invite: userController.flexInvites[index],
                                 index: index,
                               );
                             },
@@ -131,15 +132,23 @@ class PendingInvites extends StatelessWidget {
 
   /// Function to make api POST request
   /// To accept attendee
-  void acceptAll(String flexCode, List<String>? participants) async {
+  void acceptAll() async {
+    List<String> participants = [];
+    for (int i = 0; i < userController.flexInvites.length; i++) {
+      participants.add(userController.flexInvites[i].flexId!);
+    }
     Map<String, dynamic> body = {
       'participants': participants
     };
+    userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    userController.invitesList.removeRange(0, userController.invitesList.length -1);
-    userController.update();
-    await api.acceptAttendee(flexCode, body).then((flex) {
+    print(participants);
+    await api.acceptAttendee('flexCode', body).then((flex) {
+      userController.showInvitesSpinner.value = false;
+      userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
+      userController.update();
     }).catchError((e){
+      userController.showInvitesSpinner.value = false;
       log(e);
       Functions.showMessage(e);
     });
@@ -147,14 +156,23 @@ class PendingInvites extends StatelessWidget {
 
   /// Function to make api POST request
   /// To reject attendee
-  void rejectAll(String flexCode, List<String> participants) async {
+  void rejectAll() async {
+    List<String> participants = [];
+    for (int i = 0; i < userController.flexInvites.length; i++) {
+      participants.add(userController.flexInvites[i].flexId!);
+    }
     Map<String, dynamic> body = {
       'participants': participants
     };
+    userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    await api.rejectAttendee(flexCode, body).then((flex) {
-      /// update the controller here
+    print(participants);
+    await api.rejectAttendee('flexCode', body).then((flex) {
+      userController.showInvitesSpinner.value = false;
+      userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
+      userController.update();
     }).catchError((e){
+      userController.showInvitesSpinner.value = false;
       log(e);
       Functions.showMessage(e);
     });
@@ -164,12 +182,12 @@ class PendingInvites extends StatelessWidget {
 
 class ReusablePendingInviteButton extends StatelessWidget {
 
-  final String? invites;
+  final FlexInvite? invite;
   final int index;
 
   ReusablePendingInviteButton({
     Key? key,
-    this.invites,
+    this.invite,
     required this.index
   }) : super(key: key);
 
@@ -200,7 +218,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                         style: textTheme.bodyText2!,
                         children: [
                           TextSpan(
-                            text: '#12345678',
+                            text: '#${invite?.attendeeId}',
                             style: textTheme.bodyText1!.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -230,7 +248,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        acceptAttendee('', [invites!]);
+                        acceptAttendee(invite!.flexCode!, [invite!.flexId!]);
                       },
                       child: const Icon(
                         Icons.check,
@@ -245,7 +263,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        rejectAttendee('', [invites!]);
+                        rejectAttendee(invite!.flexCode!, [invite!.flexId!]);
                       },
                       child: const Icon(
                         Icons.close,
@@ -274,12 +292,12 @@ class ReusablePendingInviteButton extends StatelessWidget {
     var api = FlexDataSource();
     print(participants);
     print(index);
-    userController.invitesList.removeAt(index);
-    userController.update();
+    print(flexCode);
     await api.acceptAttendee(flexCode, body).then((flex) {
       userController.showInvitesSpinner.value = false;
-      // userController.invitesList.removeAt(index);
-      // userController.update();
+      userController.flexInvites.removeAt(index);
+      userController.update();
+      userController.getDashboardFlex();
     }).catchError((e) {
       userController.showInvitesSpinner.value = false;
       log(e);
@@ -293,13 +311,18 @@ class ReusablePendingInviteButton extends StatelessWidget {
     Map<String, dynamic> body = {
       'participants': participants
     };
+    userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    userController.invitesList.removeAt(index);
-    userController.update();
+    print(participants);
+    print(index);
+    print(flexCode);
     await api.rejectAttendee(flexCode, body).then((flex) {
-      // userController.invitesList.removeAt(index);
-      // userController.update();
+      userController.showInvitesSpinner.value = false;
+      userController.flexInvites.removeAt(index);
+      userController.update();
+      userController.getDashboardFlex();
     }).catchError((e){
+      userController.showInvitesSpinner.value = false;
       log(e);
       Functions.showMessage(e);
     });

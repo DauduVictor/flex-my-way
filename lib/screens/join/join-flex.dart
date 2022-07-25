@@ -47,8 +47,11 @@ class JoinFlex extends StatelessWidget {
     _mapController.complete(controller);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
+    print(flex?.showOnAccepted);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -531,11 +534,11 @@ class JoinFlex extends StatelessWidget {
   void _joinFlex(String joinCode, Flexes flex) async {
     controller.showSpinner.value = true;
     var api = FlexDataSource();
-    await api.joinFlex(joinCode).then((flex) {
+    await api.joinFlex(joinCode).then((value) {
       controller.showSpinner.value = false;
-      controller.joinedFlex = flex;
       Functions.showMessage('Successfully joined flex!');
-      Get.to(() => JoinedFlexDetails(flex: flex));
+      userController.refreshDashboardController();
+      Get.off(() => JoinedFlexDetails(flex: flex));
     }).catchError((e){
       log(e);
       controller.showSpinner.value = false;

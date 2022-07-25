@@ -107,10 +107,10 @@ class FlexDataSource {
   /// A function that gets the notifications
   /// A get request to use the [GET_FLEX_INVITEES]
   /// It returns a [List<Notification>] model
-  Future<List<Notification>> getFlexInvites() async {
+  Future<List<FlexInvite>> getFlexInvites() async {
     String? userId;
     Map<String, String> header = {};
-    List<Notification> notifications;
+    List<FlexInvite> flexInvites;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -125,8 +125,8 @@ class FlexDataSource {
       log(':::getFlexInvites: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      notifications = rest.map<Notification>((json) => Notification.fromJson(json)).toList();
-      return notifications;
+      flexInvites = rest.map<FlexInvite>((json) => FlexInvite.fromJson(json)).toList();
+      return flexInvites;
     }).catchError((e){
       errorHandler.handleError(e);
     });
@@ -164,7 +164,7 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A get request to use the [JOIN_FLEX]
   /// It returns a [] model
-  Future<Flexes> joinFlex(String flexId) async {
+  Future<dynamic> joinFlex(String flexId) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
@@ -176,12 +176,10 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
     });
     String JOIN_FLEX_URL = JOIN_FLEX+'$flexId/join';
-    print(JOIN_FLEX_URL);
-    print(header);
     return _netUtil.get(JOIN_FLEX_URL, headers: header).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['data'];
-      return Flexes.fromJson(res['data']);
+      return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
     });
@@ -221,14 +219,12 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
     String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + '$flexCode/approve';
-    print(APPROVE_ATTENDEE_URL);
-    print(header);
     return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
@@ -245,14 +241,12 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
     String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + '$flexCode/reject';
-    log(REJECT_ATTENDEE_URL);
-    print(header);
     return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {
       log(':::rejectAtendee: $res');
       if(res['status'] != 'success') throw res['message'];

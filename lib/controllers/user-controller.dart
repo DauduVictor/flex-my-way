@@ -115,30 +115,7 @@ class UserController extends GetxController {
   RxList<HistoryFlex> pastFlex = <HistoryFlex>[].obs;
   RxList<HistoryFlex> presentFlex = <HistoryFlex>[].obs;
   RxList<HistoryFlex> futureFlex = <HistoryFlex>[].obs;
-  RxList<Flexes> flexInvites = <Flexes>[].obs;
-
-  /*invites integration*/
-  /// Tempral map to hold the invite length
-  Map<String, String> invites = {
-    '1' : 'oiwjnowfe782',
-    '2' : 'posf232',
-    '3' : 'oisjdfe23',
-    '4' : '09uoisf',
-    '5' : 'oisf789w',
-    '6' : 'svhriubw63',
-    '7' : '023jnsfss',
-  };
-
-  /// Tempral list to hold the list of invites
-  List<String> invitesList = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-  ];
+  RxList<FlexInvite> flexInvites = <FlexInvite>[].obs;
 
   /* Dashboard integration*/
   /// Function to get dashboard flex [with param - scheduled, completed]
@@ -223,11 +200,17 @@ class UserController extends GetxController {
   void getFlexInvites() async {
     var api = FlexDataSource();
     await api.getFlexInvites().then((value) {
-      // flexInvites.value = value;
-      log(':::notificationLength: ${notification.length}');
+      flexInvites.value = value;
+      log(':::flexInvitesLength: ${flexInvites.length}');
     }).catchError((e) {
       log(':::error: $e');
     });
+  }
+
+  void refreshDashboardController() {
+    getDashboardFlex();
+    getFlexHistory();
+    getFlexHistory();
   }
 
 }

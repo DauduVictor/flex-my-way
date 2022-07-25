@@ -162,11 +162,11 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     const SizedBox(height: 24),
                     ListTileButton(
-                      title: userController.notification.isEmpty
-                        ? 'You have ${userController.notification.length} pending invites. How would you like to deal with these?'
+                      title: userController.flexInvites.isNotEmpty
+                        ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
                         : 'No pending invites at the moment. Create Flex and invite your friends',
                       onPressed: () {
-                         Navigator.pushNamed(context, PendingInvites.id);
+                         Get.toNamed(PendingInvites.id);
                       },
                     ),
                   ],

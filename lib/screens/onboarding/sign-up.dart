@@ -221,7 +221,7 @@ class SignUp extends StatelessWidget {
               return null;
             },
           ),
-          CustomDropdownButtonField(
+          /*CustomDropdownButtonField(
             hintText: AppStrings.typeOfFlex,
             items: preferredFlexes,
             onChanged: (value) {
@@ -234,7 +234,7 @@ class SignUp extends StatelessWidget {
               }
               return null;
             },
-          ),
+          ),*/
           /// infoSource
           CustomDropdownButtonField(
             hintText: 'How did you hear about us',
@@ -265,7 +265,7 @@ class SignUp extends StatelessWidget {
       'email' : controller.signupEmailAddressController.text,
       'password' : controller.signupPasswordController.text,
       'gender': controller.signupGender,
-      'preferredFlex': controller.signupTypeOfFlex,
+      // 'preferredFlex': controller.signupTypeOfFlex,
       'infoSource': controller.signupInfoSource,
       'occupation': controller.signupOccupationController.text
     };
