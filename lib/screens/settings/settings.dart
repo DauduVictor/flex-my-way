@@ -105,6 +105,7 @@ class Settings extends StatelessWidget {
                                       CustomTextFormField(
                                         hintText: AppStrings.enterCurrentPassword,
                                         textInputAction: TextInputAction.next,
+                                        autoValidateMode: AutovalidateMode.disabled,
                                         obscureText: controller.obscureCurrentPassword.value,
                                         keyboardType: TextInputType.visiblePassword,
                                         textEditingController: controller.currentPasswordController,
@@ -133,6 +134,7 @@ class Settings extends StatelessWidget {
                                       CustomTextFormField(
                                         hintText: AppStrings.enterNewPassword,
                                         textInputAction: TextInputAction.next,
+                                        autoValidateMode: AutovalidateMode.disabled,
                                         obscureText: controller.obscureNewPassword.value,
                                         keyboardType: TextInputType.visiblePassword,
                                         textEditingController: controller.newPasswordController,
@@ -164,6 +166,7 @@ class Settings extends StatelessWidget {
                                       CustomTextFormField(
                                         hintText: AppStrings.enterConfirmPassword,
                                         keyboardType: TextInputType.visiblePassword,
+                                        autoValidateMode: AutovalidateMode.disabled,
                                         textInputAction: TextInputAction.done,
                                         obscureText: controller.obscureConfirmPassword.value,
                                         textEditingController: controller.confirmPasswordController,
@@ -184,7 +187,7 @@ class Settings extends StatelessWidget {
                                         ),
                                         validator: (value) {
                                           if(value.toString() != controller.newPasswordController.text) {
-                                            return 'Confirm your password to chizaram';
+                                            return 'Confirm your password';
                                           }
                                           return null;
                                         },
@@ -333,6 +336,11 @@ class Settings extends StatelessWidget {
     await api.editPassword(body).then((value) {
       controller.showSpinner.value = false;
       Functions.showMessage('Password updated successfully');
+      controller.currentPasswordController.clear();
+      controller.newPasswordController.clear();
+      controller.confirmPasswordController.clear();
+      controller.showEditPassword.toggle();
+      controller.update();
     }).catchError((e){
       controller.showSpinner.value = false;
       Functions.showMessage(e);

@@ -117,9 +117,8 @@ class UserDataSource {
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
-      header['Accept'] = '*/*';
     });
+    print(header);
     String DELETE_NOTIFICATION_URL = DELETE_NOTIFICATION + '$id/delete';
     return _netUtil.delete(DELETE_NOTIFICATION_URL, headers: header).then((res) {
       log(':::deleteNotification: $res');

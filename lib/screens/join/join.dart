@@ -14,6 +14,17 @@ import 'package:flex_my_way/networking/networking.dart';
 import '../dashboard/notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+
+enum AgeFilter {
+  below18,
+  above18,
+}
+
+enum PayStatus {
+  free,
+  paid,
+}
+
 class Join extends StatefulWidget {
 
   static const String id = "join";
@@ -24,6 +35,9 @@ class Join extends StatefulWidget {
 }
 
 class _JoinState extends State<Join> with TickerProviderStateMixin {
+
+  AgeFilter selectedAge = AgeFilter.above18;
+  PayStatus payStatus = PayStatus.free;
 
   /// Instantiating a class of future values
   var futureValues = FutureValues();
@@ -61,6 +75,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Variable to hold flex length
   int flexLength = 0;
 
+  /// Variable to hold the param to send
+  String ageParam = '18+';
+
+  /// Variable to hold the param to send
+  String payParam = 'free';
+
   /// Function to get user location and use [LatLang] in the map
   void getUserLocation() async {
     if(!mounted) return;
@@ -70,7 +90,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         lat = double.parse(value[0]);
         long = double.parse(value[1]);
       });
-      _getFlexByLocation(lat, long);
+      _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
       userPosition = CameraPosition(
         target: LatLng(lat, long),
         zoom: 19.5,
@@ -88,8 +108,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   }
 
   /// Function to make api call to get flex by [LatLang]
-  void _getFlexByLocation(double lat, double long) async {
-    await api.getFlexByLocation(lat, long).then((value) {
+  void _getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
+    _markers.clear();
+    await api.getFlexByLocation(lat, long, ageStatus: ageStatus, payStatus: payStatus).then((value) {
       setState(() {
         flex = value;
         flexLength = flex.length;
@@ -126,8 +147,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       Functions.showMessage('It seems like we couldn\'t find flexes close to you. Try again!');
     }
   }
-
-
 
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
@@ -171,7 +190,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   bool isLoggedIn = false;
 
   /// Variable to hold the state of the pay button
-  bool _pay = true;
+  bool _pay = false;
 
   /// Variable to hold value of price range
   double priceRange = 0;
@@ -379,13 +398,32 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                             Row(
                               children: [
                                 ReuableMapFilterButton(
-                                  text: '18 - 25',
-                                  onPressed: () {},
-                                  color: primaryColor,
+                                  text: 'Below 18',
+                                  onPressed: () {
+                                    if (selectedAge != AgeFilter.below18) {
+                                      setState(() {
+                                        ageParam = '18-';
+                                        selectedAge = AgeFilter.below18;
+                                      });
+                                      _getFlexByLocation(lat, long, ageStatus: ageParam);
+                                      ///TODO: amimate the camera here
+                                    }
+                                  },
+                                  color: selectedAge == AgeFilter.below18 ? primaryColor : null,
                                 ),
                                 ReuableMapFilterButton(
-                                  text: '25+',
-                                  onPressed: () {},
+                                  text: '18+',
+                                  onPressed: () {
+                                    if (selectedAge != AgeFilter.above18) {
+                                      setState(() {
+                                        ageParam = '18+';
+                                        selectedAge = AgeFilter.above18;
+                                      });
+                                      _getFlexByLocation(lat, long, ageStatus: ageParam);
+                                      ///TODO: amimate the camera here
+                                    }
+                                  },
+                                  color: selectedAge == AgeFilter.above18 ? primaryColor : null,
                                 ),
                               ],
                             ),
@@ -424,12 +462,31 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                               children: [
                                 ReuableMapFilterButton(
                                   text: 'Free',
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if (payStatus != PayStatus.free) {
+                                      setState(() {
+                                        payParam = 'free';
+                                        payStatus = PayStatus.free;
+                                      });
+                                      _getFlexByLocation(lat, long, payStatus: payParam);
+                                      ///TODO: amimate the camera here
+                                    }
+                                  },
+                                  color: payStatus == PayStatus.free ? primaryColor : null,
                                 ),
                                 ReuableMapFilterButton(
                                   text: 'Paid',
-                                  onPressed: () {},
-                                  color: primaryColor,
+                                  onPressed: () {
+                                    if (payStatus != PayStatus.paid) {
+                                      setState(() {
+                                        payParam = 'paid';
+                                        payStatus = PayStatus.paid;
+                                      });
+                                      _getFlexByLocation(lat, long, payStatus: payParam);
+                                      ///TODO: amimate the camera here
+                                    }
+                                  },
+                                  color: payStatus == PayStatus.paid ? primaryColor : null,
                                 ),
                               ],
                             ),
@@ -484,7 +541,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                     const SizedBox(height: 10),
                                 ],
                               )
-                              : Container(),
+                              : Container(
+
+                            ),
                           ],
                         ),
                       ),

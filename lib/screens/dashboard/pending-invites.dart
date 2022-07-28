@@ -135,7 +135,7 @@ class PendingInvites extends StatelessWidget {
   void acceptAll() async {
     List<String> participants = [];
     for (int i = 0; i < userController.flexInvites.length; i++) {
-      participants.add(userController.flexInvites[i].flexId!);
+      participants.add(userController.flexInvites[i].attendeeId!);
     }
     Map<String, dynamic> body = {
       'participants': participants
@@ -248,7 +248,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        acceptAttendee(invite!.flexCode!, [invite!.flexId!]);
+                        acceptAttendee(invite!.flexCode!, [invite!.attendeeId!]);
                       },
                       child: const Icon(
                         Icons.check,
@@ -263,7 +263,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        rejectAttendee(invite!.flexCode!, [invite!.flexId!]);
+                        rejectAttendee(invite!.flexCode!, [invite!.attendeeId!]);
                       },
                       child: const Icon(
                         Icons.close,

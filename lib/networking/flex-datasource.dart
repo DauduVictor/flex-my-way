@@ -188,9 +188,10 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A get request to use the [GET_FLEX_BY_LOCATION]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getFlexByLocation(double lat, double long) async {
+  Future<List<Flexes>> getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
     Map<String, String> header = {};
     List<Flexes> flexes;
+    String? payParam;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
@@ -198,7 +199,15 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
-    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long';
+   switch(payStatus) {
+     case "free":
+       payParam = '&payStatus=Free';
+       break;
+     case "paid":
+       payParam = '&payStatus=Paid';
+       break;
+   }
+    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long$payParam';
     print(GET_FLEX_BY_LOCATION_URL);
     print(header);
     return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {

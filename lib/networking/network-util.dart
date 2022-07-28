@@ -131,12 +131,13 @@ class NetworkHelper {
   Future<dynamic> delete(String url, {Map<String, String>? headers, body}) {
     print(url);
     try {
-      headers!['Content-Type'] = 'application/json';
+      // headers!['Content-Type'] = 'application/json';
       return http
           .delete(Uri.parse(url), headers: headers, body: jsonEncode(body))
           .then((http.Response response) {
         final String res = response.body;
         final int statusCode = response.statusCode;
+        print(statusCode);
         var result = _decoder.convert(res);
         if (statusCode < 200 || statusCode > 400) throw result['message'];
         return result;

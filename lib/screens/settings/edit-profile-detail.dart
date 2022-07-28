@@ -148,6 +148,9 @@ class EditProfileDetail extends StatelessWidget {
       await db.initDb();
       await db.saveUser(user);
       Functions.showMessage('Your details have been updated successfully');
+      controller.userName.value = user.name!;
+      Get.back();
+      Get.back();
       controller.refreshUserDetails();
     }).catchError((e){
       controller.showSpinner.value = false;
