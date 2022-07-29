@@ -27,6 +27,7 @@ const hostImage = 'assets/images/jpegs/host-image.png';
 const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
 const splashImage = 'assets/images/jpegs/splash-image.png';
 const markerImage = 'assets/images/jpegs/marker-icon.png';
+const agentImage = 'assets/images/jpegs/search-splash.gif';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),

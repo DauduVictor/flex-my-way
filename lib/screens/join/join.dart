@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -13,7 +14,6 @@ import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import '../dashboard/notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 
 enum AgeFilter {
   below18,
@@ -95,7 +95,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         target: LatLng(lat, long),
         zoom: 19.5,
       );
-      //_getFlexMarkers(lat, long);
     }).catchError((e) async {
       log(e);
       if(!mounted) return;
@@ -110,6 +109,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Function to make api call to get flex by [LatLang]
   void _getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
     _markers.clear();
+    _showAgentPairingDialog(context);
     await api.getFlexByLocation(lat, long, ageStatus: ageStatus, payStatus: payStatus).then((value) {
       setState(() {
         flex = value;
@@ -117,11 +117,110 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         log(flexLength.toString());
       });
       _buildFlexOnMap();
+      Get.back();
     }).catchError((e) {
       if (!mounted) return;
+      Get.back();
       log(e);
       Functions.showMessage(e);
     });
+  }
+
+  ///widget to prompt user if they want to logout
+  Future<void> _showAgentPairingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: whiteColor,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5),
+          width: SizeConfig.screenWidth,
+          decoration: BoxDecoration(
+            color: whiteColor.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(
+                      agentImage,
+                    ),
+                  ),
+                ),
+                child: Image.asset(
+                  agentImage,
+                  width: SizeConfig.screenWidth! * 0.5,
+                  height: SizeConfig.screenHeight! * 0.2,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const Text(
+                'Finding your flex...',
+                style: TextStyle(
+                  color: neutralColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                height: 20,
+                child: AnimatedTextKit(
+                  repeatForever: true,
+                  pause: const Duration(milliseconds: 1000),
+                  animatedTexts: [
+                    FadeAnimatedText(
+                      'Just a moment',
+                      textAlign: TextAlign.center,
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      duration: const Duration(milliseconds: 1000),
+                    ),
+                    FadeAnimatedText(
+                      'hold on a sec.',
+                      textAlign: TextAlign.center,
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      duration: const Duration(milliseconds: 1000),
+                    ),
+                    FadeAnimatedText(
+                      'almost there..',
+                      textAlign: TextAlign.center,
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      duration: const Duration(milliseconds: 1000),
+                    ),
+                    FadeAnimatedText(
+                      'finding the closest flex..',
+                      textAlign: TextAlign.center,
+                      textStyle: const TextStyle(
+                        fontSize: 12,
+                        color: primaryColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      duration: const Duration(milliseconds: 1300),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 50),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   ///TODO: working here
@@ -170,20 +269,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         Functions.showMessage('Unable to connect to google maps at this time, please try again');
       });
     }
-  }
-
-  /// function to get a list of markers to be displayed to the user
-  void _getFlexMarkers(double lat, double long) {
-     _markers.add(
-       Marker(
-         markerId: const MarkerId('markerId'),
-         position: LatLng(lat, long),
-         icon: customIcon!,
-         onTap: () {
-           Navigator.pushNamed(context, JoinFlex.id);
-         }
-       ),
-     );
   }
 
   /// Bool variable to hold the bool state if the user is currently logged in
@@ -362,8 +447,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
             ),
           ),
           DraggableScrollableSheet(
-            maxChildSize: 0.68,
-            initialChildSize: 0.3,
+            maxChildSize: 0.48,
+            initialChildSize: 0.2,
             minChildSize: 0.1,
             builder: (context, controller) {
               return Container(
@@ -381,7 +466,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                   child: Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(26, 40, 5, 15),
+                        padding: const EdgeInsets.fromLTRB(26, 40, 5, 50),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -405,7 +490,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         ageParam = '18-';
                                         selectedAge = AgeFilter.below18;
                                       });
-                                      _getFlexByLocation(lat, long, ageStatus: ageParam);
+                                      _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
+                                      _animateController(controller);
                                       ///TODO: amimate the camera here
                                     }
                                   },
@@ -419,7 +505,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         ageParam = '18+';
                                         selectedAge = AgeFilter.above18;
                                       });
-                                      _getFlexByLocation(lat, long, ageStatus: ageParam);
+                                      _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
+                                      _animateController(controller);
                                       ///TODO: amimate the camera here
                                     }
                                   },
@@ -429,7 +516,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                             ),
                             const SizedBox(height: 30),
                             //occupation
-                            Text(
+                            /*Text(
                               'Occupation',
                               style: textTheme.headline5!.copyWith(fontSize: 17),
                             ),
@@ -452,7 +539,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                               ],
                             ),
                             //cost of entry
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 30),*/
                             Text(
                               'Cost of Entry',
                               style: textTheme.headline5!.copyWith(fontSize: 17),
@@ -468,7 +555,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         payParam = 'free';
                                         payStatus = PayStatus.free;
                                       });
-                                      _getFlexByLocation(lat, long, payStatus: payParam);
+                                      _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
+                                      _animateController(controller);
                                       ///TODO: amimate the camera here
                                     }
                                   },
@@ -482,7 +570,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         payParam = 'paid';
                                         payStatus = PayStatus.paid;
                                       });
-                                      _getFlexByLocation(lat, long, payStatus: payParam);
+                                      _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
+                                      _animateController(controller);
                                       ///TODO: amimate the camera here
                                     }
                                   },
@@ -584,6 +673,11 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       ),
     );
   }
+
+  void _animateController(ScrollController controller) {
+    controller.animateTo(-20, duration: const Duration(milliseconds: 400), curve: Curves.linear);
+  }
+
 }
 
 class ReuableMapFilterButton extends StatelessWidget {

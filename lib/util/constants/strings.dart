@@ -19,6 +19,7 @@ class AppStrings {
 
   //Host Registration
   static const hostAFlex = 'Host a Flex';
+  static const editFlex = 'Edit Flex';
   static const hostName = 'Host Name';
   static const hostEmailAddress = 'Host Email Address';
   static const password = 'Password';

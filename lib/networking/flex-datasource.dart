@@ -132,9 +132,9 @@ class FlexDataSource {
     });
   }
 
-  /// A function that sends request for sign in with [body] as details
+  /// A function that created flex with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
-  /// It returns a [] model
+  /// It returns a [FlexSuccess] model
   Future<FlexSuccess> createFlex(File uploads, Map<String, String> body) async {
     String? userId;
     List<http.MultipartFile> bannerImage = [];
@@ -156,6 +156,59 @@ class FlexDataSource {
       if(res['status'] != 'success') throw res['message'];
       print (res['data']);
       return FlexSuccess.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that edit flex with [body] as details
+  /// A post request to use the [CREATE_A_FLEX]
+  /// It returns a [] model
+  Future<FlexSuccess> editFlex(File uploads, Map<String, String> body) async {
+    String? userId;
+    List<http.MultipartFile> bannerImage = [];
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+      log(':::userId: $userId');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
+    });
+    bannerImage.add(
+        await http.MultipartFile.fromPath('bannerImage', uploads.path),
+    );
+    return _netUtil.putForm(CREATE_A_FLEX+'$userId', [bannerImage[0]], header: header, body: body).then((res) {
+      if(res['status'] != 'success') throw res['message'];
+      print (res['data']);
+      return FlexSuccess.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
+  /// A get request to use the [GET_FLEX_DETAILS]
+  /// It returns a [List<Flexes>] model
+  Future<Flexes> getFlexDetails(String flexCode) async {
+    Map<String, String> header = {};
+    Flexes flexes;
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+    });
+    String GET_FLEX_DETAILS_URL = GET_FLEX_DETAILS + '$flexCode/get';
+    return _netUtil.get(GET_FLEX_DETAILS_URL, headers: header).then((res) {
+      print(':::getFlexDetails: $res');
+      if(res['status'] != 'success') throw res['data'];
+      flexes = Flexes.fromJson(res['data']);
+      return flexes;
     }).catchError((e){
       errorHandler.handleError(e);
     });
@@ -192,13 +245,17 @@ class FlexDataSource {
     Map<String, String> header = {};
     List<Flexes> flexes;
     String? payParam;
-    Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) async {
-      // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
-    });
+    String? ageParam;
+    // Future<User> user = _futureValue.getCurrentUser();
+    // await user.then((value) async {
+    //   // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    //   header['Content-Type'] = 'text/plain';
+    // });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    header['Content-Type'] = 'text/plain';
    switch(payStatus) {
      case "free":
        payParam = '&payStatus=Free';
@@ -207,7 +264,15 @@ class FlexDataSource {
        payParam = '&payStatus=Paid';
        break;
    }
-    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long$payParam';
+    switch(ageStatus) {
+      case "18+":
+        ageParam = '&ageRating=18+';
+        break;
+      case "18-":
+        ageParam = '&ageRating=18%2B';
+        break;
+    }
+    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long$payParam$ageParam';
     print(GET_FLEX_BY_LOCATION_URL);
     print(header);
     return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {
@@ -224,7 +289,7 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A post request to use the [APPROVE_ATTENDEE]
   /// It returns a dynamic response
-  Future<dynamic> acceptAttendee(String flexCode, Map<String, dynamic> body) async {
+  Future<dynamic> acceptAttendee(Map<String, dynamic> body) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
@@ -233,8 +298,8 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
-    String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + '$flexCode/approve';
-    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
+    String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + 'approve';
+    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: [body]).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
       return res['data'];
@@ -246,7 +311,7 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A post request to use the [APPROVE_ATTENDEE]
   /// It returns a dynamic response
-  Future<dynamic> rejectAttendee(String flexCode, Map<String, dynamic> body) async {
+  Future<dynamic> rejectAttendee(Map<String, dynamic> body) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
@@ -255,9 +320,9 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
-    String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + '$flexCode/reject';
-    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {
-      log(':::rejectAtendee: $res');
+    String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + 'reject';
+    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: [body]).then((res) {
+      log(':::rejectAttendee: $res');
       if(res['status'] != 'success') throw res['message'];
       return res['data'];
     }).catchError((e){

@@ -133,17 +133,16 @@ class PendingInvites extends StatelessWidget {
   /// Function to make api POST request
   /// To accept attendee
   void acceptAll() async {
-    List<String> participants = [];
-    for (int i = 0; i < userController.flexInvites.length; i++) {
-      participants.add(userController.flexInvites[i].attendeeId!);
-    }
     Map<String, dynamic> body = {
-      'participants': participants
+      'flexCode': 'flexCode',
+      'participants': 'participants'
     };
+    // for (int i = 0; i < userController.flexInvites.length; i++) {
+    //   participants.add(userController.flexInvites[i].attendeeId!);
+    // }
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    print(participants);
-    await api.acceptAttendee('flexCode', body).then((flex) {
+    await api.acceptAttendee(body).then((flex) {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
       userController.update();
@@ -167,7 +166,7 @@ class PendingInvites extends StatelessWidget {
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
     print(participants);
-    await api.rejectAttendee('flexCode', body).then((flex) {
+    await api.rejectAttendee(body).then((flex) {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
       userController.update();
@@ -248,7 +247,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        acceptAttendee(invite!.flexCode!, [invite!.attendeeId!]);
+                        acceptAttendee(invite!.flexCode!, invite!.attendeeId!);
                       },
                       child: const Icon(
                         Icons.check,
@@ -263,7 +262,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     height: 50,
                     child: TextButton(
                       onPressed: () {
-                        rejectAttendee(invite!.flexCode!, [invite!.attendeeId!]);
+                        rejectAttendee(invite!.flexCode!, invite!.attendeeId!);
                       },
                       child: const Icon(
                         Icons.close,
@@ -284,16 +283,14 @@ class ReusablePendingInviteButton extends StatelessWidget {
 
   /// Function to make api POST request
   /// To accept attendee
-  void acceptAttendee(String flexCode, List<String>? participants) async {
+  void acceptAttendee(String flexCode, String? participants) async {
     Map<String, dynamic> body = {
-      'participants': participants
+      'flexCode': flexCode,
+      'participant': participants
     };
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    print(participants);
-    print(index);
-    print(flexCode);
-    await api.acceptAttendee(flexCode, body).then((flex) {
+    await api.acceptAttendee(body).then((flex) {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeAt(index);
       userController.update();
@@ -307,16 +304,14 @@ class ReusablePendingInviteButton extends StatelessWidget {
 
   /// Function to make api POST request
   /// To reject attendee
-  void rejectAttendee(String flexCode, List<String> participants) async {
+  void rejectAttendee(String flexCode, String participants) async {
     Map<String, dynamic> body = {
-      'participants': participants
+      'flexCode': flexCode,
+      'participant': participants
     };
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
-    print(participants);
-    print(index);
-    print(flexCode);
-    await api.rejectAttendee(flexCode, body).then((flex) {
+    await api.rejectAttendee(body).then((flex) {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeAt(index);
       userController.update();

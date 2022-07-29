@@ -13,6 +13,8 @@ import '../host/host-a-flex.dart';
 import 'drawer.dart';
 import 'package:flex_my_way/model/model.dart';
 
+import 'edit-flex.dart';
+
 class Dashboard extends StatefulWidget {
 
   static const String id = "dashboard";
@@ -264,10 +266,7 @@ class _DashboardState extends State<Dashboard> {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-              eventName: data[index].flexName ?? 'Flex Name',
-              noOfAttendees: data[index].confirmedInvitees ?? '',
-              maxNoOfAttendees: data[index].totalInvitees ?? '',
-              flexImage: data[index].flexImage != '' ? data[index].flexImage! : img1,
+              dashboardFLex: data[index],
             );
           },
         );
@@ -331,10 +330,7 @@ class _DashboardState extends State<Dashboard> {
           itemCount: data.length,
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-              eventName: data[index].flexName ?? 'Flex Name',
-              noOfAttendees: data[index].confirmedInvitees ?? '',
-              maxNoOfAttendees: data[index].totalInvitees ?? '',
-              flexImage: data[index].flexImage != '' ? data[index].flexImage! : img2,
+              dashboardFLex: data[index],
             );
           },
         );
@@ -354,18 +350,10 @@ class ReusableDashBoardCard extends StatelessWidget {
 
   const ReusableDashBoardCard({
     Key? key,
-    this.image,
-    required this.eventName,
-    required this.noOfAttendees,
-    required this.maxNoOfAttendees,
-    required this.flexImage
+    required this.dashboardFLex,
   }) : super(key: key);
 
-  final String? image;
-  final String eventName;
-  final String noOfAttendees;
-  final String maxNoOfAttendees;
-  final String flexImage;
+  final DashboardFLex dashboardFLex;
 
   @override
   Widget build(BuildContext context) {
@@ -375,73 +363,107 @@ class ReusableDashBoardCard extends StatelessWidget {
       children: [
         Container(
           width: SizeConfig.screenWidth,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 26),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: whiteColor,
           ),
-          child: Row(
-            children: [
-              Container(
-                width: SizeConfig.screenWidth! * 0.237,
-                height: SizeConfig.screenHeight! * 0.104,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: CachedNetworkImage(
-                  alignment: Alignment.topCenter,
-                  imageUrl: flexImage,
-                  progressIndicatorBuilder: (context, url, downloadProgress) {
-                    return SpinKitCircle(
-                      color: primaryColor.withOpacity(0.7),
-                      size: 30,
-                    );
-                  },
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.error,
-                    color: neutralColor.withOpacity(0.4),
-                    size: 30,
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(width: 24),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          clipBehavior: Clip.hardEdge,
+          child: TextButton(
+            onPressed: () {
+              Get.to(() => EditFlex(flexCode: dashboardFLex.flexCode));
+            },
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            ),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Text(
-                      eventName,
-                      style: textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                    Container(
+                      width: SizeConfig.screenWidth! * 0.237,
+                      height: SizeConfig.screenHeight! * 0.104,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: CachedNetworkImage(
+                        alignment: Alignment.topCenter,
+                        imageUrl: dashboardFLex.flexImage!,
+                        progressIndicatorBuilder: (context, url, downloadProgress) {
+                          return SpinKitCircle(
+                            color: primaryColor.withOpacity(0.7),
+                            size: 30,
+                          );
+                        },
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.error,
+                          color: neutralColor.withOpacity(0.4),
+                          size: 30,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    SizedBox(height: SizeConfig.screenHeight! * 0.013),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '$noOfAttendees/$maxNoOfAttendees',
-                          style: textTheme.bodyText2!.copyWith(
-                            fontSize: 15,
-                            color: neutralColor.withOpacity(0.5),
-                            fontWeight: FontWeight.w600,
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            dashboardFLex.flexName!,
+                            style: textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
                           ),
-                        ),
-                        Text(
-                          AppStrings.confirmedInvitees,
-                          style: textTheme.bodyText2!.copyWith(
-                            fontSize: 15,
-                            color: neutralColor.withOpacity(0.5),
-                            fontWeight: FontWeight.w600,
+                          SizedBox(height: SizeConfig.screenHeight! * 0.013),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${dashboardFLex.confirmedInvitees}/${dashboardFLex.totalInvitees}',
+                                style: textTheme.bodyText2!.copyWith(
+                                  fontSize: 15,
+                                  color: neutralColor.withOpacity(0.5),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                AppStrings.confirmedInvitees,
+                                style: textTheme.bodyText2!.copyWith(
+                                  fontSize: 15,
+                                  color: neutralColor.withOpacity(0.5),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 5),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'Edit',
+                        style: textTheme.bodyText2!.copyWith(
+                          fontSize: 13,
+                          color: primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      const Icon(
+                        Icons.arrow_forward,
+                        size: 13,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 16),

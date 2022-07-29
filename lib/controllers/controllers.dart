@@ -4,3 +4,4 @@ export 'onboarding-controller.dart';
 export 'setting-controller.dart';
 export 'user-controller.dart';
 export 'flexery-controller.dart';
+export 'edit-controller.dart';
