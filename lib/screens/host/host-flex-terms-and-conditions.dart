@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -23,6 +24,9 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
 
   /// calling the [HostController] for [HostFlexTermsAndConditions]
   final HostController hostController = Get.put(HostController());
+
+  /// calling the [HostController] for [HostFlexTermsAndConditions]
+  final UserController userController = Get.put(UserController());
 
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
@@ -359,8 +363,8 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                                 ),
                                               ),
                                               Text(
-                                                '${hostController.startTimeController.text} '
-                                                    '- ${hostController.endTimeController.text}',
+                                                '${Functions.getFlexTime(hostController.startTime!)} - '
+                                                    '${Functions.getFlexTime(hostController.endTime!)}',
                                                 style: textTheme.bodyText1!.copyWith(
                                                   fontSize: 18.5,
                                                   color: neutralColor,
@@ -414,14 +418,14 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             ),
                                             const SizedBox(height: 4),
                                             Text(
-                                              'Kelechi Mo.',
+                                              userController.username.value,
                                               style: textTheme.bodyText1!.copyWith(
                                                 fontSize: 18.5,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             Text(
-                                              'First Time Hoster',
+                                              'First Time Host',
                                               style: textTheme.headline5!.copyWith(
                                                 color: primaryColor,
                                                 fontSize: 16.5,
@@ -508,7 +512,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               ),
                                               const SizedBox(height: 10),
                                               Text(
-                                                '1 / ${hostController.numberOfPeopleController.text} Total',
+                                                '0 / ${hostController.numberOfPeopleController.text} Total',
                                                 style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
@@ -603,28 +607,37 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                       // ),
                                     ),
                                     const SizedBox(height: 5),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(
-                                              Icons.content_copy_outlined,
+                                    TextButton(
+                                      onPressed: () async {
+                                        Clipboard.setData(
+                                            ClipboardData(
+                                                text: hostController.flexAddress.text)
+                                        ).then((value) {
+                                          Functions.showMessage('Flex location copied');
+                                        }).catchError((e){
+                                          Functions.showMessage('Could not copy flex link');
+                                        });
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.content_copy_outlined,
+                                            color: primaryColor,
+                                            size: 12,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            'Click to Copy Address',
+                                            style: textTheme.headline5!.copyWith(
                                               color: primaryColor,
-                                              size: 12,
+                                              fontSize: 12,
                                             ),
-                                            const SizedBox(width: 6),
-                                            Text(
-                                              'Click to Copy Address',
-                                              style: textTheme.headline5!.copyWith(
-                                                color: primaryColor,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     const SizedBox(height: 12),
@@ -690,8 +703,8 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       'payStatus': hostController.paid.value,
       'viewStatus': hostController.publicOrPrivate.value,
       'showOnAccepted': hostController.displayFlexLocation.value == 'Yes'
-          ? 'true'
-          : 'false',
+        ? 'true'
+        : 'false',
       'genderRestriction': '${hostController.genderRestriciton}',
       'consumablesPolicy': hostController.consumablePolicy.value,
       'flexRules': hostController.flexRulesController.text,

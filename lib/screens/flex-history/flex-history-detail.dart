@@ -148,7 +148,7 @@ class FlexHistoryDetail extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  flex!.name!,
+                                  flex!.name!.capitalizeFirst!,
                                   style: textTheme.headline4!.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,
@@ -202,7 +202,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '1:00PM - 1:00AM',
+                                      '${Functions.getFlexTime(flex!.fromDate!)} - '
+                                          '${Functions.getFlexTime(flex!.toDate!)}',
                                       style: textTheme.bodyText1!.copyWith(
                                         fontSize: 18.5,
                                         color: neutralColor,
@@ -270,7 +271,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Multiple Time Hoster',
+                                    'Multiple Time Host',
                                     style: textTheme.headline5!.copyWith(
                                       color: primaryColor,
                                       fontSize: 16.5,
@@ -305,7 +306,7 @@ class FlexHistoryDetail extends StatelessWidget {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                flex!.flexRules!,
+                                flex!.flexRules!.capitalizeFirst!,
                                 style: textTheme.headline5!.copyWith(fontSize: 16.5),
                               ),
                             ],

@@ -337,7 +337,7 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      title.capitalizeFirst!,
                       style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -421,7 +421,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      title.capitalizeFirst!,
                       style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                     ),
                   ],

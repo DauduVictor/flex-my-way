@@ -108,6 +108,9 @@ class NetworkHelper {
   /// then sends back a json decoded result
   Future<dynamic> putForm(String url, List<http.MultipartFile>? files,
       {Map<String, String>? header, body, encoding}) async {
+    print(header);
+    print(body);
+    print(url);
     try {
       var request = http.MultipartRequest('PUT', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
@@ -118,6 +121,7 @@ class NetworkHelper {
       final response = await http.Response.fromStream(streamedResponse);
       final dynamic res = json.decode(response.body);
       final int statusCode = response.statusCode;
+      print(statusCode);
       if (statusCode < 200 || statusCode > 400) throw res['message'];
       return res;
     } catch (e) {

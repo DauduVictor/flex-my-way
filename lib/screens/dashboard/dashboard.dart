@@ -267,6 +267,7 @@ class _DashboardState extends State<Dashboard> {
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
               dashboardFLex: data[index],
+              isScheduled: true,
             );
           },
         );
@@ -275,31 +276,10 @@ class _DashboardState extends State<Dashboard> {
       return Center(
         child: SpinKitCircle(
           color: primaryColor.withOpacity(0.9),
-          size: 50,
+          size: 40,
         ),
       );
     }
-    /*return SingleChildScrollView(
-      child: Column(
-        children: const [
-          ReusableDashBoardCard(
-            eventName: 'Afro Nation Festival',
-            noOfAttendees: '10',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Kelechi\'s Birthday Party',
-            noOfAttendees: '43',
-            maxNoOfAttendees: '50',
-          ),
-          ReusableDashBoardCard(
-            eventName: 'Champions league final live at abule',
-            noOfAttendees: '50',
-            maxNoOfAttendees: '50',
-          ),
-        ],
-      ),
-    );*/
   }
 
   /// Widget to hold column view for completed flex
@@ -331,6 +311,7 @@ class _DashboardState extends State<Dashboard> {
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
               dashboardFLex: data[index],
+              isScheduled: false
             );
           },
         );
@@ -339,7 +320,7 @@ class _DashboardState extends State<Dashboard> {
       return Center(
         child: SpinKitCircle(
           color: primaryColor.withOpacity(0.9),
-          size: 50,
+          size: 40,
         ),
       );
     }
@@ -350,9 +331,11 @@ class ReusableDashBoardCard extends StatelessWidget {
 
   const ReusableDashBoardCard({
     Key? key,
+    required this.isScheduled,
     required this.dashboardFLex,
   }) : super(key: key);
 
+  final bool isScheduled;
   final DashboardFLex dashboardFLex;
 
   @override
@@ -370,7 +353,9 @@ class ReusableDashBoardCard extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           child: TextButton(
             onPressed: () {
-              Get.to(() => EditFlex(flexCode: dashboardFLex.flexCode));
+              if (isScheduled) {
+                Get.to(() => EditFlex(flexCode: dashboardFLex.flexCode));
+              }
             },
             style: TextButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -441,27 +426,28 @@ class ReusableDashBoardCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Edit',
-                        style: textTheme.bodyText2!.copyWith(
-                          fontSize: 13,
-                          color: primaryColor,
-                          fontWeight: FontWeight.w600,
+                if(isScheduled)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Edit',
+                          style: textTheme.bodyText2!.copyWith(
+                            fontSize: 13,
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 5),
-                      const Icon(
-                        Icons.arrow_forward,
-                        size: 13,
-                      ),
-                    ],
+                        const SizedBox(width: 5),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 13,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),

@@ -162,9 +162,9 @@ class FlexDataSource {
   }
 
   /// A function that edit flex with [body] as details
-  /// A post request to use the [CREATE_A_FLEX]
+  /// A post request to use the [UPDATE_A_FLEX]
   /// It returns a [] model
-  Future<FlexSuccess> editFlex(File uploads, Map<String, String> body) async {
+  Future<dynamic> editFlex(File? uploads, Map<String, String> body, String code ) async {
     String? userId;
     List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
@@ -178,16 +178,28 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    bannerImage.add(
+    print(uploads?.length());
+    if (uploads != null) {
+      bannerImage.add(
         await http.MultipartFile.fromPath('bannerImage', uploads.path),
-    );
-    return _netUtil.putForm(CREATE_A_FLEX+'$userId', [bannerImage[0]], header: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['message'];
-      print (res['data']);
-      return FlexSuccess.fromJson(res['data']);
-    }).catchError((e){
-      errorHandler.handleError(e);
-    });
+      );
+      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', [bannerImage[0]], header: header, body: body).then((res) {
+        if(res['status'] != 'success') throw res['message'];
+        print (res['data']);
+        return 'done';
+      }).catchError((e){
+        errorHandler.handleError(e);
+      });
+    }
+    else {
+      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', [], header: header, body: body).then((res) {
+        if(res['status'] != 'success') throw res['message'];
+        print (res['data']);
+        return 'done';
+      }).catchError((e){
+        errorHandler.handleError(e);
+      });
+    }
   }
 
   /// A function that sends request for joining a flex

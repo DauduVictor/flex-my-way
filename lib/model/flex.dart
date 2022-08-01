@@ -17,6 +17,7 @@ class Flexes {
     this.hashtag,
     this.payStatus,
     this.viewStatus,
+    this.genderRestriction,
     this.showOnAccepted,
     this.consumablesPolicy,
     this.flexRules,
@@ -68,6 +69,9 @@ class Flexes {
   /// This variable holds the flex showOnAccepted
   bool? showOnAccepted;
 
+  /// This variable holds the flex genderRestriction
+  bool? genderRestriction;
+
   /// This variable holds the flex consumablesPolicy
   String? consumablesPolicy;
 
@@ -76,7 +80,6 @@ class Flexes {
 
   /// This variable holds the flex viewStatus
   String? joinCode;
-
 
   double? distance;
 
@@ -101,6 +104,7 @@ class Flexes {
     payStatus: json["payStatus"] ?? '',
     viewStatus: json["viewStatus"] ?? '',
     showOnAccepted: json["showOnAccepted"] ?? false,
+    genderRestriction: json["genderRestriction"] ?? false,
     consumablesPolicy: json["consumablesPolicy"] ?? '',
     flexRules: json["flexRules"] ?? '',
     joinCode: json["joinCode"] ?? '',
@@ -124,6 +128,7 @@ class Flexes {
     "payStatus": payStatus,
     "viewStatus": viewStatus,
     "showOnAccepted": showOnAccepted,
+    "genderRestriction": genderRestriction,
     "consumablesPolicy": consumablesPolicy,
     "flexRules": flexRules,
     "joinCode": joinCode,

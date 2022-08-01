@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
@@ -12,16 +13,21 @@ import 'package:intl/intl.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
 
-class EditFlex extends StatelessWidget {
+class EditFlex extends StatefulWidget {
 
   static const String id = 'editFlex';
   final String? flexCode;
 
-  EditFlex({
+  const EditFlex({
     Key? key,
     this.flexCode,
   }) : super(key: key);
 
+  @override
+  State<EditFlex> createState() => _EditFlexState();
+}
+
+class _EditFlexState extends State<EditFlex> {
   /// calling the [HostController] for [HostAFlex]
   final EditController controller = Get.put(EditController());
 
@@ -29,8 +35,13 @@ class EditFlex extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    controller.getFlexDetails(widget.flexCode!);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    controller.getFlexDetails(flexCode!);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -165,16 +176,16 @@ class EditFlex extends StatelessWidget {
                                   }
                                 );
                                 if (picked != null) {
-                                controller.startTimeController.text =
-                                TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
-                                controller.startTime = DateTime(
-                                controller.pickedDate!.year,
-                                controller.pickedDate!.month,
-                                controller.pickedDate!.day,
-                                picked.hour,
-                                picked.minute,
-                                );
-                                print(controller.startTime);
+                                  controller.startTimeController.text =
+                                  TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                                  controller.startTime = DateTime(
+                                    controller.pickedDate!.year,
+                                    controller.pickedDate!.month,
+                                    controller.pickedDate!.day,
+                                    picked.hour,
+                                    picked.minute,
+                                  );
+                                  print(controller.startTime);
                                 }
                               }
                               },
@@ -221,16 +232,16 @@ class EditFlex extends StatelessWidget {
                                   }
                                 );
                                 if (picked != null) {
-                                controller.endTimeController.text =
-                                TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
-                                controller.endTime = DateTime(
-                                controller.pickedDate!.year,
-                                controller.pickedDate!.month,
-                                controller.pickedDate!.day,
-                                picked.hour,
-                                picked.minute,
-                                );
-                                print(controller.endTime);
+                                  controller.endTimeController.text =
+                                  TimeOfDay(hour: picked.hour, minute: picked.minute).format(context).toString();
+                                  controller.endTime = DateTime(
+                                    controller.pickedDate!.year,
+                                    controller.pickedDate!.month,
+                                    controller.pickedDate!.day,
+                                    picked.hour,
+                                    picked.minute,
+                                  );
+                                  print(controller.endTime);
                                 }
                               }
                               },
@@ -300,6 +311,7 @@ class EditFlex extends StatelessWidget {
                           color: neutralColor,
                         ),
                       ),
+                      bottomSpacing: false,
                       onTap: () {
                         showModalBottomSheet(
                           barrierColor: Colors.black.withOpacity(0.5),
@@ -313,6 +325,30 @@ class EditFlex extends StatelessWidget {
                           },
                         );
                       },
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          showImagePreview(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 5.0),
+                          margin: const EdgeInsets.fromLTRB(8, 6, 0, 22),
+                          decoration: BoxDecoration(
+                            color: primaryColor.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: const Text(
+                            'Preview Image',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     ///flex address
                     CustomTextFormField(
@@ -445,14 +481,14 @@ class EditFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.genderRestrictions,
                       items: isGenderRestrictions,
-                      value: controller.genderRestriciton.isBlank!
-                          ? controller.genderRestriciton.toString() : null,
+                      value: controller.genderRestriction.isBlank!
+                          ? controller.genderRestriction.toString() : null,
                       onChanged: (value) {
                         value = value as bool;
-                        controller.genderRestriciton = value;
+                        controller.genderRestriction = value;
                       },
                       validator: (value) {
-                        if (controller.genderRestriciton == null) {
+                        if (controller.genderRestriction == null) {
                           return 'This field is required';
                         }
                         return null;
@@ -499,9 +535,15 @@ class EditFlex extends StatelessWidget {
                       label: 'Edit Flex',
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
-                          // Get.toNamed(HostFlexTermsAndConditions.id);
+                          controller.editFlex(widget.flexCode!);
                         }
                       },
+                      child: controller.loginEditSpinner.value == true
+                        ? const SizedBox(
+                        height: 21,
+                        width: 19,
+                        child: CircleProgressIndicator())
+                        : null,
                     ),
                     const SizedBox(height: 25),
                   ],
@@ -729,47 +771,80 @@ class EditFlex extends StatelessWidget {
     );
   }
 
-/*Widget _buildLocationSuggestions(TextTheme textTheme, StateSetter setDialogState) {
-    List<Widget> locationSuggestionContainer = [];
-    if (controller.location.isNotEmpty) {
-      for (int i = 0; i < controller.location.length; i++) {
-        locationSuggestionContainer.add(
-          TextButton(
-            onPressed: () async {
-              controller.flexAddress.text = await controller.formatLocation(
-                  controller.location[i].latitude,
-                  controller.location[i].longitude);
-              controller.lat.value = controller.location[i].latitude.toString();
-              controller.long.value = controller.location[i].longitude.toString();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size(SizeConfig.screenWidth!, 5),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
+  ///widget to show the dialog for image
+  Future<void> showImagePreview (BuildContext context) {
+    return showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: '',
+        barrierColor: neutralColor.withOpacity(0.4),
+        transitionBuilder: (context, animation, secondaryAnimation, widget) {
+          return Transform.translate(
+            offset: Offset(0, 10 * animation.value),
+            child: StatefulBuilder(
+                builder: (context, stateSetter) {
+                  return Stack(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 9),
+                        child: Column(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.pop(context),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: whiteColor,
+                                      size: 31,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                SizedBox(
+                                  width: SizeConfig.screenWidth,
+                                  height: SizeConfig.screenHeight! * 0.7,
+                                  child: controller.image != null
+                                    ? Image.file(
+                                        controller.image!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : CachedNetworkImage(
+                                        alignment: Alignment.topCenter,
+                                        imageUrl: controller.flex!.bannerImage!,
+                                        progressIndicatorBuilder: (context, url, downloadProgress) {
+                                          return SpinKitCircle(
+                                            color: primaryColor.withOpacity(0.7),
+                                            size: 30,
+                                          );
+                                        },
+                                        errorWidget: (context, url, error) => Icon(
+                                          Icons.error,
+                                          color: neutralColor.withOpacity(0.4),
+                                          size: 30,
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
             ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '${controller.formatLocation(controller.location[i].latitude,
-                    controller.location[i].longitude)}',
-                style: textTheme.bodyText1!.copyWith(
-                  fontSize: 16.5,
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-      return Column(
-        children: locationSuggestionContainer,
-      );
-    } else {
-      return SizedBox(
-        child: SpinKitCircle(
-          color: primaryColor.withOpacity(0.9),
-          size: 5,
-        ),
-      );
-    }
-  }*/
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        }
+    );
+  }
 }
 

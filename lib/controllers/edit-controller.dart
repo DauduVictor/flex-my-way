@@ -1,33 +1,67 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/model/model.dart';
+import 'controllers.dart';
 
 class EditController extends GetxController {
 
   /// Instantiating a class of [FlexDataSource]
   var api = FlexDataSource();
 
+  ///Instantiating the class of [Flexes]
+  Flexes? flex;
+
   Future getFlexDetails(String flexCode) async {
     showSpinner.value = true;
     await api.getFlexDetails(flexCode).then((value) {
+      flex = value;
+      update();
+      populateValues();
       showSpinner.value = false;
-      Flexes flex = value;
-      log(flex.name!);
     }).catchError((e){
       log(e);
       showSpinner.value = false;
       Functions.showMessage(e.toString());
     });
+  }
+
+  ///Function to populate text controllers and all
+  void populateValues() async {
+    flexAddress.text = await formatLocation(
+      flex!.locationCoordinates!.lat!,
+      flex!.locationCoordinates!.lng!
+    );
+    lat.value = flex!.locationCoordinates!.lat!.toString();
+    long.value = flex!.locationCoordinates!.lng!.toString();
+    nameFlexController.text = flex!.name!;
+    dateController.text = _formatDate(flex!.fromDate!);
+    allowPickTime.value = true;
+    pickedDate = flex!.fromDate!;
+    startTimeController.text = Functions.getFlexTime(flex!.fromDate!);
+    endTimeController.text = Functions.getFlexTime(flex!.toDate!);
+    startTime = flex!.fromDate!;
+    endTime = flex!.toDate!;
+    numberOfPeopleController.text = flex!.capacity!.toString();
+    eventHashTagController.text = flex!.hashtag!;
+    ageRating.value = flex!.ageRating!;
+    typeOfFlex.value = flex!.flexType!;
+    displayFlexLocation.value = flex!.showOnAccepted! == false
+      ? 'No' : 'Yes';
+    bannerImageController.text = flex!.bannerImage!.split('/').last;
+    publicOrPrivate.value = flex!.viewStatus!;
+    paid.value = flex!.payStatus!;
+    genderRestriction = flex!.genderRestriction;
+    consumablePolicy.value = flex!.consumablesPolicy!;
+    flexRulesController.text = flex!.flexRules!;
+    videoLinkController.text = flex!.videoLink!;
   }
 
   /// Instantiating a class of future values
@@ -98,7 +132,7 @@ class EditController extends GetxController {
   final displayFlexLocation = ''.obs;
 
   /// A variable to hold the gender restriction
-  bool? genderRestriciton;
+  bool? genderRestriction;
 
   /// A variable to hold the consumable policy
   final consumablePolicy = ''.obs;
@@ -118,24 +152,10 @@ class EditController extends GetxController {
   /// File Variable to hold the file source of the selected image
   File? image;
 
-  /// File Variable to hold the file source of the uploaded host selfie
-  File? selfieImage;
-
-  /*Controller and Variable for terms and conditions*/
-  /// A [TextEditingController] to control the input text for bvn
-  final TextEditingController bvnController = TextEditingController();
-
-  /// bool value to hold the state of terms and condition
-  final termsAndConditionsAccepted = false.obs;
-
-  /// bool value to hold the state of privacy policy
-  final privacyPolicyAccepted = false.obs;
-
-  /// bool value to hold the state of previewed created flex
-  final previewCreatedFlex = false.obs;
-
   /// Variable to hold a list of location that user types
   RxList<Location> location = <Location>[].obs;
+
+  final loginEditSpinner = false.obs;
 
   FlexSuccess? createdFlex;
   //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
@@ -175,50 +195,51 @@ class EditController extends GetxController {
     location.value = locations;
   }
 
-  /*Controller and Variables for host registration*/
-  /// A [TextEditingController] to control the input text for host name
-  final TextEditingController hostNameController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host email
-  final TextEditingController hostEmailAddressController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host password
-  final TextEditingController hostPasswordController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for host phone number
-  final TextEditingController hostPhoneNumberController = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for occupation
-  final TextEditingController occupationController = TextEditingController();
-
-  /// Bool value to hold the obscure state for password
-  final hostObscureText = true.obs;
-
   /// Function to get the formatted date for date time picker
   String _formatDate(DateTime date) {
-    return DateFormat.yMd('en_US').format(date);
+    return DateFormat('yyyy-MM-dd').format(date);
   }
 
-
-  /*Controller and Variable for betasms*/
-  /// A [TextEditingController] to control the input text for current password
-  final TextEditingController betasmsNoOfPeople = TextEditingController();
-
-  /// A [TextEditingController] to control the input text for current password
-  final TextEditingController contactController = TextEditingController();
-
-  /// Bool variable to hold use database
-  final useDatabase = yesOrNo[1].obs;
-
-  /// Variable to hold the bool value for uploaded contact
-  final isUploaded = false.obs;
-
-  /// Variable to hold the bool value for editing contact numbers
-  final editingContact = false.obs;
-
-  /// Variable to hold a list of contact model
-  List<Contact> contact = [];
-
   /*Api Integration*/
+  editFlex(String code) async {
+    loginEditSpinner.value = true;
+    Map<String, String> body = {
+      'lat': lat.value,
+      'lng': long.value,
+      'name': nameFlexController.text,
+      'fromDate': startTime.toString(),
+      'toDate': endTime.toString(),
+      'capacity': numberOfPeopleController.text,
+      'ageRating': ageRating.value,
+      'flexType': typeOfFlex.value,
+      'hashtag': eventHashTagController.text,
+      'payStatus': paid.value,
+      'viewStatus': publicOrPrivate.value,
+      'showOnAccepted': displayFlexLocation.value == 'Yes'
+        ? 'true'
+        : 'false',
+      'genderRestriction': '$genderRestriction',
+      'consumablesPolicy': consumablePolicy.value,
+      'flexRules': flexRulesController.text,
+      'videoLink': videoLinkController.text,
+    };
+    if (image == null) {
+      body['bannerImage'] = flex!.bannerImage!;
+    }
+    var api = FlexDataSource();
+    await api.editFlex(image, body, code).then((value) {
+      /// calling the [UserController] for [HostFlexTermsAndConditions]
+      final UserController userController = Get.put(UserController());
+      userController.getDashboardFlex();
+      userController.getFlexHistory();
+      Functions.showMessage('Flex updated successfully');
+      loginEditSpinner.value = false;
+      Get.back();
+    }).catchError((e) {
+      loginEditSpinner.value = false;
+      log(':::error: $e');
+      Functions.showMessage(e.toString());
+    });
+  }
 
 }

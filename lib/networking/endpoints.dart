@@ -23,6 +23,7 @@ const GET_FLEXERY = BASE_URL + 'flexery/get';
 const ADD_FLEXERY = BASE_URL + 'flexery/new';
 const GET_FLEX_INVITEES = BASE_URL + 'flex/invitees';
 const GET_FLEX_DETAILS = BASE_URL + 'flex/';
+const UPDATE_A_FLEX = BASE_URL + 'flex/';
 
 const GET_NOTIFICATION = BASE_URL + 'notification/get';
 const DELETE_NOTIFICATION = BASE_URL + 'notification/';
