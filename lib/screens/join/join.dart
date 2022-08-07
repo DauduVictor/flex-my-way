@@ -570,7 +570,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         payParam = 'paid';
                                         payStatus = PayStatus.paid;
                                       });
-                                      _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
+                                      // _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
                                       _animateController(controller);
                                       ///TODO: amimate the camera here
                                     }
@@ -579,7 +579,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
-                            _pay == true
+                            payStatus == PayStatus.paid
                                 ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -29,6 +29,8 @@ class FlexeryController extends GetxController {
 
   final noOfImageUpload = 0.obs;
 
+  final isFlexeryImagesLoaded = false.obs;
+
   File? image;
 
   RxList<File> images = <File>[].obs;

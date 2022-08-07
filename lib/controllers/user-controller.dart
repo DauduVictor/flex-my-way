@@ -132,6 +132,7 @@ class UserController extends GetxController {
       scheduledFlex.value = value;
       print(value);
     }).catchError((e) {
+      isScheduledLoaded.value = true;
       log(':::error: $e');
       Functions.showMessage(e);
     });
@@ -142,6 +143,7 @@ class UserController extends GetxController {
       completedFlex.value = value;
       print(value);
     }).catchError((e) {
+      isCompletedLoaded.value = true;
       log(':::error: $e');
       Functions.showMessage(e);
     });
@@ -162,6 +164,7 @@ class UserController extends GetxController {
       isPastLoaded.value = true;
       pastFlex.value = value;
     }).catchError((e) {
+      isPastLoaded.value = true;
       log(':::error: $e');
       Functions.showMessage(e);
     });
@@ -171,6 +174,7 @@ class UserController extends GetxController {
       isPresentLoaded.value = true;
       presentFlex.value = value;
     }).catchError((e) {
+      isPresentLoaded.value = true;
       log(':::error: $e');
       // Functions.showMessage(e);
     });
@@ -181,6 +185,7 @@ class UserController extends GetxController {
       futureFlex.value = value;
     }).catchError((e) {
       log(':::error: $e');
+      isFutureLoaded.value = true;
       // Functions.showMessage(e);
     });
   }

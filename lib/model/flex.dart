@@ -99,7 +99,7 @@ class Flexes {
     capacity: json["capacity"] ?? 1,
     ageRating: json["ageRating"] ?? '',
     flexType: json["flexType"] ?? '',
-    bannerImage: json["bannerImage"] ?? '',
+    bannerImage: json["bannerImage"][0] ?? '',
     hashtag: json["hashtag"] ?? '',
     payStatus: json["payStatus"] ?? '',
     viewStatus: json["viewStatus"] ?? '',

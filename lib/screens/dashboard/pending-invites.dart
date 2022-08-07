@@ -104,7 +104,7 @@ class PendingInvites extends StatelessWidget {
                     child: Center(
                         child: SpinKitCircle(
                           color: primaryColor.withOpacity(0.9),
-                          size: 65,
+                          size: 45,
                         ),
                     ),
                   ),
@@ -116,7 +116,7 @@ class PendingInvites extends StatelessWidget {
                     absorbing: userController.showInvitesSpinner.value,
                     child: SpinKitCircle(
                       color: primaryColor.withOpacity(0.9),
-                      size: 65,
+                      size: 55,
                     ),
                   ),
                   color: userController.showInvitesSpinner.value == true
@@ -133,13 +133,10 @@ class PendingInvites extends StatelessWidget {
   /// Function to make api POST request
   /// To accept attendee
   void acceptAll() async {
-    Map<String, dynamic> body = {
-      'flexCode': 'flexCode',
-      'participants': 'participants'
-    };
-    // for (int i = 0; i < userController.flexInvites.length; i++) {
-    //   participants.add(userController.flexInvites[i].attendeeId!);
-    // }
+    Map<String, dynamic> body = {};
+    for (int i = 0; i < userController.flexInvites.length; i++) {
+      body[userController.flexInvites[i].flexCode!] = userController.flexInvites[i].attendeeId!;
+    }
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
     await api.acceptAttendee(body).then((flex) {
@@ -156,25 +153,26 @@ class PendingInvites extends StatelessWidget {
   /// Function to make api POST request
   /// To reject attendee
   void rejectAll() async {
-    List<String> participants = [];
-    for (int i = 0; i < userController.flexInvites.length; i++) {
-      participants.add(userController.flexInvites[i].flexId!);
-    }
-    Map<String, dynamic> body = {
-      'participants': participants
-    };
-    userController.showInvitesSpinner.value = true;
-    var api = FlexDataSource();
-    print(participants);
-    await api.rejectAttendee(body).then((flex) {
-      userController.showInvitesSpinner.value = false;
-      userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
-      userController.update();
-    }).catchError((e){
-      userController.showInvitesSpinner.value = false;
-      log(e);
-      Functions.showMessage(e);
-    });
+    Map<String, List<String>> body = {};
+    // for (int i = 0; i < userController.flexInvites.length; i++) {
+    //   print([userController.flexInvites[i].flexCode, userController.flexInvites[i].attendeeId]);
+    //   if(body.keys.contains(userController.flexInvites[i].flexCode)) {
+    //     body[userController.flexInvites[i].flexCode!] =
+    //   }
+    //   body[userController.flexInvites[i].flexCode!] = [userController.flexInvites[i].attendeeId!];
+    // }
+    print(body);
+    // userController.showInvitesSpinner.value = true;
+    // var api = FlexDataSource();
+    // await api.rejectAttendee(body).then((flex) {
+    //   userController.showInvitesSpinner.value = false;
+    //   userController.flexInvites.removeRange(0, userController.flexInvites.length -1);
+    //   userController.update();
+    // }).catchError((e){
+    //   userController.showInvitesSpinner.value = false;
+    //   log(e);
+    //   Functions.showMessage(e);
+    // });
   }
 
 }

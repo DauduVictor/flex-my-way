@@ -28,7 +28,7 @@ class DashboardFLex {
 
   factory DashboardFLex.fromJson(Map<String, dynamic> json) => DashboardFLex(
     flexName: json["flexName"],
-    flexImage: json["flexImage"],
+    flexImage: json["flexImage"][0],
     totalInvitees: json["totalInvitees"].toString(),
     confirmedInvitees: json["confirmedInvitees"].toString(),
     flexCode: json["flexCode"],

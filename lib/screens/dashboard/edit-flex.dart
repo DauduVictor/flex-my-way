@@ -49,7 +49,7 @@ class _EditFlexState extends State<EditFlex> {
         leadingWidth: 80,
         title: Text(
           AppStrings.editFlex,
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: GestureDetector(
@@ -107,7 +107,7 @@ class _EditFlexState extends State<EditFlex> {
                         ),
                       ),
                       onTap: () async {
-                        DateTime now = DateTime.now();
+                        DateTime now = controller.pickedDate!;
                         DateTime? picked = await showDatePicker(
                             context: context,
                             lastDate: DateTime(now.year + 2),
@@ -124,10 +124,11 @@ class _EditFlexState extends State<EditFlex> {
                               );
                             }
                         );
-                        if (picked != null && picked != now) {
+                        if (picked != null) {
                           controller.pickedDate = picked;
                           controller.dateController.text = DateFormat('yyyy-MM-dd').format(picked).toString();
                           controller.allowPickTime.value = true;
+                          controller.update();
                         }
                       },
                     ),
@@ -145,6 +146,10 @@ class _EditFlexState extends State<EditFlex> {
                                 if (value!.isEmpty) {
                                   return 'This field is required';
                                 }
+                                if ( controller.startTime!.compareTo(controller.pickedDate!) < 0) {
+                                  Functions.showMessage('Reselect flex time');
+                                  return 'Reselect time';
+                                }
                                 return null;
                               },
                               suffix: const Padding(
@@ -158,7 +163,6 @@ class _EditFlexState extends State<EditFlex> {
                                 if (controller.allowPickTime.value == false) {
                                   Functions.showMessage('Pick a flex date first');
                                 } else {
-                                  DateTime now = DateTime.now();
                                   TimeOfDay? picked = await showTimePicker(
                                       context: context,
                                       helpText: 'SELECT FLEX START TIME',
@@ -201,6 +205,10 @@ class _EditFlexState extends State<EditFlex> {
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'This field is required';
+                                }
+                                if ( controller.endTime!.compareTo(controller.pickedDate!) < 0) {
+                                  Functions.showMessage('Reselect flex time');
+                                  return 'Reselect time';
                                 }
                                 return null;
                               },

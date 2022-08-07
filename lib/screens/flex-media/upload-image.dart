@@ -293,7 +293,7 @@ class UploadImage extends StatelessWidget {
   showUploadProgress(BuildContext context) {
     showDialog(
         context: context,
-        barrierDismissible: true,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: whiteColor,
@@ -352,6 +352,7 @@ class UploadImage extends StatelessWidget {
       controller.update();
       Functions.showMessage('Images uploaded successfully!');
       controller.getFlexery('time');
+      controller.hashTagController.clear();
      Get.back();
      Get.back();
     }).catchError((e) {

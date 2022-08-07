@@ -355,6 +355,9 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
+    if (hashTag.startsWith('#')) {
+      hashTag = hashTag.replaceFirst('#', '');
+    }
     String GET_FLEXERY_URL = GET_FLEXERY + '?search=$hashTag';
     log(GET_FLEXERY_URL);
     print(header);

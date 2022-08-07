@@ -49,13 +49,13 @@ class Settings extends StatelessWidget {
                   style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),
-              controller.canHostFlex.value == false
+              controller.canHostFlex.value == true
                 ? Padding(
                     padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                     child: ListTileButton(
                       title: AppStrings.becomeAHost,
                       onPressed: () {
-                        // Get.toNamed(HostRegistration.id);
+                        Get.toNamed(HostRegistration.id);
                       },
                     ),
                 )

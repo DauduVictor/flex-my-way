@@ -2,6 +2,7 @@ import 'package:flex_my_way/screens/dashboard/dashboard.dart';
 import 'package:flex_my_way/screens/dashboard/edit-flex.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flex_my_way/screens/find-a-flex.dart';
+import 'package:flex_my_way/screens/flex-history/FlexHistoryImageArchive.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
@@ -78,7 +79,8 @@ class MyApp extends StatelessWidget {
         JoinedFlexDetails.id: (context) => JoinedFlexDetails(),
         ContactScreen.id: (context) => ContactScreen(),
         UploadImage.id: (context) => UploadImage(),
-        EditFlex.id: (context) => EditFlex(),
+        EditFlex.id: (context) => const EditFlex(),
+        FlexHistoryImageArchive.id: (context) => FlexHistoryImageArchive(),
       },
     );
   }

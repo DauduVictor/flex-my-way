@@ -11,6 +11,7 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/model/model.dart';
 import '../../networking/flex-datasource.dart';
 import '../join/joined-flex-details.dart';
+import 'FlexHistoryImageArchive.dart';
 
 class FlexHistoryDetail extends StatelessWidget {
 
@@ -101,6 +102,11 @@ class FlexHistoryDetail extends StatelessWidget {
                               radius: 22,
                               child: TextButton(
                                 onPressed: () {
+                                  if(past!) {
+                                    Get.to(() => FlexHistoryImageArchive(flexTag: flex!.hashtag!));
+                                  } else {
+                                    Functions.showMessage('All images will be present after flex goes live!');
+                                  }
                                 },
                                 style: TextButton.styleFrom(
                                   padding: const EdgeInsets.all(12),
