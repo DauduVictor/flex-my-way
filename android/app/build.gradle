@@ -46,6 +46,12 @@ android {
         applicationId "com.example.flex_my_way"
         minSdkVersion 20
         targetSdkVersion 30
+        lintOptions {
+            disable 'InvalidPackage'
+            disable "Instantiatable"
+            checkReleaseBuilds false
+            abortOnError false
+        }
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

@@ -7,7 +7,8 @@ const LOGIN = BASE_URL + 'users/login';
 const FORGOT_PASSWORD = BASE_URL + 'users/password/forgot';
 const RESET_PASSWORD = BASE_URL + 'users/resetpassword';
 const EDIT_PASSWORD = BASE_URL + 'users/password/edit';
-const UPDATE_USER_INFO = BASE_URL + 'users//update';
+const UPDATE_USER_INFO = BASE_URL + 'users/update';
+const UPGRADE_USER = BASE_URL + 'users/upgrade';
 const DELETE_A_USER = 'id/delete';
 
 

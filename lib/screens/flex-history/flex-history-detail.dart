@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flex_my_way/util/util.dart';
@@ -37,10 +39,10 @@ class FlexHistoryDetail extends StatelessWidget {
     _mapController.complete(controller);
   }
 
-  CameraPosition userPosition = const CameraPosition(
-    target: LatLng(6.519314, 3.396336),
-    zoom: 16.0,
-  );
+  // CameraPosition userPosition = const CameraPosition(
+  //   target: LatLng(6.519314, 3.396336),
+  //   zoom: 16.0,
+  // );
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +272,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    flex?.creator?.name ?? 'Victor',
+                                    flex?.creator?.name ?? '',
                                     style: textTheme.bodyText1!.copyWith(
                                       fontSize: 18.5,
                                       fontWeight: FontWeight.w600,
@@ -344,22 +346,24 @@ class FlexHistoryDetail extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               //provided
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Food & Drinks',
-                                    style: textTheme.bodyText1!.copyWith(
-                                      fontSize: 18.5,
-                                      fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Consumable Policy',
+                                      style: textTheme.bodyText1!.copyWith(
+                                        fontSize: 18.5,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Will be Provided',
-                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      flex!.consumablesPolicy!,
+                                      style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -390,22 +394,24 @@ class FlexHistoryDetail extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               //rsvp
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'RSVP',
-                                    style: textTheme.bodyText1!.copyWith(
-                                      fontSize: 18.5,
-                                      fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'RSVP',
+                                      style: textTheme.bodyText1!.copyWith(
+                                        fontSize: 18.5,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    '+234 706 197 2722',
-                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      flex!.creator!.phone!,
+                                      style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -420,7 +426,13 @@ class FlexHistoryDetail extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               child: GoogleMap(
                                 mapType: MapType.normal,
-                                initialCameraPosition: userPosition,
+                                initialCameraPosition: CameraPosition(
+                                  target: LatLng(
+                                    flex!.locationCoordinates!.lat!,
+                                    flex!.locationCoordinates!.lng!,
+                                  ),
+                                  zoom: 18.0,
+                                ),
                                 onMapCreated: _onMapCreated,
                                 scrollGesturesEnabled: false,
                                 zoomControlsEnabled: false,
@@ -429,30 +441,43 @@ class FlexHistoryDetail extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 3),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.content_copy_outlined,
+                          TextButton(
+                            onPressed: () async {
+                              Clipboard.setData(
+                                  ClipboardData(
+                                      text: await formatLocation(
+                                          flex!.locationCoordinates!.lat!,
+                                          flex!.locationCoordinates!.lng!
+                                      ))
+                              ).then((value) {
+                                Functions.showMessage('Flex location copied');
+                              }).catchError((e){
+                                Functions.showMessage('Could not copy flex link');
+                              });
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.content_copy_outlined,
+                                  color: primaryColor,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Click to Copy Address',
+                                  style: textTheme.headline5!.copyWith(
                                     color: primaryColor,
-                                    size: 12,
+                                    fontSize: 12,
                                   ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    'Click to Copy Address',
-                                    style: textTheme.headline5!.copyWith(
-                                      color: primaryColor,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
+                          const SizedBox(height: 12),
                         ],
                       ),
                     ),
@@ -462,6 +487,12 @@ class FlexHistoryDetail extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<String> formatLocation(double lat, double lon) async {
+    List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lon);
+    Placemark place = placeMarks[0];
+    return ('${place.street}, ${place.locality}, ${place.country}');
   }
 
   /// Function to make api call to join flex

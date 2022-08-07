@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../bloc/future-values.dart';
+import '../model/user.dart';
 import 'dashboard/dashboard.dart';
+import 'onboarding/login.dart';
 
 class SplashScreen extends StatefulWidget {
 
@@ -65,18 +68,30 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-///Function to get if user has been onboarded with help of
-/// [SharedPreferences]
-void getBoolFromSp() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getBool('onBoarded') == true) {
-    if (prefs.getBool('loggedIn') == true) {
-      Get.offAndToNamed(Dashboard.id);
+  ///Function to get if user has been onboarded with help of
+  /// [SharedPreferences]
+  void getBoolFromSp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('onBoarded') == true) {
+      if (prefs.getBool('loggedIn') == true) {
+        var _futureValue = FutureValues();
+        Future<User> user = _futureValue.getCurrentUser();
+        try {
+          await user.then((value) async {
+            if (value.id == null) {
+              Get.offAndToNamed(Login.id);
+            } else {
+              Get.offAndToNamed(Dashboard.id);
+            }
+          });
+        } catch (e) {
+          Get.offAndToNamed(Login.id);
+        }
+      }
+      else {
+        Get.offAndToNamed(FindAFlex.id);
+      }
+    } else {
+      Get.offAndToNamed(OnboardingScreen.id);
     }
-    else {
-      Get.offAndToNamed(FindAFlex.id);
-    }
-  } else {
-    Get.offAndToNamed(OnboardingScreen.id);
   }
-}

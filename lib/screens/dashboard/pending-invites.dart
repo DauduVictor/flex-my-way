@@ -295,7 +295,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
       userController.getDashboardFlex();
     }).catchError((e) {
       userController.showInvitesSpinner.value = false;
-      log(e);
+      print(e);
       Functions.showMessage(e);
     });
   }

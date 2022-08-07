@@ -10,8 +10,10 @@ import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
 import '../../controllers/setting-controller.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../../database/user-db-helper.dart';
 import 'about.dart';
 import 'edit-profile-detail.dart';
+import 'package:flex_my_way/model/model.dart';
 
 class Settings extends StatelessWidget {
 
@@ -28,247 +30,273 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Obx(() => Scaffold(
-        appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
-        body: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-          },
-          child: Column(
+    return Obx(() => AbsorbPointer(
+      absorbing: controller.showUpgradeUser.value,
+      child: Scaffold(
+          appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
+          body: Stack(
             children: [
-              Container(
-                width: SizeConfig.screenWidth,
-                padding: const EdgeInsets.fromLTRB(27, 12, 20, 15),
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: appBarBottomBorder,
-                ),
-                child: Text(
-                  AppStrings.settings,
-                  style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
-                ),
-              ),
-              controller.canHostFlex.value == true
-                ? Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                    child: ListTileButton(
-                      title: AppStrings.becomeAHost,
-                      onPressed: () {
-                        Get.toNamed(HostRegistration.id);
-                      },
+              GestureDetector(
+                onTap: () {
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+                  if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      width: SizeConfig.screenWidth,
+                      padding: const EdgeInsets.fromLTRB(27, 12, 20, 15),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: appBarBottomBorder,
+                      ),
+                      child: Text(
+                        AppStrings.settings,
+                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ),
-                )
-                : const SizedBox(height: 20),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: AbsorbPointer(
-                    absorbing: controller.showSpinner.value,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-                      child: Column(
-                        children: [
-                          ReusableSettingsButton(
-                            name: AppStrings.editProfileDetails,
-                            icon: IconlyLight.edit,
+                    controller.canHostFlex.value != true
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                          child: ListTileButton(
+                            title: AppStrings.becomeAHost,
                             onPressed: () {
-                              Get.toNamed(EditProfileDetail.id);
+                              _upgradeUserToHost();
+                              // Get.toNamed(HostRegistration.id);
                             },
                           ),
-                          AnimatedCrossFade(
-                            duration: const Duration(milliseconds: 500),
-                            firstCurve: Curves.easeIn,
-                            secondCurve: Curves.fastOutSlowIn,
-                            crossFadeState: controller.showEditPassword.value == false
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                            firstChild: ReusableSettingsButton(
-                              name: AppStrings.editPassword,
-                              icon: IconlyBroken.unlock,
-                              onPressed: () {
-                                controller.showEditPassword.toggle();
-                              },
-                            ),
-                            secondChild: Column(
+                      )
+                      : const SizedBox(height: 20),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: AbsorbPointer(
+                          absorbing: controller.showSpinner.value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
+                            child: Column(
                               children: [
                                 ReusableSettingsButton(
-                                  name: AppStrings.editPassword,
-                                  icon: IconlyBroken.unlock,
+                                  name: AppStrings.editProfileDetails,
+                                  icon: IconlyLight.edit,
                                   onPressed: () {
-                                    controller.showEditPassword.toggle();
+                                    Get.toNamed(EditProfileDetail.id);
                                   },
                                 ),
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
+                                AnimatedCrossFade(
+                                  duration: const Duration(milliseconds: 500),
+                                  firstCurve: Curves.easeIn,
+                                  secondCurve: Curves.fastOutSlowIn,
+                                  crossFadeState: controller.showEditPassword.value == false
+                                    ? CrossFadeState.showFirst
+                                    : CrossFadeState.showSecond,
+                                  firstChild: ReusableSettingsButton(
+                                    name: AppStrings.editPassword,
+                                    icon: IconlyBroken.unlock,
+                                    onPressed: () {
+                                      controller.showEditPassword.toggle();
+                                    },
+                                  ),
+                                  secondChild: Column(
                                     children: [
-                                      CustomTextFormField(
-                                        hintText: AppStrings.enterCurrentPassword,
-                                        textInputAction: TextInputAction.next,
-                                        autoValidateMode: AutovalidateMode.disabled,
-                                        obscureText: controller.obscureCurrentPassword.value,
-                                        keyboardType: TextInputType.visiblePassword,
-                                        textEditingController: controller.currentPasswordController,
-                                        suffix: GestureDetector(
-                                          onTap: () {
-                                            controller.obscureCurrentPassword.toggle();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                                            child: Text(
-                                              controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
-                                              style: textTheme.button!.copyWith(
-                                                fontSize: 14,
-                                                color: primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        validator: (value) {
-                                          if(value!.isEmpty) {
-                                            return 'This field is required';
-                                          }
-                                          return null;
+                                      ReusableSettingsButton(
+                                        name: AppStrings.editPassword,
+                                        icon: IconlyBroken.unlock,
+                                        onPressed: () {
+                                          controller.showEditPassword.toggle();
                                         },
                                       ),
-                                      CustomTextFormField(
-                                        hintText: AppStrings.enterNewPassword,
-                                        textInputAction: TextInputAction.next,
-                                        autoValidateMode: AutovalidateMode.disabled,
-                                        obscureText: controller.obscureNewPassword.value,
-                                        keyboardType: TextInputType.visiblePassword,
-                                        textEditingController: controller.newPasswordController,
-                                        suffix: GestureDetector(
-                                          onTap: () {
-                                            controller.obscureNewPassword.toggle();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                                            child: Text(
-                                              controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
-                                              style: textTheme.button!.copyWith(
-                                                fontSize: 14,
-                                                color: primaryColor,
+                                      Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          children: [
+                                            CustomTextFormField(
+                                              hintText: AppStrings.enterCurrentPassword,
+                                              textInputAction: TextInputAction.next,
+                                              autoValidateMode: AutovalidateMode.disabled,
+                                              obscureText: controller.obscureCurrentPassword.value,
+                                              keyboardType: TextInputType.visiblePassword,
+                                              textEditingController: controller.currentPasswordController,
+                                              suffix: GestureDetector(
+                                                onTap: () {
+                                                  controller.obscureCurrentPassword.toggle();
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                                                  child: Text(
+                                                    controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
+                                                    style: textTheme.button!.copyWith(
+                                                      fontSize: 14,
+                                                      color: primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
+                                              validator: (value) {
+                                                if(value!.isEmpty) {
+                                                  return 'This field is required';
+                                                }
+                                                return null;
+                                              },
                                             ),
-                                          ),
-                                        ),
-                                        validator: (value) {
-                                          if(value!.isEmpty) {
-                                            return 'This field is required';
-                                          }
-                                          else if(value.length < 4) {
-                                            return 'Password length too short';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      CustomTextFormField(
-                                        hintText: AppStrings.enterConfirmPassword,
-                                        keyboardType: TextInputType.visiblePassword,
-                                        autoValidateMode: AutovalidateMode.disabled,
-                                        textInputAction: TextInputAction.done,
-                                        obscureText: controller.obscureConfirmPassword.value,
-                                        textEditingController: controller.confirmPasswordController,
-                                        suffix: GestureDetector(
-                                          onTap: () {
-                                            controller.obscureConfirmPassword.toggle();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                                            child: Text(
-                                              controller.obscureNewPassword.value == true ? 'SHOW' : 'HIDE',
-                                              style: textTheme.button!.copyWith(
-                                                fontSize: 14,
-                                                color: primaryColor,
+                                            CustomTextFormField(
+                                              hintText: AppStrings.enterNewPassword,
+                                              textInputAction: TextInputAction.next,
+                                              autoValidateMode: AutovalidateMode.disabled,
+                                              obscureText: controller.obscureNewPassword.value,
+                                              keyboardType: TextInputType.visiblePassword,
+                                              textEditingController: controller.newPasswordController,
+                                              suffix: GestureDetector(
+                                                onTap: () {
+                                                  controller.obscureNewPassword.toggle();
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                                                  child: Text(
+                                                    controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
+                                                    style: textTheme.button!.copyWith(
+                                                      fontSize: 14,
+                                                      color: primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
+                                              validator: (value) {
+                                                if(value!.isEmpty) {
+                                                  return 'This field is required';
+                                                }
+                                                else if(value.length < 4) {
+                                                  return 'Password length too short';
+                                                }
+                                                return null;
+                                              },
                                             ),
-                                          ),
+                                            CustomTextFormField(
+                                              hintText: AppStrings.enterConfirmPassword,
+                                              keyboardType: TextInputType.visiblePassword,
+                                              autoValidateMode: AutovalidateMode.disabled,
+                                              textInputAction: TextInputAction.done,
+                                              obscureText: controller.obscureConfirmPassword.value,
+                                              textEditingController: controller.confirmPasswordController,
+                                              suffix: GestureDetector(
+                                                onTap: () {
+                                                  controller.obscureConfirmPassword.toggle();
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
+                                                  child: Text(
+                                                    controller.obscureNewPassword.value == true ? 'SHOW' : 'HIDE',
+                                                    style: textTheme.button!.copyWith(
+                                                      fontSize: 14,
+                                                      color: primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              validator: (value) {
+                                                if(value.toString() != controller.newPasswordController.text) {
+                                                  return 'Confirm your password';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                        validator: (value) {
-                                          if(value.toString() != controller.newPasswordController.text) {
-                                            return 'Confirm your password';
-                                          }
-                                          return null;
-                                        },
                                       ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                        child: Button(
+                                          label: AppStrings.save,
+                                          onPressed: () {
+                                            FocusScopeNode currentFocus = FocusScope.of(context);
+                                            if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                                            if(_formKey.currentState!.validate()){
+                                              _editPassword();
+                                            }
+                                          },
+                                          child: controller.showSpinner.value == true
+                                            ? const SizedBox(
+                                              height: 21,
+                                              width: 19,
+                                              child: CircleProgressIndicator())
+                                            : null,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 21),
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                  child: Button(
-                                    label: AppStrings.save,
-                                    onPressed: () {
-                                      FocusScopeNode currentFocus = FocusScope.of(context);
-                                      if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                                      if(_formKey.currentState!.validate()){
-                                        _editPassword();
-                                      }
-                                    },
-                                    child: controller.showSpinner.value == true
-                                      ? const SizedBox(
-                                        height: 21,
-                                        width: 19,
-                                        child: CircleProgressIndicator())
-                                      : null,
-                                  ),
+                                ReusableSettingsButton(
+                                  name: AppStrings.inviteYourFriends,
+                                  icon: Icons.share_outlined,
+                                  onPressed: () {},
                                 ),
-                                const SizedBox(height: 21),
+                                ReusableSettingsButton(
+                                  name: AppStrings.about,
+                                  icon: Icons.lightbulb_outline,
+                                  onPressed: () {
+                                    Get.toNamed(About.id);
+                                  },
+                                ),
+                                ReusableSettingsButton(
+                                  name: AppStrings.termsAndConditions,
+                                  icon: IconlyLight.dangerCircle,
+                                  onPressed: () {
+                                    Get.toNamed(TermsAndCondition.id);
+                                  },
+                                ),
+                                ReusableSettingsButton(
+                                  name: AppStrings.privacyPolicy,
+                                  icon: IconlyLight.paper,
+                                  onPressed: () {
+                                    Get.toNamed(PrivacyPolicy.id);
+                                  },
+                                ),
+                                ReusableSettingsButton(
+                                  name: AppStrings.helpAndSupport,
+                                  icon: IconlyLight.shieldDone,
+                                  onPressed: () {
+                                    Get.toNamed(HelpAndSupport.id);
+                                  },
+                                ),
+                                ReusableSettingsButton(
+                                  name: AppStrings.logOut,
+                                  icon: IconlyLight.logout,
+                                  onPressed: () {
+                                    _showLogOutDialog(textTheme, context);
+                                  },
+                                ),
+                                const SizedBox(height: 12),
                               ],
                             ),
                           ),
-                          ReusableSettingsButton(
-                            name: AppStrings.inviteYourFriends,
-                            icon: Icons.share_outlined,
-                            onPressed: () {},
-                          ),
-                          ReusableSettingsButton(
-                            name: AppStrings.about,
-                            icon: Icons.lightbulb_outline,
-                            onPressed: () {
-                              Get.toNamed(About.id);
-                            },
-                          ),
-                          ReusableSettingsButton(
-                            name: AppStrings.termsAndConditions,
-                            icon: IconlyLight.dangerCircle,
-                            onPressed: () {
-                              Get.toNamed(TermsAndCondition.id);
-                            },
-                          ),
-                          ReusableSettingsButton(
-                            name: AppStrings.privacyPolicy,
-                            icon: IconlyLight.paper,
-                            onPressed: () {
-                              Get.toNamed(PrivacyPolicy.id);
-                            },
-                          ),
-                          ReusableSettingsButton(
-                            name: AppStrings.helpAndSupport,
-                            icon: IconlyLight.shieldDone,
-                            onPressed: () {
-                              Get.toNamed(HelpAndSupport.id);
-                            },
-                          ),
-                          ReusableSettingsButton(
-                            name: AppStrings.logOut,
-                            icon: IconlyLight.logout,
-                            onPressed: () {
-                              _showLogOutDialog(textTheme, context);
-                            },
-                          ),
-                          const SizedBox(height: 12),
-                        ],
+                        )
                       ),
                     ),
-                  )
-                ),
+                  ],
+                )
               ),
+              controller.showUpgradeUser.value == true
+                  ? Positioned(
+                      top: MediaQuery.of(context).padding.top,
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 15.0, right: 40),
+                        clipBehavior: Clip.hardEdge,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.0),
+                          color: Colors.black,
+                        ),
+                        child: const LinearProgressIndicator(
+                          color: Colors.white,
+                          backgroundColor: primaryColor,
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
-          )
+          ),
         ),
-      )
+    )
     );
   }
 
@@ -343,6 +371,25 @@ class Settings extends StatelessWidget {
       controller.update();
     }).catchError((e){
       controller.showSpinner.value = false;
+      Functions.showMessage(e);
+      log(e);
+    });
+  }
+
+  /// Function to upgrade user to host
+  void _upgradeUserToHost() async {
+    controller.showUpgradeUser.value = true;
+    var api = UserDataSource();
+    await api.upgradeUser().then((User user) async {
+      var db = DatabaseHelper();
+      await db.initDb();
+      await db.saveUser(user);
+      controller.refreshUserDetails();
+      controller.showUpgradeUser.value = false;
+      Functions.showMessage('Congratulations, you can now host a Flex!');
+    }).catchError((e){
+      print(e);
+      controller.showUpgradeUser.value = false;
       Functions.showMessage(e);
       log(e);
     });

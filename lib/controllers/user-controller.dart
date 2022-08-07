@@ -163,6 +163,7 @@ class UserController extends GetxController {
     await api.getFlexHistory('past').then((value) {
       isPastLoaded.value = true;
       pastFlex.value = value;
+      update();
     }).catchError((e) {
       isPastLoaded.value = true;
       log(':::error: $e');
@@ -173,6 +174,7 @@ class UserController extends GetxController {
     await api.getFlexHistory('present').then((value) {
       isPresentLoaded.value = true;
       presentFlex.value = value;
+      update();
     }).catchError((e) {
       isPresentLoaded.value = true;
       log(':::error: $e');
@@ -183,6 +185,7 @@ class UserController extends GetxController {
     await api.getFlexHistory('future').then((value) {
       isFutureLoaded.value = true;
       futureFlex.value = value;
+      update();
     }).catchError((e) {
       log(':::error: $e');
       isFutureLoaded.value = true;

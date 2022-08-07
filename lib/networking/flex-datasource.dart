@@ -16,8 +16,6 @@ class FlexDataSource {
   /// Instantiating a class of the [FutureValues]
   final _futureValue = FutureValues();
 
-
-
   /// A function that gets the dashboard flexes
   /// A get request to use the [GET_DASHBOARD_FLEX]
   /// It returns a [List<Flexes>] model
@@ -313,7 +311,7 @@ class FlexDataSource {
     String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + 'approve';
     return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: [body]).then((res) {
       print(res);
-      if(res['status'] != 'success') throw res['message'];
+      if(res['status'] != 'success') throw res['data'];
       return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
@@ -335,7 +333,7 @@ class FlexDataSource {
     String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + 'reject';
     return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: [body]).then((res) {
       log(':::rejectAttendee: $res');
-      if(res['status'] != 'success') throw res['message'];
+      if(res['status'] != 'success') throw res['data'];
       return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);

@@ -23,7 +23,7 @@ class UserDataSource {
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [LOGIN]
   /// It returns a [User] model
-  Future<User> signIn (Map<String, String> body) {
+  Future<User> signIn (Map<String, String> body) async {
     return _netUtil.post(LOGIN, headers: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['data'];
       return User.fromJson(res['data']);
@@ -75,10 +75,14 @@ class UserDataSource {
   /// It returns a [String_Message]
   Future<dynamic> editPassword (Map<String, String> body) async  {
     Map<String, String> header = {};
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-    header['Content-Type'] = 'application/json';
-    header['Accept'] = '*/*';
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'application/json';
+      header['Accept'] = '*/*';
+    });
     return _netUtil.post(EDIT_PASSWORD, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['message'];
       return (res['data']);
@@ -92,12 +96,38 @@ class UserDataSource {
   /// It returns a [String_Message]
   Future<User> updateUserInfo (Map<String, dynamic> body) async {
     Map<String, String> header = {};
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-    header['Content-Type'] = 'text/plain';
-    header['Accept'] = '*/*';
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'application/json';
+      header['Accept'] = '*/*';
+    });
     return _netUtil.put(UPDATE_USER_INFO, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['data'];
+      return User.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for update user details with [body] as details
+  /// A post request to use the [UPDATE_USER_INFO]
+  /// It returns a [String_Message]
+  Future<User> upgradeUser () async {
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'application/json';
+      header['Accept'] = '*/*';
+    });
+    return _netUtil.get(UPGRADE_USER, headers: header).then((dynamic res) {
+      if(res['status'] != 'success') throw res['data'];
+      print(res['data']);
       return User.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
@@ -113,12 +143,9 @@ class UserDataSource {
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = value.id;
-      log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     });
-    print(header);
     String DELETE_NOTIFICATION_URL = DELETE_NOTIFICATION + '$id/delete';
     return _netUtil.delete(DELETE_NOTIFICATION_URL, headers: header).then((res) {
       log(':::deleteNotification: $res');

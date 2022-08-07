@@ -87,6 +87,10 @@ class SettingsController extends GetxController {
     userController.getCurrentUserDetail();
   }
 
+  /* upgrade user */
+  /// bool variable to hold the bool state of show spinner
+  final showUpgradeUser = false.obs;
+
   /// Function to update controllers when user details change
   void logOut() async {
     Get.delete<HostController>();

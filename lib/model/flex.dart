@@ -92,7 +92,7 @@ class Flexes {
   factory Flexes.fromJson(Map<String, dynamic> json) => Flexes(
     locationCoordinates: json['locationCoordinates'] != null ? FlexLocationCoordinates.fromJson(json["locationCoordinates"]) : null,
     name: json["name"] ?? '',
-    // creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
+    creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
     fromDate: DateTime.parse(json["fromDate"]),
     toDate: DateTime.parse(json["toDate"]),
     totalInvitees: json["totalInvitees"] ?? 0,
@@ -143,19 +143,23 @@ class Creator {
   Creator({
     this.name,
     this.id,
+    this.phone,
   });
 
   String? name;
   String? id;
+  String? phone;
 
   factory Creator.fromJson(Map<String, dynamic> json) => Creator(
     name: json["name"] ?? '',
     id: json["id"] ?? '',
+    phone: json["phone"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "id": id,
+    "phone": phone,
   };
 }
 

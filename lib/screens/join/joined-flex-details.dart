@@ -325,14 +325,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const SizedBox(width: 3),
+                              const SizedBox(width: 10),
                               //provided
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Food & Drink policy',
+                                      'Consumable policy',
                                       style: textTheme.bodyText1!.copyWith(
                                         fontSize: 18.5,
                                         fontWeight: FontWeight.w600,
@@ -375,22 +375,24 @@ class JoinedFlexDetails extends StatelessWidget {
                               ),
                               const SizedBox(width: 10),
                               //rsvp
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'RSVP',
-                                    style: textTheme.bodyText1!.copyWith(
-                                      fontSize: 18.5,
-                                      fontWeight: FontWeight.w600,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'RSVP',
+                                      style: textTheme.bodyText1!.copyWith(
+                                        fontSize: 18.5,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    '+234 706 197 2722',
-                                    style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      flex!.creator!.phone!,
+                                      style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -402,7 +404,13 @@ class JoinedFlexDetails extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                               child: GoogleMap(
                                 mapType: MapType.normal,
-                                initialCameraPosition: userPosition,
+                                initialCameraPosition: CameraPosition(
+                                  target: LatLng(
+                                    flex!.locationCoordinates!.lat!,
+                                    flex!.locationCoordinates!.lng!,
+                                  ),
+                                  zoom: 18.0,
+                                ),
                                 onMapCreated: _onMapCreated,
                                 myLocationEnabled: false,
                                 myLocationButtonEnabled: false,
