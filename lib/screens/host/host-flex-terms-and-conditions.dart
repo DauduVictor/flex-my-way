@@ -114,24 +114,24 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         ),
                       ),
                       const SizedBox(height: 22),
-                      hostController.paid.value == 'Paid'
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Form(
-                              key: _formKey,
-                              child: CustomTextFormField(
-                                hintText: AppStrings.yourBVN,
-                                textEditingController: hostController.bvnController,
-                                validator: (value) {
-                                  if(value!.isEmpty && hostController.paid.value == 'Paid') {
-                                    return 'This field is required';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                          )
-                        : Container(),
+                      // hostController.paid.value == 'Paid'
+                      //   ? Padding(
+                      //       padding: const EdgeInsets.symmetric(horizontal: 30),
+                      //       child: Form(
+                      //         key: _formKey,
+                      //         child: CustomTextFormField(
+                      //           hintText: AppStrings.yourBVN,
+                      //           textEditingController: hostController.bvnController,
+                      //           validator: (value) {
+                      //             if(value!.isEmpty && hostController.paid.value == 'Paid') {
+                      //               return 'This field is required';
+                      //             }
+                      //             return null;
+                      //           },
+                      //         ),
+                      //       ),
+                      //     )
+                      //   : Container(),
                       Text(
                         AppStrings.acceptThe,
                         style: textTheme.headline5!
@@ -170,30 +170,18 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         alignment: Alignment.center,
                         child: Opacity(
                           opacity: (hostController.termsAndConditionsAccepted.value
-                              && hostController.privacyPolicyAccepted.value) == true
-                                ? 1.0 : 0.7,
+                            && hostController.privacyPolicyAccepted.value) == true
+                              ? 1.0 : 0.7,
                           child: Button(
                             label: AppStrings.finish,
                             onPressed: () {
-                              if (hostController.paid.value == 'Paid') {
-                                if (_formKey.currentState!.validate()) {
-                                  if (hostController.termsAndConditionsAccepted.value &&
-                                      hostController.privacyPolicyAccepted.value) {
-                                        isLoggedIn == true
-                                          ? _hostFlex()
-                                          : login();
-                                  }
-                                }
-                              }
-                              else {
-                                if(hostController.termsAndConditionsAccepted.value
-                                    && hostController.privacyPolicyAccepted.value) {
-                                      isLoggedIn == true
-                                        ? hostController.previewCreatedFlex.value == true
-                                            ? _hostFlex()
-                                            : _showPreviewDialog(context, textTheme)
-                                        : login();
-                                }
+                              if(hostController.termsAndConditionsAccepted.value
+                                  && hostController.privacyPolicyAccepted.value) {
+                                isLoggedIn == true
+                                    ? hostController.previewCreatedFlex.value == true
+                                        ? _hostFlex()
+                                        : _showPreviewDialog(context, textTheme)
+                                    : login();
                               }
                             },
                             child: hostController.showSpinner.value == false

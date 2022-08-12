@@ -276,20 +276,23 @@ class _FlexeryState extends State<Flexery> {
                 return Stack(
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 9),
+                      margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 2),
                       child: Column(
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: const Icon(
-                                    Icons.close,
-                                    color: whiteColor,
-                                    size: 31,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.pop(context),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: whiteColor,
+                                      size: 31,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -297,8 +300,8 @@ class _FlexeryState extends State<Flexery> {
                               CarouselSlider(
                                 options: CarouselOptions(
                                   initialPage: position,
-                                  autoPlay: true,
-                                  viewportFraction: 0.97,
+                                  autoPlay: false,
+                                  viewportFraction: 1,
                                   height: SizeConfig.screenHeight! * 0.77,
                                 ),
                                 items: flexery.map((e) {

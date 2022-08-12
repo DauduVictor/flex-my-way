@@ -346,21 +346,47 @@ class HostAFlex extends StatelessWidget {
                       ],
                     ),
                     /// paid or free
-                    CustomDropdownButtonField(
-                      hintText: AppStrings.isPaidOrFree,
-                      items: paidOrFree,
-                      value: controller.paid.value != ''
-                        ? controller.paid.value : null,
-                      onChanged: (value) {
-                        value = value.toString();
-                        controller.paid.value = value.toString();
-                      },
-                      validator: (value) {
-                        if (controller.paid.value.isEmpty) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomDropdownButtonField(
+                            hintText: AppStrings.isPaidOrFree,
+                            items: paidOrFree,
+                            value: controller.paid.value != ''
+                              ? controller.paid.value : null,
+                            onChanged: (value) {
+                              value = value.toString();
+                              controller.paid.value = value.toString();
+                            },
+                            validator: (value) {
+                              if (controller.paid.value.isEmpty) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        controller.paid.value == 'Paid'
+                          ? Row(
+                              children: [
+                                const SizedBox(width: 10),
+                                GestureDetector(
+                                  onTap: () {
+                                    _showPayHint(context, textTheme);
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(bottom: 20.0),
+                                    child: Icon(
+                                      Icons.info_outlined,
+                                      color: primaryColorVariant,
+                                      size: 27,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : const SizedBox(),
+                      ],
                     ),
                     controller.paid.value == 'Paid'
                       ? CustomTextFormField(
@@ -375,20 +401,6 @@ class HostAFlex extends StatelessWidget {
                           }
                           return null;
                         },
-                      )
-                      : Container(),
-                    controller.paid.value == 'Paid'
-                      ? Container(
-                        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 30),
-                        margin: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(
-                          color: primaryColorVariant,
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: Text(
-                          AppStrings.weWillTake,
-                          style: textTheme.bodyText2,
-                        ),
                       )
                       : Container(),
                     /// public or private
@@ -754,6 +766,56 @@ class HostAFlex extends StatelessWidget {
         ),
       );
     }
+  }
+
+  ///widget to show the payment hint
+  Future<void> _showPayHint (BuildContext context, TextTheme textTheme) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Container(
+        margin: const EdgeInsets.all(60),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(
+                  Icons.close,
+                  color: whiteColor,
+                  size: 31,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 18, 0, 19),
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: const Color(0xFFFFFFFF),
+              ),
+              child: Material(
+                borderRadius: BorderRadius.circular(40),
+                color: Colors.white,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
+                  child: Text(
+                    AppStrings.weWillTake,
+                    style: textTheme.bodyText2!.copyWith(
+                      fontSize: 16,
+                      height: 1.2
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
 }

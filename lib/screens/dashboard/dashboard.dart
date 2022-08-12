@@ -144,94 +144,97 @@ class _DashboardState extends State<Dashboard> {
     return Obx(() => Scaffold(
         appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
         drawer: RefactoredDrawer(),
-        body: DefaultTabController(
-          length: 2,
-          child: Column(
-            children: [
-              Container(
-                width: SizeConfig.screenWidth,
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                decoration: BoxDecoration(
-                  color: whiteColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppStrings.manageYourFlex,
-                      style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(height: 24),
-                    ListTileButton(
-                      title: userController.flexInvites.isNotEmpty
-                        ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
-                        : 'No pending invites at the moment. Create Flex and invite your friends',
-                      onPressed: () {
-                         Get.toNamed(PendingInvites.id);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
+        body: WillPopScope(
+          onWillPop: _onWillPops,
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                Container(
+                  width: SizeConfig.screenWidth,
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        child: SizedBox(
-                          height: 42,
-                          child: TabBar(
-                            indicator: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: primaryColor,
-                            ),
-                            unselectedLabelColor: neutralColor,
-                            tabs: const [
-                              Tab(
-                                child: Text(
-                                  'Scheduled',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Gilroy',
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Text(
-                                  'Completed',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Gilroy',
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      Text(
+                        AppStrings.manageYourFlex,
+                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 24),
-                      Expanded(
-                        child: TabBarView(
-                          children: [
-                            _scheduled(userController.scheduledFlex),
-                            _completedFlex(userController.completedFlex),
-                          ],
-                        ),
+                      ListTileButton(
+                        title: userController.flexInvites.isNotEmpty
+                          ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
+                          : 'No pending invites at the moment. Create Flex and invite your friends',
+                        onPressed: () {
+                           Get.toNamed(PendingInvites.id);
+                        },
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: SizedBox(
+                            height: 42,
+                            child: TabBar(
+                              indicator: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: primaryColor,
+                              ),
+                              unselectedLabelColor: neutralColor,
+                              tabs: const [
+                                Tab(
+                                  child: Text(
+                                    'Scheduled',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Gilroy',
+                                    ),
+                                  ),
+                                ),
+                                Tab(
+                                  child: Text(
+                                    'Completed',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Gilroy',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              _scheduled(userController.scheduledFlex),
+                              _completedFlex(userController.completedFlex),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       )
@@ -324,6 +327,19 @@ class _DashboardState extends State<Dashboard> {
         ),
       );
     }
+  }
+
+  DateTime? currentBackPressTime;
+
+  Future<bool> _onWillPops() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Functions.showMessage('press back again to exit');
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 }
 
