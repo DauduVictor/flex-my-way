@@ -205,12 +205,17 @@ class UserController extends GetxController {
   }
 
   /// Function to get flex invitees
+
+  final isFlexInvitesLoaded = false.obs;
+
   void getFlexInvites() async {
     var api = FlexDataSource();
     await api.getFlexInvites().then((value) {
       flexInvites.value = value;
+      isFlexInvitesLoaded.value = true;
       log(':::flexInvitesLength: ${flexInvites.length}');
     }).catchError((e) {
+      isFlexInvitesLoaded.value = true;
       log(':::error: $e');
     });
   }

@@ -5,7 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
 import '../util/constants/constants.dart';
@@ -78,7 +78,7 @@ class HostController extends GetxController {
   final displayFlexLocation = ''.obs;
 
   /// A variable to hold the gender restriction
-  bool? genderRestriciton;
+  final genderRestriciton = ''.obs;
 
   /// A variable to hold the consumable policy
   final consumablePolicy = ''.obs;
@@ -96,7 +96,19 @@ class HostController extends GetxController {
   final long = ''.obs;
 
   /// File Variable to hold the file source of the selected image
-  File? image;
+  RxList<File> image = <File>[].obs;
+
+  RxList<http.MultipartFile> multiPartImages = <http.MultipartFile>[].obs;
+
+  /// Function to convert file to multipart
+  void convertFileToMultipart() async {
+    for (int i = 0; i < image.length; i++) {
+      multiPartImages.add(
+        await http.MultipartFile.fromPath('flexeryImage', image[i].path),
+      );
+    }
+    log(':::lengthOfMultiPartImages: ${multiPartImages.length}');
+  }
 
   /// File Variable to hold the file source of the uploaded host selfie
   File? selfieImage;

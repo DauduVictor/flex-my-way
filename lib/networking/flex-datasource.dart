@@ -133,9 +133,8 @@ class FlexDataSource {
   /// A function that created flex with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [FlexSuccess] model
-  Future<FlexSuccess> createFlex(File uploads, Map<String, String> body) async {
+  Future<FlexSuccess> createFlex(List<http.MultipartFile> uploads, Map<String, String> body) async {
     String? userId;
-    List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
@@ -144,13 +143,10 @@ class FlexDataSource {
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
+      header['Content-Type'] = 'multipart/form-data';
       header['Accept'] = '*/*';
     });
-    bannerImage.add(
-        await http.MultipartFile.fromPath('bannerImage', uploads.path),
-    );
-    return _netUtil.postForm(CREATE_A_FLEX+'$userId', [bannerImage[0]], header: header, body: body).then((res) {
+    return _netUtil.postForm(CREATE_A_FLEX, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
       print (res['data']);
       return FlexSuccess.fromJson(res['data']);

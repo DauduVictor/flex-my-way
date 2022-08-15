@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -40,74 +41,94 @@ class PendingInvites extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                userController.flexInvites.isNotEmpty
-                  ? Column(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    acceptAll();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                                  ),
-                                  child: Text(
-                                    'Accept All',
-                                    style: textTheme.button!.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: greenColor,
-                                    ),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    rejectAll();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                                  ),
-                                  child: Text(
-                                    'Deny All',
-                                    style: textTheme.button!.copyWith(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: errorColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        Container(
-                          height: SizeConfig.screenHeight! * 0.7,
-                          padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
-                          child: ListView.builder(
-                            itemCount: userController.flexInvites.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              ///TODO: get the invite object and pass it to the pending invite button
-                              var invites = userController.flexInvites.elementAt(index);
-                              return ReusablePendingInviteButton(
-                                invite: userController.flexInvites[index],
-                                index: index,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  : Expanded(
-                    child: Center(
+                userController.isFlexInvitesLoaded.value != true
+                  ? Expanded(
+                      child: Center(
                         child: SpinKitCircle(
                           color: primaryColor.withOpacity(0.9),
                           size: 45,
                         ),
-                    ),
-                  ),
+                      ),
+                    )
+                  : userController.flexInvites.isNotEmpty
+                      ?  Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 7),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      acceptAll();
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                                    ),
+                                    child: Text(
+                                      'Accept All',
+                                      style: textTheme.button!.copyWith(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: greenColor,
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      rejectAll();
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                                    ),
+                                    child: Text(
+                                      'Deny All',
+                                      style: textTheme.button!.copyWith(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: errorColor,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: SizeConfig.screenHeight! * 0.7,
+                              padding: const EdgeInsets.fromLTRB(20, 15, 20, 0),
+                              child: ListView.builder(
+                                itemCount: userController.flexInvites.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  ///TODO: get the invite object and pass it to the pending invite button
+                                  var invites = userController.flexInvites.elementAt(index);
+                                  return ReusablePendingInviteButton(
+                                    invite: userController.flexInvites[index],
+                                    index: index,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: SizeConfig.screenHeight! * 0.3),
+                              SvgPicture.asset(
+                                empty,
+                                width: 70,
+                                height: 70,
+                              ),
+                              const SizedBox(height: 20),
+                              const Text(
+                                'No pending invites at this time',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
               ],
             ),
             userController.showInvitesSpinner.value == true

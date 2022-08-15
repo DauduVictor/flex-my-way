@@ -59,8 +59,7 @@ List<String> preferredFlexes = [
 List<String> paidOrFree = ['Free', 'Paid'];
 List<String> publicOrPrivate = ['Public', 'Private'];
 List<bool> displayToOnlyAcceptedParticipants = [false, true];
-List<bool> isGenderRestrictions = [false, true];
-//List<String> isGenderRestrictions = ['only female', 'only male', 'both'];
+List<String> isGenderRestrictions = ['Only Female', 'Only Male', 'Both'];
 List<String> yesOrNo = ['Yes', 'No'];
 List<String> foodAndDrinkPolicy = [
   'Food & Drinks @ a cost',

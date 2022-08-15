@@ -441,14 +441,14 @@ class HostAFlex extends StatelessWidget {
                     CustomDropdownButtonField(
                       hintText: AppStrings.genderRestrictions,
                       items: isGenderRestrictions,
-                      value: controller.genderRestriciton.isBlank!
-                        ? controller.genderRestriciton.toString() : null,
+                      value: controller.genderRestriciton.value != ''
+                        ? controller.genderRestriciton.value : null,
                       onChanged: (value) {
-                        value = value as bool;
-                        controller.genderRestriciton = value;
+                        value = value.toString();
+                        controller.genderRestriciton.value = value.toString();
                       },
                       validator: (value) {
-                        if (controller.genderRestriciton == null) {
+                        if (value == null) {
                           return 'This field is required';
                         }
                         return null;
@@ -513,12 +513,25 @@ class HostAFlex extends StatelessWidget {
   /// function to pick image from the users gallery
   Future<void> _pickImage(ImageSource source) async {
     try {
-      var image = (await ImagePicker().pickImage(source: source));
-      controller.image = File(image!.path);
-      print(':::imagePath: ${controller.image!.path}');
-      final fileTemp = File(image.path);
-      controller.bannerImageController.text = fileTemp.path.split('/').last;
-      Functions.showMessage('Image upload successful');
+      if (source == ImageSource.camera) {
+        var image = (await ImagePicker().pickImage(source: source));
+        controller.image.first = File(image!.path);
+        final fileTemp = File(image.path);
+        controller.bannerImageController.text = fileTemp.path.split('/').last;
+        Functions.showMessage('Image upload successful');
+      } else {
+        List<XFile>? image = await ImagePicker().pickMultiImage();
+        controller.image.clear();
+        controller.update();
+        for (int i = 0; i < image!.length; i++) {
+          controller.image.add(File(image[i].path));
+        }
+        controller.update();
+        controller.bannerImageController.text = '${controller.image.length} images(s) uploaded';
+        Functions.showMessage('Image upload successful');
+        controller.convertFileToMultipart();
+      }
+
     }
     on PlatformException {
       Functions.showMessage('Image upload failed');

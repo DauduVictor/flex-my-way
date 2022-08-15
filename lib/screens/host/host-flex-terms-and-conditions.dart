@@ -1,12 +1,17 @@
+import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../onboarding/login.dart';
 import '../web-view.dart';
@@ -27,6 +32,14 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
 
   /// calling the [HostController] for [HostFlexTermsAndConditions]
   final UserController userController = Get.put(UserController());
+
+  /// Google map controller
+  final Completer<GoogleMapController> _mapController = Completer();
+
+  /// Function for _onMapCreated
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController.complete(controller);
+  }
 
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
@@ -253,22 +266,25 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        height: SizeConfig.screenHeight! * 0.4,
-                        width: SizeConfig.screenWidth,
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: FileImage(hostController.image!),
-                            // image: AssetImage(unsplashImage),
-                            fit: BoxFit.cover,
-                          ),
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                          initialPage: 0,
+                          autoPlay: true,
+                          viewportFraction: 1,
+                          height: SizeConfig.screenHeight! * 0.77,
                         ),
-                      ),
+                        items: hostController.image.map((e) {
+                          return Image.file(
+                            File(e.path.toString()),
+                            height: SizeConfig.screenHeight! * 0.7,
+                            fit: BoxFit.cover,
+                          );
+                        }).toList(),
+                      )
                     ),
                     DraggableScrollableSheet(
-                        minChildSize: 0.6,
-                        initialChildSize: 0.6,
+                        minChildSize: 0.5,
+                        initialChildSize: 0.5,
                         maxChildSize: 0.7,
                         builder: (context, scrollController) {
                           return Container(
@@ -438,9 +454,6 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                     /// video link button
                                     GestureDetector(
                                       onTap: () {
-                                        // hostController.launchVideo().catchError((e){
-                                        //   Functions.showMessage('Could not launch url');
-                                        // });
                                         Get.to(() => WebViewer(url: hostController.videoLinkController.text));
                                       },
                                       child: Stack(
@@ -508,22 +521,24 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         ),
                                         const SizedBox(width: 10),
                                         //provided
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              hostController.consumablePolicy.value,
-                                              style: textTheme.bodyText1!.copyWith(
-                                                fontSize: 18.5,
-                                                fontWeight: FontWeight.w600,
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                hostController.consumablePolicy.value,
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 18.5,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Will be Provided',
-                                              style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                'Will be Provided',
+                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -554,22 +569,24 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         ),
                                         const SizedBox(width: 10),
                                         //rsvp
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'RSVP',
-                                              style: textTheme.bodyText1!.copyWith(
-                                                fontSize: 18.5,
-                                                fontWeight: FontWeight.w600,
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'RSVP',
+                                                style: textTheme.bodyText1!.copyWith(
+                                                  fontSize: 18.5,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              hostController.hostPhoneNumberController.text,
-                                              style: textTheme.headline5!.copyWith(fontSize: 16.5),
-                                            ),
-                                          ],
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                userController.phoneNumber.value,
+                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -580,19 +597,23 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      // child: ClipRRect(
-                                      //   borderRadius: BorderRadius.circular(16),
-                                      //   child: GoogleMap(
-                                      //     mapType: MapType.normal,
-                                      //     initialCameraPosition: userPosition,
-                                      //     onMapCreated: _onMapCreated,
-                                      //     myLocationEnabled: false,
-                                      //     myLocationButtonEnabled: false,
-                                      //     scrollGesturesEnabled: false,
-                                      //     zoomControlsEnabled: false,
-                                      //     zoomGesturesEnabled: false,
-                                      //   ),
-                                      // ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: GoogleMap(
+                                          mapType: MapType.normal,
+                                          initialCameraPosition: CameraPosition(
+                                            target: LatLng(
+                                              double.parse(hostController.lat.value),
+                                              double.parse(hostController.long.value),
+                                            ),
+                                            zoom: 18.0,
+                                          ),
+                                          onMapCreated: _onMapCreated,
+                                          scrollGesturesEnabled: false,
+                                          zoomControlsEnabled: false,
+                                          zoomGesturesEnabled: false,
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(height: 5),
                                     TextButton(
@@ -699,7 +720,10 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       'videoLink': hostController.videoLinkController.text,
     };
     var api = FlexDataSource();
-    await api.createFlex(hostController.image!, body).then((flexSuccess) {
+    await api.createFlex(hostController.multiPartImages.value, body).then((flexSuccess) {
+      hostController.image.clear();
+      hostController.multiPartImages.clear();
+      hostController.update();
       /// calling the [UserController] for [HostFlexTermsAndConditions]
       final UserController userController = Get.put(UserController());
       userController.getDashboardFlex();

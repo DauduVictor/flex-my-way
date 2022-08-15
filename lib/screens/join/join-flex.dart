@@ -410,7 +410,7 @@ class JoinFlex extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                  //rsvp
+                                  /*//rsvp
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -429,7 +429,7 @@ class JoinFlex extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ),*/
                                 ],
                               ),
                               const SizedBox(height: 32),
