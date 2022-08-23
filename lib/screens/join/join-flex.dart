@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flex_my_way/screens/join/joined-flex-details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,13 +32,13 @@ class JoinFlex extends StatelessWidget {
   /// calling the user controller [UserController]
   final UserController userController = Get.put(UserController());
 
-  final CameraPosition userPosition = const CameraPosition(
-    target: LatLng(
-      6.519314,
-      3.396336,
-    ),
-    zoom: 16.0,
-  );
+  // final CameraPosition userPosition = const CameraPosition(
+  //   target: LatLng(
+  //     6.519314,
+  //     3.396336,
+  //   ),
+  //   zoom: 16.0,
+  // );
 
   /// Google map controller
   final Completer<GoogleMapController> _mapController = Completer();
@@ -63,18 +64,26 @@ class JoinFlex extends StatelessWidget {
             width: SizeConfig.screenWidth,
             child: Stack(
               children: [
-                CachedNetworkImage(
-                  width: SizeConfig.screenWidth!,
-                  height: SizeConfig.screenHeight! * 0.65,
-                  alignment: Alignment.topCenter,
-                  imageUrl: flex!.bannerImage!,
-                  progressIndicatorBuilder: (context, url, downloadProgress) {
-                    return SpinKitCircle(
-                      color: primaryColor.withOpacity(0.7),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    initialPage: 0,
+                    autoPlay: false,
+                    viewportFraction: 1,
+                    height: SizeConfig.screenHeight! * 0.65,
+                  ),
+                  items: flex!.bannerImage!.map((e) {
+                    return CachedNetworkImage(
+                      alignment: Alignment.topCenter,
+                      imageUrl: e,
+                      progressIndicatorBuilder: (context, url, downloadProgress) {
+                        return SpinKitCircle(
+                          color: primaryColor.withOpacity(0.7),
+                        );
+                      },
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
                     );
-                  },
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+                  }).toList(),
                 ),
                 Column(
                   children: [
@@ -209,7 +218,13 @@ class JoinFlex extends StatelessWidget {
                                           Functions.showMessage('You will be redirected to the payment gateway to make payment');
                                         }
                                         else {
-                                          _joinFlex(flex!.joinCode!, flex!);
+                                          if (userController.gender.value == flex!.genderRestriction ||
+                                              flex!.genderRestriction == 'Both'
+                                          ) {
+                                            _joinFlex(flex!.joinCode!, flex!);
+                                          } {
+                                            Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                          }
                                         }
                                       }
                                       else {
@@ -553,4 +568,5 @@ class JoinFlex extends StatelessWidget {
       Functions.showMessage(e);
     });
   }
+
 }

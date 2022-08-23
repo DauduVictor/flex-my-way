@@ -24,9 +24,9 @@ class SettingsController extends GetxController {
     nameController.text = userController.username.value;
     emailAddressController.text = userController.emailAddress.value;
     phoneNumberController.text = userController.phoneNumber.value;
-    gender = userController.gender.value;
+    gender.value = userController.gender.value;
     occuapationController.text = userController.occupation.value;
-    preferredFlex = userController.preferredFlex.value;
+    preferredFlex.value = userController.preferredFlex.value;
     canHostFlex.value = userController.canHostFlex.value;
     log(userName.value);
     log(canHostFlex.value.toString());
@@ -74,10 +74,10 @@ class SettingsController extends GetxController {
   final TextEditingController occuapationController = TextEditingController();
 
   /// Variable to hold the value of the gender
-  String gender = genders[0];
+  final gender = ''.obs;
 
   /// Variable to hold the value of the preferred flex
-  String preferredFlex = preferredFlexes[0];
+  final preferredFlex = ''.obs;
 
   /// Variable to hold user's type
   final canHostFlex = false.obs;

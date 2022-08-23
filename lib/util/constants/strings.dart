@@ -8,6 +8,7 @@ class AppStrings {
   static const resetPassword = 'Reset Password';
   static const save = 'Save';
   static const logOutPrompt = 'Are you sure you want to logout of your account?';
+  static const profileUpgradePrompt = 'You need to upgrade your profile as a host.';
   static const useDatabase = 'Use our Database?';
 
   //Find a Flex
@@ -39,7 +40,7 @@ class AppStrings {
   static const howManyPeople = 'How many people can come?';
   static const whatsAgeRating = 'What\'s the age rating?';
   static const typeOfFlex = 'Type of Flex';
-  static const uploadBannerImage = 'Upload Banner Image';
+  static const uploadBannerImage = 'Upload Banner Image(s)';
   static const setAddress = 'Set Flex Address';
   static const addAHAshtag = 'Add a Hashtag for this flex';
   static const isPaidOrFree = 'Is this event paid or free?';
@@ -105,4 +106,5 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
   static const about = 'About';
   static const helpAndSupport = 'Help & Support';
   static const logOut = 'Logout';
+  static const profileUpgrade = 'Upgrade';
 }

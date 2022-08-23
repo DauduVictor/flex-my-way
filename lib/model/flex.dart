@@ -55,7 +55,7 @@ class Flexes {
   String? flexType;
 
   /// This variable holds the bannerImage
-  String? bannerImage;
+  List<String>? bannerImage;
 
   /// This variable holds the flex hashtag
   String? hashtag;
@@ -70,7 +70,7 @@ class Flexes {
   bool? showOnAccepted;
 
   /// This variable holds the flex genderRestriction
-  bool? genderRestriction;
+  String? genderRestriction;
 
   /// This variable holds the flex consumablesPolicy
   String? consumablesPolicy;
@@ -99,12 +99,12 @@ class Flexes {
     capacity: json["capacity"] ?? 1,
     ageRating: json["ageRating"] ?? '',
     flexType: json["flexType"] ?? '',
-    bannerImage: json["bannerImage"][0] ?? '',
+    bannerImage: List<String>.from(json['bannerImage'].map((x) => x)),
     hashtag: json["hashtag"] ?? '',
     payStatus: json["payStatus"] ?? '',
     viewStatus: json["viewStatus"] ?? '',
     showOnAccepted: json["showOnAccepted"] ?? false,
-    genderRestriction: json["genderRestriction"] ?? false,
+    genderRestriction: json["genderRestriction"] ?? '',
     consumablesPolicy: json["consumablesPolicy"] ?? '',
     flexRules: json["flexRules"] ?? '',
     joinCode: json["joinCode"] ?? '',

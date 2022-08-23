@@ -29,6 +29,7 @@ class FlexDataSource {
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      // header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
@@ -144,7 +145,6 @@ class FlexDataSource {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'multipart/form-data';
-      header['Accept'] = '*/*';
     });
     return _netUtil.postForm(CREATE_A_FLEX, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
@@ -158,9 +158,8 @@ class FlexDataSource {
   /// A function that edit flex with [body] as details
   /// A post request to use the [UPDATE_A_FLEX]
   /// It returns a [] model
-  Future<dynamic> editFlex(File? uploads, Map<String, String> body, String code ) async {
+  Future<dynamic> editFlex(List<http.MultipartFile> uploads, Map<String, dynamic> body, String code ) async {
     String? userId;
-    List<http.MultipartFile> bannerImage = [];
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
@@ -172,12 +171,9 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    print(uploads?.length());
-    if (uploads != null) {
-      bannerImage.add(
-        await http.MultipartFile.fromPath('bannerImage', uploads.path),
-      );
-      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', [bannerImage[0]], header: header, body: body).then((res) {
+    print(uploads.length);
+    if (uploads.isNotEmpty) {
+      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', uploads, header: header, body: body).then((res) {
         if(res['status'] != 'success') throw res['message'];
         print (res['data']);
         return 'done';
@@ -282,7 +278,7 @@ class FlexDataSource {
     print(GET_FLEX_BY_LOCATION_URL);
     print(header);
     return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {
-      print(':::getFlexByLocation: $res');
+      log(':::getFlexByLocation: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
       flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();

@@ -109,7 +109,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Function to make api call to get flex by [LatLang]
   void _getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
     _markers.clear();
-    _showAgentPairingDialog(context);
+    _showFlexSearchDialog(context);
     await api.getFlexByLocation(lat, long, ageStatus: ageStatus, payStatus: payStatus).then((value) {
       setState(() {
         flex = value;
@@ -117,6 +117,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         log(flexLength.toString());
       });
       _buildFlexOnMap();
+      if(!mounted) return;
       Get.back();
     }).catchError((e) {
       if (!mounted) return;
@@ -127,9 +128,10 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   }
 
   ///widget to prompt user if they want to logout
-  Future<void> _showAgentPairingDialog(BuildContext context) {
+  Future<void> _showFlexSearchDialog(BuildContext context) {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => Dialog(
         backgroundColor: whiteColor,
         child: Container(

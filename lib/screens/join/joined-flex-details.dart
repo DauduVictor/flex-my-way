@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -51,18 +52,26 @@ class JoinedFlexDetails extends StatelessWidget {
             width: SizeConfig.screenWidth,
             child: Stack(
               children: [
-                CachedNetworkImage(
-                  width: SizeConfig.screenWidth!,
-                  height: SizeConfig.screenHeight! * 0.65,
-                  alignment: Alignment.topCenter,
-                  imageUrl: flex!.bannerImage!,
-                  progressIndicatorBuilder: (context, url, downloadProgress) {
-                    return SpinKitCircle(
-                      color: primaryColor.withOpacity(0.7),
+                CarouselSlider(
+                  options: CarouselOptions(
+                    initialPage: 0,
+                    autoPlay: false,
+                    viewportFraction: 1,
+                    height: SizeConfig.screenHeight! * 0.65,
+                  ),
+                  items: flex!.bannerImage!.map((e) {
+                    return CachedNetworkImage(
+                      alignment: Alignment.topCenter,
+                      imageUrl: e,
+                      progressIndicatorBuilder: (context, url, downloadProgress) {
+                        return SpinKitCircle(
+                          color: primaryColor.withOpacity(0.7),
+                        );
+                      },
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      fit: BoxFit.cover,
                     );
-                  },
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fit: BoxFit.cover,
+                  }).toList(),
                 ),
                 Column(
                   children: [

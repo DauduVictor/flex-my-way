@@ -41,7 +41,7 @@ class UserController extends GetxController {
       canHostFlex.value = user.canHostFlex!;
       log(username.value);
       log(emailAddress.value);
-      log(canHostFlex.value.toString());
+      log(':::Can host flex: ${canHostFlex.value.toString()}');
     }).catchError((e){
       log(e);
     });

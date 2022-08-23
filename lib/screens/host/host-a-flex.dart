@@ -277,6 +277,7 @@ class HostAFlex extends StatelessWidget {
                       onChanged: (value) {},
                       readOnly: true,
                       textEditingController: controller.bannerImageController,
+                      bottomSpacing: false,
                       suffix: const Padding(
                         padding: EdgeInsets.only(right: 15.0),
                         child: Icon(
@@ -298,6 +299,19 @@ class HostAFlex extends StatelessWidget {
                         );
                       },
                     ),
+                    const SizedBox(height: 5),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '  * You can upload multiple banner images',
+                        style: textTheme.bodyText2!.copyWith(
+                          fontSize: 11.5,
+                          color: primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 19),
                     ///flex address
                     CustomTextFormField(
                       hintText: AppStrings.setAddress,
@@ -476,6 +490,7 @@ class HostAFlex extends StatelessWidget {
                       hintText: AppStrings.rulesAboutFlex,
                       textEditingController: controller.flexRulesController,
                       maxLines: 10,
+                      maxLength: 500,
                       textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.done,
                       validator: (value) {
@@ -487,8 +502,15 @@ class HostAFlex extends StatelessWidget {
                     ),
                     CustomTextFormField(
                       hintText: AppStrings.videoLink,
+                      autoValidateMode: AutovalidateMode.onUserInteraction,
                       textEditingController: controller.videoLinkController,
                       textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        if (value!.isNotEmpty) {
+                          return ValidationExtension.validateUrlLink(value.toString());
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 15),
                     Button(

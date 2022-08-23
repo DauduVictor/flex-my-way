@@ -27,6 +27,7 @@ class EditProfileDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(controller.preferredFlex.value);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -80,9 +81,9 @@ class EditProfileDetail extends StatelessWidget {
                           CustomDropdownButtonField(
                             hintText: 'Select a Gender',
                             items: genders,
-                            value: controller.gender,
+                            value: controller.gender.value,
                             onChanged: (value) {
-                              controller.gender = value.toString();
+                              controller.gender.value = value.toString();
                             },
                           ),
                           CustomTextFormField(
@@ -94,9 +95,10 @@ class EditProfileDetail extends StatelessWidget {
                           CustomDropdownButtonField(
                             hintText: 'What type of flex are you interested in?',
                             items: preferredFlexes,
-                            value: controller.preferredFlex,
+                            value: controller.preferredFlex.value == ''
+                              ? null : controller.preferredFlex.value,
                             onChanged: (value) {
-                              controller.preferredFlex = value.toString();
+                              controller.preferredFlex.value = value.toString();
                             },
                           ),
                         ],
@@ -138,9 +140,9 @@ class EditProfileDetail extends StatelessWidget {
       'name': controller.nameController.text,
       // 'email': controller.emailAddressController.text,
       'phone': controller.phoneNumberController.text,
-      'gender': controller.gender,
+      'gender': controller.gender.value,
       'occupation': controller.occuapationController.text,
-      'preferredFlex': controller.preferredFlex,
+      'preferredFlex': controller.preferredFlex.value,
     };
     await api.updateUserInfo(body).then((user) async {
       controller.showSpinner.value = false;
@@ -149,7 +151,6 @@ class EditProfileDetail extends StatelessWidget {
       await db.saveUser(user);
       Functions.showMessage('Your details have been updated successfully');
       controller.userName.value = user.name!;
-      Get.back();
       Get.back();
       controller.refreshUserDetails();
     }).catchError((e){

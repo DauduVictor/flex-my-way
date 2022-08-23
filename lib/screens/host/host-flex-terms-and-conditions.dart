@@ -13,7 +13,9 @@ import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 import '../onboarding/login.dart';
+import '../settings/settings.dart';
 import '../web-view.dart';
 
 class HostFlexTermsAndConditions extends StatefulWidget {
@@ -191,10 +193,8 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                               if(hostController.termsAndConditionsAccepted.value
                                   && hostController.privacyPolicyAccepted.value) {
                                 isLoggedIn == true
-                                    ? hostController.previewCreatedFlex.value == true
-                                        ? _hostFlex()
-                                        : _showPreviewDialog(context, textTheme)
-                                    : login();
+                                  ? _showPreviewDialog(context, textTheme)
+                                  : login();
                               }
                             },
                             child: hostController.showSpinner.value == false
@@ -450,33 +450,40 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 12),
+                                    const SizedBox(height: 15),
                                     /// video link button
-                                    GestureDetector(
-                                      onTap: () {
-                                        Get.to(() => WebViewer(url: hostController.videoLinkController.text));
-                                      },
-                                      child: Stack(
-                                        children: const [
-                                          Icon(
-                                            Icons.movie,
-                                            color: primaryColor,
-                                            size: 57,
+                                    hostController.videoLinkController.text != ''
+                                      ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.to(() => WebViewer(url: hostController.videoLinkController.text));
+                                          },
+                                          child: Stack(
+                                            children: const [
+                                              Icon(
+                                                Icons.movie,
+                                                color: primaryColor,
+                                                size: 57,
+                                              ),
+                                              Positioned(
+                                                top: 23,
+                                                left: 19,
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: whiteColor,
+                                                  size: 21,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Positioned(
-                                            top: 23,
-                                            left: 19,
-                                            child: Icon(
-                                              Icons.play_arrow,
-                                              color: whiteColor,
-                                              size: 21,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                      ],
+                                    )
+                                      : const SizedBox(),
                                     /// about
-                                    const SizedBox(height: 16),
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -526,7 +533,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                hostController.consumablePolicy.value,
+                                                'Consumable Policy',
                                                 style: textTheme.bodyText1!.copyWith(
                                                   fontSize: 18.5,
                                                   fontWeight: FontWeight.w600,
@@ -534,7 +541,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               ),
                                               const SizedBox(height: 10),
                                               Text(
-                                                'Will be Provided',
+                                                hostController.consumablePolicy.value,
                                                 style: textTheme.headline5!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
@@ -668,8 +675,13 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                 color: whiteColor,
                 labelColor: primaryColor,
                 onPressed: () {
-                  _hostFlex();
-                  Navigator.pop(context);
+                  if (userController.canHostFlex.value == true) {
+                    Get.back();
+                    _hostFlex();
+                  } else {
+                    Get.back();
+                    _showRedirectToProfileUpgrade(textTheme, context);
+                  }
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -737,6 +749,72 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       print(e);
       Functions.showMessage(e.toString());
     });
+  }
+
+  ///widget to prompt user if they want to logout
+  Future<void> _showRedirectToProfileUpgrade(TextTheme textTheme, BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: whiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: Text(
+          AppStrings.profileUpgrade,
+          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          AppStrings.profileUpgradePrompt,
+          style: textTheme.bodyText1!.copyWith(
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            style: TextButton.styleFrom(
+              primary: primaryColor,
+            ),
+            child: const Text('Cancel'),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              onPressed: () async {
+                Get.back();
+                Get.toNamed(Settings.id);
+              },
+              style: TextButton.styleFrom(
+                primary: primaryColor,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    AppStrings.profileUpgrade,
+                  ),
+                  Countdown(
+                    seconds: 5,
+                    build: (context, double time) => Text(
+                      ' (${time.toInt()})',
+                    ),
+                    onFinished: () {
+                      if(!mounted) return;
+                      Get.back();
+                      Get.toNamed(Settings.id);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Function to login and set a notifier of re - hosting saved flex

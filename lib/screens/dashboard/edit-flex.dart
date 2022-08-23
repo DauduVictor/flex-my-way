@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
@@ -348,7 +349,7 @@ class _EditFlexState extends State<EditFlex> {
                             borderRadius: BorderRadius.circular(5.0),
                           ),
                           child: const Text(
-                            'Preview Image',
+                            'Preview Image(s)',
                             style: TextStyle(
                               color: primaryColor,
                               fontSize: 14,
@@ -489,14 +490,13 @@ class _EditFlexState extends State<EditFlex> {
                     CustomDropdownButtonField(
                       hintText: AppStrings.genderRestrictions,
                       items: isGenderRestrictions,
-                      value: controller.genderRestriction.isBlank!
-                          ? controller.genderRestriction.toString() : null,
+                      value: controller.genderRestriction.value != ''
+                          ? controller.genderRestriction.value : null,
                       onChanged: (value) {
-                        value = value as bool;
-                        controller.genderRestriction = value;
+                        controller.genderRestriction.value = value.toString();
                       },
                       validator: (value) {
-                        if (controller.genderRestriction == null) {
+                        if (controller.genderRestriction.value == '') {
                           return 'This field is required';
                         }
                         return null;
@@ -567,12 +567,25 @@ class _EditFlexState extends State<EditFlex> {
   /// function to pick image from the users gallery
   Future<void> _pickImage(ImageSource source) async {
     try {
-      var image = (await ImagePicker().pickImage(source: source));
-      controller.image = File(image!.path);
-      print(':::imagePath: ${controller.image!.path}');
-      final fileTemp = File(image.path);
-      controller.bannerImageController.text = fileTemp.path.split('/').last;
-      Functions.showMessage('Image upload successful');
+      if (source == ImageSource.camera) {
+        var image = (await ImagePicker().pickImage(source: source));
+        controller.image.first = File(image!.path);
+        final fileTemp = File(image.path);
+        controller.bannerImageController.text = fileTemp.path.split('/').last;
+        Functions.showMessage('Image upload successful');
+      } else {
+        List<XFile>? image = await ImagePicker().pickMultiImage();
+        controller.image.clear();
+        controller.update();
+        for (int i = 0; i < image!.length; i++) {
+          controller.image.add(File(image[i].path));
+        }
+        controller.update();
+        controller.bannerImageController.text = '${controller.image.length} images(s) uploaded';
+        Functions.showMessage('Image upload successful');
+        controller.convertFileToMultipart();
+      }
+
     }
     on PlatformException {
       Functions.showMessage('Image upload failed');
@@ -813,28 +826,52 @@ class _EditFlexState extends State<EditFlex> {
                                 ),
                                 const SizedBox(height: 15),
                                 SizedBox(
-                                  width: SizeConfig.screenWidth,
-                                  height: SizeConfig.screenHeight! * 0.7,
-                                  child: controller.image != null
-                                    ? Image.file(
-                                        controller.image!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : CachedNetworkImage(
-                                        alignment: Alignment.topCenter,
-                                        imageUrl: controller.flex!.bannerImage!,
-                                        progressIndicatorBuilder: (context, url, downloadProgress) {
-                                          return SpinKitCircle(
-                                            color: primaryColor.withOpacity(0.7),
-                                            size: 30,
-                                          );
-                                        },
-                                        errorWidget: (context, url, error) => Icon(
-                                          Icons.error,
-                                          color: neutralColor.withOpacity(0.4),
-                                          size: 30,
+                                  child: controller.image.isEmpty
+                                    ? CarouselSlider(
+                                        options: CarouselOptions(
+                                          initialPage: 0,
+                                          autoPlay: false,
+                                          viewportFraction: 1,
+                                          height: SizeConfig.screenHeight! * 0.77,
                                         ),
-                                        fit: BoxFit.cover,
+                                        items: controller.flex!.bannerImage!.map((e) {
+                                          return Column(
+                                            children: [
+                                              CachedNetworkImage(
+                                                alignment: Alignment.topCenter,
+                                                imageUrl: e,
+                                                progressIndicatorBuilder: (context, url, downloadProgress) {
+                                                  return SpinKitCircle(
+                                                    color: primaryColor.withOpacity(0.7),
+                                                    size: 30,
+                                                  );
+                                                },
+                                                errorWidget: (context, url, error) => Icon(
+                                                  Icons.error,
+                                                  color: neutralColor.withOpacity(0.4),
+                                                  size: 30,
+                                                ),
+                                                height: SizeConfig.screenHeight! * 0.7,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      )
+                                    : CarouselSlider(
+                                        options: CarouselOptions(
+                                          initialPage: 0,
+                                          autoPlay: true,
+                                          viewportFraction: 1,
+                                          height: SizeConfig.screenHeight! * 0.77,
+                                        ),
+                                        items: controller.image.map((e) {
+                                          return Image.file(
+                                            File(e.path.toString()),
+                                            height: SizeConfig.screenHeight! * 0.7,
+                                            fit: BoxFit.cover,
+                                          );
+                                        }).toList(),
                                       ),
                                 ),
                               ],

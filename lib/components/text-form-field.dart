@@ -21,6 +21,7 @@ class CustomTextFormField extends StatelessWidget {
     this.inputFormatters,
     this.autoValidateMode = AutovalidateMode.onUserInteraction,
     this.bottomSpacing = true,
+    this.maxLength,
   }) : super(key: key);
 
   final String? hintText;
@@ -38,6 +39,7 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final AutovalidateMode? autoValidateMode;
   final bool? bottomSpacing;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,7 @@ class CustomTextFormField extends StatelessWidget {
           cursorColor: neutralColor,
           autovalidateMode: autoValidateMode,
           readOnly: readOnly,
+          maxLength: maxLength,
           textInputAction: textInputAction,
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,

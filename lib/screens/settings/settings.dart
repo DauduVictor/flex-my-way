@@ -55,7 +55,7 @@ class Settings extends StatelessWidget {
                         style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
-                    controller.canHostFlex.value != true
+                    controller.canHostFlex.value != false
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                           child: ListTileButton(
@@ -386,6 +386,7 @@ class Settings extends StatelessWidget {
       await db.saveUser(user);
       controller.refreshUserDetails();
       controller.showUpgradeUser.value = false;
+      Get.back();
       Functions.showMessage('Congratulations, you can now host a Flex!');
     }).catchError((e){
       print(e);

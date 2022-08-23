@@ -104,13 +104,13 @@ class UploadImage extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
-                                  color: Colors.black.withOpacity(0.1),
+                                  color: primaryColor.withOpacity(0.3),
                                   height: 50,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Add Photo',
+                                        'Add Photo(s)',
                                         style: textTheme.bodyMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
                                           color: whiteColor,

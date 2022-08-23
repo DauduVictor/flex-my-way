@@ -10,6 +10,7 @@ import '../bloc/future-values.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/model/model.dart';
 import 'controllers.dart';
+import 'package:http/http.dart' as http;
 
 class EditController extends GetxController {
 
@@ -55,10 +56,10 @@ class EditController extends GetxController {
     typeOfFlex.value = flex!.flexType!;
     displayFlexLocation.value = flex!.showOnAccepted! == false
       ? 'No' : 'Yes';
-    bannerImageController.text = flex!.bannerImage!.split('/').last;
+    bannerImageController.text = '${flex!.bannerImage!.length} Image(s) uploaded';
     publicOrPrivate.value = flex!.viewStatus!;
     paid.value = flex!.payStatus!;
-    genderRestriction = flex!.genderRestriction;
+    genderRestriction.value = flex!.genderRestriction!;
     consumablePolicy.value = flex!.consumablesPolicy!;
     flexRulesController.text = flex!.flexRules!;
     videoLinkController.text = flex!.videoLink!;
@@ -132,7 +133,7 @@ class EditController extends GetxController {
   final displayFlexLocation = ''.obs;
 
   /// A variable to hold the gender restriction
-  bool? genderRestriction;
+  final genderRestriction = ''.obs;
 
   /// A variable to hold the consumable policy
   final consumablePolicy = ''.obs;
@@ -150,7 +151,19 @@ class EditController extends GetxController {
   final long = ''.obs;
 
   /// File Variable to hold the file source of the selected image
-  File? image;
+  RxList<File> image = <File>[].obs;
+
+  RxList<http.MultipartFile> multiPartImages = <http.MultipartFile>[].obs;
+
+  /// Function to convert file to multipart
+  void convertFileToMultipart() async {
+    for (int i = 0; i < image.length; i++) {
+      multiPartImages.add(
+        await http.MultipartFile.fromPath('flexeryImage', image[i].path),
+      );
+    }
+    log(':::lengthOfMultiPartImages: ${multiPartImages.length}');
+  }
 
   /// Variable to hold a list of location that user types
   RxList<Location> location = <Location>[].obs;
@@ -203,7 +216,7 @@ class EditController extends GetxController {
   /*Api Integration*/
   editFlex(String code) async {
     loginEditSpinner.value = true;
-    Map<String, String> body = {
+    Map<String, dynamic> body = {
       'lat': lat.value,
       'lng': long.value,
       'name': nameFlexController.text,
@@ -223,11 +236,11 @@ class EditController extends GetxController {
       'flexRules': flexRulesController.text,
       'videoLink': videoLinkController.text,
     };
-    if (image == null) {
+    if (image.isEmpty) {
       body['bannerImage'] = flex!.bannerImage!;
     }
     var api = FlexDataSource();
-    await api.editFlex(image, body, code).then((value) {
+    await api.editFlex(multiPartImages, body, code).then((value) {
       /// calling the [UserController] for [HostFlexTermsAndConditions]
       final UserController userController = Get.put(UserController());
       userController.getDashboardFlex();
