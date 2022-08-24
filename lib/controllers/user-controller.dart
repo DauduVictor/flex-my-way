@@ -166,8 +166,9 @@ class UserController extends GetxController {
       update();
     }).catchError((e) {
       isPastLoaded.value = true;
-      log(':::error: $e');
-      Functions.showMessage(e);
+      print(e);
+      // print(':::error: $e');
+      // Functions.showMessage(e);
     });
 
     ///get present flex tab

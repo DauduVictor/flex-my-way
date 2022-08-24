@@ -218,11 +218,11 @@ class JoinFlex extends StatelessWidget {
                                           Functions.showMessage('You will be redirected to the payment gateway to make payment');
                                         }
                                         else {
-                                          if (userController.gender.value == flex!.genderRestriction ||
+                                          if (userController.gender.value.contains('${flex!.genderRestriction}') ||
                                               flex!.genderRestriction == 'Both'
                                           ) {
                                             _joinFlex(flex!.joinCode!, flex!);
-                                          } {
+                                          } else {
                                             Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
                                           }
                                         }

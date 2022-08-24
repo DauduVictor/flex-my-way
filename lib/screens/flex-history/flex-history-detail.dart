@@ -32,6 +32,9 @@ class FlexHistoryDetail extends StatelessWidget {
   /// calling the [JoinController] for [JoinFlex]
   final JoinController joinController = Get.put(JoinController());
 
+  /// calling the [JoinController] for [JoinFlex]
+  final UserController userController = Get.put(UserController());
+
   /// Google map controller
   Completer<GoogleMapController> _mapController = Completer();
 
@@ -234,7 +237,13 @@ class FlexHistoryDetail extends StatelessWidget {
                                   return TextButton(
                                     onPressed: () {
                                       if (!past!) {
-                                        _joinFlex(flex!.joinCode!, flex!);
+                                        if (userController.gender.value.contains('${flex!.genderRestriction}') ||
+                                            flex!.genderRestriction == 'Both'
+                                        ) {
+                                          _joinFlex(flex!.joinCode!, flex!);
+                                        } else {
+                                          Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                        }
                                       }
                                     },
                                     style: TextButton.styleFrom(

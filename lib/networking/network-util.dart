@@ -63,6 +63,7 @@ class NetworkHelper {
     try {
       print(body);
       print(header);
+      print(url);
       print(files!.first.filename);
       var request = http.MultipartRequest('POST', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
