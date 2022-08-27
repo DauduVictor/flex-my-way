@@ -15,7 +15,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.labelColor = whiteColor,
     this.child,
-    this.color
+    this.color,
   }) : super(key: key);
 
   @override

@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/model/model.dart';
-
 import '../database/user-db-helper.dart';
 
 class OnboardingController extends GetxController {

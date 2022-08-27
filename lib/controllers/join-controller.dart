@@ -15,10 +15,7 @@ class JoinController extends GetxController {
   }
 
   /// tempoary bool value to show that a flex is paid
-  final isPaid = false;
-
-  /// tempoary variable to store flex id
-  String flexId = 'sZgZ0o';
+  final isPaidButtonTapped = false.obs;
 
   /// tempoary bool variable to show the skeleton animation of a flex loading
   final isFlexLoaded = true;

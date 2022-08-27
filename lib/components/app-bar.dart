@@ -76,7 +76,12 @@ AppBar buildAppBarWithNotification(
   );
 }
 
-AppBar buildAppBar(BuildContext context, TextTheme textTheme, String title) {
+AppBar buildAppBar(
+    BuildContext context,
+    TextTheme textTheme,
+    String title,
+    {bool? centerTitle}
+    ) {
   return AppBar(
     toolbarHeight: 75,
     leadingWidth: 80,
@@ -87,11 +92,12 @@ AppBar buildAppBar(BuildContext context, TextTheme textTheme, String title) {
         bottomRight: Radius.circular(30.0),
       ),
     ),
-    centerTitle: false,
+    centerTitle: centerTitle ?? false,
     leading: IconButton(
       icon: const Icon(
         Icons.arrow_back_ios,
         color: lightTextColor,
+        size: 21,
       ),
       onPressed: () {
         Navigator.pop(context);
@@ -99,7 +105,7 @@ AppBar buildAppBar(BuildContext context, TextTheme textTheme, String title) {
     ),
     title: Text(
       title,
-      style: textTheme.headline5!.copyWith(fontSize: 26, fontWeight: FontWeight.w600),
+      style: textTheme.headline5!.copyWith(fontSize: 23.5, fontWeight: FontWeight.w600),
     ),
   );
 }

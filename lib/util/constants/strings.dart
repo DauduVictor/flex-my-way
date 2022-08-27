@@ -68,6 +68,7 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
 
   static const acceptThe = 'Accept the: ';
   static const privacyPolicy = 'Privacy Policy';
+  static const paymentMethod = 'Payment method';
   static const finish = 'Finish';
 
   //Host Flex Success

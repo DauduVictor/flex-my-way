@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFF7259F7);
+const lightPurpleColor = Color(0xFFB482DB);
 const primaryColorVariant = Color(0xFFDDD7FD);
 const backgroundColor = Color(0xFFF8F7FE);
 const whiteColor = Colors.white;
+const neutralWhiteColor = Color(0xFFDBDDE0);
 const transparentColor = Colors.transparent;
 const neutralColor = Color(0xFF003951);
 const neutralColorLight = Color(0xFFDBDDE0);

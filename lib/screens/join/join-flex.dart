@@ -14,6 +14,7 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import '../onboarding/login.dart';
 import 'package:flex_my_way/model/model.dart';
+import '../payment/payment-method.dart';
 import '../web-view.dart';
 
 class JoinFlex extends StatelessWidget {
@@ -47,8 +48,6 @@ class JoinFlex extends StatelessWidget {
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +202,7 @@ class JoinFlex extends StatelessWidget {
                                           '${Functions.getFlexTime(flex!.fromDate!)} - '
                                               '${Functions.getFlexTime(flex!.toDate!)}',
                                           style: textTheme.bodyText1!.copyWith(
-                                            fontSize: 18.5,
+                                            fontSize: 17.5,
                                             color: neutralColor,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -211,51 +210,72 @@ class JoinFlex extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      if (userController.isLoggedIn.value) {
-                                        if(flex!.payStatus! == 'Paid') {
-                                          Functions.showMessage('You will be redirected to the payment gateway to make payment');
-                                        }
-                                        else {
-                                          if (userController.gender.value.contains('${flex!.genderRestriction}') ||
-                                              flex!.genderRestriction == 'Both'
-                                          ) {
-                                            _joinFlex(flex!.joinCode!, flex!);
-                                          } else {
-                                            Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                  controller.isPaidButtonTapped.value == false
+                                    ? TextButton(
+                                        onPressed: () {
+                                          if (userController.isLoggedIn.value) {
+                                            if(flex!.payStatus! == 'Free') {
+                                              controller.isPaidButtonTapped.value = true;
+                                            }
+                                            /*else {
+                                              if (userController.gender.value.contains('${flex!.genderRestriction}') ||
+                                                  flex!.genderRestriction == 'Both'
+                                              ) {
+                                                _joinFlex(flex!.joinCode!, flex!);
+                                              } else {
+                                                Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                              }
+                                            }*/
                                           }
-                                        }
-                                      }
-                                      else {
-                                        Functions.showMessage('Please log in to join a flex.');
-                                        Get.toNamed(Login.id);
-                                      }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
-                                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    child: controller.showSpinner.value == false
-                                        ? Text(
-                                            flex!.payStatus! == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
-                                            style: textTheme.button!.copyWith(
-                                              fontSize: 15,
-                                              color: whiteColor,
-                                            ),
-                                          )
-                                        : const Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 18),
-                                            child: SizedBox(
-                                              height: 17,
-                                              width: 17,
-                                              child: CircleProgressIndicator(),
-                                            ),
+                                          else {
+                                            Functions.showMessage('Please log in to join a flex.');
+                                            Get.toNamed(Login.id);
+                                          }
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
+                                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
                                         ),
-                                  ),
+                                        child: controller.showSpinner.value == false
+                                            ? Text(
+                                                'Join this Flex',
+                                                style: textTheme.button!.copyWith(
+                                                  fontSize: 15,
+                                                  color: whiteColor,
+                                                ),
+                                              )
+                                            : const Padding(
+                                                padding: EdgeInsets.symmetric(horizontal: 18),
+                                                child: SizedBox(
+                                                  height: 17,
+                                                  width: 17,
+                                                  child: CircleProgressIndicator(),
+                                                ),
+                                            ),
+                                      )
+                                    : TextButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(context, PaymentMethod.id);
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: backgroundColor, //const Color(0xFFE9EEF4),
+                                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(16),
+                                            side: const BorderSide(color: primaryColor),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          'Pay Now',
+                                          style: textTheme.button!.copyWith(
+                                            fontSize: 15,
+                                            color: primaryColor,
+                                          ),
+                                        ),
+                                      ),
                                 ],
                               ),
                               const SizedBox(height: 32),

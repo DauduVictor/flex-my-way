@@ -21,6 +21,7 @@ import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flex_my_way/screens/onboarding/login.dart';
 import 'package:flex_my_way/screens/onboarding/reset-password.dart';
 import 'package:flex_my_way/screens/onboarding/sign-up.dart';
+import 'package:flex_my_way/screens/payment/payment-method.dart';
 import 'package:flex_my_way/screens/settings/about.dart';
 import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         UploadImage.id: (context) => UploadImage(),
         EditFlex.id: (context) => const EditFlex(),
         FlexHistoryImageArchive.id: (context) => FlexHistoryImageArchive(),
+        PaymentMethod.id: (context) => const PaymentMethod(),
       },
     );
   }
