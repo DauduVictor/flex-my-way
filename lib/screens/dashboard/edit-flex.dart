@@ -53,11 +53,7 @@ class _EditFlexState extends State<EditFlex> {
           style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
@@ -685,11 +681,7 @@ class _EditFlexState extends State<EditFlex> {
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
     return StatefulBuilder(
         builder: (context, StateSetter setDialogState) {
-          return GestureDetector(
-            onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-            },
+          return DismissKeyboard(
             child: Container(
               height: SizeConfig.screenHeight! * 0.9,
               decoration: const BoxDecoration(

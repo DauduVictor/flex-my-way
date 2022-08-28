@@ -1,16 +1,12 @@
 import 'dart:developer';
-import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/text-form-field.dart';
 import '../../controllers/onboarding-controller.dart';
 import '../../networking/user-datasource.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/size-config.dart';
 import 'login.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:flex_my_way/components/components.dart';
 
 class ResetPassword extends StatelessWidget {
 
@@ -28,11 +24,7 @@ class ResetPassword extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
             absorbing: controller.loginShowSpinner.value,
             child: SingleChildScrollView(

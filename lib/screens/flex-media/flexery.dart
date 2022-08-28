@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
@@ -11,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/model/model.dart';
+import 'package:flex_my_way/components/components.dart';
 
 class Flexery extends StatefulWidget {
 
@@ -41,11 +41,7 @@ class _FlexeryState extends State<Flexery> {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: SingleChildScrollView(
           child: Container(
             height: SizeConfig.screenHeight,

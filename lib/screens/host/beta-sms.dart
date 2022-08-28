@@ -40,11 +40,7 @@ class BetaSms extends StatelessWidget {
           style: textTheme.headline4!.copyWith(fontSize: 30),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
           absorbing: hostController.showSpinner.value,
           child: Column(

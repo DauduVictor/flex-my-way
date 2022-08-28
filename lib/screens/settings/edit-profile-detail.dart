@@ -1,18 +1,12 @@
 import 'dart:developer';
 import 'package:flex_my_way/networking/user-datasource.dart';
-import 'package:flex_my_way/util/constants/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/app-bar.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/dropdown-field.dart';
-import '../../components/text-form-field.dart';
 import '../../controllers/setting-controller.dart';
 import '../../database/user-db-helper.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/size-config.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 
 class EditProfileDetail extends StatelessWidget {
 
@@ -33,11 +27,7 @@ class EditProfileDetail extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: buildAppBar(context, textTheme, AppStrings.editProfileDetails),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
             absorbing: controller.showSpinner.value,
             child: SingleChildScrollView(

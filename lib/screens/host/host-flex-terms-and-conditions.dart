@@ -82,11 +82,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
           style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: SizedBox(
           height: SizeConfig.screenHeight,
           width: SizeConfig.screenWidth,

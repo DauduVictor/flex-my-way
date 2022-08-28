@@ -36,11 +36,7 @@ class Settings extends StatelessWidget {
           appBar: buildAppBarWithNotification(textTheme, context, controller.userName.value),
           body: Stack(
             children: [
-              GestureDetector(
-                onTap: () {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                },
+              DismissKeyboard(
                 child: Column(
                   children: [
                     Container(

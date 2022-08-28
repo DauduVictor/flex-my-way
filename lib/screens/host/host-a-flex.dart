@@ -35,11 +35,7 @@ class HostAFlex extends StatelessWidget {
           style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(28, 20, 28, 0),
@@ -653,11 +649,7 @@ class HostAFlex extends StatelessWidget {
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
     return StatefulBuilder(
       builder: (context, StateSetter setDialogState) {
-        return GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-          },
+        return DismissKeyboard(
           child: Container(
             height: SizeConfig.screenHeight! * 0.9,
             decoration: const BoxDecoration(

@@ -59,7 +59,9 @@ class CustomTextFormField extends StatelessWidget {
           textInputAction: textInputAction,
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,
-          style: textTheme.bodyText2,
+          style: textTheme.bodyText2!.copyWith(
+            fontSize: 14,
+          ),
           onTap: onTap,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(

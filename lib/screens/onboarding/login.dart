@@ -30,11 +30,7 @@ class Login extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
             absorbing: controller.loginShowSpinner.value,
             child: SingleChildScrollView(

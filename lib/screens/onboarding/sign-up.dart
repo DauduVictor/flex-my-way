@@ -1,16 +1,11 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../components/button.dart';
-import '../../components/circle-indicator.dart';
-import '../../components/dropdown-field.dart';
-import '../../components/text-form-field.dart';
-import '../../controllers/onboarding-controller.dart';
+import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
+
 import '../../networking/user-datasource.dart';
-import '../../util/constants/constants.dart';
-import '../../util/constants/functions.dart';
-import '../../util/constants/strings.dart';
-import '../../util/size-config.dart';
 
 class SignUp extends StatelessWidget {
 
@@ -36,11 +31,7 @@ class SignUp extends StatelessWidget {
           style: textTheme.headline4!.copyWith(fontSize: 30),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
             absorbing: controller.loginShowSpinner.value,
             child: Column(

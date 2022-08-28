@@ -31,11 +31,7 @@ class HostRegistration extends StatelessWidget {
           style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
+      body: DismissKeyboard(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),

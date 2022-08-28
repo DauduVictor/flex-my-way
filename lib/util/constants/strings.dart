@@ -18,6 +18,13 @@ class AppStrings {
   static const host = 'Host';
   static const join = 'Join';
 
+  // card payment
+  static const nameOnTheCard = 'Name on Card';
+  static const digitNumber = '16 digit number';
+  static const expiryDate = 'Expiry Date';
+  static const cvv = 'CVV';
+  static const secureSaveCard = 'Securely save card and details';
+
   //Host Registration
   static const hostAFlex = 'Host a Flex';
   static const editFlex = 'Edit Flex';
