@@ -419,7 +419,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${dashboardFLex.confirmedInvitees}/${dashboardFLex.totalInvitees}',
+                                '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
                                 style: textTheme.bodyText2!.copyWith(
                                   fontSize: 15,
                                   color: neutralColor.withOpacity(0.5),

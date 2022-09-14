@@ -30,6 +30,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
+    print(controller.canHostFlex.value);
     return Obx(() => AbsorbPointer(
       absorbing: controller.showUpgradeUser.value,
       child: Scaffold(
@@ -51,7 +52,7 @@ class Settings extends StatelessWidget {
                         style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
-                    controller.canHostFlex.value != false
+                    controller.canHostFlex.value != true
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                           child: ListTileButton(

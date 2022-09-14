@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:get/get.dart';
 import 'package:timer_count_down/timer_count_down.dart';
-
 import 'add-card.dart';
 
 class PaymentMethod extends StatelessWidget {
@@ -276,13 +275,13 @@ class PaymentMethod extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 7),
                                         const Text(
-                                          'Accound number expires in ',
+                                          'Account number expires in ',
                                           style: TextStyle(
                                             fontSize: 12.5,
                                           ),
                                         ),
                                         Countdown(
-                                          seconds: 120,
+                                          seconds: 10,
                                           build: (context, double time) => Text(
                                             '${time.toInt()}s',
                                             style: const TextStyle(

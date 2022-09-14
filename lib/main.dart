@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flex My Way',
       theme: AppTheme.themeData,
-      initialRoute: PaymentMethod.id,
+      initialRoute: SplashScreen.id,
       enableLog: true,
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),

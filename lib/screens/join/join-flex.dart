@@ -66,7 +66,7 @@ class JoinFlex extends StatelessWidget {
                 CarouselSlider(
                   options: CarouselOptions(
                     initialPage: 0,
-                    autoPlay: false,
+                    autoPlay: true,
                     viewportFraction: 1,
                     height: SizeConfig.screenHeight! * 0.65,
                   ),
@@ -214,10 +214,10 @@ class JoinFlex extends StatelessWidget {
                                     ? TextButton(
                                         onPressed: () {
                                           if (userController.isLoggedIn.value) {
-                                            if(flex!.payStatus! == 'Free') {
+                                            if(flex!.payStatus! == 'Paid') {
                                               controller.isPaidButtonTapped.value = true;
                                             }
-                                            /*else {
+                                            else {
                                               if (userController.gender.value.contains('${flex!.genderRestriction}') ||
                                                   flex!.genderRestriction == 'Both'
                                               ) {
@@ -225,7 +225,7 @@ class JoinFlex extends StatelessWidget {
                                               } else {
                                                 Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
                                               }
-                                            }*/
+                                            }
                                           }
                                           else {
                                             Functions.showMessage('Please log in to join a flex.');

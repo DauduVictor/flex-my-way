@@ -104,7 +104,7 @@ class HostController extends GetxController {
   void convertFileToMultipart() async {
     for (int i = 0; i < image.length; i++) {
       multiPartImages.add(
-        await http.MultipartFile.fromPath('flexeryImage', image[i].path),
+        await http.MultipartFile.fromPath('bannerImage', image[i].path),
       );
     }
     log(':::lengthOfMultiPartImages: ${multiPartImages.length}');

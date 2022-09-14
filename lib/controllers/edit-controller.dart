@@ -159,7 +159,7 @@ class EditController extends GetxController {
   void convertFileToMultipart() async {
     for (int i = 0; i < image.length; i++) {
       multiPartImages.add(
-        await http.MultipartFile.fromPath('flexeryImage', image[i].path),
+        await http.MultipartFile.fromPath('bannerImage', image[i].path),
       );
     }
     log(':::lengthOfMultiPartImages: ${multiPartImages.length}');
@@ -216,7 +216,7 @@ class EditController extends GetxController {
   /*Api Integration*/
   editFlex(String code) async {
     loginEditSpinner.value = true;
-    Map<String, dynamic> body = {
+    Map<String, String> body = {
       'lat': lat.value,
       'lng': long.value,
       'name': nameFlexController.text,
@@ -236,9 +236,6 @@ class EditController extends GetxController {
       'flexRules': flexRulesController.text,
       'videoLink': videoLinkController.text,
     };
-    if (image.isEmpty) {
-      body['bannerImage'] = flex!.bannerImage!;
-    }
     var api = FlexDataSource();
     await api.editFlex(multiPartImages, body, code).then((value) {
       /// calling the [UserController] for [HostFlexTermsAndConditions]

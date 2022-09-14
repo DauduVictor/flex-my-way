@@ -144,7 +144,8 @@ class FlexDataSource {
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'multipart/form-data';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
     });
     return _netUtil.postForm(CREATE_A_FLEX, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
@@ -159,6 +160,9 @@ class FlexDataSource {
   /// A post request to use the [UPDATE_A_FLEX]
   /// It returns a [] model
   Future<dynamic> editFlex(List<http.MultipartFile> uploads, Map<String, dynamic> body, String code ) async {
+    for (int i = 0; i < uploads.length; i++) {
+      print(uploads[i]);
+    }
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
@@ -168,7 +172,7 @@ class FlexDataSource {
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
+      header['Content-Type'] = 'multipart/form-data';
       header['Accept'] = '*/*';
     });
     print(uploads.length);
@@ -182,7 +186,7 @@ class FlexDataSource {
       });
     }
     else {
-      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', [], header: header, body: body).then((res) {
+      return _netUtil.put(UPDATE_A_FLEX+'$code/update', headers: header, body: body).then((res) {
         if(res['status'] != 'success') throw res['message'];
         print (res['data']);
         return 'done';
