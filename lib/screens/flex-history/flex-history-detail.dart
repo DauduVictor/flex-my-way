@@ -305,7 +305,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Container(
+                              /*Container(
                                 width: 72,
                                 height: 72,
                                 decoration: BoxDecoration(
@@ -315,7 +315,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
+                              ),*/
                             ],
                           ),
                           const SizedBox(height: 32),

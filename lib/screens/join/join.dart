@@ -624,6 +624,8 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                     Slider(
                                       value: priceRange,
                                       max: 20000,
+                                      divisions: 20,
+                                      label: '${priceRange.round()}',
                                       onChanged: (value) {
                                         setState(() {
                                           priceRange = value;
