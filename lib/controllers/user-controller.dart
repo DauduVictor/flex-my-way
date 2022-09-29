@@ -31,14 +31,15 @@ class UserController extends GetxController {
   /// Function to get user details from the database
   void getCurrentUserDetail() async {
     await getCurrentUser().then((user) {
-      username.value = user.name!;
-      emailAddress.value = user.email!;
-      phoneNumber.value = user.phone!;
-      gender.value = user.gender!;
-      preferredFlex.value = user.preferredFlex!;
-      infoSource.value = user.infoSource!;
-      occupation.value = user.occupation!;
-      canHostFlex.value = user.canHostFlex!;
+      username.value = user.name ?? '';
+      emailAddress.value = user.email ?? '';
+      phoneNumber.value = user.phone ?? '';
+      gender.value = user.gender ?? '';
+      preferredFlex.value = user.preferredFlex ?? '';
+      infoSource.value = user.infoSource ?? '';
+      occupation.value = user.occupation ?? '';
+      canHostFlex.value = user.canHostFlex ?? false;
+      bearerToken.value = user.bearerToken ?? '';
       log(username.value);
       log(emailAddress.value);
       log(':::Can host flex: ${canHostFlex.value.toString()}');
@@ -97,6 +98,9 @@ class UserController extends GetxController {
 
   /// Variable to hold user's type
   final canHostFlex = false.obs;
+
+  /// Variable to hold user's type
+  final bearerToken = ''.obs;
 
   /// Variable to hold flex reminder
   final flexReminder = false.obs;

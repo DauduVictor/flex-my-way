@@ -24,6 +24,21 @@ class ResetPassword extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     SizeConfig().init(context);
     return Scaffold(
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+      ),
       body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
             absorbing: controller.loginShowSpinner.value,
@@ -39,8 +54,8 @@ class ResetPassword extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 45),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(height: SizeConfig.screenHeight! * 0.04),
                       Text(
                         AppStrings.resetPassword,
                         style: textTheme.headline4!.copyWith(fontSize: 30),

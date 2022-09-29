@@ -696,6 +696,7 @@ class HostAFlex extends StatelessWidget {
                     hintText: AppStrings.enterAddress,
                     textEditingController: controller.searchAddress,
                     textCapitalization: TextCapitalization.sentences,
+                    readOnly: true,
                     textInputAction: TextInputAction.done,
                     onChanged: (value) {
                       if (value!.length > 2) {

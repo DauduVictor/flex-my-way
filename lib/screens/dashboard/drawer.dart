@@ -1,4 +1,5 @@
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
+import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
@@ -49,19 +50,81 @@ class RefactoredDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Text(
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Obx(() {
+                        return CircleAvatar(
+                          radius: 35,
+                          backgroundColor: primaryColor.withOpacity(0.2),
+                          child: Text(
+                            userController.username.value.substring(0,1).toUpperCase(),
+                            style: textTheme.headline4!.copyWith(
+                              fontSize: 40,
+                              color: primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }
+                      ),
+                      const SizedBox(width: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Obx(() {
+                            return FittedBox(
+                              child: SizedBox(
+                                width: SizeConfig.screenWidth! * 0.3,
+                                child: Text(
+                                  userController.username.value.split(' ')[0].capitalizeFirst ?? '',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.headline5!.copyWith(
+                                    fontSize: 22,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          ),
+                          const SizedBox(height: 4),
+                          GestureDetector(
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              Get.back();
+                              Get.toNamed(EditProfileDetail.id);
+                            },
+                            child: Text(
+                              'View Profile',
+                              style: textTheme.headline5!.copyWith(
+                                fontSize: 13.5,
+                                color: primaryColor,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  /*Text(
                     AppStrings.flexId,
                     style: textTheme.bodyText1,
                   ),
                   const SizedBox(height: 3.5),
-                  Text(
-                    '#0123456789',
-                    style: textTheme.headline5!.copyWith(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  Obx(() {
+                    return Text(
+                      '#${userController.bearerToken.value.substring(1,10).toLowerCase()}',
+                      style: textTheme.headline5!.copyWith(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }
+                  ),*/
                   const SizedBox(height: 4),
                 ],
               ),

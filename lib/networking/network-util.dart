@@ -60,12 +60,13 @@ class NetworkHelper {
   /// A function to do any post request of form data with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> postForm(String url, List<http.MultipartFile>? files, {Map<String, String>? header, body, encoding}) async {
+    var request;
     try {
       print(body);
       print(header);
       print(url);
       print(files!.first.filename);
-      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request = http.MultipartRequest('POST', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
       if(body != null) request.fields.addAll(body);
       if(files != null) request.files.addAll(files);
@@ -77,6 +78,7 @@ class NetworkHelper {
       if (statusCode < 200 || statusCode > 400) throw res['status'];
       return res;
     } catch (e) {
+      request.files.clear();
       print(e);
       throw (e);
     }

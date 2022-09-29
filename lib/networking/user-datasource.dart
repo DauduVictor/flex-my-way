@@ -25,7 +25,7 @@ class UserDataSource {
   /// It returns a [User] model
   Future<User> signIn (Map<String, String> body) async {
     return _netUtil.post(LOGIN, headers: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+      if(res['status'] != 'success') throw res['message'];
       return User.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
@@ -63,7 +63,7 @@ class UserDataSource {
   /// It returns a [String_Message]
   Future<dynamic> resetPassword (Map<String, String> body) async {
     return _netUtil.post(RESET_PASSWORD, headers: header, body: body).then((dynamic res) {
-      if(res['status'] != 'success') throw res['data'];
+      if(res['status'] != 'success') throw res['message'];
       return (res['data']);
     }).catchError((e){
       errorHandler.handleError(e);

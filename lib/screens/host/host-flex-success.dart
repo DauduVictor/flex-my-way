@@ -135,7 +135,8 @@ class HostFlexSuccess extends StatelessWidget {
                       children: [
                         TextButton(
                           onPressed: () {
-                            Get.toNamed(BetaSms.id);
+                            // Get.toNamed(BetaSms.id);
+                            Functions.showMessage('This feature will be available soon!!');
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(19),

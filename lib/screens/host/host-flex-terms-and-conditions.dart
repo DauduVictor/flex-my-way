@@ -433,17 +433,17 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             ),
                                           ],
                                         ),
-                                        Container(
-                                          width: 72,
-                                          height: 72,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(16),
-                                            image: const DecorationImage(
-                                              image: AssetImage(hostImage),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
+                                        // Container(
+                                        //   width: 72,
+                                        //   height: 72,
+                                        //   decoration: BoxDecoration(
+                                        //     borderRadius: BorderRadius.circular(16),
+                                        //     image: const DecorationImage(
+                                        //       image: AssetImage(hostImage),
+                                        //       fit: BoxFit.cover,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                     const SizedBox(height: 15),

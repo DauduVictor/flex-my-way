@@ -585,12 +585,23 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                 ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const SizedBox(height: 20),
+                                    const SizedBox(height: 15),
                                     Text(
                                       'What paid flex range are you looking at?',
                                       style: textTheme.headline5!.copyWith(fontSize: 17),
                                     ),
-                                    const SizedBox(height: 21),
+                                    const SizedBox(height: 30),
+                                    Slider(
+                                      value: priceRange,
+                                      max: 100000,
+                                      divisions: 1000,
+                                      label: 'N${priceRange.round()}',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          priceRange = value;
+                                        });
+                                    }),
+                                    const SizedBox(height: 2),
                                     Padding(
                                       padding: const EdgeInsets.only(right: 10.0),
                                       child: Row(
@@ -604,14 +615,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                             ),
                                           ),
                                           Text(
-                                            'N5,000',
-                                            style: textTheme.headline5!.copyWith(
-                                              color: primaryColor,
-                                              fontSize: 19,
-                                            ),
-                                          ),
-                                          Text(
-                                            'N20,000',
+                                            'N100,000',
                                             style: textTheme.headline5!.copyWith(
                                               color: primaryColor,
                                               fontSize: 19,
@@ -620,17 +624,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 9),
-                                    Slider(
-                                      value: priceRange,
-                                      max: 20000,
-                                      divisions: 20,
-                                      label: '${priceRange.round()}',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          priceRange = value;
-                                        });
-                                    }),
                                     const SizedBox(height: 10),
                                 ],
                               )

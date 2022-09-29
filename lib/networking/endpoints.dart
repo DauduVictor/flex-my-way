@@ -1,11 +1,12 @@
 /// Base url for our endpoint
-const BASE_URL = 'https://apiflexmyway.herokuapp.com/api/v1/';
+// const BASE_URL = 'https://apiflexmyway.herokuapp.com/api/v1/';
+const BASE_URL = 'https://lime-perfect-cow.cyclic.app/api/v1/';
 
 // Endpoints regarding users
 const NEW_USER_SIGNUP = BASE_URL + 'users/new';
 const LOGIN = BASE_URL + 'users/login';
 const FORGOT_PASSWORD = BASE_URL + 'users/password/forgot';
-const RESET_PASSWORD = BASE_URL + 'users/resetpassword';
+const RESET_PASSWORD = BASE_URL + 'users/password/reset';
 const EDIT_PASSWORD = BASE_URL + 'users/password/edit';
 const UPDATE_USER_INFO = BASE_URL + 'users/update';
 const UPGRADE_USER = BASE_URL + 'users/upgrade';

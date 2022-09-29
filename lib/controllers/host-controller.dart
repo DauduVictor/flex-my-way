@@ -212,5 +212,4 @@ class HostController extends GetxController {
   List<Contact> contact = [];
 
   /*Api Integration*/
-
 }

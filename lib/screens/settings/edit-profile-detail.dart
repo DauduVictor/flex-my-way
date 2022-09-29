@@ -21,7 +21,6 @@ class EditProfileDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(controller.preferredFlex.value);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(

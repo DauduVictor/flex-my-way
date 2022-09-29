@@ -32,9 +32,9 @@ class AppTheme {
         disabledThumbRadius: 5.5,
         enabledThumbRadius: 5.5,
       ),
-      valueIndicatorColor: primaryColor.withOpacity(0.3),
+      valueIndicatorColor: primaryColor,
       valueIndicatorTextStyle: const TextStyle(
-        fontWeight: FontWeight.w500, fontSize: 17, color: neutralColor),
+        fontWeight: FontWeight.w500, fontSize: 13, color: whiteColor),
     ),
     appBarTheme: const AppBarTheme(
       elevation: 0,
