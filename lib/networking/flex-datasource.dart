@@ -305,7 +305,7 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
     });
     String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + 'approve';
-    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: [body]).then((res) {
+    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['data'];
       return res['data'];
@@ -327,7 +327,7 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
     });
     String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + 'reject';
-    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: [body]).then((res) {
+    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {
       log(':::rejectAttendee: $res');
       if(res['status'] != 'success') throw res['data'];
       return res['data'];

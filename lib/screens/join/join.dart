@@ -36,8 +36,11 @@ class Join extends StatefulWidget {
 
 class _JoinState extends State<Join> with TickerProviderStateMixin {
 
-  AgeFilter selectedAge = AgeFilter.above18;
-  PayStatus payStatus = PayStatus.free;
+  // AgeFilter selectedAge = AgeFilter.above18;
+  // PayStatus payStatus = PayStatus.free;
+
+  AgeFilter? selectedAge;
+  PayStatus? payStatus;
 
   /// Instantiating a class of future values
   var futureValues = FutureValues();
@@ -90,7 +93,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         lat = double.parse(value[0]);
         long = double.parse(value[1]);
       });
-      _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
+      // _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
       userPosition = CameraPosition(
         target: LatLng(lat, long),
         zoom: 19.5,
@@ -109,11 +112,15 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Function to make api call to get flex by [LatLang]
   void _getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
     _markers.clear();
+    flexLength = 0;
+    GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(CameraUpdate.zoomOut());
     _showFlexSearchDialog(context);
     await api.getFlexByLocation(lat, long, ageStatus: ageStatus, payStatus: payStatus).then((value) {
       setState(() {
         flex = value;
         flexLength = flex.length;
+        controller.animateCamera(CameraUpdate.zoomBy(2.0));
         log(flexLength.toString());
       });
       _buildFlexOnMap();
@@ -225,7 +232,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     );
   }
 
-  ///TODO: working here
   /// Function to build markers on the map from [List<Flexes>]
   void _buildFlexOnMap() {
     if (flex.isNotEmpty && flexLength > 0) {
@@ -328,13 +334,17 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                 duration: const Duration(milliseconds: 3000),
             )
             : GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: userPosition!,
-              myLocationEnabled: true,
-              buildingsEnabled: false,
-              myLocationButtonEnabled: false,
-              onMapCreated: _onMapCreated,
-              markers: _markers,
+                // mapType: flexLength > 0 ? MapType.none : MapType.normal,
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(lat, long),
+                  zoom: 19.5,
+                ),
+                myLocationEnabled: true,
+                buildingsEnabled: false,
+                myLocationButtonEnabled: false,
+                onMapCreated: _onMapCreated,
+                markers: _markers,
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

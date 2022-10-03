@@ -53,44 +53,46 @@ class PendingInvites extends StatelessWidget {
                   : userController.flexInvites.isNotEmpty
                       ?  Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 7),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      acceptAll();
-                                    },
-                                    style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                                    ),
-                                    child: Text(
-                                      'Accept All',
-                                      style: textTheme.button!.copyWith(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: greenColor,
+                            Visibility(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 7),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        acceptAll();
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                                      ),
+                                      child: Text(
+                                        'Accept All',
+                                        style: textTheme.button!.copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: greenColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      rejectAll();
-                                    },
-                                    style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                                    ),
-                                    child: Text(
-                                      'Deny All',
-                                      style: textTheme.button!.copyWith(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        color: errorColor,
+                                    TextButton(
+                                      onPressed: () {
+                                        rejectAll();
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                                      ),
+                                      child: Text(
+                                        'Deny All',
+                                        style: textTheme.button!.copyWith(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          color: errorColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             Container(
@@ -99,8 +101,6 @@ class PendingInvites extends StatelessWidget {
                               child: ListView.builder(
                                 itemCount: userController.flexInvites.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  ///TODO: get the invite object and pass it to the pending invite button
-                                  var invites = userController.flexInvites.elementAt(index);
                                   return ReusablePendingInviteButton(
                                     invite: userController.flexInvites[index],
                                     index: index,
