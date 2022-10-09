@@ -782,7 +782,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
             child: TextButton(
               onPressed: () async {
                 Get.back();
-                Get.toNamed(Settings.id);
+                Get.to(Settings(upgradeUser: true));
               },
               style: TextButton.styleFrom(
                 primary: primaryColor,
@@ -801,7 +801,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                     onFinished: () {
                       if(!mounted) return;
                       Get.back();
-                      Get.toNamed(Settings.id);
+                      Get.to(Settings(upgradeUser: true));
                     },
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:animate_do/animate_do.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/screens/host/host-registration.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
@@ -18,7 +19,9 @@ import 'package:flex_my_way/model/model.dart';
 class Settings extends StatelessWidget {
 
   static const String id = "settings";
-  Settings({Key? key}) : super(key: key);
+
+  final bool? upgradeUser;
+  Settings({Key? key, this.upgradeUser}) : super(key: key);
 
   /// calling the onboarding controller for [SettingsController]
   final SettingsController controller = Get.put(SettingsController());
@@ -55,12 +58,18 @@ class Settings extends StatelessWidget {
                     controller.canHostFlex.value != true
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-                          child: ListTileButton(
-                            title: AppStrings.becomeAHost,
-                            onPressed: () {
-                              _upgradeUserToHost();
-                              // Get.toNamed(HostRegistration.id);
-                            },
+                          child: Bounce(
+                            infinite: true,
+                            animate: upgradeUser ?? false,
+                            delay: const Duration(milliseconds: 300),
+                            from: 10,
+                            child: ListTileButton(
+                              title: AppStrings.becomeAHost,
+                              onPressed: () {
+                                _upgradeUserToHost();
+                                // Get.toNamed(HostRegistration.id);
+                              },
+                            ),
                           ),
                       )
                       : const SizedBox(height: 20),

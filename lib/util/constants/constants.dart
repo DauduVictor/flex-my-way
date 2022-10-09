@@ -55,7 +55,7 @@ List<String> preferredFlexes = [
   'Pool',
   'Surprise',
   'Showers',
-  'Welcome Others'
+  'Others'
 ];
 
 // List<String> paidOrFree = ['Free', 'Paid'];

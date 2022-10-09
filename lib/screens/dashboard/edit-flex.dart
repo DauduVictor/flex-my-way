@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -570,11 +571,12 @@ class _EditFlexState extends State<EditFlex> {
         controller.bannerImageController.text = fileTemp.path.split('/').last;
         Functions.showMessage('Image upload successful');
       } else {
-        List<XFile>? image = await ImagePicker().pickMultiImage();
+        List<XFile>? image = await ImagePicker().pickMultiImage(imageQuality: 40);
         controller.image.clear();
         controller.update();
         for (int i = 0; i < image!.length; i++) {
-          controller.image.add(File(image[i].path));
+          var compressedImage = await FlutterNativeImage.compressImage(image[i].path, quality: 70);
+          controller.image.add(compressedImage);
         }
         controller.update();
         controller.bannerImageController.text = '${controller.image.length} images(s) uploaded';

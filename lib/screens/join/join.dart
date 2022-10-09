@@ -143,28 +143,17 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         backgroundColor: whiteColor,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
-          width: SizeConfig.screenWidth,
+          width: SizeConfig.screenWidth! * 0.3,
           decoration: BoxDecoration(
-            color: whiteColor.withOpacity(0.3),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      agentImage,
-                    ),
-                  ),
-                ),
-                child: Image.asset(
-                  agentImage,
-                  width: SizeConfig.screenWidth! * 0.5,
-                  height: SizeConfig.screenHeight! * 0.2,
-                  fit: BoxFit.cover,
-                ),
+              const SizedBox(height: 20),
+              SpinKitThreeBounce(
+                color: primaryColor.withOpacity(0.88),
+                size: 35,
               ),
               const Text(
                 'Finding your flex...',
@@ -224,7 +213,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -574,20 +563,23 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                   },
                                   color: payStatus == PayStatus.free ? primaryColor : null,
                                 ),
-                                ReuableMapFilterButton(
-                                  text: 'Paid',
-                                  onPressed: () {
-                                    if (payStatus != PayStatus.paid) {
-                                      setState(() {
-                                        payParam = 'paid';
-                                        payStatus = PayStatus.paid;
-                                      });
-                                      // _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
-                                      _animateController(controller);
-                                      ///TODO: amimate the camera here
-                                    }
-                                  },
-                                  color: payStatus == PayStatus.paid ? primaryColor : null,
+                                Visibility(
+                                  visible: false,
+                                  child: ReuableMapFilterButton(
+                                    text: 'Paid',
+                                    onPressed: () {
+                                      if (payStatus != PayStatus.paid) {
+                                        setState(() {
+                                          payParam = 'paid';
+                                          payStatus = PayStatus.paid;
+                                        });
+                                        // _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
+                                        _animateController(controller);
+                                        ///TODO: amimate the camera here
+                                      }
+                                    },
+                                    color: payStatus == PayStatus.paid ? primaryColor : null,
+                                  ),
                                 ),
                               ],
                             ),
@@ -637,9 +629,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                     const SizedBox(height: 10),
                                 ],
                               )
-                              : Container(
-
-                            ),
+                              : Container(),
                           ],
                         ),
                       ),

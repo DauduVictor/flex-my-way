@@ -95,6 +95,8 @@ class HostController extends GetxController {
   /// A variable to hold the long of flex
   final long = ''.obs;
 
+  bool showSearchSpinner = false;
+
   /// File Variable to hold the file source of the selected image
   RxList<File> image = <File>[].obs;
 

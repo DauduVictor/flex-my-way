@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import '../util/constants/constants.dart';
 
@@ -18,30 +19,32 @@ class ReusableSettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        TextButton(
-          onPressed: onPressed,
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            backgroundColor: whiteColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
+    return FadeInLeft(
+      child: Column(
+        children: [
+          TextButton(
+            onPressed: onPressed,
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              backgroundColor: whiteColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(
+                icon,
+                color: Colors.black,
+              ),
+              title: Text(
+                name,
+                style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
+              ),
             ),
           ),
-          child: ListTile(
-            leading: Icon(
-              icon,
-              color: Colors.black,
-            ),
-            title: Text(
-              name,
-              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }

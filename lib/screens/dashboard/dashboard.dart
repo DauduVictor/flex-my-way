@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_my_way/screens/dashboard/pending-invites.dart';
 import 'package:flutter/material.dart';
@@ -187,36 +188,39 @@ class _DashboardState extends State<Dashboard> {
                             color: whiteColor,
                             borderRadius: BorderRadius.circular(16.0),
                           ),
-                          child: SizedBox(
-                            height: 42,
-                            child: TabBar(
-                              indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: primaryColor,
+                          child: BounceInDown(
+                            duration: const Duration(milliseconds: 600),
+                            child: SizedBox(
+                              height: 42,
+                              child: TabBar(
+                                indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: primaryColor,
+                                ),
+                                unselectedLabelColor: neutralColor,
+                                tabs: const [
+                                  Tab(
+                                    child: Text(
+                                      'Scheduled',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Gilroy',
+                                      ),
+                                    ),
+                                  ),
+                                  Tab(
+                                    child: Text(
+                                      'Completed',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Gilroy',
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              unselectedLabelColor: neutralColor,
-                              tabs: const [
-                                Tab(
-                                  child: Text(
-                                    'Scheduled',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'Gilroy',
-                                    ),
-                                  ),
-                                ),
-                                Tab(
-                                  child: Text(
-                                    'Completed',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: 'Gilroy',
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ),
@@ -358,118 +362,120 @@ class ReusableDashBoardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        Container(
-          width: SizeConfig.screenWidth,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: whiteColor,
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: TextButton(
-            onPressed: () {
-              if (isScheduled) {
-                Get.to(() => EditFlex(flexCode: dashboardFLex.flexCode));
-              }
-            },
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+    return SlideInUp(
+      child: Column(
+        children: [
+          Container(
+            width: SizeConfig.screenWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: whiteColor,
             ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: SizeConfig.screenWidth! * 0.237,
-                      height: SizeConfig.screenHeight! * 0.104,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: CachedNetworkImage(
-                        alignment: Alignment.topCenter,
-                        imageUrl: dashboardFLex.flexImage!,
-                        progressIndicatorBuilder: (context, url, downloadProgress) {
-                          return SpinKitCircle(
-                            color: primaryColor.withOpacity(0.7),
-                            size: 30,
-                          );
-                        },
-                        errorWidget: (context, url, error) => Icon(
-                          Icons.error,
-                          color: neutralColor.withOpacity(0.4),
-                          size: 30,
+            clipBehavior: Clip.hardEdge,
+            child: TextButton(
+              onPressed: () {
+                if (isScheduled) {
+                  Get.to(() => EditFlex(flexCode: dashboardFLex.flexCode));
+                }
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: SizeConfig.screenWidth! * 0.237,
+                        height: SizeConfig.screenHeight! * 0.104,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        fit: BoxFit.cover,
+                        child: CachedNetworkImage(
+                          alignment: Alignment.topCenter,
+                          imageUrl: dashboardFLex.flexImage!,
+                          progressIndicatorBuilder: (context, url, downloadProgress) {
+                            return SpinKitCircle(
+                              color: primaryColor.withOpacity(0.7),
+                              size: 30,
+                            );
+                          },
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.error,
+                            color: neutralColor.withOpacity(0.4),
+                            size: 30,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 24),
-                    Expanded(
-                      child: Column(
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dashboardFLex.flexName!,
+                              style: textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(height: SizeConfig.screenHeight! * 0.013),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
+                                  style: textTheme.bodyText2!.copyWith(
+                                    fontSize: 15,
+                                    color: neutralColor.withOpacity(0.5),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Text(
+                                  AppStrings.confirmedInvitees,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    fontSize: 15,
+                                    color: neutralColor.withOpacity(0.5),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  if(isScheduled)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            dashboardFLex.flexName!,
-                            style: textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                            'Edit',
+                            style: textTheme.bodyText2!.copyWith(
+                              fontSize: 13,
+                              color: primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                          SizedBox(height: SizeConfig.screenHeight! * 0.013),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
-                                style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 15,
-                                  color: neutralColor.withOpacity(0.5),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                AppStrings.confirmedInvitees,
-                                style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 15,
-                                  color: neutralColor.withOpacity(0.5),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
+                          const SizedBox(width: 5),
+                          const Icon(
+                            Icons.arrow_forward,
+                            size: 13,
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                if(isScheduled)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Edit',
-                          style: textTheme.bodyText2!.copyWith(
-                            fontSize: 13,
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        const Icon(
-                          Icons.arrow_forward,
-                          size: 13,
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }

@@ -337,7 +337,7 @@ class FlexDataSource {
   }
 
   /// A function to get flexery images
-  /// A post request to use the [GET_FLEXERY]
+  /// A get request to use the [GET_FLEXERY]
   /// It returns a dynamic response
   Future<List<FlexeryModel>> getFlexeryByHashTag(String hashTag) async {
     Map<String, String> header = {};

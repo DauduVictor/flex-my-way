@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -188,12 +189,13 @@ class UploadImage extends StatelessWidget {
   /// function to pick image from the users gallery
   Future<void> _pickImage(ImageSource source) async {
     try {
-      List<XFile>? image = await ImagePicker().pickMultiImage();
+      List<XFile>? image = await ImagePicker().pickMultiImage(imageQuality: 40);
       controller.images.clear();
       controller.image = null;
       controller.update();
       for (int i = 0; i < image!.length; i++) {
-        controller.images.add(File(image[i].path));
+        var compressedImage = await FlutterNativeImage.compressImage(image[i].path, quality: 70);
+        controller.images.add(compressedImage);
       }
       controller.image = controller.images.first;
       Functions.showMessage('Image upload successful');

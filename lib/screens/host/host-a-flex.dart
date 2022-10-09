@@ -1,14 +1,19 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flex_my_way/components/components.dart';
+import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:google_place/google_place.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/host-controller.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../../networking/flex-datasource.dart';
 import 'host-flex-terms-and-conditions.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -538,11 +543,12 @@ class HostAFlex extends StatelessWidget {
         controller.bannerImageController.text = fileTemp.path.split('/').last;
         Functions.showMessage('Image upload successful');
       } else {
-        List<XFile>? image = await ImagePicker().pickMultiImage();
+        List<XFile>? image = await ImagePicker().pickMultiImage(imageQuality: 40);
         controller.image.clear();
         controller.update();
         for (int i = 0; i < image!.length; i++) {
-          controller.image.add(File(image[i].path));
+          var compressedImage = await FlutterNativeImage.compressImage(image[i].path, quality: 70);
+          controller.image.add(compressedImage);
         }
         controller.update();
         controller.bannerImageController.text = '${controller.image.length} images(s) uploaded';
@@ -696,13 +702,10 @@ class HostAFlex extends StatelessWidget {
                     hintText: AppStrings.enterAddress,
                     textEditingController: controller.searchAddress,
                     textCapitalization: TextCapitalization.sentences,
-                    readOnly: true,
                     textInputAction: TextInputAction.done,
                     onChanged: (value) {
-                      if (value!.length > 2) {
-                        setDialogState(() {
-                          controller.getUserLatLongByAddress(value);
-                        });
+                      if (value!.isNotEmpty) {
+                        searchAddress(value);
                       }
                     },
                   ),
@@ -744,13 +747,55 @@ class HostAFlex extends StatelessWidget {
                   height: 0.1,
                   thickness: 0.1,
                 ),
-                _buildLocationSuggestions(textTheme, setDialogState),
+                GetBuilder<HostController>(
+                  builder: (controller) {
+                    if (controller.showSearchSpinner == true) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                         SizedBox(height: SizeConfig.screenHeight! * 0.2),
+                          Center(
+                            child: SpinKitCircle(
+                              color: primaryColor.withOpacity(0.9),
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return const SizedBox();
+                  }
+                ),
               ],
             ),
           ),
         );
       }
     );
+  }
+
+  Timer? _debounce;
+
+  void searchAddress(String? address) {
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
+    _debounce = Timer(const Duration(milliseconds: 800), () async {
+      controller.showSearchSpinner = true;
+      controller.update();
+      var googlePlace = GooglePlace("Your-Key");
+      await googlePlace.search.getFindPlace(
+        address ?? '', InputType.TextQuery).then((FindPlaceResponse? value) {
+        controller.showSearchSpinner = false;
+        controller.update();
+          print(value?.status);
+        }).catchError((e) {
+        controller.showSearchSpinner = false;
+        controller.update();
+        print(':::error: $e');
+        Functions.showMessage(e.toString());
+      });
+    });
   }
 
   Widget _buildLocationSuggestions(TextTheme textTheme, StateSetter setDialogState) {
