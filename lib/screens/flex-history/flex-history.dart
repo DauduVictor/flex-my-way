@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:animate_do/animate_do.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +124,7 @@ class FlexHistory extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 15),
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -187,6 +188,7 @@ class FlexHistory extends StatelessWidget {
               month: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[0],
               day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
               flex: data[index].flexDetails!,
+              position: index,
             );
           },
         );
@@ -220,7 +222,7 @@ class FlexHistory extends StatelessWidget {
                 'You have no present flex',
                 style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
             ],
           ),
         );
@@ -234,6 +236,7 @@ class FlexHistory extends StatelessWidget {
               day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
               flex: data[index].flexDetails!,
               ishost: false,
+              position: index,
             );
           },
         );
@@ -281,6 +284,7 @@ class FlexHistory extends StatelessWidget {
               day: Functions.getFlexDayAndMonth(data[index].flexDetails!.fromDate!)[1],
               flex: data[index].flexDetails!,
               ishost: false,
+              position: index,
             );
           },
         );
@@ -303,78 +307,85 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
   final String month;
   final String day;
   final Flexes flex;
+  final int position;
 
   const ReusableFlexHistoryPastButton({
     Key? key,
     required this.title,
     required this.month,
     required this.day,
-    required this.flex
+    required this.flex,
+    required this.position
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () {
-            Get.to(() => FlexHistoryDetail(flex: flex, past: true));
-          },
-          style: TextButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-            backgroundColor: const Color(0xFFDFE3E7).withOpacity(0.4),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            )
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title.capitalizeFirst!,
-                      style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 26),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(23),
-                  color: whiteColor,
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      month,
-                      style: textTheme.headline5!.copyWith(
-                        color: primaryColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+    return Bounce(
+      infinite: true,
+      from: 3,
+      duration: Duration(seconds: 3 + position),
+      child: Column(
+        children: [
+          TextButton(
+            onPressed: () {
+              Get.to(() => FlexHistoryDetail(flex: flex, past: true));
+            },
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              backgroundColor: const Color(0xFFDFE3E7).withOpacity(0.4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              )
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title.capitalizeFirst!,
+                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                       ),
-                    ),
-                    Text(
-                      day,
-                      style: textTheme.headline5!.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 26),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(23),
+                    color: whiteColor,
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        month,
+                        style: textTheme.headline5!.copyWith(
+                          color: primaryColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        day,
+                        style: textTheme.headline5!.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }
@@ -386,6 +397,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
   final String day;
   final bool ishost;
   final Flexes flex;
+  final int position;
 
   const ReusableFlexHistoryButton({
     Key? key,
@@ -393,83 +405,89 @@ class ReusableFlexHistoryButton extends StatelessWidget {
     required this.month,
     required this.day,
     required this.ishost,
-    required this.flex
+    required this.flex,
+    required this.position
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        TextButton(
-          onPressed: () {
-            Get.to(() => FlexHistoryDetail(flex: flex, past: false,));
-          },
-          style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              backgroundColor: primaryColor.withOpacity(0.4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              )
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Bounce(
+      infinite: true,
+      from: 3,
+      duration: Duration(seconds: 3 + position),
+      child: Column(
+        children: [
+          TextButton(
+            onPressed: () {
+              Get.to(() => FlexHistoryDetail(flex: flex, past: false,));
+            },
+            style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                backgroundColor: primaryColor.withOpacity(0.4),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                )
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title.capitalizeFirst!,
+                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 26),
+                Column(
                   children: [
-                    Text(
-                      title.capitalizeFirst!,
-                      style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(23),
+                        color: whiteColor,
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            month,
+                            style: textTheme.headline5!.copyWith(
+                              color: primaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            day,
+                            style: textTheme.headline5!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(height: 4),
+                    ishost == true
+                      ? Text(
+                      'Host',
+                      style: textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w600),
+                    )
+                      : Container(),
                   ],
                 ),
-              ),
-              const SizedBox(width: 26),
-              Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(23),
-                      color: whiteColor,
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          month,
-                          style: textTheme.headline5!.copyWith(
-                            color: primaryColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          day,
-                          style: textTheme.headline5!.copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  ishost == true
-                    ? Text(
-                    'Host',
-                    style: textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w600),
-                  )
-                    : Container(),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }
