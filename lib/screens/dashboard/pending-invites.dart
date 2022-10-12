@@ -54,6 +54,7 @@ class PendingInvites extends StatelessWidget {
                       ?  Column(
                           children: [
                             Visibility(
+                              visible: false,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 7),
                                 child: Row(
@@ -304,8 +305,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
   /// To accept attendee
   void acceptAttendee(String flexCode, String? participants) async {
     Map<String, dynamic> body = {
-      'flexCode': flexCode,
-      'participant': participants
+      "approvals": [{'flexCode': flexCode, 'participant': participants}]
     };
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
@@ -313,6 +313,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeAt(index);
       userController.update();
+      Functions.showMessage('User added to confirmed guest list!');
       userController.getDashboardFlex();
     }).catchError((e) {
       userController.showInvitesSpinner.value = false;
@@ -325,8 +326,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
   /// To reject attendee
   void rejectAttendee(String flexCode, String participants) async {
     Map<String, dynamic> body = {
-      'flexCode': flexCode,
-      'participant': participants
+      "rejections": [{'flexCode': flexCode, 'participant': participants}]
     };
     userController.showInvitesSpinner.value = true;
     var api = FlexDataSource();
@@ -334,6 +334,8 @@ class ReusablePendingInviteButton extends StatelessWidget {
       userController.showInvitesSpinner.value = false;
       userController.flexInvites.removeAt(index);
       userController.update();
+      Functions.showMessage('User rejected from attending!');
+
       userController.getDashboardFlex();
     }).catchError((e){
       userController.showInvitesSpinner.value = false;

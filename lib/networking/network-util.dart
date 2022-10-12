@@ -41,6 +41,8 @@ class NetworkHelper {
     print(url);
     print(headers);
     try {
+      headers!['Content-Type'] = 'application/json';
+      headers['Accept'] = '*/*';
       return http
           .post(Uri.parse(url), body: jsonEncode(body), headers: headers, encoding: encoding)
           .then((http.Response response) {

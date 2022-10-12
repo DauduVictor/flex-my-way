@@ -698,16 +698,33 @@ class HostAFlex extends StatelessWidget {
                 const SizedBox(height: 21),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: CustomTextFormField(
-                    hintText: AppStrings.enterAddress,
-                    textEditingController: controller.searchAddress,
-                    textCapitalization: TextCapitalization.sentences,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (value) {
-                      if (value!.isNotEmpty) {
-                        searchAddress(value);
-                      }
-                    },
+                  child: GetBuilder<HostController>(
+                    builder: (controller) {
+                      return CustomTextFormField(
+                        hintText: AppStrings.enterAddress,
+                        textEditingController: controller.searchAddress,
+                        textCapitalization: TextCapitalization.sentences,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (value) {
+                          if (value!.isNotEmpty) {
+                            searchAddress(value);
+                          }
+                        },
+                        suffix: controller.showSearchSpinner == true
+                          ? SizedBox(
+                            width: 5,
+                            height: 5,
+                            child: SpinKitCircle(
+                              color: primaryColor.withOpacity(0.9),
+                              size: 25,
+                            ),
+                          )
+                              : const SizedBox(
+                          width: 2,
+                          height: 2,
+                        ),
+                      );
+                    }
                   ),
                 ),
                 const Divider(
@@ -783,7 +800,7 @@ class HostAFlex extends StatelessWidget {
     _debounce = Timer(const Duration(milliseconds: 800), () async {
       controller.showSearchSpinner = true;
       controller.update();
-      var googlePlace = GooglePlace("Your-Key");
+      var googlePlace = GooglePlace("AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg");
       await googlePlace.search.getFindPlace(
         address ?? '', InputType.TextQuery).then((FindPlaceResponse? value) {
         controller.showSearchSpinner = false;

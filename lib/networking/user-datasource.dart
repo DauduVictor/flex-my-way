@@ -16,9 +16,7 @@ class UserDataSource {
   /// Instantiating a class of the [FutureValues]
   final _futureValue = FutureValues();
 
-  Map<String, String> header = {
-    'Content-Type' : 'application/json'
-  };
+  Map<String, String> header = {};
 
   /// A function that sends request for sign in with [body] as details
   /// A post request to use the [LOGIN]
@@ -36,7 +34,6 @@ class UserDataSource {
   /// A post request to use the [NEW_USER_SIGNUP]
   /// It returns a string message
   Future<dynamic> signUp (Map<String, String> body) {
-    header['Accept'] = '*/*';
     return _netUtil.post(NEW_USER_SIGNUP, headers: header, body: body).then((res) {
       print(res);
       if(res['status'] != 'success') throw res['message'];
@@ -80,8 +77,6 @@ class UserDataSource {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'application/json';
-      header['Accept'] = '*/*';
     });
     return _netUtil.post(EDIT_PASSWORD, headers: header, body: body).then((dynamic res) {
       if(res['status'] != 'success') throw res['message'];

@@ -29,7 +29,6 @@ class FlexDataSource {
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      // header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
@@ -272,10 +271,10 @@ class FlexDataSource {
    }
     switch(ageStatus) {
       case "18+":
-        ageParam = '&ageRating=18+';
+        ageParam = '&ageRating=18';
         break;
       case "18-":
-        ageParam = '&ageRating=18%2B';
+        ageParam = '&ageRating=17';
         break;
     }
     String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long$payParam$ageParam';
@@ -302,7 +301,6 @@ class FlexDataSource {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
     });
     String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + 'approve';
     return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
@@ -324,7 +322,6 @@ class FlexDataSource {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
-      header['Content-Type'] = 'text/plain';
     });
     String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + 'reject';
     return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {

@@ -66,7 +66,7 @@ class Settings extends StatelessWidget {
                             child: ListTileButton(
                               title: AppStrings.becomeAHost,
                               onPressed: () {
-                                _upgradeUserToHost();
+                                _showHostUpgradeDialog(textTheme, context);
                                 // Get.toNamed(HostRegistration.id);
                               },
                             ),
@@ -349,6 +349,58 @@ class Settings extends StatelessWidget {
               ),
               child: const Text(
                 AppStrings.logOut,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  ///widget to prompt user if they want to upgrade to host account
+  Future<void> _showHostUpgradeDialog(TextTheme textTheme, BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: whiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: Text(
+          AppStrings.upgradeHost,
+          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+        ),
+        content: Text(
+          AppStrings.upgradeHostPrompt,
+          style: textTheme.bodyText1!.copyWith(
+            fontSize: 17,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            style: TextButton.styleFrom(
+              primary: primaryColor,
+            ),
+            child: const Text(
+              'Cancel',
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: TextButton(
+              onPressed: () async {
+                Get.back();
+                _upgradeUserToHost();
+              },
+              style: TextButton.styleFrom(
+                primary: primaryColor,
+              ),
+              child: const Text(
+                'Continue',
               ),
             ),
           ),

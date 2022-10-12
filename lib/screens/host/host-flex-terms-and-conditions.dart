@@ -714,7 +714,9 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       'fromDate': hostController.startTime.toString(),
       'toDate': hostController.endTime.toString(),
       'capacity': hostController.numberOfPeopleController.text,
-      'ageRating': hostController.ageRating.value,
+      'ageRating': hostController.ageRating.value == '18+'
+        ? '18'
+        : '17',
       'flexType': hostController.typeOfFlex.value,
       'hashtag': hostController.eventHashTagController.text,
       'payStatus': hostController.paid.value,

@@ -52,7 +52,8 @@ class EditController extends GetxController {
     endTime = flex!.toDate!;
     numberOfPeopleController.text = flex!.capacity!.toString();
     eventHashTagController.text = flex!.hashtag!;
-    ageRating.value = flex!.ageRating!;
+    ageRating.value = flex!.ageRating! == '18'
+      ? '18+' : 'Below 18';
     typeOfFlex.value = flex!.flexType!;
     displayFlexLocation.value = flex!.showOnAccepted! == false
       ? 'No' : 'Yes';
@@ -223,7 +224,9 @@ class EditController extends GetxController {
       'fromDate': startTime.toString(),
       'toDate': endTime.toString(),
       'capacity': numberOfPeopleController.text,
-      'ageRating': ageRating.value,
+      'ageRating': ageRating.value == '18+'
+        ? '18'
+        : '17',
       'flexType': typeOfFlex.value,
       'hashtag': eventHashTagController.text,
       'payStatus': paid.value,

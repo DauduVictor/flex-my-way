@@ -8,6 +8,7 @@ class AppStrings {
   static const resetPassword = 'Reset Password';
   static const save = 'Save';
   static const logOutPrompt = 'Are you sure you want to logout of your account?';
+  static const upgradeHostPrompt = 'Are you sure you want to upgrade to a Host Status. If YES, click CONTINUE';
   static const profileUpgradePrompt = 'You need to upgrade your profile as a host.';
   static const useDatabase = 'Use our Database?';
 
@@ -114,5 +115,6 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
   static const about = 'About';
   static const helpAndSupport = 'Help & Support';
   static const logOut = 'Logout';
+  static const upgradeHost = 'Become a Host';
   static const profileUpgrade = 'Upgrade';
 }
