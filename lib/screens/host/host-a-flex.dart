@@ -800,12 +800,11 @@ class HostAFlex extends StatelessWidget {
     _debounce = Timer(const Duration(milliseconds: 800), () async {
       controller.showSearchSpinner = true;
       controller.update();
-      var googlePlace = GooglePlace("AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg");
-      await googlePlace.search.getFindPlace(
-        address ?? '', InputType.TextQuery).then((FindPlaceResponse? value) {
+      var api = FlexDataSource();
+      await api.searchAddress(address ?? '').then((value) {
+        print(value);
         controller.showSearchSpinner = false;
         controller.update();
-          print(value?.status);
         }).catchError((e) {
         controller.showSearchSpinner = false;
         controller.update();

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
@@ -410,6 +411,28 @@ class FlexDataSource {
       if(res['status'] != 'success') throw res['message'];
       print (res['data']);
       return res['data'];
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function to search address using google place api
+  /// A get request to use the [GOOGLE_PLACE_API]
+  /// It returns a [] model
+  Future<dynamic> searchAddress(String address) async {
+    print(address);
+    String? userId;
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+    });
+    String GOOGLE_PLACE_API_URL = GOOGLE_PLACE_API + '?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';
+    return await http.get(Uri.parse(GOOGLE_PLACE_API_URL)).then((res) {
+      if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
+      var resp = json.decode(res.body);
+      if (resp['error_message'] != '') throw ('Error associated with Google services, please contact support');
+      print(resp);
     }).catchError((e){
       errorHandler.handleError(e);
     });
