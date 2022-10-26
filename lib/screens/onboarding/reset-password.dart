@@ -132,7 +132,7 @@ class ResetPassword extends StatelessWidget {
           ),
           /// new password
           CustomTextFormField(
-            textEditingController: controller.resetPasswordPasswordController,
+            textEditingController: controller.resetPasswordController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: controller.resetPasswordObscurePassword.value,
             textInputAction: TextInputAction.next,
@@ -171,7 +171,7 @@ class ResetPassword extends StatelessWidget {
               if(value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value != controller.resetPasswordPasswordController.text) {
+              if(value != controller.resetPasswordController.text) {
                 return 'Confirm your password';
               }
               return null;
@@ -188,12 +188,12 @@ class ResetPassword extends StatelessWidget {
     var api = UserDataSource();
     Map<String, String> body = {
       'email' : controller.resetPasswordEmailAddressController.text,
-      'password' : controller.resetPasswordPasswordController.text,
+      'password' : controller.resetPasswordController.text,
       'code' : controller.resetCodeController.text
     };
     await api.resetPassword(body).then((value) async {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(value);
+      Functions.showMessage('Password successfully reset!');
       Get.toNamed(Login.id);
     }).catchError((e){
       controller.loginShowSpinner.value = false;

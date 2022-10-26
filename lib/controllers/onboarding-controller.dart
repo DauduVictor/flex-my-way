@@ -85,7 +85,7 @@ class OnboardingController extends GetxController {
   final TextEditingController resetCodeController = TextEditingController();
 
   /// TextEditingController for password
-  final TextEditingController resetPasswordPasswordController = TextEditingController();
+  final TextEditingController resetPasswordController = TextEditingController();
 
   /// TextEditingController for password
   final TextEditingController resetPasswordConfirmPasswordController = TextEditingController();
