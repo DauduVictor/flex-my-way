@@ -279,6 +279,10 @@ class HostAFlex extends StatelessWidget {
                       readOnly: true,
                       textEditingController: controller.bannerImageController,
                       bottomSpacing: false,
+                      validator: (value) {
+                        if(controller.image.value.length > 3) return 'max of 3 images';
+                        return null;
+                      },
                       suffix: const Padding(
                         padding: EdgeInsets.only(right: 15.0),
                         child: Icon(
@@ -518,7 +522,11 @@ class HostAFlex extends StatelessWidget {
                       label: 'Host Flex',
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
-                          Get.toNamed(HostFlexTermsAndConditions.id);
+                          if(controller.image.value.length <= 3) {
+                            Get.toNamed(HostFlexTermsAndConditions.id);
+                          } else {
+                            Functions.showMessage('Maximum of 3 images');
+                          }
                         }
                       },
                     ),

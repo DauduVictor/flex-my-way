@@ -310,6 +310,10 @@ class _EditFlexState extends State<EditFlex> {
                       onChanged: (value) {},
                       readOnly: true,
                       textEditingController: controller.bannerImageController,
+                      validator: (value) {
+                        if(controller.image.value.length > 3) return 'max of 3 images';
+                        return null;
+                      },
                       suffix: const Padding(
                         padding: EdgeInsets.only(right: 15.0),
                         child: Icon(
@@ -540,7 +544,11 @@ class _EditFlexState extends State<EditFlex> {
                       label: 'Edit Flex',
                       onPressed: () {
                         if(_formKey.currentState!.validate()) {
-                          controller.editFlex(widget.flexCode!);
+                          if(controller.image.value.length <= 3) {
+                            controller.editFlex(widget.flexCode!);
+                          } else {
+                            Functions.showMessage('Maximum of 3 images');
+                          }
                         }
                       },
                       child: controller.loginEditSpinner.value == true

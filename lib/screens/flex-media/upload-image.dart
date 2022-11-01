@@ -354,6 +354,7 @@ class UploadImage extends StatelessWidget {
      Get.back();
      Get.back();
     }).catchError((e) {
+      controller.convertFileToMultipart();
       Get.back();
       log(':::error: $e');
       Functions.showMessage(e.toString());

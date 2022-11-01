@@ -181,7 +181,7 @@ class FlexDataSource {
         if(res['status'] != 'success') throw res['message'];
         print (res['data']);
         return 'done';
-      }).catchError((e){
+      }).catchError((e) {
         errorHandler.handleError(e);
       });
     }

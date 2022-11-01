@@ -104,6 +104,8 @@ class HostController extends GetxController {
 
   /// Function to convert file to multipart
   void convertFileToMultipart() async {
+    multiPartImages.value = [];
+    update();
     for (int i = 0; i < image.length; i++) {
       multiPartImages.add(
         await http.MultipartFile.fromPath('bannerImage', image[i].path),

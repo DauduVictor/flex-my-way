@@ -743,6 +743,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       Get.offAllNamed(HostFlexSuccess.id);
     }).catchError((e){
       hostController.showSpinner.value = false;
+      hostController.convertFileToMultipart();
       log(':::error: $e');
       print(e);
       Functions.showMessage(e.toString());

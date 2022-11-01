@@ -19,32 +19,30 @@ class ReusableSettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return FadeInLeft(
-      child: Column(
-        children: [
-          TextButton(
-            onPressed: onPressed,
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              backgroundColor: whiteColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-            ),
-            child: ListTile(
-              leading: Icon(
-                icon,
-                color: Colors.black,
-              ),
-              title: Text(
-                name,
-                style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
-              ),
+    return Column(
+      children: [
+        TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            backgroundColor: whiteColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
             ),
           ),
-          const SizedBox(height: 16),
-        ],
-      ),
+          child: ListTile(
+            leading: Icon(
+              icon,
+              color: Colors.black,
+            ),
+            title: Text(
+              name,
+              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }

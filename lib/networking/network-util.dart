@@ -13,6 +13,8 @@ class NetworkHelper {
   /// An object for decoding json values
   final JsonDecoder _decoder = const JsonDecoder();
 
+  final int httpTimeoutDuration = 45;
+
   /// A function to do any get request with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> get(String url, {Map<String, String>? headers}) async {
@@ -45,6 +47,7 @@ class NetworkHelper {
       headers['Accept'] = '*/*';
       return http
           .post(Uri.parse(url), body: jsonEncode(body), headers: headers, encoding: encoding)
+          .timeout(Duration(seconds: httpTimeoutDuration))
           .then((http.Response response) {
         final String res = response.body;
         print(res);
@@ -74,13 +77,12 @@ class NetworkHelper {
       if(files != null) request.files.addAll(files);
 
       final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
+      final response = await http.Response.fromStream(streamedResponse).timeout(Duration(seconds: httpTimeoutDuration));
       final dynamic res = json.decode(response.body);
       final int statusCode = response.statusCode;
       if (statusCode < 200 || statusCode > 400) throw res['status'];
       return res;
     } catch (e) {
-      request.files.clear();
       print(e);
       throw (e);
     }
@@ -95,6 +97,7 @@ class NetworkHelper {
       headers!['Content-Type'] = 'application/json';
       return http
           .put(Uri.parse(url), body: jsonEncode(body), headers: headers, encoding: encoding)
+          .timeout(Duration(seconds: httpTimeoutDuration))
           .then((http.Response response) {
         final String res = response.body;
         print(res);
@@ -123,7 +126,7 @@ class NetworkHelper {
       if(files != null) request.files.addAll(files);
 
       final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
+      final response = await http.Response.fromStream(streamedResponse).timeout(Duration(seconds: httpTimeoutDuration));
       final dynamic res = json.decode(response.body);
       final int statusCode = response.statusCode;
       print(statusCode);
@@ -143,6 +146,7 @@ class NetworkHelper {
       // headers!['Content-Type'] = 'application/json';
       return http
           .delete(Uri.parse(url), headers: headers, body: jsonEncode(body))
+          .timeout(Duration(seconds: httpTimeoutDuration))
           .then((http.Response response) {
         final String res = response.body;
         final int statusCode = response.statusCode;

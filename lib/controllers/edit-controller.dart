@@ -158,6 +158,8 @@ class EditController extends GetxController {
 
   /// Function to convert file to multipart
   void convertFileToMultipart() async {
+    multiPartImages.value = [];
+    update();
     for (int i = 0; i < image.length; i++) {
       multiPartImages.add(
         await http.MultipartFile.fromPath('bannerImage', image[i].path),
@@ -249,6 +251,7 @@ class EditController extends GetxController {
       loginEditSpinner.value = false;
       Get.back();
     }).catchError((e) {
+      convertFileToMultipart();
       loginEditSpinner.value = false;
       log(':::error: $e');
       Functions.showMessage(e.toString());
