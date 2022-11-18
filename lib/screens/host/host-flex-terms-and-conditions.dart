@@ -5,7 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flex_my_way/screens/host/host-flex-success.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
@@ -16,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 import '../onboarding/login.dart';
 import '../settings/settings.dart';
+import '../settings/terms-and-condition.dart';
 import '../web-view.dart';
 
 class HostFlexTermsAndConditions extends StatefulWidget {
@@ -42,7 +42,6 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
   void _onMapCreated(GoogleMapController controller) {
     _mapController.complete(controller);
   }
-
 
   /// A [GlobalKey] to hold the form state of my form widget for form validation
   final _formKey = GlobalKey<FormState>();
@@ -107,22 +106,105 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                       Container(
                         width: SizeConfig.screenWidth,
                         height: SizeConfig.screenHeight! * 0.47,
-                        padding: const EdgeInsets.fromLTRB(2, 24, 2, 10),
+                        padding: const EdgeInsets.fromLTRB(2, 14, 2, 10),
                         decoration: BoxDecoration(
                             color: whiteColor,
                             borderRadius: BorderRadius.circular(24)),
-                        child: const RawScrollbar(
-                          thumbColor: primaryColor,
-                          radius: Radius.circular(8.0),
-                          thickness: 4.0,
-                          isAlwaysShown: true,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: SingleChildScrollView(
-                              child: Text(AppStrings.loremIpsum),
+                        child: RawScrollbar(
+                            thumbColor: primaryColor,
+                            radius: const Radius.circular(8.0),
+                            thickness: 4.0,
+                            isAlwaysShown: true,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    HeadingText(textName: '1. Introduction'),
+                                    SubHeadingText(textNo: '1.1.	', textName: AppStrings.section11),
+                                    SubHeadingText(textNo: '1.2.	', textName: AppStrings.section12),
+                                    SubHeadingText(textNo: '1.3.	', textName: AppStrings.section13),
+                                    SubHeadingText(textNo: '1.4.	', textName: AppStrings.section14),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '2. Definitions'),
+                                    SubHeadingText(textNo: '2.1.	', textName: AppStrings.section21),
+                                    SubHeadingText(textNo: '2.1.1 	', textName: AppStrings.section211),
+                                    SubHeadingText(textNo: '2.1.2	', textName: AppStrings.section212),
+                                    SubHeadingText(textNo: '2.1.3	', textName: AppStrings.section213),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '3. Limitation of Liability'),
+                                    SubHeadingText(textNo: '3.1.	', textName: AppStrings.section31),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '4. Relationship of the parties'),
+                                    SubHeadingText(textNo: '4.1.	', textName: AppStrings.section41),
+                                    SubHeadingText(textNo: '4.1.1 	', textName: AppStrings.section411),
+                                    SubHeadingText(textNo: '4.1.2	', textName: AppStrings.section412),
+                                    SubHeadingText(textNo: '4.1.3	', textName: AppStrings.section413),
+                                    SubHeadingText(textNo: '4.1.4	', textName: AppStrings.section414),
+                                    SubHeadingText(textNo: '4.2.	', textName: AppStrings.section42),
+                                    SubHeadingText(textNo: '4.3.	', textName: AppStrings.section43),
+                                    SubHeadingText(textNo: '4.3.1 	', textName: AppStrings.section431),
+                                    SubHeadingText(textNo: '4.3.2	', textName: AppStrings.section432),
+                                    SubHeadingText(textNo: '4.3.3	', textName: AppStrings.section433),
+                                    SubHeadingText(textNo: '4.3.4	', textName: AppStrings.section434),
+                                    SubHeadingText(textNo: '4.4.	', textName: AppStrings.section44),
+                                    SizedBox(height: 10),
+                                    
+                                    HeadingText(textName: '5. Amendment'),
+                                    SubHeadingText(textNo: '5.1.	', textName: AppStrings.section51),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '6. Account Information and useage'),
+                                    SubHeadingText(textNo: '6.1.	', textName: AppStrings.section61),
+                                    SubHeadingText(textNo: '6.2.	', textName: AppStrings.section62),
+                                    SubHeadingText(textNo: '6.3.	', textName: AppStrings.section63),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '7. Indemnity'),
+                                    SubHeadingText(textNo: '7.1.	', textName: AppStrings.section71),
+                                    SubHeadingText(textNo: '7.2.	', textName: AppStrings.section72),
+                                    SizedBox(height: 10),
+                                    
+                                    HeadingText(textName: '8. Disclaimer and Warranty'),
+                                    SubHeadingText(textNo: '8.1.	', textName: AppStrings.section71),
+                                    SubHeadingText(textNo: '8.1.1 	', textName: AppStrings.section811),
+                                    SubHeadingText(textNo: '8.1.2 	', textName: AppStrings.section812),
+                                    SubHeadingText(textNo: '8.1.3 	', textName: AppStrings.section813),
+                                    SubHeadingText(textNo: '8.2.	', textName: AppStrings.section82),
+                                    SubHeadingText(textNo: '8.3.	', textName: AppStrings.section84),
+                                    SubHeadingText(textNo: '8.4.	', textName: AppStrings.section82),
+                                    SizedBox(height: 10),
+                                    
+                                    HeadingText(textName: '9. Termination'),
+                                    SubHeadingText(textNo: '9.1.	', textName: AppStrings.section71),
+                                    SubHeadingText(textNo: '9.1.1 	', textName: AppStrings.section911),
+                                    SubHeadingText(textNo: '9.1.2 	', textName: AppStrings.section912),
+                                    SubHeadingText(textNo: '9.1.3 	', textName: AppStrings.section913),
+                                    SubHeadingText(textNo: '9.1.4 	', textName: AppStrings.section914),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '10. Severability'),
+                                    SubHeadingText(textNo: '10.1.	', textName: AppStrings.section101),
+                                    SubHeadingText(textNo: '10.1.	', textName: AppStrings.section102),
+                                    SubHeadingText(textNo: '10.1.	', textName: AppStrings.section103),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '11. Governing Law and Dispute'),
+                                    SubHeadingText(textNo: '11.1.	', textName: AppStrings.section111),
+                                    SizedBox(height: 10),
+                        
+                                    HeadingText(textName: '12. Entire Agreement'),
+                                    SubHeadingText(textNo: '12.1.	', textName: AppStrings.section1221),
+                                    SizedBox(height: 40),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
                       ),
                       const SizedBox(height: 22),
                       // hostController.paid.value == 'Paid'

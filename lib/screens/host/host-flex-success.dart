@@ -39,12 +39,13 @@ class HostFlexSuccess extends StatelessWidget {
               const SizedBox(height: 32),
               Text(
                 AppStrings.congratulations,
-                style: textTheme.headline4,
+                style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
               Text(
                 AppStrings.yourFlexIsLive,
-                style: textTheme.headline4,
+                textAlign: TextAlign.center,
+                style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 32),
               Padding(
@@ -131,7 +132,7 @@ class HostFlexSuccess extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
                           onPressed: () {
@@ -154,7 +155,6 @@ class HostFlexSuccess extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 24),
                         TextButton(
                           onPressed: () {
                             Share.share('check out my app https://flexmyway.com');
@@ -172,7 +172,6 @@ class HostFlexSuccess extends StatelessWidget {
                             color: whiteColor,
                           ),
                         ),
-                        const SizedBox(width: 24),
                         TextButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(
@@ -205,7 +204,7 @@ class HostFlexSuccess extends StatelessWidget {
                         Get.offAllNamed(Dashboard.id);
                       },
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
