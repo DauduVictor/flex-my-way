@@ -582,7 +582,7 @@ class _EditFlexState extends State<EditFlex> {
         List<XFile>? image = await ImagePicker().pickMultiImage(imageQuality: 40);
         controller.image.clear();
         controller.update();
-        for (int i = 0; i < image!.length; i++) {
+        for (int i = 0; i < image.length; i++) {
           var compressedImage = await FlutterNativeImage.compressImage(image[i].path, quality: 70);
           controller.image.add(compressedImage);
         }

@@ -13,6 +13,7 @@ AppBar buildAppBarWithNotification(
     iconTheme: const IconThemeData(
       color: neutralColor,
     ),
+
     title: Text(
       'Hi, $userName',
       style: textTheme.headline5,

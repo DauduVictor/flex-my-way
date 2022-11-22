@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/model/model.dart';
 
+import '../dashboard/drawer.dart';
+
 class FlexHistory extends StatelessWidget {
 
   static const String id = 'flexHistory';
@@ -22,134 +24,138 @@ class FlexHistory extends StatelessWidget {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: Container(
-        height: SizeConfig.screenHeight,
-        width: SizeConfig.screenWidth,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(flexBackgroundImage),
-            fit: BoxFit.fill,
+      drawer: RefactoredDrawer(),
+      body: WillPopScope(
+        onWillPop: Functions.onWillPops,
+        child: Container(
+          height: SizeConfig.screenHeight,
+          width: SizeConfig.screenWidth,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(flexBackgroundImage),
+              fit: BoxFit.fill,
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              //appbar
-              Hero(
-                tag: 'cameraButton',
-                child: Builder(
-                    builder: (context) {
-                      return Align(
-                        alignment: Alignment.centerLeft,
-                        child: CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 22,
-                          child: TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: neutralColor,
-                                size: 22,
-                              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                //appbar
+                Hero(
+                  tag: 'cameraButton',
+                  child: Builder(
+                      builder: (context) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: CircleAvatar(
+                            backgroundColor: whiteColor,
+                            radius: 22,
+                            child: TextButton(
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.fromLTRB(11, 8, 12, 8),
+                                  shape: const CircleBorder(),
+                                ),
+                                child: const Icon(
+                                  Icons.menu,
+                                  color: neutralColor,
+                                  size: 22,
+                                ),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                ),
-              ),
-              //body of media
-              Expanded(
-                child: DefaultTabController(
-                  length: 3,
-                  child: Column(
-                    children: [
-                      Text(
-                        'Flex History',
-                        style: textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 24),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 35),
-                              height: 42,
-                              child: TabBar(
-                                indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: primaryColor,
-                                ),
-                                unselectedLabelColor: neutralColor,
-                                tabs: const [
-                                  Tab(
-                                    child: Text(
-                                      'Past',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'Gilroy',
-                                      ),
-                                    ),
-                                  ),
-                                  Tab(
-                                    child: Text(
-                                      'Present',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'Gilroy',
-                                      ),
-                                    ),
-                                  ),
-                                  Tab(
-                                    child: Text(
-                                      'Future',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: 'Gilroy',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                child: GetBuilder<UserController>(
-                                  init: UserController(),
-                                  builder: (controller) {
-                                    return TabBarView(
-                                      children: [
-                                        _pastFlex(controller.pastFlex),
-                                        _presentFlex(controller.presentFlex),
-                                        _futureFlex(controller.futureFlex),
-                                      ],
-                                    );
-                                  }
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                        );
+                      }
                   ),
                 ),
-              ),
-            ],
+                //body of media
+                Expanded(
+                  child: DefaultTabController(
+                    length: 3,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Flex History',
+                          style: textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 24),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 35),
+                                height: 42,
+                                child: TabBar(
+                                  indicator: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: primaryColor,
+                                  ),
+                                  unselectedLabelColor: neutralColor,
+                                  tabs: const [
+                                    Tab(
+                                      child: Text(
+                                        'Past',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                        'Present',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Text(
+                                        'Future',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: GetBuilder<UserController>(
+                                    init: UserController(),
+                                    builder: (controller) {
+                                      return TabBarView(
+                                        children: [
+                                          _pastFlex(controller.pastFlex),
+                                          _presentFlex(controller.presentFlex),
+                                          _futureFlex(controller.futureFlex),
+                                        ],
+                                      );
+                                    }
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

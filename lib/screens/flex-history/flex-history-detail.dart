@@ -240,14 +240,20 @@ class FlexHistoryDetail extends StatelessWidget {
                                         if (userController.gender.value.contains('${flex!.genderRestriction}') ||
                                             flex!.genderRestriction == 'Both'
                                         ) {
-                                          _joinFlex(flex!.joinCode!, flex!);
+                                          if (!userController.flexAttendedList.contains(flex!.joinCode)) {
+                                            _joinFlex(flex!.joinCode!, flex!);
+                                          }
                                         } else {
                                           Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
                                         }
                                       }
                                     },
                                     style: TextButton.styleFrom(
-                                      backgroundColor: past == true ? const Color(0xFFE9EEF4) : primaryColor,
+                                      backgroundColor: past == true
+                                        ? const Color(0xFFE9EEF4)
+                                        : userController.flexAttendedList.contains(flex!.joinCode)
+                                          ? const Color(0xFFE9EEF4)
+                                          : primaryColor,
                                       padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
@@ -255,7 +261,11 @@ class FlexHistoryDetail extends StatelessWidget {
                                     ),
                                     child: joinController.showSpinner.value == false
                                         ? Text(
-                                            flex!.payStatus! == 'Free' ? 'Join Flex' : 'Buy Flex Ticket',
+                                            flex!.payStatus! == 'Free'
+                                              ? userController.flexAttendedList.contains(flex!.joinCode)
+                                                ? userController.getFlexAttendeeStatusText(flex!.joinCode!)
+                                                : 'Join this Flex'
+                                              : 'Buy Flex Ticket',
                                             style: textTheme.button!.copyWith(
                                               fontSize: 15,
                                               color: whiteColor,

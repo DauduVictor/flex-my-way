@@ -140,13 +140,14 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    userController.checkUserIsLoggedIn();
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Obx(() => Scaffold(
         appBar: buildAppBarWithNotification(textTheme, context, userController.username.value),
         drawer: RefactoredDrawer(),
         body: WillPopScope(
-          onWillPop: _onWillPops,
+          onWillPop: Functions.onWillPops,
           child: DefaultTabController(
             length: 2,
             child: Column(

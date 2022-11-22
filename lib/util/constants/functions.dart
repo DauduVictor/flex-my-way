@@ -44,4 +44,16 @@ class Functions {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
+  static Future<bool> onWillPops() {
+    DateTime? currentBackPressTime;
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Functions.showMessage('Press back again to exit');
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
 }

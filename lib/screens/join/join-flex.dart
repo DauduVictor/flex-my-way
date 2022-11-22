@@ -221,9 +221,11 @@ class JoinFlex extends StatelessWidget {
                                               if (userController.gender.value.contains('${flex!.genderRestriction}') ||
                                                   flex!.genderRestriction == 'Both'
                                               ) {
-                                                _joinFlex(flex!.joinCode!, flex!);
+                                                if (!userController.flexAttendedList.contains(flex!.joinCode)) {
+                                                  _joinFlex(flex!.joinCode!, flex!);
+                                                }
                                               } else {
-                                                Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                                Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flexes!');
                                               }
                                             }
                                           }
@@ -233,28 +235,32 @@ class JoinFlex extends StatelessWidget {
                                           }
                                         },
                                         style: TextButton.styleFrom(
-                                          backgroundColor: primaryColor, //const Color(0xFFE9EEF4),
+                                          backgroundColor: userController.flexAttendedList.contains(flex!.joinCode)
+                                            ? const Color(0xFFE9EEF4)
+                                            : primaryColor,
                                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(16),
                                           ),
                                         ),
                                         child: controller.showSpinner.value == false
-                                            ? Text(
-                                                'Join this Flex',
-                                                style: textTheme.button!.copyWith(
-                                                  fontSize: 15,
-                                                  color: whiteColor,
-                                                ),
-                                              )
-                                            : const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 18),
-                                                child: SizedBox(
-                                                  height: 17,
-                                                  width: 17,
-                                                  child: CircleProgressIndicator(),
-                                                ),
-                                            ),
+                                          ? Text(
+                                              userController.flexAttendedList.contains(flex!.joinCode)
+                                                ? userController.getFlexAttendeeStatusText(flex!.joinCode!)
+                                                : 'Join this Flex',
+                                              style: textTheme.button!.copyWith(
+                                                fontSize: 15,
+                                                color: whiteColor,
+                                              ),
+                                            )
+                                          : const Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 18),
+                                              child: SizedBox(
+                                                height: 17,
+                                                width: 17,
+                                                child: CircleProgressIndicator(),
+                                              ),
+                                          ),
                                       )
                                     : TextButton(
                                         onPressed: () {

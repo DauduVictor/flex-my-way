@@ -65,7 +65,7 @@ class User {
     occupation: json["occupation"],
     canHostFlex: json["canHostFlex"] ?? false,
     // flexCreated: List<String>.from(json["flexCreated"].map((x) => x)),
-    // flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
+    flexAttended: List<FlexAttended>.from(json["flexAttended"].map((x) => FlexAttended.fromJson(x))),
     bearerToken: json["bearerToken"],
   );
 
@@ -95,7 +95,7 @@ class User {
     "occupation": occupation,
     "canHostFlex": canHostFlex,
     // "flexCreated": List<dynamic>.from(flexCreated!.map((x) => x)),
-    // "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
+    "flexAttended": List<dynamic>.from(flexAttended!.map((x) => x.toJson())),
     "bearerToken": bearerToken,
   };
 
@@ -122,26 +122,26 @@ class FlexAttended {
   FlexAttended({
     this.attendeeId,
     this.flexCode,
-    this.canAttend,
+    this.attendeeStatus,
     this.id,
   });
 
   String? attendeeId;
   String? flexCode;
-  bool? canAttend;
+  String? attendeeStatus;
   String? id;
 
   factory FlexAttended.fromJson(Map<String, dynamic> json) => FlexAttended(
     attendeeId: json["attendeeId"],
     flexCode: json["flexCode"],
-    canAttend: json["canAttend"],
-    id: json["id"],
+    attendeeStatus: json["attendeeStatus"],
+    id: json["_id"],
   );
 
   Map<String, dynamic> toJson() => {
     "attendeeId": attendeeId,
     "flexCode": flexCode,
-    "canAttend": canAttend,
+    "canAttend": attendeeStatus,
     "id": id,
   };
 }

@@ -429,6 +429,7 @@ class FlexDataSource {
     });
     String GOOGLE_PLACE_API_URL = GOOGLE_PLACE_API + '?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';
     return await http.get(Uri.parse(GOOGLE_PLACE_API_URL)).then((res) {
+      print(res.body);
       if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
       var resp = json.decode(res.body);
       if (resp['error_message'] != '') throw ('Error associated with Google services, please contact support');

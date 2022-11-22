@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/networking/networking.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../database/user-db-helper.dart';
@@ -19,12 +21,7 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
-    getCurrentUserDetail();
     checkUserIsLoggedIn();
-    getDashboardFlex();
-    getFlexHistory();
-    getNotifications();
-    getFlexInvites();
     super.onInit();
   }
 
@@ -53,6 +50,13 @@ class UserController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getBool('loggedIn') == true) {
       isLoggedIn.value = true;
+      /// once user is logged in, do this...
+      getCurrentUserDetail();
+      getDashboardFlex();
+      getFlexHistory();
+      getNotifications();
+      getFlexInvites();
+      getPeriodicUserProfile();
       log('logged in');
     }
     else {
@@ -120,6 +124,47 @@ class UserController extends GetxController {
   RxList<HistoryFlex> presentFlex = <HistoryFlex>[].obs;
   RxList<HistoryFlex> futureFlex = <HistoryFlex>[].obs;
   RxList<FlexInvite> flexInvites = <FlexInvite>[].obs;
+  User? userProfile;
+  List<String> flexAttendedList = [];
+
+  /// Function to make periodic call for user details -
+  /// We need access to the updated list of flex codes joined
+  void getPeriodicUserProfile() {
+    var api = UserDataSource();
+    Timer.periodic(const Duration(seconds: 45), (timer) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if(prefs.getBool('loggedIn') == true) {
+        await api.getUserProfile().then((value) {
+          userProfile = value;
+          flexAttendedList.clear();
+          update();
+          for (int i = 0; i < userProfile!.flexAttended!.length; i++) {
+            flexAttendedList.add(userProfile!.flexAttended![i].flexCode!);
+          }
+          update();
+          print(flexAttendedList);
+        }).catchError((e) {
+          isPastLoaded.value = true;
+          print(e);
+          // print(':::error: $e');
+          // Functions.showMessage(e);
+        });
+      }
+    });
+  }
+
+  String getFlexAttendeeStatusText(String flexId) {
+    print('here');
+    String textStatus = '';
+    for (int i = 0; i < userProfile!.flexAttended!.length; i++) {
+      print(userProfile!.flexAttended![i].flexCode!);
+      if (flexId == userProfile!.flexAttended![i].flexCode!) {
+        textStatus = userProfile!.flexAttended![i].attendeeStatus!;
+      }
+    }
+    print(textStatus);
+    return textStatus;
+  }
 
   /* Dashboard integration*/
   /// Function to get dashboard flex [with param - scheduled, completed]

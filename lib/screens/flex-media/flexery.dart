@@ -12,6 +12,8 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/model/model.dart';
 import 'package:flex_my_way/components/components.dart';
 
+import '../dashboard/drawer.dart';
+
 class Flexery extends StatefulWidget {
 
   static const String id = "flexery";
@@ -41,213 +43,217 @@ class _FlexeryState extends State<Flexery> {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      body: DismissKeyboard(
-        child: SingleChildScrollView(
-          child: Container(
-            height: SizeConfig.screenHeight,
-            width: SizeConfig.screenWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(darkBackgroundImage),
+      drawer: RefactoredDrawer(),
+      body: WillPopScope(
+        onWillPop: Functions.onWillPops,
+        child: DismissKeyboard(
+          child: SingleChildScrollView(
+            child: Container(
+              height: SizeConfig.screenHeight,
+              width: SizeConfig.screenWidth,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(darkBackgroundImage),
+                ),
               ),
-            ),
-            child: Obx(() {
-                return Column(
-                  children: [
-                    const SizedBox(height: 50),
-                    //appbar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Builder(
-                            builder: (context) {
-                              return CircleAvatar(
-                                backgroundColor: whiteColor,
-                                radius: 22,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
-                                    shape: const CircleBorder(),
-                                  ),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: neutralColor,
-                                    size: 22,
-                                  ),
-                                ),
-                              );
-                            }
-                        ),
-                        const SizedBox(width: 7),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              color: whiteColor,
-                            ),
-                            child: TextField(
-                                keyboardType: TextInputType.text,
-                                textInputAction: TextInputAction.search,
-                                style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
-                                controller: controller.searchController,
-                                onChanged: (value) {
-                                  getFlexeryByHashTag(value);
-                                },
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.fromLTRB(5, 18, 5, 5),
-                                  border: InputBorder.none,
-                                  prefixIcon: Icon(
-                                    IconlyLight.search,
-                                    color: neutralColor.withOpacity(0.3),
-                                    size: 16,
-                                  ),
-                                  hintText: 'Search flex hashtags',
-                                  hintStyle: textTheme.bodyText1!.copyWith(
-                                    fontSize: 13,
-                                    color: neutralColor.withOpacity(0.3),
-                                  ),
-                                  suffixIcon: controller.showSearchSpinner.value == true
-                                    ? SizedBox(
-                                        width: 5,
-                                        height: 5,
-                                        child: SpinKitCircle(
-                                          color: primaryColor.withOpacity(0.9),
-                                          size: 25,
-                                        ),
-                                      )
-                                    : const SizedBox(
-                                        width: 2,
-                                      height: 2,
+              child: Obx(() {
+                  return Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      //appbar
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Builder(
+                              builder: (context) {
+                                return CircleAvatar(
+                                  backgroundColor: whiteColor,
+                                  radius: 22,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    },
+                                    style: TextButton.styleFrom(
+                                      padding: const EdgeInsets.fromLTRB(11, 8, 12, 8),
+                                      shape: const CircleBorder(),
                                     ),
+                                    child: const Icon(
+                                      Icons.menu,
+                                      color: neutralColor,
+                                      size: 22,
+                                    ),
+                                  ),
+                                );
+                              }
+                          ),
+                          const SizedBox(width: 7),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24),
+                                color: whiteColor,
+                              ),
+                              child: TextField(
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.search,
+                                  style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                                  controller: controller.searchController,
+                                  onChanged: (value) {
+                                    getFlexeryByHashTag(value);
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.fromLTRB(5, 18, 5, 5),
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(
+                                      IconlyLight.search,
+                                      color: neutralColor.withOpacity(0.3),
+                                      size: 16,
+                                    ),
+                                    hintText: 'Search flex hashtags',
+                                    hintStyle: textTheme.bodyText1!.copyWith(
+                                      fontSize: 13,
+                                      color: neutralColor.withOpacity(0.3),
+                                    ),
+                                    suffixIcon: controller.showSearchSpinner.value == true
+                                      ? SizedBox(
+                                          width: 5,
+                                          height: 5,
+                                          child: SpinKitCircle(
+                                            color: primaryColor.withOpacity(0.9),
+                                            size: 25,
+                                          ),
+                                        )
+                                      : const SizedBox(
+                                          width: 2,
+                                        height: 2,
+                                      ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 7),
-                        CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 22,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  transitionDuration: const Duration(milliseconds: 500),
-                                  pageBuilder: (context, animation, secondaryAnimation) {
-                                    return UploadImage();
-                                  },
-                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                    return Container(
-                                      color: whiteColor.withOpacity(animation.value),
-                                      child: SlideTransition(
-                                        position: animation.drive(
-                                          Tween(
-                                            begin: const Offset(0.0, 1.0),
-                                            end: Offset.zero,
-                                          ).chain(CurveTween(curve: Curves.linear)),
+                          const SizedBox(width: 7),
+                          CircleAvatar(
+                            backgroundColor: whiteColor,
+                            radius: 22,
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration: const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation, secondaryAnimation) {
+                                      return UploadImage();
+                                    },
+                                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                      return Container(
+                                        color: whiteColor.withOpacity(animation.value),
+                                        child: SlideTransition(
+                                          position: animation.drive(
+                                            Tween(
+                                              begin: const Offset(0.0, 1.0),
+                                              end: Offset.zero,
+                                            ).chain(CurveTween(curve: Curves.linear)),
+                                          ),
+                                          child: child,
                                         ),
-                                        child: child,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(12),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              Icons.linked_camera_outlined,
-                              color: primaryColor,
-                              size: 21,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 7),
-                        CircleAvatar(
-                          backgroundColor: whiteColor,
-                          radius: 22,
-                          child: TextButton(
-                            onPressed: () {
-                              _showFilterDialog(context);
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.all(10),
-                              shape: const CircleBorder(),
-                            ),
-                            child: const Icon(
-                              IconlyLight.filter2,
-                              color: primaryColor,
-                              size: 21,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    //body of media
-                    controller.showSpinner.value == false
-                     ? Expanded(
-                        child: GridView.builder(
-                          itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                _showImageDialog(
-                                  controller.flexery.value,
-                                  index,
-                                  context
+                                      );
+                                    },
+                                  ),
                                 );
                               },
-                              child: Container(
-                                color: Colors.grey.withOpacity(0.3),
-                                child: CachedNetworkImage(
-                                  alignment: Alignment.topCenter,
-                                  imageUrl: controller.flexery[index].url!,
-                                  progressIndicatorBuilder: (context, url, downloadProgress) {
-                                    return SpinKitCircle(
-                                      color: primaryColor.withOpacity(0.7),
-                                      size: 30,
-                                    );
-                                  },
-                                  errorWidget: (context, url, error) => Icon(
-                                    Icons.error,
-                                    color: neutralColor.withOpacity(0.4),
-                                    size: 30,
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(12),
+                                shape: const CircleBorder(),
                               ),
-                            );
-                          },
-                          itemCount: controller.flexery.length,
-                          padding: const EdgeInsets.only(bottom: 12),
-                          shrinkWrap: true,
-                          gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.6,
-                            crossAxisSpacing: 1,
-                            mainAxisSpacing: 1,
+                              child: const Icon(
+                                Icons.linked_camera_outlined,
+                                color: primaryColor,
+                                size: 21,
+                              ),
+                            ),
                           ),
-                        ),
-                      )
-                     : Column(
-                       children: [
-                         SizedBox(height: SizeConfig.screenHeight! * 0.35),
-                         SpinKitCircle(
-                          color: primaryColor.withOpacity(0.9),
-                          size: 45,
-                    ),
-                       ],
-                     ),
-                  ],
-                );
-              }
+                          const SizedBox(width: 7),
+                          CircleAvatar(
+                            backgroundColor: whiteColor,
+                            radius: 22,
+                            child: TextButton(
+                              onPressed: () {
+                                _showFilterDialog(context);
+                              },
+                              style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(10),
+                                shape: const CircleBorder(),
+                              ),
+                              child: const Icon(
+                                IconlyLight.filter2,
+                                color: primaryColor,
+                                size: 21,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      //body of media
+                      controller.showSpinner.value == false
+                       ? Expanded(
+                          child: GridView.builder(
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  _showImageDialog(
+                                    controller.flexery.value,
+                                    index,
+                                    context
+                                  );
+                                },
+                                child: Container(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  child: CachedNetworkImage(
+                                    alignment: Alignment.topCenter,
+                                    imageUrl: controller.flexery[index].url!,
+                                    progressIndicatorBuilder: (context, url, downloadProgress) {
+                                      return SpinKitCircle(
+                                        color: primaryColor.withOpacity(0.7),
+                                        size: 30,
+                                      );
+                                    },
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.error,
+                                      color: neutralColor.withOpacity(0.4),
+                                      size: 30,
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: controller.flexery.length,
+                            padding: const EdgeInsets.only(bottom: 12),
+                            shrinkWrap: true,
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 0.6,
+                              crossAxisSpacing: 1,
+                              mainAxisSpacing: 1,
+                            ),
+                          ),
+                        )
+                       : Column(
+                         children: [
+                           SizedBox(height: SizeConfig.screenHeight! * 0.35),
+                           SpinKitCircle(
+                            color: primaryColor.withOpacity(0.9),
+                            size: 45,
+                      ),
+                         ],
+                       ),
+                    ],
+                  );
+                }
+              ),
             ),
           ),
         ),

@@ -193,7 +193,7 @@ class UploadImage extends StatelessWidget {
       controller.images.clear();
       controller.image = null;
       controller.update();
-      for (int i = 0; i < image!.length; i++) {
+      for (int i = 0; i < image.length; i++) {
         var compressedImage = await FlutterNativeImage.compressImage(image[i].path, quality: 70);
         controller.images.add(compressedImage);
       }
