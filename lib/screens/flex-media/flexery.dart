@@ -482,16 +482,24 @@ class _FlexeryState extends State<Flexery> {
                     ),
                     const SizedBox(height: 5),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (controller.flexeryFilter.value != 2) {
+                          Get.back();
+                          controller.getFlexery('random');
+                        }
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         width: SizeConfig.screenWidth,
-                        child: const Center(
+                        color: controller.flexeryFilter.value == 2
+                            ? primaryColorVariant : transparentColor,
+                        child: Center(
                           child: Text(
                             'Random',
                             style: TextStyle(
                               fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: controller.flexeryFilter.value == 2
+                                ? FontWeight.w600 : FontWeight.w500,
                               fontFamily: 'Gilroy',
                             ),
                           ),

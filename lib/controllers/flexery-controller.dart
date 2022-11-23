@@ -57,11 +57,17 @@ class FlexeryController extends GetxController {
   void getFlexery(String? filter) async {
     showSpinner.value = true;
     await api.getFlexery(filter ?? 'time').then((value) {
+      flexery.value.clear();
       flexery.value = value;
       showSpinner.value = false;
       if (filter == 'likes') {
         flexeryFilter.value = 0;
-      } else {
+      } else if (filter == 'time') {
+        flexeryFilter.value = 1;
+      } else if (filter == 'random') {
+        flexeryFilter.value = 2;
+      }
+      else {
         flexeryFilter.value = 1;
       }
     }).catchError((e) {

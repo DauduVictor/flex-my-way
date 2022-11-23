@@ -157,11 +157,11 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Share.share('check out my app https://flexmyway.com');
+                            Share.share(AppStrings.flexURL);
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),
-                            backgroundColor: primaryColorVariant,
+                            backgroundColor: primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -183,7 +183,7 @@ class HostFlexSuccess extends StatelessWidget {
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(19),
-                              backgroundColor: primaryColorVariant,
+                              backgroundColor: primaryColor.withOpacity(0.9),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               )

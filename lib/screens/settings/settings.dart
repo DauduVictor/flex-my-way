@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/screens/host/host-registration.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/setting-controller.dart';
 import 'package:flex_my_way/util/util.dart';
 import '../../database/user-db-helper.dart';
@@ -239,7 +242,22 @@ class Settings extends StatelessWidget {
                                     ReusableSettingsButton(
                                       name: AppStrings.inviteYourFriends,
                                       icon: Icons.share_outlined,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (Platform.isIOS) {
+                                          try {
+                                            launchUrl(Uri.parse('https://www.google.com/flexmyway-ios'));
+                                          } catch (e) {
+                                            Functions.showMessage(e.toString());
+                                          }
+                                        }
+                                        if (Platform.isAndroid) {
+                                          try {
+                                            launchUrl(Uri.parse('https://www.google.com/flexmyway-anroid'));
+                                          } catch (e) {
+                                            Functions.showMessage(e.toString());
+                                          }
+                                        }
+                                      },
                                     ),
                                     ReusableSettingsButton(
                                       name: AppStrings.about,

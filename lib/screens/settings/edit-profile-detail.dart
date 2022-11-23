@@ -81,14 +81,17 @@ class EditProfileDetail extends StatelessWidget {
                             keyboardType: TextInputType.text,
                             textEditingController: controller.occuapationController,
                           ),
-                          CustomDropdownButtonField(
-                            hintText: 'What type of flex are you interested in?',
-                            items: preferredFlexes,
-                            value: controller.preferredFlex.value == ''
-                              ? null : controller.preferredFlex.value,
-                            onChanged: (value) {
-                              controller.preferredFlex.value = value.toString();
-                            },
+                          Visibility(
+                            visible: false,
+                            child: CustomDropdownButtonField(
+                              hintText: 'What type of flex are you interested in?',
+                              items: preferredFlexes,
+                              value: controller.preferredFlex.value == ''
+                                ? null : controller.preferredFlex.value,
+                              onChanged: (value) {
+                                controller.preferredFlex.value = value.toString();
+                              },
+                            ),
                           ),
                         ],
                       ),
