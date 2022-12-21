@@ -118,6 +118,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                 onPressed: () {
                                   if(past!) {
                                     Get.to(() => FlexHistoryImageArchive(flexTag: flex!.hashtag!));
+                                  } else if (flex!.fromDate!.isAfter(DateTime.now())){
+                                    Get.to(() => FlexHistoryImageArchive(flexTag: flex!.hashtag!));
                                   } else {
                                     Functions.showMessage('All images will be present after flex goes live!');
                                   }

@@ -5,6 +5,7 @@ class FlexInvite {
     this.flexCode,
     this.flexId,
     this.attendeeStatus,
+    this.flexName,
     this.id,
   });
 
@@ -12,6 +13,7 @@ class FlexInvite {
   String? flexCode;
   String? flexId;
   String? attendeeStatus;
+  String? flexName;
   String? id;
 
   factory FlexInvite.fromJson(Map<String, dynamic> json) => FlexInvite(
@@ -19,6 +21,7 @@ class FlexInvite {
     flexCode: json["flexCode"],
     flexId: json["flexId"],
     attendeeStatus: json["attendeeStatus"],
+    flexName: json["flexName"],
     id: json["_id"],
   );
 
@@ -27,6 +30,7 @@ class FlexInvite {
     "flexCode": flexCode,
     "flexId": flexId,
     "attendeeStatus": attendeeStatus,
+    "flexName": flexName,
     "_id": id,
   };
 }

@@ -250,7 +250,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Afro Nation Festival',
+                      '${invite?.flexName}',
                       style: textTheme.bodyText2!.copyWith(
                         fontSize: 14,
                         color: neutralColor.withOpacity(0.7),
