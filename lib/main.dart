@@ -33,9 +33,14 @@ import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
 import 'package:flex_my_way/screens/theme/app-theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
 
