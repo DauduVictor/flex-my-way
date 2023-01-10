@@ -131,7 +131,7 @@ class UserController extends GetxController {
   /// We need access to the updated list of flex codes joined
   void getPeriodicUserProfile() {
     var api = UserDataSource();
-    Timer.periodic(const Duration(seconds: 45), (timer) async {
+    Timer.periodic(const Duration(minutes: 3), (timer) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if(prefs.getBool('loggedIn') == true) {
         await api.getUserProfile().then((value) {

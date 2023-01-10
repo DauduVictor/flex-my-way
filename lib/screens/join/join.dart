@@ -120,7 +120,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       setState(() {
         flex = value;
         flexLength = flex.length;
-        controller.animateCamera(CameraUpdate.zoomBy(2.0));
+        controller.animateCamera(CameraUpdate.zoomBy(1.2));
         log(flexLength.toString());
       });
       _buildFlexOnMap();

@@ -1,6 +1,6 @@
 /// Base url for our endpoint
-const BASE_URL = 'https://apiflexmyway.herokuapp.com/api/v1/';
-// const BASE_URL = 'https://lime-perfect-cow.cyclic.app/api/v1/';
+// const BASE_URL = 'https://apiflexmyway.herokuapp.com/api/v1/';
+const BASE_URL = 'https://apiflexmyway.cyclic.app/api/v1/';
 
 // Endpoints regarding users
 const NEW_USER_SIGNUP = BASE_URL + 'users/new';
