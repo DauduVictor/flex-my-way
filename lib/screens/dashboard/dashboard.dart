@@ -167,13 +167,16 @@ class _DashboardState extends State<Dashboard> {
                         style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 24),
-                      ListTileButton(
-                        title: userController.flexInvites.isNotEmpty
-                          ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
-                          : 'No pending invites at the moment. Create Flex and invite your friends',
-                        onPressed: () {
-                           Get.toNamed(PendingInvites.id);
-                        },
+                      Visibility(
+                        visible: userController.canHostFlex.value,
+                        child: ListTileButton(
+                          title: userController.flexInvites.isNotEmpty
+                            ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
+                            : 'No pending invites at the moment. Create Flex and invite your friends',
+                          onPressed: () {
+                             Get.toNamed(PendingInvites.id);
+                          },
+                        ),
                       ),
                     ],
                   ),
