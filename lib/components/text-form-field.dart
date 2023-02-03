@@ -59,7 +59,7 @@ class CustomTextFormField extends StatelessWidget {
           textInputAction: textInputAction,
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,
-          style: textTheme.bodyText2!.copyWith(
+          style: textTheme.bodyMedium!.copyWith(
             fontSize: 14,
           ),
           onTap: onTap,
@@ -67,7 +67,7 @@ class CustomTextFormField extends StatelessWidget {
           decoration: InputDecoration(
             suffixIcon: suffix,
             // hintText: hintText,
-            hintStyle: textTheme.bodyText2,
+            hintStyle: textTheme.bodyMedium,
             labelText: hintText,
             focusColor: neutralColor,
             contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
@@ -96,3 +96,4 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
+

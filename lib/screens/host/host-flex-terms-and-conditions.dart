@@ -78,7 +78,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
         leadingWidth: 80,
         title: Text(
           AppStrings.hostAFlex,
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: DismissKeyboard(
@@ -97,7 +97,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         alignment: Alignment.center,
                         child: Text(
                           AppStrings.termsAndConditions,
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -227,7 +227,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                       //   : Container(),
                       Text(
                         AppStrings.acceptThe,
-                        style: textTheme.headline5!
+                        style: textTheme.headlineSmall!
                             .copyWith(fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 8),
@@ -235,7 +235,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         contentPadding: EdgeInsets.zero,
                         title: Text(
                           AppStrings.termsAndConditions,
-                          style: textTheme.bodyText2,
+                          style: textTheme.bodyMedium,
                         ),
                         trailing: Checkbox(
                           value: hostController.termsAndConditionsAccepted.value,
@@ -249,7 +249,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                         contentPadding: EdgeInsets.zero,
                         title: Text(
                           AppStrings.privacyPolicy,
-                          style: textTheme.bodyText2!,
+                          style: textTheme.bodyMedium!,
                         ),
                         trailing: Checkbox(
                           value: hostController.privacyPolicyAccepted.value,
@@ -390,7 +390,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         Expanded(
                                           child: Text(
                                             hostController.nameFlexController.text,
-                                            style: textTheme.headline4!.copyWith(
+                                            style: textTheme.headlineMedium!.copyWith(
                                               color: primaryColor,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 30,
@@ -409,7 +409,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               Text(
                                                 Functions.getFlexDayAndMonth(
                                                   DateTime.parse(hostController.dateController.text))[0],
-                                                style: textTheme.headline5!.copyWith(
+                                                style: textTheme.headlineSmall!.copyWith(
                                                   color: primaryColor,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,
@@ -418,7 +418,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               Text(
                                                 Functions.getFlexDayAndMonth(
                                                     DateTime.parse(hostController.dateController.text))[1],
-                                                style: textTheme.headline5!.copyWith(
+                                                style: textTheme.headlineSmall!.copyWith(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -438,7 +438,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             children: [
                                               Text(
                                                 'Time',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 16,
                                                   color: neutralColor.withOpacity(0.5),
                                                   fontWeight: FontWeight.w600,
@@ -447,7 +447,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               Text(
                                                 '${Functions.getFlexTime(hostController.startTime!)} - '
                                                     '${Functions.getFlexTime(hostController.endTime!)}',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 18.5,
                                                   color: neutralColor,
                                                   fontWeight: FontWeight.w600,
@@ -493,7 +493,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                           children: [
                                             Text(
                                               AppStrings.host,
-                                              style: textTheme.headline5!.copyWith(
+                                              style: textTheme.headlineSmall!.copyWith(
                                                 color: neutralColor.withOpacity(0.5),
                                                 fontSize: 16.5,
                                               ),
@@ -501,14 +501,14 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             const SizedBox(height: 4),
                                             Text(
                                               userController.username.value,
-                                              style: textTheme.bodyText1!.copyWith(
+                                              style: textTheme.bodyLarge!.copyWith(
                                                 fontSize: 18.5,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             Text(
                                               'First Time Host',
-                                              style: textTheme.headline5!.copyWith(
+                                              style: textTheme.headlineSmall!.copyWith(
                                                 color: primaryColor,
                                                 fontSize: 16.5,
                                               ),
@@ -567,7 +567,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                       children: [
                                         Text(
                                           'About/Rules',
-                                          style: textTheme.bodyText1!.copyWith(
+                                          style: textTheme.bodyLarge!.copyWith(
                                             fontSize: 18.5,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -575,7 +575,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                         const SizedBox(height: 10),
                                         Text(
                                           hostController.flexRulesController.text,
-                                          style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                          style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
                                         ),
                                       ],
                                     ),
@@ -591,7 +591,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             children: [
                                               Text(
                                                 'Guests',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 18.5,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -599,7 +599,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               const SizedBox(height: 10),
                                               Text(
                                                 '0 / ${hostController.numberOfPeopleController.text} Total',
-                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
                                           ),
@@ -612,7 +612,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             children: [
                                               Text(
                                                 'Consumable Policy',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 18.5,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -620,7 +620,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               const SizedBox(height: 10),
                                               Text(
                                                 hostController.consumablePolicy.value,
-                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
                                           ),
@@ -639,7 +639,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             children: [
                                               Text(
                                                 'Nature of Flex',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 18.5,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -647,7 +647,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               const SizedBox(height: 10),
                                               Text(
                                                 hostController.typeOfFlex.value,
-                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
                                           ),
@@ -660,7 +660,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                             children: [
                                               Text(
                                                 'RSVP',
-                                                style: textTheme.bodyText1!.copyWith(
+                                                style: textTheme.bodyLarge!.copyWith(
                                                   fontSize: 18.5,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -668,7 +668,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                               const SizedBox(height: 10),
                                               Text(
                                                 userController.phoneNumber.value,
-                                                style: textTheme.headline5!.copyWith(fontSize: 16.5),
+                                                style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
                                               ),
                                             ],
                                           ),
@@ -705,7 +705,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                       onPressed: () async {
                                         Clipboard.setData(
                                             ClipboardData(
-                                                text: hostController.flexAddress.text)
+                                                text: hostController.flexAddressController.text)
                                         ).then((value) {
                                           Functions.showMessage('Flex location copied');
                                         }).catchError((e){
@@ -726,7 +726,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                                           const SizedBox(width: 6),
                                           Text(
                                             'Click to Copy Address',
-                                            style: textTheme.headline5!.copyWith(
+                                            style: textTheme.headlineSmall!.copyWith(
                                               color: primaryColor,
                                               fontSize: 12,
                                             ),
@@ -766,7 +766,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
                   children: [
                     Text(
                       'Go live',
-                      style: textTheme.bodyText2!.copyWith(
+                      style: textTheme.bodyMedium!.copyWith(
                         color: primaryColor,
                         fontWeight: FontWeight.w600,
                       ),
@@ -818,6 +818,7 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
       hostController.update();
       /// calling the [UserController] for [HostFlexTermsAndConditions]
       final UserController userController = Get.put(UserController());
+      userController.getUserProfile();
       userController.getDashboardFlex();
       userController.getFlexHistory();
       hostController.createdFlex = flexSuccess;
@@ -843,11 +844,11 @@ class _HostFlexTermsAndConditionsState extends State<HostFlexTermsAndConditions>
         ),
         title: Text(
           AppStrings.profileUpgrade,
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
         content: Text(
           AppStrings.profileUpgradePrompt,
-          style: textTheme.bodyText1!.copyWith(
+          style: textTheme.bodyLarge!.copyWith(
             fontSize: 17,
             fontWeight: FontWeight.w500,
           ),

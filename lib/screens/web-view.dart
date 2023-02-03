@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -7,16 +6,16 @@ class WebViewer extends StatelessWidget {
 
   final String url;
 
-  WebViewer({
+  const WebViewer({
     Key? key,
     required this.url
   }) : super(key: key);
 
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
-
   @override
   Widget build(BuildContext context) {
-    print(url);
+    final webViewController = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse(url));
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -29,16 +28,7 @@ class WebViewer extends StatelessWidget {
           ),
         ),
       ),
-      body: WebView(
-        initialUrl: ('https://$url'),
-        javascriptMode: JavascriptMode.unrestricted,
-        navigationDelegate: (navigation) {
-          return NavigationDecision.navigate;
-        },
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller.complete(webViewController);
-        },
-      ),
+      body: WebViewWidget(controller: webViewController),
     );
   }
 }

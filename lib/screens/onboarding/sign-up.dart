@@ -28,7 +28,7 @@ class SignUp extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           'Sign Up',
-          style: textTheme.headline4!.copyWith(fontSize: 30),
+          style: textTheme.headlineMedium!.copyWith(fontSize: 30),
         ),
       ),
       body: DismissKeyboard(

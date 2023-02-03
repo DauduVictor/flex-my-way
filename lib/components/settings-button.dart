@@ -37,7 +37,7 @@ class ReusableSettingsButton extends StatelessWidget {
             ),
             title: Text(
               name,
-              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w500),
+              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500),
             ),
           ),
         ),

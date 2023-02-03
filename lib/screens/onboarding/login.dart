@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                     children: [
                       Text(
                         'Login',
-                        style: textTheme.headline4!.copyWith(fontSize: 30),
+                        style: textTheme.headlineMedium!.copyWith(fontSize: 30),
                       ),
                       const SizedBox(height: 32),
                       _buildForm(textTheme),
@@ -73,14 +73,14 @@ class Login extends StatelessWidget {
                       const SizedBox(height: 24),
                       RichText(
                         text: TextSpan(
-                          style: textTheme.bodyText1!,
+                          style: textTheme.bodyLarge!,
                           children: [
                             const TextSpan(
                               text: 'Forgot your password? ',
                             ),
                             TextSpan(
                               text: 'Click Here',
-                              style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
                               recognizer: TapGestureRecognizer()..onTap = () {
                                 Get.toNamed(ForgotPassword.id);
                               },
@@ -92,7 +92,7 @@ class Login extends StatelessWidget {
                       Text(
                         'Don’t have an account?',
                         textAlign: TextAlign.center,
-                        style: textTheme.bodyText1!,
+                        style: textTheme.bodyLarge!,
                       ),
                       const SizedBox(height: 4),
                       GestureDetector(
@@ -102,7 +102,7 @@ class Login extends StatelessWidget {
                         child: Text(
                           'Sign Up',
                           textAlign: TextAlign.center,
-                          style: textTheme.bodyText1!.copyWith(
+                          style: textTheme.bodyLarge!.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),

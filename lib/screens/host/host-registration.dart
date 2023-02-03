@@ -28,7 +28,7 @@ class HostRegistration extends StatelessWidget {
         leadingWidth: 80,
         title: Text(
           AppStrings.becomeAHost,
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: DismissKeyboard(
@@ -221,7 +221,7 @@ class HostRegistration extends StatelessWidget {
         children: [
           Text(
             'Continue action using',
-            style: textTheme.headline5!.copyWith(
+            style: textTheme.headlineSmall!.copyWith(
               fontSize: 21,
             ),
           ),
@@ -252,7 +252,7 @@ class HostRegistration extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(
                           'Gallery',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -277,7 +277,7 @@ class HostRegistration extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(
                           'Camera',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),

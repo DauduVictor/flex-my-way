@@ -37,7 +37,7 @@ class PendingInvites extends StatelessWidget {
                   ),
                   child: Text(
                     'Pending Invites',
-                    style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                    style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -234,11 +234,11 @@ class ReusablePendingInviteButton extends StatelessWidget {
                   children: [
                     RichText(
                       text: TextSpan(
-                        style: textTheme.bodyText2!,
+                        style: textTheme.bodyMedium!,
                         children: [
                           TextSpan(
                             text: '#${invite?.attendeeId}',
-                            style: textTheme.bodyText1!.copyWith(
+                            style: textTheme.bodyLarge!.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
@@ -251,7 +251,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     ),
                     Text(
                       '${invite?.flexName}',
-                      style: textTheme.bodyText2!.copyWith(
+                      style: textTheme.bodyMedium!.copyWith(
                         fontSize: 14,
                         color: neutralColor.withOpacity(0.7),
                       ),

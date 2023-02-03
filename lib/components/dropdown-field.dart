@@ -34,14 +34,14 @@ class CustomDropdownButtonField extends StatelessWidget {
             value: value,
             child: Text(
               '$value',
-              style: textTheme.bodyText2,
+              style: textTheme.bodyMedium,
             ),
           ),
           ).toList(),
           // hint: FittedBox(
           //   child: Text(
           //     hintText,
-          //     style: textTheme.bodyText2,
+          //     style: textTheme.bodyMedium,
           //   ),
           // ),
           icon: const Icon(Icons.expand_more),
@@ -49,7 +49,7 @@ class CustomDropdownButtonField extends StatelessWidget {
             contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
             focusColor: neutralColor,
             labelText: hintText,
-            labelStyle:textTheme.bodyText2,
+            labelStyle:textTheme.bodyMedium,
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(24)),
               borderSide: BorderSide(color: neutralColor),

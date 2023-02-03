@@ -21,7 +21,7 @@ class ContactScreen extends StatelessWidget {
         leadingWidth: 80,
         title: Text(
           'Contacts',
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: controller.contact.isNotEmpty
@@ -43,7 +43,7 @@ class ContactScreen extends StatelessWidget {
                   ),
                 title: Text(
                   contact.displayName ?? '',
-                  style: textTheme.bodyText1,
+                  style: textTheme.bodyLarge,
                 ),
                 trailing: Checkbox(
                   value: isContactPicked,

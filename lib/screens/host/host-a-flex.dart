@@ -10,9 +10,12 @@ import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_place/google_place.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/host-controller.dart';
 import 'package:flex_my_way/util/util.dart';
+import '../../networking/endpoints.dart';
 import '../../networking/flex-datasource.dart';
 import 'host-flex-terms-and-conditions.dart';
 import 'package:image_picker/image_picker.dart';
@@ -37,7 +40,7 @@ class HostAFlex extends StatelessWidget {
         leadingWidth: 80,
         title: Text(
           AppStrings.hostAFlex,
-          style: textTheme.headline4!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: DismissKeyboard(
@@ -136,7 +139,7 @@ class HostAFlex extends StatelessWidget {
                                 TimeOfDay? picked = await showTimePicker(
                                     context: context,
                                     helpText: 'SELECT FLEX START TIME',
-                                    initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                    initialTime: const TimeOfDay(hour: 00, minute: 00),
                                     builder: (context, child) {
                                   return Theme(
                                     data: ThemeData.light().copyWith(
@@ -159,7 +162,6 @@ class HostAFlex extends StatelessWidget {
                                     picked.hour,
                                     picked.minute,
                                   );
-                                  print(controller.startTime);
                                 }
                               }
                             },
@@ -192,7 +194,7 @@ class HostAFlex extends StatelessWidget {
                                   TimeOfDay? picked = await showTimePicker(
                                       context: context,
                                       helpText: 'SELECT FLEX END TIME',
-                                      initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                      initialTime: const TimeOfDay(hour: 00, minute: 00),
                                       builder: (context, child) {
                                     return Theme(
                                       data: ThemeData.light().copyWith(
@@ -309,7 +311,7 @@ class HostAFlex extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         '  * You can upload multiple banner images',
-                        style: textTheme.bodyText2!.copyWith(
+                        style: textTheme.bodyMedium!.copyWith(
                           fontSize: 11.5,
                           color: primaryColor,
                           fontWeight: FontWeight.w500,
@@ -318,6 +320,66 @@ class HostAFlex extends StatelessWidget {
                     ),
                     const SizedBox(height: 19),
                     ///flex address
+                    // GooglePlaceAutoCompleteTextField(
+                    //     textEditingController: controller.flexAddressController,
+                    //     googleAPIKey: 'AIzaSyAC96m0EOwmdSr27lALNke_dlp-Y9n534Y',
+                    //     textStyle: textTheme.bodyMedium!.copyWith(
+                    //       fontSize: 14,
+                    //     ),
+                    //     inputDecoration: InputDecoration(
+                    //       hintText: 'Search address',
+                    //       hintStyle: textTheme.bodyMedium,
+                    //       labelText: 'Address',
+                    //       focusColor: neutralColor,
+                    //       suffixIcon: controller.showSearchSpinner == true
+                    //           ? SizedBox(
+                    //         width: 5,
+                    //         height: 5,
+                    //         child: SpinKitCircle(
+                    //           color: primaryColor.withOpacity(0.9),
+                    //           size: 25,
+                    //         ),
+                    //       )
+                    //           : IconButton(
+                    //         onPressed: (){},
+                    //         icon: const Icon(
+                    //           Icons.search,
+                    //           color: neutralColor,
+                    //         ),
+                    //       ),
+                    //       contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
+                    //       border: const OutlineInputBorder(
+                    //         borderRadius: BorderRadius.all(Radius.circular(24)),
+                    //         borderSide: BorderSide(color: neutralColor),
+                    //       ),
+                    //       disabledBorder: const OutlineInputBorder(
+                    //         borderRadius: BorderRadius.all(Radius.circular(24)),
+                    //         borderSide: BorderSide(color: neutralColor),
+                    //       ),
+                    //       enabledBorder: const OutlineInputBorder(
+                    //         borderRadius: BorderRadius.all(Radius.circular(24)),
+                    //         borderSide: BorderSide(color: neutralColor),
+                    //       ),
+                    //       focusedBorder: const OutlineInputBorder(
+                    //         borderRadius: BorderRadius.all(Radius.circular(24)),
+                    //         borderSide: BorderSide(color: neutralColor),
+                    //       ),
+                    //     ),
+                    //     debounceTime: 600,
+                    //     isLatLngRequired: true,
+                    //     getPlaceDetailWithLatLng: (Prediction prediction) {
+                    //       // controller.showSearchSpinner = true;
+                    //       print('placeDetails ' + prediction.lng.toString());
+                    //       print(prediction.toJson());
+                    //       // controller.selectedPrediction = prediction;
+                    //       // controller.showSearchSpinner = false;
+                    //       // controller.update();
+                    //     }, // this callback is called when isLatLngRequired is true
+                    //     itmClick: (Prediction prediction) {
+                    //       controller.flexAddressController.text = prediction.description!;
+                    //       controller.flexAddressController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description!.length));
+                    //     }
+                    // ),
                     CustomTextFormField(
                       hintText: AppStrings.setAddress,
                       keyboardType: TextInputType.streetAddress,
@@ -338,7 +400,7 @@ class HostAFlex extends StatelessWidget {
                         );
                       },
                       textInputAction: TextInputAction.next,
-                      textEditingController: controller.flexAddress,
+                      textEditingController: controller.flexAddressController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'This field is required';
@@ -587,7 +649,7 @@ class HostAFlex extends StatelessWidget {
         children: [
           Text(
             'Continue action using',
-            style: textTheme.headline5!.copyWith(
+            style: textTheme.headlineSmall!.copyWith(
               fontSize: 21,
             ),
           ),
@@ -618,7 +680,7 @@ class HostAFlex extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(
                           'Gallery',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -643,7 +705,7 @@ class HostAFlex extends StatelessWidget {
                         const SizedBox(height: 10),
                         Text(
                           'Camera',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -661,6 +723,7 @@ class HostAFlex extends StatelessWidget {
 
   /// Bottom modal Widget to set flex address
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
+    final HostController controller = Get.put(HostController());
     return StatefulBuilder(
       builder: (context, StateSetter setDialogState) {
         return DismissKeyboard(
@@ -684,7 +747,7 @@ class HostAFlex extends StatelessWidget {
                     Center(
                       child: Text(
                         'Search Address',
-                        style: textTheme.headline5!.copyWith(
+                        style: textTheme.headlineSmall!.copyWith(
                           fontSize: 17,
                         ),
                       ),
@@ -708,69 +771,113 @@ class HostAFlex extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: GetBuilder<HostController>(
                     builder: (controller) {
-                      return CustomTextFormField(
-                        hintText: AppStrings.enterAddress,
-                        textEditingController: controller.searchAddress,
-                        textCapitalization: TextCapitalization.sentences,
-                        textInputAction: TextInputAction.done,
-                        onChanged: (value) {
-                          if (value!.isNotEmpty) {
-                            searchAddress(value);
-                          }
-                        },
-                        suffix: controller.showSearchSpinner == true
-                          ? SizedBox(
-                            width: 5,
-                            height: 5,
-                            child: SpinKitCircle(
-                              color: primaryColor.withOpacity(0.9),
-                              size: 25,
+                      return GooglePlaceAutoCompleteTextField(
+                          textEditingController: controller.flexAddressController,
+                          googleAPIKey: 'AIzaSyAC96m0EOwmdSr27lALNke_dlp-Y9n534Y',
+                          textStyle: textTheme.bodyMedium!.copyWith(
+                            fontSize: 14,
+                          ),
+                          inputDecoration: InputDecoration(
+                            hintText: 'Search address',
+                            hintStyle: textTheme.bodyMedium,
+                            labelText: 'Address',
+                            focusColor: neutralColor,
+                            suffixIcon: controller.showSearchSpinner == true
+                              ? SizedBox(
+                                  width: 5,
+                                  height: 5,
+                                  child: SpinKitCircle(
+                                    color: primaryColor.withOpacity(0.9),
+                                    size: 25,
+                                  ),
+                                )
+                              : IconButton(
+                                  onPressed: (){},
+                                  icon: const Icon(
+                                    Icons.search,
+                                    color: neutralColor,
+                                  ),
+                                ),
+                            contentPadding: const EdgeInsets.fromLTRB(24, 24, 12, 16),
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(24)),
+                              borderSide: BorderSide(color: neutralColor),
                             ),
-                          )
-                              : const SizedBox(
-                          width: 2,
-                          height: 2,
-                        ),
+                            disabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(24)),
+                              borderSide: BorderSide(color: neutralColor),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(24)),
+                              borderSide: BorderSide(color: neutralColor),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(24)),
+                              borderSide: BorderSide(color: neutralColor),
+                            ),
+                          ),
+                          debounceTime: 600,
+                          isLatLngRequired: false,
+                          getPlaceDetailWithLatLng: (Prediction prediction) {
+                            controller.showSearchSpinner = true;
+                            print('placeDetails ' + prediction.lng.toString());
+                            print(prediction.toJson());
+                            controller.selectedPrediction = prediction;
+                            controller.showSearchSpinner = false;
+                            controller.update();
+                          }, // this callback is called when isLatLngRequired is true
+                          itmClick: (Prediction prediction) {
+                            controller.flexAddressController.text = prediction.description!;
+                            controller.flexAddressController.selection = TextSelection.fromPosition(TextPosition(offset: prediction.description!.length));
+                          }
                       );
                     }
                   ),
                 ),
-                const Divider(
-                  color: neutralColor,
-                  height: 2.5,
-                  thickness: 0.3,
-                ),
-                TextButton(
-                  onPressed: () {
-                    try {
-                      controller.getUserLocation();
-                      Navigator.pop(context);
-                    } catch (e) {
-                      Functions.showMessage(e);
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
-                  ),
-                  child: Row(
+                const SizedBox(height: 5),
+                Visibility(
+                  visible: false,
+                  child: Column(
                     children: [
-                      const Icon(
-                        Icons.near_me_outlined,
+                      const Divider(
                         color: neutralColor,
-                        size: 21,
+                        height: 2.5,
+                        thickness: 0.3,
                       ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Use my location',
-                        style: textTheme.bodyText1,
+                      TextButton(
+                        onPressed: () {
+                          try {
+                            controller.getUserLocation();
+                            Navigator.pop(context);
+                          } catch (e) {
+                            Functions.showMessage(e);
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.near_me_outlined,
+                              color: neutralColor,
+                              size: 21,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              'Use my location',
+                              style: textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        color: primaryColor,
+                        height: 0.1,
+                        thickness: 0.1,
                       ),
                     ],
                   ),
-                ),
-                const Divider(
-                  color: primaryColor,
-                  height: 0.1,
-                  thickness: 0.1,
                 ),
                 GetBuilder<HostController>(
                   builder: (controller) {
@@ -829,7 +936,7 @@ class HostAFlex extends StatelessWidget {
         locationSuggestionContainer.add(
           TextButton(
             onPressed: () async {
-              controller.flexAddress.text = await controller.formatLocation(
+              controller.flexAddressController.text = await controller.formatLocation(
                 controller.location[i].latitude,
                 controller.location[i].longitude);
               controller.lat.value = controller.location[i].latitude.toString();
@@ -844,7 +951,7 @@ class HostAFlex extends StatelessWidget {
               child: Text(
                 '${controller.formatLocation(controller.location[i].latitude,
                     controller.location[i].longitude)}',
-                style: textTheme.bodyText1!.copyWith(
+                style: textTheme.bodyLarge!.copyWith(
                   fontSize: 16.5,
                 ),
               ),
@@ -901,7 +1008,7 @@ class HostAFlex extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
                   child: Text(
                     AppStrings.weWillTake,
-                    style: textTheme.bodyText2!.copyWith(
+                    style: textTheme.bodyMedium!.copyWith(
                       fontSize: 16,
                       height: 1.2
                     ),

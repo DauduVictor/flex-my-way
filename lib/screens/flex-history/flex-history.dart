@@ -78,7 +78,7 @@ class FlexHistory extends StatelessWidget {
                       children: [
                         Text(
                           'Flex History',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -354,7 +354,7 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
                     children: [
                       Text(
                         title.capitalizeFirst!,
-                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                        style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -370,7 +370,7 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
                     children: [
                       Text(
                         month,
-                        style: textTheme.headline5!.copyWith(
+                        style: textTheme.headlineSmall!.copyWith(
                           color: primaryColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -378,7 +378,7 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
                       ),
                       Text(
                         day,
-                        style: textTheme.headline5!.copyWith(
+                        style: textTheme.headlineSmall!.copyWith(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
@@ -445,7 +445,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                     children: [
                       Text(
                         title.capitalizeFirst!,
-                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                        style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -463,7 +463,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                         children: [
                           Text(
                             month,
-                            style: textTheme.headline5!.copyWith(
+                            style: textTheme.headlineSmall!.copyWith(
                               color: primaryColor,
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -471,7 +471,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                           ),
                           Text(
                             day,
-                            style: textTheme.headline5!.copyWith(
+                            style: textTheme.headlineSmall!.copyWith(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                             ),
@@ -483,7 +483,7 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                     ishost == true
                       ? Text(
                       'Host',
-                      style: textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w600),
+                      style: textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600),
                     )
                       : Container(),
                   ],

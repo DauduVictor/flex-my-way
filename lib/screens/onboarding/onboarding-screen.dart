@@ -65,7 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             const Spacer(),
             Text(
               AppStrings.celebrateTogether,
-              style: textTheme.headline5!.copyWith(color: whiteColor),
+              style: textTheme.headlineSmall!.copyWith(color: whiteColor),
             ),
             const SizedBox(height: 24),
             Text(

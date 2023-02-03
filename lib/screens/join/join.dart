@@ -473,12 +473,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                           children: [
                             Text(
                               'Filters',
-                              style: textTheme.headline5!.copyWith(fontSize: 28),
+                              style: textTheme.headlineSmall!.copyWith(fontSize: 28),
                             ),
                             const SizedBox(height: 17),
                             Text(
                               'Preferred Age Range',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
+                              style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                             ),
                             const SizedBox(height: 17),
                             Row(
@@ -519,7 +519,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                             //occupation
                             /*Text(
                               'Occupation',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
+                              style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                             ),
                             const SizedBox(height: 17),
                             Row(
@@ -543,7 +543,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                             const SizedBox(height: 30),*/
                             Text(
                               'Cost of Entry',
-                              style: textTheme.headline5!.copyWith(fontSize: 17),
+                              style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                             ),
                             const SizedBox(height: 17),
                             Row(
@@ -590,7 +590,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                     const SizedBox(height: 15),
                                     Text(
                                       'What paid flex range are you looking at?',
-                                      style: textTheme.headline5!.copyWith(fontSize: 17),
+                                      style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                                     ),
                                     const SizedBox(height: 30),
                                     Slider(
@@ -611,14 +611,14 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                         children: [
                                           Text(
                                             'N1,000',
-                                            style: textTheme.headline5!.copyWith(
+                                            style: textTheme.headlineSmall!.copyWith(
                                               color: primaryColor,
                                               fontSize: 19,
                                             ),
                                           ),
                                           Text(
                                             'N100,000',
-                                            style: textTheme.headline5!.copyWith(
+                                            style: textTheme.headlineSmall!.copyWith(
                                               color: primaryColor,
                                               fontSize: 19,
                                             ),
@@ -704,7 +704,7 @@ class ReuableMapFilterButton extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: textTheme.headline5!.copyWith(
+            style: textTheme.headlineSmall!.copyWith(
               fontSize: 14,
               color: color ?? lightButtonColor,
             ),

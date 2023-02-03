@@ -139,7 +139,7 @@ class HeadingText extends StatelessWidget {
       children: [
         Text(
           textName,
-          style: textTheme.headline5!.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontSize: 17, fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 10),
       ],
@@ -168,7 +168,7 @@ class SubHeadingText extends StatelessWidget {
           children: [
             Text(
               textNo,
-              style: textTheme.headline5!.copyWith(
+              style: textTheme.headlineSmall!.copyWith(
                 fontSize: 14, 
                 fontWeight: FontWeight.w400,
               ),
@@ -176,7 +176,7 @@ class SubHeadingText extends StatelessWidget {
             Expanded(
               child: Text(
                 textName,
-                style: textTheme.headline5!.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
+                style: textTheme.headlineSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w400),
               ),
             ),
           ],

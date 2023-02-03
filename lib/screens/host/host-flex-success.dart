@@ -39,13 +39,13 @@ class HostFlexSuccess extends StatelessWidget {
               const SizedBox(height: 32),
               Text(
                 AppStrings.congratulations,
-                style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
               Text(
                 AppStrings.yourFlexIsLive,
                 textAlign: TextAlign.center,
-                style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 32),
               Padding(
@@ -56,17 +56,17 @@ class HostFlexSuccess extends StatelessWidget {
                       textAlign: TextAlign.justify,
                       text: TextSpan(
                         text: AppStrings.importSelected,
-                        style: textTheme.bodyText2,
+                        style: textTheme.bodyMedium,
                         children: [
                           TextSpan(
                             text: AppStrings.betaSMS,
-                            style: textTheme.bodyText2!.copyWith(
+                            style: textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
                             text: AppStrings.bothAtVery,
-                            style: textTheme.bodyText2,
+                            style: textTheme.bodyMedium,
                           ),
                         ],
                       ),
@@ -95,15 +95,15 @@ class HostFlexSuccess extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 text: TextSpan(
                                   text: accountController.username.value,
-                                  style: textTheme.bodyText2!
+                                  style: textTheme.bodyMedium!
                                       .copyWith(fontWeight: FontWeight.w600),
                                   children: [
                                     TextSpan(
                                         text: AppStrings.isInviting,
-                                        style: textTheme.bodyText2),
+                                        style: textTheme.bodyMedium),
                                     TextSpan(
                                       text: Functions.getFormattedDateTimeText(hostController.dateController.text),
-                                      style: textTheme.bodyText2!
+                                      style: textTheme.bodyMedium!
                                           .copyWith(fontWeight: FontWeight.w600),
                                     ),
                                   ],
@@ -124,7 +124,7 @@ class HostFlexSuccess extends StatelessWidget {
                             child: Text(
                               AppStrings.flexURL,
                               textAlign: TextAlign.center,
-                              style: textTheme.bodyText2!.copyWith(color: primaryColor),
+                              style: textTheme.bodyMedium!.copyWith(color: primaryColor),
                             ),
                           )
                         ],
@@ -149,7 +149,7 @@ class HostFlexSuccess extends StatelessWidget {
                           child: Center(
                             child: Text(
                               AppStrings.betaSMSCaps,
-                              style: textTheme.bodyText2!.copyWith(
+                              style: textTheme.bodyMedium!.copyWith(
                                 color: whiteColor,
                               ),
                             ),

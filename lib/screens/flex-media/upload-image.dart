@@ -32,7 +32,7 @@ class UploadImage extends StatelessWidget {
         leadingWidth: 80,
         title: Text(
           'Upload Image',
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
         backgroundColor: transparentColor,
       ),

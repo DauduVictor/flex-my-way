@@ -37,7 +37,7 @@ class Button extends StatelessWidget {
         child: Center(
           child: child ?? Text(
             label,
-            style: textTheme.bodyText2!.copyWith(
+            style: textTheme.bodyMedium!.copyWith(
               color: labelColor,
               fontWeight: FontWeight.w600,
             ),

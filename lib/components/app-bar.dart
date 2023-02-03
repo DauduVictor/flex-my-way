@@ -16,7 +16,7 @@ AppBar buildAppBarWithNotification(
 
     title: Text(
       'Hi, $userName',
-      style: textTheme.headline5,
+      style: textTheme.headlineSmall,
     ),
     actions: [
       Center(
@@ -106,7 +106,7 @@ AppBar buildAppBar(
     ),
     title: Text(
       title,
-      style: textTheme.headline5!.copyWith(fontSize: 23.5, fontWeight: FontWeight.w600),
+      style: textTheme.headlineSmall!.copyWith(fontSize: 23.5, fontWeight: FontWeight.w600),
     ),
   );
 }

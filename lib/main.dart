@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
         ContactScreen.id: (context) => ContactScreen(),
         UploadImage.id: (context) => UploadImage(),
         EditFlex.id: (context) => const EditFlex(),
-        FlexHistoryImageArchive.id: (context) => FlexHistoryImageArchive(),
+        FlexHistoryImageArchive.id: (context) => const FlexHistoryImageArchive(),
         PaymentMethod.id: (context) => PaymentMethod(),
         AddCard.id: (context) => AddCard(),
       },

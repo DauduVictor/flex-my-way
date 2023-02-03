@@ -58,13 +58,13 @@ class ResetPassword extends StatelessWidget {
                       SizedBox(height: SizeConfig.screenHeight! * 0.04),
                       Text(
                         AppStrings.resetPassword,
-                        style: textTheme.headline4!.copyWith(fontSize: 30),
+                        style: textTheme.headlineMedium!.copyWith(fontSize: 30),
                       ),
                       const SizedBox(height: 32),
                       Text(
                         'We have sent a code to your registered Email. \nEnter your Email, Code and new Password to reset your password',
                         textAlign: TextAlign.center,
-                        style: textTheme.bodyText1!,
+                        style: textTheme.bodyLarge!,
                       ),
                       const SizedBox(height: 32),
                       _buildForm(textTheme),

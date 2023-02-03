@@ -140,7 +140,7 @@ class _FindAFlexState extends State<FindAFlex> {
                             backgroundColor: splashBackgroundColor,
                             child: Text(
                               AppStrings.host,
-                              style: textTheme.headline6!.copyWith(
+                              style: textTheme.titleLarge!.copyWith(
                                   color: whiteColor,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -157,7 +157,7 @@ class _FindAFlexState extends State<FindAFlex> {
                             backgroundColor: whiteColor,
                             child: Text(
                               AppStrings.join,
-                              style: textTheme.headline6!.copyWith(
+                              style: textTheme.titleLarge!.copyWith(
                                   color: splashBackgroundColor,
                                   fontWeight: FontWeight.w600),
                             ),
@@ -172,7 +172,7 @@ class _FindAFlexState extends State<FindAFlex> {
                           SizedBox(height: SizeConfig.screenHeight! * 0.08),
                           Text(
                             'Have an account already?',
-                            style: textTheme.bodyText1!.copyWith(
+                            style: textTheme.bodyLarge!.copyWith(
                               color: whiteColor,
                               fontSize: 19,
                               fontWeight: FontWeight.w600,

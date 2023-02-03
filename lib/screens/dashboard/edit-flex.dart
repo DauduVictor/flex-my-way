@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -51,7 +50,7 @@ class _EditFlexState extends State<EditFlex> {
         leadingWidth: 80,
         title: Text(
           AppStrings.editFlex,
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: DismissKeyboard(
@@ -164,7 +163,7 @@ class _EditFlexState extends State<EditFlex> {
                                   TimeOfDay? picked = await showTimePicker(
                                       context: context,
                                       helpText: 'SELECT FLEX START TIME',
-                                      initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                      initialTime: const TimeOfDay(hour: 00, minute: 00),
                                       builder: (context, child) {
                                     return Theme(
                                       data: ThemeData.light().copyWith(
@@ -224,7 +223,7 @@ class _EditFlexState extends State<EditFlex> {
                                   TimeOfDay? picked = await showTimePicker(
                                       context: context,
                                       helpText: 'SELECT FLEX END TIME',
-                                      initialTime: const TimeOfDay(hour: 00, minute: 00)
+                                      initialTime: const TimeOfDay(hour: 00, minute: 00),
                                       builder: (context, child) {
                                     return Theme(
                                       data: ThemeData.light().copyWith(
@@ -449,7 +448,7 @@ class _EditFlexState extends State<EditFlex> {
                             ),
                             child: Text(
                               AppStrings.weWillTake,
-                              style: textTheme.bodyText2,
+                              style: textTheme.bodyMedium,
                             ),
                           )
                         : Container(),
@@ -615,7 +614,7 @@ class _EditFlexState extends State<EditFlex> {
         children: [
           Text(
             'Continue action using',
-            style: textTheme.headline5!.copyWith(
+            style: textTheme.headlineSmall!.copyWith(
               fontSize: 21,
             ),
           ),
@@ -646,7 +645,7 @@ class _EditFlexState extends State<EditFlex> {
                         const SizedBox(height: 10),
                         Text(
                           'Gallery',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -671,7 +670,7 @@ class _EditFlexState extends State<EditFlex> {
                         const SizedBox(height: 10),
                         Text(
                           'Camera',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -712,7 +711,7 @@ class _EditFlexState extends State<EditFlex> {
                       Center(
                         child: Text(
                           'Search Address',
-                          style: textTheme.headline5!.copyWith(
+                          style: textTheme.headlineSmall!.copyWith(
                             fontSize: 17,
                           ),
                         ),
@@ -775,7 +774,7 @@ class _EditFlexState extends State<EditFlex> {
                         const SizedBox(width: 10),
                         Text(
                           'Use my location',
-                          style: textTheme.bodyText1,
+                          style: textTheme.bodyLarge,
                         ),
                       ],
                     ),

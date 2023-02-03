@@ -4,6 +4,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -54,7 +55,7 @@ class HostController extends GetxController {
   final TextEditingController searchAddress = TextEditingController();
 
   /// A [TextEditingController] to control the input text for flex address
-  final TextEditingController flexAddress = TextEditingController();
+  final TextEditingController flexAddressController = TextEditingController();
 
   /// A variable to hold the flex start time
   DateTime? pickedDate;
@@ -143,7 +144,7 @@ class HostController extends GetxController {
       long.value = double.parse(value[1]).toString();
       List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
-      flexAddress.text = ('${place.street}, ${place.locality}, ${place.country}');
+      flexAddressController.text = ('${place.street}, ${place.locality}, ${place.country}');
       print(lat.value);
       print(long.value);
     }).catchError((e) async {
@@ -151,6 +152,9 @@ class HostController extends GetxController {
       throw(e);
     });
   }
+
+  /// Variable to hold prediction
+  Prediction? selectedPrediction;
 
   /// Function to launch the url for the video link
   Future <void> launchVideo() async {

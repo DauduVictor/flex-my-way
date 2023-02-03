@@ -60,7 +60,7 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
         leadingWidth: 80,
         title: Text(
           'Flex archive',
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
       body: showSpinner == false

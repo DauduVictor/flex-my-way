@@ -153,6 +153,26 @@ class UserController extends GetxController {
     });
   }
 
+  void getUserProfile() async {
+    var api = UserDataSource();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getBool('loggedIn') == true) {
+      await api.getUserProfile().then((value) {
+        userProfile = value;
+        flexAttendedList.clear();
+        update();
+        for (int i = 0; i < userProfile!.flexAttended!.length; i++) {
+          flexAttendedList.add(userProfile!.flexAttended![i].flexCode!);
+        }
+        update();
+        print(flexAttendedList);
+      }).catchError((e) {
+        isPastLoaded.value = true;
+        print(e);
+      });
+    }
+  }
+
   String getFlexAttendeeStatusText(String flexId) {
     print('here');
     String textStatus = '';

@@ -32,3 +32,5 @@ const GET_NOTIFICATION = BASE_URL + 'notification/get';
 const DELETE_NOTIFICATION = BASE_URL + 'notification/';
 
 const GOOGLE_PLACE_API = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+
+getGoogleApiKey() => 'AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';

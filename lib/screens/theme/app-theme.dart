@@ -8,7 +8,7 @@ class AppTheme {
   static ThemeData themeData = ThemeData(
     colorScheme: _colorScheme,
     textTheme: _textTheme(_colorScheme),
-    toggleableActiveColor: primaryColor,
+    // toggleableActiveColor: primaryColor,
     primaryColor: primaryColor,
     fontFamily: 'Gilroy',
     highlightColor: Colors.transparent,
@@ -61,36 +61,36 @@ class AppTheme {
   );
 
   static TextTheme _textTheme(ColorScheme colorScheme) => const TextTheme(
-    headline4: TextStyle(
+    headlineMedium: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.bold,
       color: neutralColor,
     ),
-    headline5: TextStyle(
+    headlineSmall: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.w400,
       color: neutralColor,
     ),
-    headline6: TextStyle(
+    titleLarge: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w400,
       color: neutralColor,
     ),
-    subtitle1: TextStyle(
+    titleMedium: TextStyle(
       color: neutralColor,
       fontSize: 12,
       fontWeight: FontWeight.w400,
     ),
-    bodyText1: TextStyle(
+    bodyLarge: TextStyle(
       fontSize: 14,
       color: neutralColor,
       fontWeight: FontWeight.w500,
     ),
-    bodyText2: TextStyle(
+    bodyMedium: TextStyle(
       fontSize: 16,
       color: neutralColor,
     ),
-    button: TextStyle(
+    labelLarge: TextStyle(
       fontSize: 18,
       color: neutralColor,
       fontWeight: FontWeight.w600

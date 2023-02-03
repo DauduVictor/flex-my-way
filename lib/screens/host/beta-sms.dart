@@ -37,7 +37,7 @@ class BetaSms extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           'BetaSMS',
-          style: textTheme.headline4!.copyWith(fontSize: 30),
+          style: textTheme.headlineMedium!.copyWith(fontSize: 30),
         ),
       ),
       body: DismissKeyboard(
@@ -205,7 +205,7 @@ class BetaSms extends StatelessWidget {
                         children: [
                           Text(
                             hostController.isUploaded.value ? 'Add more Contacts' : 'Upload your Contacts',
-                            style: textTheme.bodyText2,
+                            style: textTheme.bodyMedium,
                           ),
                           const Icon(
                             Icons.contacts_outlined,
@@ -283,7 +283,7 @@ class BetaSms extends StatelessWidget {
                       ),
                       child: Text(
                         'You will be redirected to our payment portal to complete this process.',
-                        style: textTheme.bodyText1!.copyWith(
+                        style: textTheme.bodyLarge!.copyWith(
                           color: Colors.black,
                           fontSize: 14,
                         ),

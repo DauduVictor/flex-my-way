@@ -164,7 +164,7 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Text(
                         AppStrings.manageYourFlex,
-                        style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                        style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 24),
                       Visibility(
@@ -421,7 +421,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                           children: [
                             Text(
                               dashboardFLex.flexName!,
-                              style: textTheme.headline6!.copyWith(fontWeight: FontWeight.w600),
+                              style: textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: SizeConfig.screenHeight! * 0.013),
                             Column(
@@ -429,7 +429,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                               children: [
                                 Text(
                                   '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
-                                  style: textTheme.bodyText2!.copyWith(
+                                  style: textTheme.bodyMedium!.copyWith(
                                     fontSize: 15,
                                     color: neutralColor.withOpacity(0.5),
                                     fontWeight: FontWeight.w600,
@@ -437,7 +437,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                                 ),
                                 Text(
                                   AppStrings.confirmedInvitees,
-                                  style: textTheme.bodyText2!.copyWith(
+                                  style: textTheme.bodyMedium!.copyWith(
                                     fontSize: 15,
                                     color: neutralColor.withOpacity(0.5),
                                     fontWeight: FontWeight.w600,
@@ -459,7 +459,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                         children: [
                           Text(
                             'Edit',
-                            style: textTheme.bodyText2!.copyWith(
+                            style: textTheme.bodyMedium!.copyWith(
                               fontSize: 13,
                               color: primaryColor,
                               fontWeight: FontWeight.w600,

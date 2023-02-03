@@ -60,7 +60,7 @@ class Settings extends StatelessWidget {
                           ),
                           child: Text(
                             AppStrings.settings,
-                            style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+                            style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
                           ),
                         ),
                         controller.canHostFlex.value != true
@@ -342,11 +342,11 @@ class Settings extends StatelessWidget {
         ),
         title: Text(
           AppStrings.logOut,
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
         content: Text(
           AppStrings.logOutPrompt,
-          style: textTheme.bodyText1!.copyWith(
+          style: textTheme.bodyLarge!.copyWith(
             fontSize: 17,
             fontWeight: FontWeight.w500,
           ),
@@ -393,11 +393,11 @@ class Settings extends StatelessWidget {
         ),
         title: Text(
           AppStrings.upgradeHost,
-          style: textTheme.headline5!.copyWith(fontWeight: FontWeight.w600),
+          style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
         ),
         content: Text(
           AppStrings.upgradeHostPrompt,
-          style: textTheme.bodyText1!.copyWith(
+          style: textTheme.bodyLarge!.copyWith(
             fontSize: 17,
             fontWeight: FontWeight.w500,
           ),

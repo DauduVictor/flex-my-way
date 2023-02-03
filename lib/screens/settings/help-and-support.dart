@@ -55,7 +55,7 @@ class HelpAndSupport extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Call us on',
-                  style: textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w500),
+                  style: textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                 ),
                 Text(
                   '09023130910',
@@ -78,7 +78,7 @@ class HelpAndSupport extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   'Send us an e-mail',
-                  style: textTheme.bodyText2!.copyWith(fontWeight: FontWeight.w500),
+                  style: textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                 ),
                 Text(
                   'hello@flexmyway.com',

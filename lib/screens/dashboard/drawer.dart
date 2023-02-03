@@ -59,7 +59,7 @@ class RefactoredDrawer extends StatelessWidget {
                           backgroundColor: primaryColor.withOpacity(0.2),
                           child: Text(
                             userController.username.value.substring(0,1).toUpperCase(),
-                            style: textTheme.headline4!.copyWith(
+                            style: textTheme.headlineMedium!.copyWith(
                               fontSize: 40,
                               color: primaryColor,
                               fontWeight: FontWeight.w500,
@@ -79,7 +79,7 @@ class RefactoredDrawer extends StatelessWidget {
                                 child: Text(
                                   userController.username.value.split(' ')[0].capitalizeFirst ?? '',
                                   overflow: TextOverflow.ellipsis,
-                                  style: textTheme.headline5!.copyWith(
+                                  style: textTheme.headlineSmall!.copyWith(
                                     fontSize: 22,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
@@ -98,7 +98,7 @@ class RefactoredDrawer extends StatelessWidget {
                             },
                             child: Text(
                               'View Profile',
-                              style: textTheme.headline5!.copyWith(
+                              style: textTheme.headlineSmall!.copyWith(
                                 fontSize: 13.5,
                                 color: primaryColor,
                                 decoration: TextDecoration.underline,
@@ -112,13 +112,13 @@ class RefactoredDrawer extends StatelessWidget {
                   ),
                   /*Text(
                     AppStrings.flexId,
-                    style: textTheme.bodyText1,
+                    style: textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 3.5),
                   Obx(() {
                     return Text(
                       '#${userController.bearerToken.value.substring(1,10).toLowerCase()}',
-                      style: textTheme.headline5!.copyWith(
+                      style: textTheme.headlineSmall!.copyWith(
                         fontSize: 26,
                         fontWeight: FontWeight.w600,
                       ),
@@ -208,7 +208,7 @@ class RefactoredDrawer extends StatelessWidget {
                 children: [
                   Text(
                     'Legal',
-                    style: textTheme.bodyText1!.copyWith(
+                    style: textTheme.bodyLarge!.copyWith(
                       fontSize: 21,
                       fontWeight: FontWeight.w500,
                     ),
@@ -221,7 +221,7 @@ class RefactoredDrawer extends StatelessWidget {
                     },
                     child: Text(
                       AppStrings.termsAndConditions,
-                      style: textTheme.bodyText1!.copyWith(
+                      style: textTheme.bodyLarge!.copyWith(
                         color: neutralColor.withOpacity(0.5),
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -236,7 +236,7 @@ class RefactoredDrawer extends StatelessWidget {
                     },
                     child: Text(
                       AppStrings.privacyPolicy,
-                      style: textTheme.bodyText1!.copyWith(
+                      style: textTheme.bodyLarge!.copyWith(
                         color: neutralColor.withOpacity(0.5),
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -280,7 +280,7 @@ class DrawerButton extends StatelessWidget {
             width: SizeConfig.screenWidth,
             child: Text(
               routeName,
-              style: textTheme.bodyText1!.copyWith(fontSize: 21, fontWeight: FontWeight.w500),
+              style: textTheme.bodyLarge!.copyWith(fontSize: 21, fontWeight: FontWeight.w500),
             ),
           ),
         ),

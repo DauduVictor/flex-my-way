@@ -38,11 +38,11 @@
 //                   children: [
 //                     RichText(
 //                       text: TextSpan(
-//                         style: textTheme.bodyText2!,
+//                         style: textTheme.bodyMedium!,
 //                         children: [
 //                           TextSpan(
 //                             text: '#12345678',
-//                             style: textTheme.bodyText1!.copyWith(
+//                             style: textTheme.bodyLarge!.copyWith(
 //                               fontSize: 18,
 //                               fontWeight: FontWeight.w600,
 //                             ),
@@ -55,7 +55,7 @@
 //                     ),
 //                     Text(
 //                       'Afro Nation Festival',
-//                       style: textTheme.bodyText2!.copyWith(
+//                       style: textTheme.bodyMedium!.copyWith(
 //                         fontSize: 14,
 //                         color: neutralColor.withOpacity(0.7),
 //                       ),

@@ -97,7 +97,7 @@ class _FlexeryState extends State<Flexery> {
                               child: TextField(
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.search,
-                                  style: textTheme.bodyText1!.copyWith(fontWeight: FontWeight.w600),
+                                  style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
                                   controller: controller.searchController,
                                   onChanged: (value) {
                                     getFlexeryByHashTag(value);
@@ -111,7 +111,7 @@ class _FlexeryState extends State<Flexery> {
                                       size: 16,
                                     ),
                                     hintText: 'Search flex hashtags',
-                                    hintStyle: textTheme.bodyText1!.copyWith(
+                                    hintStyle: textTheme.bodyLarge!.copyWith(
                                       fontSize: 13,
                                       color: neutralColor.withOpacity(0.3),
                                     ),
