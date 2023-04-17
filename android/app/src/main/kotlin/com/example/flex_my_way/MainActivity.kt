@@ -1,4 +1,4 @@
-package com.example.flex_my_way
+package com.flexmyway.app
 
 import io.flutter.embedding.android.FlutterActivity
 

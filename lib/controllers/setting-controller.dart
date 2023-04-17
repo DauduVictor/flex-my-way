@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../screens/splash-screen.dart';
-import '../util/constants/constants.dart';
 
 class SettingsController extends GetxController {
 

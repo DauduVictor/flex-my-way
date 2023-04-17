@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/future-values.dart';
 import 'networking.dart';
 import 'package:flex_my_way/model/model.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class FlexDataSource {
@@ -34,8 +33,7 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    return _netUtil.get(GET_DASHBOARD_FLEX+'?filter=$filter', headers: header).then((res) {
-      print(':::getDashboardFlex: $res');
+    return _netUtil.get('$GET_DASHBOARD_FLEX?filter=$filter', headers: header).then((res) {
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
       flexes = rest.map<DashboardFLex>((json) => DashboardFLex.fromJson(json)).toList();
@@ -62,10 +60,7 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    print(header);
-    print(GET_FLEX_HISTORY);
-    return _netUtil.get(GET_FLEX_HISTORY+'?filter=$filter', headers: header).then((res) {
-      print(':::getFlexHistory: $res');
+    return _netUtil.get('$GET_FLEX_HISTORY?filter=$filter', headers: header).then((res) {
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
       flexes = rest.map<HistoryFlex>((json) => HistoryFlex.fromJson(json)).toList();
@@ -149,7 +144,6 @@ class FlexDataSource {
     });
     return _netUtil.postForm(CREATE_A_FLEX, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
-      print (res['data']);
       return FlexSuccess.fromJson(res['data']);
     }).catchError((e){
       errorHandler.handleError(e);
@@ -161,7 +155,6 @@ class FlexDataSource {
   /// It returns a [] model
   Future<dynamic> editFlex(List<http.MultipartFile> uploads, Map<String, dynamic> body, String code ) async {
     for (int i = 0; i < uploads.length; i++) {
-      print(uploads[i]);
     }
     String? userId;
     Map<String, String> header = {};
@@ -175,20 +168,17 @@ class FlexDataSource {
       header['Content-Type'] = 'multipart/form-data';
       header['Accept'] = '*/*';
     });
-    print(uploads.length);
     if (uploads.isNotEmpty) {
-      return _netUtil.putForm(UPDATE_A_FLEX+'$code/update', uploads, header: header, body: body).then((res) {
+      return _netUtil.putForm('$UPDATE_A_FLEX$code/update', uploads, header: header, body: body).then((res) {
         if(res['status'] != 'success') throw res['message'];
-        print (res['data']);
         return 'done';
       }).catchError((e) {
         errorHandler.handleError(e);
       });
     }
     else {
-      return _netUtil.put(UPDATE_A_FLEX+'$code/update', headers: header, body: body).then((res) {
+      return _netUtil.put('$UPDATE_A_FLEX$code/update', headers: header, body: body).then((res) {
         if(res['status'] != 'success') throw res['message'];
-        print (res['data']);
         return 'done';
       }).catchError((e){
         errorHandler.handleError(e);
@@ -209,9 +199,8 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
-    String GET_FLEX_DETAILS_URL = GET_FLEX_DETAILS + '$flexCode/get';
-    return _netUtil.get(GET_FLEX_DETAILS_URL, headers: header).then((res) {
-      print(':::getFlexDetails: $res');
+    String getFlexDetailsUrl = '$GET_FLEX_DETAILS$flexCode/get';
+    return _netUtil.get(getFlexDetailsUrl, headers: header).then((res) {
       if(res['status'] != 'success') throw res['data'];
       flexes = Flexes.fromJson(res['data']);
       return flexes;
@@ -234,9 +223,8 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
-    String JOIN_FLEX_URL = JOIN_FLEX+'$flexId/join';
-    return _netUtil.get(JOIN_FLEX_URL, headers: header).then((res) {
-      print(res);
+    String joinFlexUrl = '$JOIN_FLEX$flexId/join';
+    return _netUtil.get(joinFlexUrl, headers: header).then((res) {
       if(res['status'] != 'success') throw res['data'];
       return res['data'];
     }).catchError((e){
@@ -278,10 +266,8 @@ class FlexDataSource {
         ageParam = '&ageRating=17';
         break;
     }
-    String GET_FLEX_BY_LOCATION_URL = GET_FLEX_BY_LOCATION + 'lat=$lat&lng=$long$payParam$ageParam';
-    print(GET_FLEX_BY_LOCATION_URL);
-    print(header);
-    return _netUtil.get(GET_FLEX_BY_LOCATION_URL, headers: header).then((res) {
+    String getFlexByLocationUrl = '${GET_FLEX_BY_LOCATION}lat=$lat&lng=$long$payParam$ageParam';
+    return _netUtil.get(getFlexByLocationUrl, headers: header).then((res) {
       log(':::getFlexByLocation: $res');
       if(res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
@@ -303,9 +289,8 @@ class FlexDataSource {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     });
-    String APPROVE_ATTENDEE_URL = APPROVE_ATTENDEE + 'approve';
-    return _netUtil.post(APPROVE_ATTENDEE_URL, headers: header, body: body).then((res) {
-      print(res);
+    String approveAttendeeUrl = '${APPROVE_ATTENDEE}approve';
+    return _netUtil.post(approveAttendeeUrl, headers: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['data'];
       return res['data'];
     }).catchError((e){
@@ -324,8 +309,8 @@ class FlexDataSource {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     });
-    String REJECT_ATTENDEE_URL = REJECT_ATTENDEE + 'reject';
-    return _netUtil.post(REJECT_ATTENDEE_URL, headers: header, body: body).then((res) {
+    String rejectAttendeeUrl = '${REJECT_ATTENDEE}reject';
+    return _netUtil.post(rejectAttendeeUrl, headers: header, body: body).then((res) {
       log(':::rejectAttendee: $res');
       if(res['status'] != 'success') throw res['data'];
       return res['data'];
@@ -350,10 +335,9 @@ class FlexDataSource {
     if (hashTag.startsWith('#')) {
       hashTag = hashTag.replaceFirst('#', '');
     }
-    String GET_FLEXERY_URL = GET_FLEXERY + '?search=$hashTag';
-    log(GET_FLEXERY_URL);
-    print(header);
-    return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
+    String getFlexeryUrl = '$GET_FLEXERY?search=$hashTag';
+    log(getFlexeryUrl);
+    return _netUtil.get(getFlexeryUrl, headers: header).then((res) {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
@@ -377,10 +361,9 @@ class FlexDataSource {
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'application/json';
     });
-    String GET_FLEXERY_URL = GET_FLEXERY + '?filter=$filter';
-    log(GET_FLEXERY_URL);
-    print(header);
-    return _netUtil.get(GET_FLEXERY_URL, headers: header).then((res) {
+    String getFlexeryUrl = '$GET_FLEXERY?filter=$filter';
+    log(getFlexeryUrl);
+    return _netUtil.get(getFlexeryUrl, headers: header).then((res) {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
@@ -409,7 +392,7 @@ class FlexDataSource {
     });
     return _netUtil.postForm(ADD_FLEXERY, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
-      print (res['data']);
+      log (res['data']);
       return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
@@ -420,20 +403,18 @@ class FlexDataSource {
   /// A get request to use the [GOOGLE_PLACE_API]
   /// It returns a [] model
   Future<dynamic> searchAddress(String address) async {
-    print(address);
+    log(address);
     String? userId;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       userId = value.id;
     });
-    String GOOGLE_PLACE_API_URL = GOOGLE_PLACE_API + '?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';
-    return await http.get(Uri.parse(GOOGLE_PLACE_API_URL)).then((res) {
-      print(res.body);
+    String googlePlaceApiUrl = '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';
+    return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
       if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
       var resp = json.decode(res.body);
       if (resp['error_message'] != '') throw ('Error associated with Google services, please contact support');
-      print(resp);
     }).catchError((e){
       errorHandler.handleError(e);
     });

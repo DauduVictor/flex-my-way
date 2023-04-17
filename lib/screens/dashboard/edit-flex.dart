@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -246,7 +245,6 @@ class _EditFlexState extends State<EditFlex> {
                                     picked.hour,
                                     picked.minute,
                                   );
-                                  print(controller.endTime);
                                 }
                               }
                               },

@@ -36,7 +36,7 @@ class FlexHistoryDetail extends StatelessWidget {
   final UserController userController = Get.put(UserController());
 
   /// Google map controller
-  Completer<GoogleMapController> _mapController = Completer();
+  final Completer<GoogleMapController> _mapController = Completer();
 
   /// Function for _onMapCreated
   void _onMapCreated(GoogleMapController controller) {

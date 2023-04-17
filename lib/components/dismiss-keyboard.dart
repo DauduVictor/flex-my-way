@@ -11,10 +11,10 @@ class DismissKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _currentFocus = FocusScope.of(context);
+    final currentFocus = FocusScope.of(context);
     return GestureDetector(
       onTap: () {
-        if (!_currentFocus.hasPrimaryFocus) _currentFocus.unfocus();
+        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
       },
       child: child,
     );

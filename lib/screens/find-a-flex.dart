@@ -4,7 +4,6 @@ import 'package:flex_my_way/screens/host/host-a-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../controllers/user-controller.dart';
 import '../util/constants/constants.dart';
 import '../util/constants/strings.dart';
 import '../util/size-config.dart';
@@ -12,7 +11,6 @@ import 'join/join.dart';
 import 'onboarding/login.dart';
 
 class FindAFlex extends StatefulWidget {
-
   static const String id = "findAFlex";
   const FindAFlex({Key? key}) : super(key: key);
 
@@ -21,20 +19,18 @@ class FindAFlex extends StatefulWidget {
 }
 
 class _FindAFlexState extends State<FindAFlex> {
-
   /// Bool variable to hold the value of logged in
   bool isLoggedIn = false;
 
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('loggedIn') == true) {
+    if (prefs.getBool('loggedIn') == true) {
       setState(() {
         isLoggedIn = true;
       });
       log('logged in');
-    }
-    else {
+    } else {
       log('User is not logged in');
     }
   }
@@ -67,30 +63,29 @@ class _FindAFlexState extends State<FindAFlex> {
           children: [
             const SizedBox(height: 30),
             isLoggedIn == true
-              ? Align(
-                  alignment: Alignment.topLeft,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    radius: 22,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.only(left: 8),
-                        shape: const CircleBorder(),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: whiteColor,
-                        size: 22,
+                ? Align(
+                    alignment: Alignment.topLeft,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      radius: 22,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.only(left: 8),
+                          shape: const CircleBorder(),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: whiteColor,
+                          size: 22,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              : const SizedBox(height: 30),
-            SizedBox(
-              height: SizeConfig.screenHeight! * 0.6,
+                  )
+                : const SizedBox(height: 30),
+            Flexible(
               child: Center(
                 child: DefaultTextStyle(
                   style: textTheme.headline1!.copyWith(
@@ -167,31 +162,31 @@ class _FindAFlexState extends State<FindAFlex> {
                     ],
                   ),
                   isLoggedIn == false
-                    ? Column(
-                        children: [
-                          SizedBox(height: SizeConfig.screenHeight! * 0.08),
-                          Text(
-                            'Have an account already?',
-                            style: textTheme.bodyLarge!.copyWith(
-                              color: whiteColor,
-                              fontSize: 19,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          GestureDetector(
-                            onTap: () => Get.toNamed(Login.id),
-                            child: Text(
-                              'Login here',
-                              style: textTheme.button!.copyWith(
+                      ? Column(
+                          children: [
+                            SizedBox(height: SizeConfig.screenHeight! * 0.08),
+                            Text(
+                              'Have an account already?',
+                              style: textTheme.bodyLarge!.copyWith(
                                 color: whiteColor,
-                                fontSize: 20,
+                                fontSize: 19,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    : Container(),
+                            const SizedBox(height: 5),
+                            GestureDetector(
+                              onTap: () => Get.toNamed(Login.id),
+                              child: Text(
+                                'Login here',
+                                style: textTheme.button!.copyWith(
+                                  color: whiteColor,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
                 ],
               ),
             ),

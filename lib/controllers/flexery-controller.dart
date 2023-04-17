@@ -8,7 +8,6 @@ import '../util/constants/functions.dart';
 import 'package:flex_my_way/model/model.dart';
 
 class FlexeryController extends GetxController {
-
   /// dynamic variable to hold an instance of flexDataSource
   var api = FlexDataSource();
 
@@ -44,7 +43,7 @@ class FlexeryController extends GetxController {
     update();
     for (int i = 0; i < images.length; i++) {
       multiPartImages.add(
-          await http.MultipartFile.fromPath('flexeryImage', images[i].path),
+        await http.MultipartFile.fromPath('flexeryImage', images[i].path),
       );
     }
     log(':::lengthOfMultiPartImages: ${multiPartImages.length}');
@@ -66,10 +65,10 @@ class FlexeryController extends GetxController {
         flexeryFilter.value = 1;
       } else if (filter == 'random') {
         flexeryFilter.value = 2;
-      }
-      else {
+      } else {
         flexeryFilter.value = 1;
       }
+      update();
     }).catchError((e) {
       showSpinner.value = false;
       log(':::error: $e');

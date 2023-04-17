@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import '../../components/app-bar.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import '../../networking/user-datasource.dart';
-import '../../util/size-config.dart';
 
 class Notifications extends StatelessWidget {
 
@@ -62,6 +61,9 @@ class Notifications extends StatelessWidget {
             ),
             userController.showNotificationSpinner.value == true
               ? Container(
+                  color: userController.showNotificationSpinner.value == true
+                      ? whiteColor.withOpacity(0.2)
+                      : transparentColor,
                   child: AbsorbPointer(
                     absorbing: userController.showNotificationSpinner.value,
                     child: SpinKitCircle(
@@ -69,9 +71,6 @@ class Notifications extends StatelessWidget {
                       size: 65,
                     ),
                   ),
-                  color: userController.showNotificationSpinner.value == true
-                      ? whiteColor.withOpacity(0.2)
-                      : transparentColor,
                 )
               : Container(),
           ],

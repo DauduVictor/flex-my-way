@@ -8,7 +8,6 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/model/model.dart';
-import 'drawer.dart';
 
 class PendingInvites extends StatelessWidget {
 
@@ -134,6 +133,9 @@ class PendingInvites extends StatelessWidget {
             ),
             userController.showInvitesSpinner.value == true
               ? Container(
+                  color: userController.showInvitesSpinner.value == true
+                    ? primaryColor.withOpacity(0.15)
+                    : transparentColor,
                   child: AbsorbPointer(
                     absorbing: userController.showInvitesSpinner.value,
                     child: SpinKitCircle(
@@ -141,9 +143,6 @@ class PendingInvites extends StatelessWidget {
                       size: 55,
                     ),
                   ),
-                  color: userController.showInvitesSpinner.value == true
-                    ? primaryColor.withOpacity(0.15)
-                    : transparentColor,
                 )
               : Container(),
           ],
@@ -183,7 +182,6 @@ class PendingInvites extends StatelessWidget {
     //   }
     //   body[userController.flexInvites[i].flexCode!] = [userController.flexInvites[i].attendeeId!];
     // }
-    print(body);
     // userController.showInvitesSpinner.value = true;
     // var api = FlexDataSource();
     // await api.rejectAttendee(body).then((flex) {
@@ -317,7 +315,6 @@ class ReusablePendingInviteButton extends StatelessWidget {
       userController.getDashboardFlex();
     }).catchError((e) {
       userController.showInvitesSpinner.value = false;
-      print(e);
       Functions.showMessage(e);
     });
   }

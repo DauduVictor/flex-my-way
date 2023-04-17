@@ -57,7 +57,8 @@ class _FlexeryState extends State<Flexery> {
                   image: AssetImage(darkBackgroundImage),
                 ),
               ),
-              child: Obx(() {
+              child: GetBuilder<FlexeryController>(
+                builder: (controller) {
                   return Column(
                     children: [
                       const SizedBox(height: 50),
@@ -203,7 +204,7 @@ class _FlexeryState extends State<Flexery> {
                               return GestureDetector(
                                 onTap: () {
                                   _showImageDialog(
-                                    controller.flexery.value,
+                                    controller.flexery,
                                     index,
                                     context
                                   );

@@ -94,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
                           Get.back();
                         },
                         style: TextButton.styleFrom(
-                          primary: primaryColor,
+                          foregroundColor: primaryColor, 
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                         ),
                         child: const Text(
@@ -335,19 +335,6 @@ class _DashboardState extends State<Dashboard> {
         ),
       );
     }
-  }
-
-  DateTime? currentBackPressTime;
-
-  Future<bool> _onWillPops() {
-    DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      Functions.showMessage('Press back again to exit');
-      return Future.value(false);
-    }
-    return Future.value(true);
   }
 }
 
