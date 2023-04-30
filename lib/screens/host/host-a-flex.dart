@@ -3,20 +3,16 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
+import 'package:flex_my_way/networking/flex-datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:google_place/google_place.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 import 'package:intl/intl.dart';
-import '../../controllers/host-controller.dart';
 import 'package:flex_my_way/util/util.dart';
-import '../../networking/endpoints.dart';
-import '../../networking/flex-datasource.dart';
+import 'package:uuid/uuid.dart';
 import 'host-flex-terms-and-conditions.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -615,92 +611,90 @@ class HostAFlex extends StatelessWidget {
 
   /// Bottom modal Widget [PickImageSource]
   Widget _bottomModalSheet(BuildContext context, TextTheme textTheme) {
-    return Flexible(
-      child: Container(
-        // height: SizeConfig.screenHeight! * 0.3,
-        decoration: const BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
+    return Container(
+      height: SizeConfig.screenHeight! * 0.3,
+      decoration: const BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 25),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            'Continue action using',
+            style: textTheme.headlineSmall!.copyWith(
+              fontSize: 21,
+            ),
           ),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 25),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Continue action using',
-              style: textTheme.headlineSmall!.copyWith(
-                fontSize: 21,
-              ),
-            ),
-            const SizedBox(height: 10),
-            const Divider(
-              color: primaryColor,
-              height: 0.5,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(75, 20, 75, 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      _pickImage(ImageSource.gallery);
-                    },
-                    child: Container(
-                      color: backgroundColor,
-                      child: Column(
-                        children: [
-                          const Icon(
-                            IconlyBold.image,
-                            size: 40,
-                            color: primaryColor,
+          const SizedBox(height: 10),
+          const Divider(
+            color: primaryColor,
+            height: 0.5,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(75, 20, 75, 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.gallery);
+                  },
+                  child: Container(
+                    color: backgroundColor,
+                    child: Column(
+                      children: [
+                        const Icon(
+                          IconlyBold.image,
+                          size: 40,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Gallery',
+                          style: textTheme.headlineSmall!.copyWith(
+                            fontSize: 17,
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Gallery',
-                            style: textTheme.headlineSmall!.copyWith(
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      _pickImage(ImageSource.camera);
-                    },
-                    child: Container(
-                      color: backgroundColor,
-                      child: Column(
-                        children: [
-                          const Icon(
-                            IconlyLight.camera,
-                            size: 40,
-                            color: primaryColor,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _pickImage(ImageSource.camera);
+                  },
+                  child: Container(
+                    color: backgroundColor,
+                    child: Column(
+                      children: [
+                        const Icon(
+                          IconlyLight.camera,
+                          size: 40,
+                          color: primaryColor,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Camera',
+                          style: textTheme.headlineSmall!.copyWith(
+                            fontSize: 17,
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Camera',
-                            style: textTheme.headlineSmall!.copyWith(
-                              fontSize: 17,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -708,6 +702,7 @@ class HostAFlex extends StatelessWidget {
   /// Bottom modal Widget to set flex address
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
     final HostController controller = Get.put(HostController());
+    final sessionToken = const Uuid().v4();
     return StatefulBuilder(builder: (context, StateSetter setDialogState) {
       return DismissKeyboard(
         child: Container(
@@ -777,7 +772,8 @@ class HostAFlex extends StatelessWidget {
                     onChanged: (value) {
                       if (value!.length > 2) {
                         setDialogState(() {
-                          searchAddress(value);
+                          searchAddress(
+                              address: value, sessionToken: sessionToken);
                         });
                       }
                     },
@@ -785,67 +781,99 @@ class HostAFlex extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 5),
-              Visibility(
-                visible: true,
-                child: Column(
-                  children: [
-                    const Divider(
-                      color: neutralColor,
-                      height: 2.5,
-                      thickness: 0.3,
+              Column(
+                children: [
+                  const Divider(
+                    color: neutralColor,
+                    height: 2.5,
+                    thickness: 0.3,
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      try {
+                        await controller
+                            .getUserLocation()
+                            .then((value) => Navigator.pop(context))
+                            .catchError((e) {
+                          Functions.showMessage(
+                              'An error occured, ensure you have internet enabled and try again!');
+                        });
+                      } catch (e) {
+                        Functions.showMessage(e);
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 18, horizontal: 9),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        try {
-                          controller.getUserLocation();
-                          Navigator.pop(context);
-                        } catch (e) {
-                          Functions.showMessage(e);
-                        }
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 18, horizontal: 9),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.near_me_outlined,
-                            color: neutralColor,
-                            size: 21,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            'Use my location',
-                            style: textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.near_me_outlined,
+                          color: neutralColor,
+                          size: 21,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Use my location',
+                          style: textTheme.titleSmall,
+                        ),
+                        const Spacer(),
+                        GetBuilder<HostController>(builder: (controller) {
+                          return Visibility(
+                            visible: controller.isAddressSearch,
+                            child: SpinKitCircle(
+                              color: primaryColor.withOpacity(0.9),
+                              size: 25,
+                            ),
+                          );
+                        }),
+                        const SizedBox(width: 5),
+                      ],
                     ),
-                    const Divider(
-                      color: primaryColor,
-                      height: 0.1,
-                      thickness: 0.1,
-                    ),
-                  ],
-                ),
+                  ),
+                  const Divider(
+                    color: primaryColor,
+                    height: 0.1,
+                    thickness: 0.1,
+                  ),
+                ],
               ),
               GetBuilder<HostController>(builder: (controller) {
-                if (controller.showSearchSpinner == true) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight! * 0.2),
-                      Center(
-                        child: SpinKitCircle(
-                          color: primaryColor.withOpacity(0.9),
-                          size: 40,
+                if (controller.googlePlacesPredictionModel != null) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: controller.googlePlacesPredictionModel?.predictions?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return TextButton(
+                        onPressed: () {
+                          controller.flexAddressController.text =
+                           controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          minimumSize: Size(SizeConfig.screenWidth!, 5),
+                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
                         ),
-                      ),
-                    ],
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '',
+                            style: textTheme.bodyLarge!.copyWith(
+                              fontSize: 16.5,
+                            ),
+                          ),
+                        ),
+                      );
+                  },
+                  separatorBuilder: (context, index) => const Divider(
+                    height: 0.5,
+                  ),
                   );
+                } else {
+                  return const SizedBox();
                 }
-                return const SizedBox();
               }),
             ],
           ),
@@ -856,7 +884,7 @@ class HostAFlex extends StatelessWidget {
 
   Timer? _debounce;
 
-  void searchAddress(String? address) {
+  void searchAddress({String? address, required String sessionToken}) {
     if (_debounce?.isActive ?? false) {
       _debounce?.cancel();
     }
@@ -864,62 +892,19 @@ class HostAFlex extends StatelessWidget {
       controller.showSearchSpinner = true;
       controller.update();
       var api = FlexDataSource();
-      await api.searchAddress(address ?? '').then((value) {
-        print(value);
+      await api
+          .searchAddress(address: address ?? '', sessionToken: sessionToken)
+          .then((value) {
         controller.showSearchSpinner = false;
+        controller.googlePlacesPredictionModel = value;
         controller.update();
       }).catchError((e) {
         controller.showSearchSpinner = false;
         controller.update();
-        print(':::error: $e');
+        log(':::error: $e');
         Functions.showMessage(e.toString());
       });
     });
-  }
-
-  Widget _buildLocationSuggestions(
-      TextTheme textTheme, StateSetter setDialogState) {
-    List<Widget> locationSuggestionContainer = [];
-    if (controller.location.isNotEmpty) {
-      for (int i = 0; i < controller.location.length; i++) {
-        locationSuggestionContainer.add(
-          TextButton(
-            onPressed: () async {
-              controller.flexAddressController.text =
-                  await controller.formatLocation(
-                      controller.location[i].latitude,
-                      controller.location[i].longitude);
-              controller.lat.value = controller.location[i].latitude.toString();
-              controller.long.value =
-                  controller.location[i].longitude.toString();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size(SizeConfig.screenWidth!, 5),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 14),
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '${controller.formatLocation(controller.location[i].latitude, controller.location[i].longitude)}',
-                style: textTheme.bodyLarge!.copyWith(
-                  fontSize: 16.5,
-                ),
-              ),
-            ),
-          ),
-        );
-      }
-      return Column(
-        children: locationSuggestionContainer,
-      );
-    } else {
-      return SizedBox(
-        child: SpinKitCircle(
-          color: primaryColor.withOpacity(0.9),
-          size: 5,
-        ),
-      );
-    }
   }
 
   ///widget to show the payment hint

@@ -402,20 +402,28 @@ class FlexDataSource {
   /// A function to search address using google place api
   /// A get request to use the [GOOGLE_PLACE_API]
   /// It returns a [] model
-  Future<dynamic> searchAddress(String address) async {
+  Future<GooglePlacesPredictionModel?> searchAddress({
+    required String address, 
+    required String sessionToken
+  }) async {
     log(address);
     String? userId;
     Future<User> user = _futureValue.getCurrentUser();
+    GooglePlacesPredictionModel? prediction;
     await user.then((value) async {
       if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       userId = value.id;
     });
-    String googlePlaceApiUrl = '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg';
+    String googlePlaceApiUrl = 
+      '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id&sessiontoken=$sessionToken';
     return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
+      log(res.body.toString());
       if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
       var resp = json.decode(res.body);
-      if (resp['error_message'] != '') throw ('Error associated with Google services, please contact support');
-    }).catchError((e){
+      prediction = GooglePlacesPredictionModel.fromJson(resp);
+      return prediction;
+    }).catchError((e) {
+      log(e);
       errorHandler.handleError(e);
     });
   }

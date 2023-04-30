@@ -598,7 +598,7 @@ class _EditFlexState extends State<EditFlex> {
   /// Bottom modal Widget [PickImageSource]
   Widget _bottomModalSheet(BuildContext context, TextTheme textTheme) {
     return Container(
-      height: SizeConfig.screenHeight! * 0.22,
+      height: SizeConfig.screenHeight! * 0.3,
       decoration: const BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.only(

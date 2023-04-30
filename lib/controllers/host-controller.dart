@@ -4,7 +4,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:google_places_flutter/model/prediction.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -13,7 +12,6 @@ import '../util/constants/constants.dart';
 import 'package:flex_my_way/model/model.dart';
 
 class HostController extends GetxController {
-
   /// Instantiating a class of future values
   var futureValues = FutureValues();
 
@@ -37,7 +35,8 @@ class HostController extends GetxController {
   final TextEditingController eventHashTagController = TextEditingController();
 
   /// A [TextEditingController] to control the input text for number of people
-  final TextEditingController numberOfPeopleController = TextEditingController();
+  final TextEditingController numberOfPeopleController =
+      TextEditingController();
 
   /// A [TextEditingController] to control the input text for event amount
   final TextEditingController eventAmountController = TextEditingController();
@@ -125,6 +124,8 @@ class HostController extends GetxController {
   /// bool value to hold the state of terms and condition
   final termsAndConditionsAccepted = false.obs;
 
+  bool isAddressSearch = false;
+
   /// bool value to hold the state of privacy policy
   final privacyPolicyAccepted = false.obs;
 
@@ -138,27 +139,33 @@ class HostController extends GetxController {
   //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
 
   /// Function to get user location and use [LatLang] in the map
-  void getUserLocation() async {
+  Future<void> getUserLocation() async {
+    isAddressSearch = true;
+    update();
     await futureValues.getUserLocation().then((value) async {
+      isAddressSearch = false;
+      update();
       lat.value = double.parse(value[0]).toString();
       long.value = double.parse(value[1]).toString();
-      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+          double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
-      flexAddressController.text = ('${place.street}, ${place.locality}, ${place.country}');
-      print(lat.value);
-      print(long.value);
+      flexAddressController.text =
+          ('${place.name} ${place.street}, ${place.locality}, ${place.country}');
     }).catchError((e) async {
-      print(e);
-      throw(e);
+      isAddressSearch = false;
+      update();
+      throw (e);
     });
   }
 
   /// Variable to hold prediction
-  Prediction? selectedPrediction;
+  GooglePlacesPredictionModel? googlePlacesPredictionModel;
 
   /// Function to launch the url for the video link
-  Future <void> launchVideo() async {
-    if (!await launch(videoLinkController.text)) throw 'Could not launch ${videoLinkController.text}';
+  Future<void> launchVideo() async {
+    if (!await launch(videoLinkController.text))
+      throw 'Could not launch ${videoLinkController.text}';
   }
 
   /// Function to get user location and use [LatLang] in the map
@@ -180,13 +187,15 @@ class HostController extends GetxController {
   final TextEditingController hostNameController = TextEditingController();
 
   /// A [TextEditingController] to control the input text for host email
-  final TextEditingController hostEmailAddressController = TextEditingController();
+  final TextEditingController hostEmailAddressController =
+      TextEditingController();
 
   /// A [TextEditingController] to control the input text for host password
   final TextEditingController hostPasswordController = TextEditingController();
 
   /// A [TextEditingController] to control the input text for host phone number
-  final TextEditingController hostPhoneNumberController = TextEditingController();
+  final TextEditingController hostPhoneNumberController =
+      TextEditingController();
 
   /// A [TextEditingController] to control the input text for occupation
   final TextEditingController occupationController = TextEditingController();
@@ -198,7 +207,6 @@ class HostController extends GetxController {
   String _formatDate(DateTime date) {
     return DateFormat.yMd('en_US').format(date);
   }
-
 
   /*Controller and Variable for betasms*/
   /// A [TextEditingController] to control the input text for current password

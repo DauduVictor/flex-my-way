@@ -6,3 +6,4 @@ export 'dashboard-flex.dart';
 export 'settings-flex.dart';
 export 'flexery-model.dart';
 export 'flex-invite.dart';
+export 'google-places-prediction-model.dart';
