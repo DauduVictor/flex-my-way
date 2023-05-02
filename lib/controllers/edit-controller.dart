@@ -20,6 +20,11 @@ class EditController extends GetxController {
   ///Instantiating the class of [Flexes]
   Flexes? flex;
 
+  bool showSearchSpinner = false;
+
+  /// Variable to hold prediction
+  GooglePlacesPredictionModel? googlePlacesPredictionModel;
+
   Future getFlexDetails(String flexCode) async {
     showSpinner.value = true;
     await api.getFlexDetails(flexCode).then((value) {

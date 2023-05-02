@@ -62,6 +62,7 @@ class CustomTextFormField extends StatelessWidget {
           style: textTheme.bodyMedium!.copyWith(
             fontSize: 14,
           ),
+          autocorrect: false,
           onTap: onTap,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(

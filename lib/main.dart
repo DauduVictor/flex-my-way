@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flex My Way',
+      title: 'Flexmyway',
       theme: AppTheme.themeData,
       initialRoute: SplashScreen.id,
       enableLog: true,

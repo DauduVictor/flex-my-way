@@ -848,8 +848,11 @@ class HostAFlex extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return TextButton(
                         onPressed: () {
-                          controller.flexAddressController.text =
-                           controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          controller.flexAddressController.text = controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          getAddressDetails(
+                            placeId: controller.googlePlacesPredictionModel?.predictions?[index].placeId ?? '',
+                            sessionToken: sessionToken
+                          );
                           Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(
@@ -884,6 +887,7 @@ class HostAFlex extends StatelessWidget {
 
   Timer? _debounce;
 
+  // Api function to search input address
   void searchAddress({String? address, required String sessionToken}) {
     if (_debounce?.isActive ?? false) {
       _debounce?.cancel();
@@ -904,6 +908,21 @@ class HostAFlex extends StatelessWidget {
         log(':::error: $e');
         Functions.showMessage(e.toString());
       });
+    });
+  }
+
+  // Api function to get address details [Long, Lat] from selected addrress suggestion
+  void getAddressDetails({required String placeId, required String sessionToken}) async {
+    var api = FlexDataSource();
+    await api.getAddressDetails(placeId: placeId, sessionToken: sessionToken).then((value) {
+      // update long and lat for flex
+      controller.lat.value = value[0].toString();
+      controller.long.value = value[1].toString();
+      controller.update();
+    }).catchError((e) {
+      controller.update();
+      log(':::error: $e');
+      Functions.showMessage(e.toString());
     });
   }
 

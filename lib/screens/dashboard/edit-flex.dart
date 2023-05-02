@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flex_my_way/networking/flex-datasource.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
+import 'package:uuid/uuid.dart';
 
 class EditFlex extends StatefulWidget {
 
@@ -686,81 +690,110 @@ class _EditFlexState extends State<EditFlex> {
 
   /// Bottom modal Widget to set flex address
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
-    return StatefulBuilder(
-        builder: (context, StateSetter setDialogState) {
-          return DismissKeyboard(
-            child: Container(
-              height: SizeConfig.screenHeight! * 0.9,
-              decoration: const BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 21),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+    final HostController controller = Get.put(HostController());
+    final sessionToken = const Uuid().v4();
+    return StatefulBuilder(builder: (context, StateSetter setDialogState) {
+      return DismissKeyboard(
+        child: Container(
+          height: SizeConfig.screenHeight! * 0.9,
+          decoration: const BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 21),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(width: 30),
-                      Center(
-                        child: Text(
-                          'Search Address',
-                          style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
-                          ),
-                        ),
+                  const SizedBox(width: 30),
+                  Center(
+                    child: Text(
+                      'Search Address',
+                      style: textTheme.headlineSmall!.copyWith(
+                        fontSize: 17,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 31,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 21),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: CustomTextFormField(
-                      hintText: AppStrings.enterAddress,
-                      textEditingController: controller.searchAddress,
-                      textCapitalization: TextCapitalization.sentences,
-                      textInputAction: TextInputAction.done,
-                      onChanged: (value) {
-                        if (value!.length > 2) {
-                          setDialogState(() {
-                            controller.getUserLatLongByAddress(value);
-                          });
-                        }
-                      },
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 31,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 21),
+              GetBuilder<HostController>(builder: (controller) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomTextFormField(
+                    textEditingController: controller.searchAddress,
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.done,
+                    hintText: 'Search address',
+                    suffix: controller.showSearchSpinner == true
+                        ? SizedBox(
+                            width: 5,
+                            height: 5,
+                            child: SpinKitCircle(
+                              color: primaryColor.withOpacity(0.9),
+                              size: 25,
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.search,
+                              color: neutralColor,
+                            ),
+                          ),
+                    onChanged: (value) {
+                      if (value!.length > 2) {
+                        setDialogState(() {
+                          searchAddress(
+                              address: value, sessionToken: sessionToken);
+                        });
+                      }
+                    },
+                  ),
+                );
+              }),
+              const SizedBox(height: 5),
+              Column(
+                children: [
                   const Divider(
                     color: neutralColor,
                     height: 2.5,
                     thickness: 0.3,
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       try {
-                        controller.getUserLocation();
-                        Navigator.pop(context);
+                        await controller
+                            .getUserLocation()
+                            .then((value) => Navigator.pop(context))
+                            .catchError((e) {
+                          Functions.showMessage(
+                              'An error occured, ensure you have internet enabled and try again!');
+                        });
                       } catch (e) {
                         Functions.showMessage(e);
                       }
                     },
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 9),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 18, horizontal: 9),
                     ),
                     child: Row(
                       children: [
@@ -772,8 +805,19 @@ class _EditFlexState extends State<EditFlex> {
                         const SizedBox(width: 10),
                         Text(
                           'Use my location',
-                          style: textTheme.bodyLarge,
+                          style: textTheme.titleSmall,
                         ),
+                        const Spacer(),
+                        GetBuilder<HostController>(builder: (controller) {
+                          return Visibility(
+                            visible: controller.isAddressSearch,
+                            child: SpinKitCircle(
+                              color: primaryColor.withOpacity(0.9),
+                              size: 25,
+                            ),
+                          );
+                        }),
+                        const SizedBox(width: 5),
                       ],
                     ),
                   ),
@@ -782,13 +826,92 @@ class _EditFlexState extends State<EditFlex> {
                     height: 0.1,
                     thickness: 0.1,
                   ),
-                  /*_buildLocationSuggestions(textTheme, setDialogState),*/
                 ],
               ),
-            ),
-          );
-        }
-    );
+              GetBuilder<HostController>(builder: (controller) {
+                if (controller.googlePlacesPredictionModel != null) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: controller.googlePlacesPredictionModel?.predictions?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return TextButton(
+                        onPressed: () {
+                          controller.flexAddressController.text = controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          getAddressDetails(
+                            placeId: controller.googlePlacesPredictionModel?.predictions?[index].placeId ?? '',
+                            sessionToken: sessionToken
+                          );
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                          minimumSize: Size(SizeConfig.screenWidth!, 5),
+                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '',
+                            style: textTheme.bodyLarge!.copyWith(
+                              fontSize: 16.5,
+                            ),
+                          ),
+                        ),
+                      );
+                  },
+                  separatorBuilder: (context, index) => const Divider(
+                    height: 0.5,
+                  ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              }),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
+  Timer? _debounce;
+
+  // Api function to search input address
+  void searchAddress({String? address, required String sessionToken}) {
+    if (_debounce?.isActive ?? false) {
+      _debounce?.cancel();
+    }
+    _debounce = Timer(const Duration(milliseconds: 800), () async {
+      controller.showSearchSpinner = true;
+      controller.update();
+      var api = FlexDataSource();
+      await api.searchAddress(address: address ?? '', sessionToken: sessionToken)
+        .then((value) {
+          controller.showSearchSpinner = false;
+          controller.googlePlacesPredictionModel = value;
+          controller.update();
+        }).catchError((e) {
+          controller.showSearchSpinner = false;
+          controller.update();
+          log(':::error: $e');
+          Functions.showMessage(e.toString());
+        });
+    });
+  }
+
+  // Api function to get address details [Long, Lat] from selected addrress suggestion
+  void getAddressDetails({required String placeId, required String sessionToken}) async {
+    var api = FlexDataSource();
+    await api.getAddressDetails(placeId: placeId, sessionToken: sessionToken).then((value) {
+      // update long and lat for flex
+      controller.lat.value = value[0].toString();
+      controller.long.value = value[1].toString();
+      controller.update();
+    }).catchError((e) {
+      controller.update();
+      log(':::error: $e');
+      Functions.showMessage(e.toString());
+    });
   }
 
   ///widget to show the dialog for image

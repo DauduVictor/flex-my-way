@@ -428,4 +428,35 @@ class FlexDataSource {
     });
   }
 
+  /// A function to pick address long and lat using google place api
+  /// A get request to use the [GOOGLE_PLACE_API]
+  /// It returns a [] model
+  Future<dynamic> getAddressDetails({
+    required String placeId, 
+    required String sessionToken
+  }) async {
+    String? userId;
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+    });
+    String googlePlaceApiUrl = 
+      '$GOOGLE_PLACE_DETAILS_API?place_id=$placeId&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id,geometry&sessiontoken=$sessionToken';
+    return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
+      log(res.body.toString());
+      if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
+      var resp = json.decode(res.body);
+      final latLng = [
+        resp['result']['geometry']['location']['lat'],
+        resp['result']['geometry']['location']['lng']
+      ];
+      print(latLng);
+      return latLng;
+    }).catchError((e) {
+      log(e);
+      errorHandler.handleError(e);
+    });
+  }
+
 }

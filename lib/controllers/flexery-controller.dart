@@ -33,7 +33,7 @@ class FlexeryController extends GetxController {
   File? image;
 
   RxList<File> images = <File>[].obs;
-  RxList<FlexeryModel> flexery = <FlexeryModel>[].obs;
+  List<FlexeryModel> flexery = [];
 
   RxList<http.MultipartFile> multiPartImages = <http.MultipartFile>[].obs;
 
@@ -56,8 +56,8 @@ class FlexeryController extends GetxController {
   void getFlexery(String? filter) async {
     showSpinner.value = true;
     await api.getFlexery(filter ?? 'time').then((value) {
-      flexery.value.clear();
-      flexery.value = value;
+      flexery.clear();
+      flexery = value;
       showSpinner.value = false;
       if (filter == 'likes') {
         flexeryFilter.value = 0;
