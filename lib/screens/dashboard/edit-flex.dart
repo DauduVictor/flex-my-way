@@ -690,7 +690,6 @@ class _EditFlexState extends State<EditFlex> {
 
   /// Bottom modal Widget to set flex address
   Widget _showAddressModal(BuildContext context, TextTheme textTheme) {
-    final HostController controller = Get.put(HostController());
     final sessionToken = const Uuid().v4();
     return StatefulBuilder(builder: (context, StateSetter setDialogState) {
       return DismissKeyboard(
@@ -734,7 +733,7 @@ class _EditFlexState extends State<EditFlex> {
                 ],
               ),
               const SizedBox(height: 21),
-              GetBuilder<HostController>(builder: (controller) {
+              GetBuilder<EditController>(builder: (controller) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: CustomTextFormField(
@@ -759,6 +758,9 @@ class _EditFlexState extends State<EditFlex> {
                             ),
                           ),
                     onChanged: (value) {
+                      if (controller.flexAddress.text != '') {
+                          controller.flexAddress.text = '';
+                      }
                       if (value!.length > 2) {
                         setDialogState(() {
                           searchAddress(
@@ -780,10 +782,9 @@ class _EditFlexState extends State<EditFlex> {
                   TextButton(
                     onPressed: () async {
                       try {
-                        await controller
-                            .getUserLocation()
-                            .then((value) => Navigator.pop(context))
-                            .catchError((e) {
+                        await controller.getUserLocation()
+                          .then((value) => Navigator.pop(context))
+                          .catchError((e) {
                           Functions.showMessage(
                               'An error occured, ensure you have internet enabled and try again!');
                         });
@@ -793,7 +794,7 @@ class _EditFlexState extends State<EditFlex> {
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 18, horizontal: 9),
+                        vertical: 18, horizontal: 9),
                     ),
                     child: Row(
                       children: [
@@ -808,7 +809,7 @@ class _EditFlexState extends State<EditFlex> {
                           style: textTheme.titleSmall,
                         ),
                         const Spacer(),
-                        GetBuilder<HostController>(builder: (controller) {
+                        GetBuilder<EditController>(builder: (controller) {
                           return Visibility(
                             visible: controller.isAddressSearch,
                             child: SpinKitCircle(
@@ -828,7 +829,7 @@ class _EditFlexState extends State<EditFlex> {
                   ),
                 ],
               ),
-              GetBuilder<HostController>(builder: (controller) {
+              GetBuilder<EditController>(builder: (controller) {
                 if (controller.googlePlacesPredictionModel != null) {
                   return ListView.separated(
                     shrinkWrap: true,
@@ -837,7 +838,7 @@ class _EditFlexState extends State<EditFlex> {
                     itemBuilder: (context, index) {
                       return TextButton(
                         onPressed: () {
-                          controller.flexAddressController.text = controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          controller.flexAddress.text = controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
                           getAddressDetails(
                             placeId: controller.googlePlacesPredictionModel?.predictions?[index].placeId ?? '',
                             sessionToken: sessionToken
@@ -893,7 +894,7 @@ class _EditFlexState extends State<EditFlex> {
         }).catchError((e) {
           controller.showSearchSpinner = false;
           controller.update();
-          log(':::error: $e');
+          log(':::error: seems an error occured');
           Functions.showMessage(e.toString());
         });
     });
@@ -909,7 +910,7 @@ class _EditFlexState extends State<EditFlex> {
       controller.update();
     }).catchError((e) {
       controller.update();
-      log(':::error: $e');
+      log(':::error: seems an error occured');
       Functions.showMessage(e.toString());
     });
   }

@@ -181,19 +181,25 @@ class EditController extends GetxController {
   FlexSuccess? createdFlex;
   //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
 
+  bool isAddressSearch = false;
+ 
   /// Function to get user location and use [LatLang] in the map
-  void getUserLocation() async {
+  Future<void> getUserLocation() async {
+    isAddressSearch = true;
+    update();
     await futureValues.getUserLocation().then((value) async {
+      isAddressSearch = false;
+      update();
       lat.value = double.parse(value[0]).toString();
       long.value = double.parse(value[1]).toString();
-      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+          double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
-      flexAddress.text = ('${place.street}, ${place.locality}, ${place.country}');
-      print(lat.value);
-      print(long.value);
+      flexAddress.text = ('${place.name} ${place.street}, ${place.locality}, ${place.country}');
     }).catchError((e) async {
-      print(e);
-      throw(e);
+      isAddressSearch = false;
+      update();
+      throw (e);
     });
   }
 

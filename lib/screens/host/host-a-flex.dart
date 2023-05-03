@@ -770,10 +770,12 @@ class HostAFlex extends StatelessWidget {
                             ),
                           ),
                     onChanged: (value) {
+                      if (controller.flexAddressController.text != '') {
+                        controller.flexAddressController.text = '';
+                      }
                       if (value!.length > 2) {
                         setDialogState(() {
-                          searchAddress(
-                              address: value, sessionToken: sessionToken);
+                          searchAddress(address: value, sessionToken: sessionToken);
                         });
                       }
                     },
@@ -844,35 +846,49 @@ class HostAFlex extends StatelessWidget {
                   return ListView.separated(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(top: 10),
-                    itemCount: controller.googlePlacesPredictionModel?.predictions?.length ?? 0,
+                    itemCount: controller
+                            .googlePlacesPredictionModel?.predictions?.length ??
+                        0,
                     itemBuilder: (context, index) {
                       return TextButton(
                         onPressed: () {
-                          controller.flexAddressController.text = controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '';
+                          controller.flexAddressController.text = controller
+                                  .googlePlacesPredictionModel
+                                  ?.predictions?[index]
+                                  .description
+                                  ?.capitalizeFirst ??
+                              '';
                           getAddressDetails(
-                            placeId: controller.googlePlacesPredictionModel?.predictions?[index].placeId ?? '',
-                            sessionToken: sessionToken
-                          );
+                              placeId: controller.googlePlacesPredictionModel
+                                      ?.predictions?[index].placeId ??
+                                  '',
+                              sessionToken: sessionToken);
                           Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(
                           minimumSize: Size(SizeConfig.screenWidth!, 5),
-                          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 18, horizontal: 14),
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '',
+                            controller
+                                    .googlePlacesPredictionModel
+                                    ?.predictions?[index]
+                                    .description
+                                    ?.capitalizeFirst ??
+                                '',
                             style: textTheme.bodyLarge!.copyWith(
                               fontSize: 16.5,
                             ),
                           ),
                         ),
                       );
-                  },
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 0.5,
-                  ),
+                    },
+                    separatorBuilder: (context, index) => const Divider(
+                      height: 0.5,
+                    ),
                   );
                 } else {
                   return const SizedBox();
@@ -905,23 +921,26 @@ class HostAFlex extends StatelessWidget {
       }).catchError((e) {
         controller.showSearchSpinner = false;
         controller.update();
-        log(':::error: $e');
+        log(':::error: seems an error occured');
         Functions.showMessage(e.toString());
       });
     });
   }
 
   // Api function to get address details [Long, Lat] from selected addrress suggestion
-  void getAddressDetails({required String placeId, required String sessionToken}) async {
+  void getAddressDetails(
+      {required String placeId, required String sessionToken}) async {
     var api = FlexDataSource();
-    await api.getAddressDetails(placeId: placeId, sessionToken: sessionToken).then((value) {
+    await api
+        .getAddressDetails(placeId: placeId, sessionToken: sessionToken)
+        .then((value) {
       // update long and lat for flex
       controller.lat.value = value[0].toString();
       controller.long.value = value[1].toString();
       controller.update();
     }).catchError((e) {
       controller.update();
-      log(':::error: $e');
+      log(':::error: seems an error occured');
       Functions.showMessage(e.toString());
     });
   }

@@ -407,13 +407,7 @@ class FlexDataSource {
     required String sessionToken
   }) async {
     log(address);
-    String? userId;
-    Future<User> user = _futureValue.getCurrentUser();
     GooglePlacesPredictionModel? prediction;
-    await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = value.id;
-    });
     String googlePlaceApiUrl = 
       '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id&sessiontoken=$sessionToken';
     return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
@@ -435,12 +429,6 @@ class FlexDataSource {
     required String placeId, 
     required String sessionToken
   }) async {
-    String? userId;
-    Future<User> user = _futureValue.getCurrentUser();
-    await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
-      userId = value.id;
-    });
     String googlePlaceApiUrl = 
       '$GOOGLE_PLACE_DETAILS_API?place_id=$placeId&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id,geometry&sessiontoken=$sessionToken';
     return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
