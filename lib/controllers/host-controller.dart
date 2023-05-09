@@ -147,8 +147,7 @@ class HostController extends GetxController {
       update();
       lat.value = double.parse(value[0]).toString();
       long.value = double.parse(value[1]).toString();
-      List<Placemark> placeMarks = await placemarkFromCoordinates(
-          double.parse(value[0]), double.parse(value[1]));
+      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
       flexAddressController.text =
           ('${place.name} ${place.street}, ${place.locality}, ${place.country}');

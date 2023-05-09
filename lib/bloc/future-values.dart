@@ -53,7 +53,7 @@ class FutureValues {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     final result = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
     List<String> latlong = [
       result.latitude.toString(),
       result.longitude.toString()

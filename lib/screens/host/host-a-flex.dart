@@ -793,8 +793,7 @@ class HostAFlex extends StatelessWidget {
                   TextButton(
                     onPressed: () async {
                       try {
-                        await controller
-                            .getUserLocation()
+                        await controller.getUserLocation()
                             .then((value) => Navigator.pop(context))
                             .catchError((e) {
                           Functions.showMessage(
