@@ -4,11 +4,11 @@ class FlexSuccess {
 
   /// setting constructor for the flex class
   FlexSuccess({
-    this.creator = 'Victor D',
-    this.payStatus = ' Free',
-    this.viewStatus = '',
-    this.showOnAccepted = true,
-    this.joinCode = '20pamQ',
+    this.creator,
+    this.payStatus,
+    this.viewStatus,
+    this.showOnAccepted,
+    this.joinCode,
     this.locationCoordinates,
     this.id,
   });

@@ -279,6 +279,24 @@ class FlexDataSource {
   }
 
   /// A function that sends request for joining a flex
+  /// A get request to use the [GET_FLEX_BY_LOCATION]
+  /// It returns a [List<Flexes>] model
+  Future<Flexes> getFlexByCode(String flexCode) async {
+    Map<String, String> header = {};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    header['Content-Type'] = 'text/plain';
+    String getFlexByLocationUrl = '${GET_FLEX_BY_CODE}/$flexCode/get';
+    return _netUtil.get(getFlexByLocationUrl, headers: header).then((res) {
+      log(':::getFlexByCode: $res');
+      if(res['status'] != 'success') throw res['message'];
+      return Flexes.fromJson(res['data']);
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for joining a flex
   /// A post request to use the [APPROVE_ATTENDEE]
   /// It returns a dynamic response
   Future<dynamic> acceptAttendee(Map<String, dynamic> body) async {

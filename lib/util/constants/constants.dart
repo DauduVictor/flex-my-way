@@ -71,7 +71,8 @@ List<String> foodAndDrinkPolicy = [
   'Food and Drinks are not allowed',
   'Free Food and Drink',
   'Men come with a bottle of Drink',
-  'Women come with a bottle of Drink'
+  'Women come with a bottle of Drink',
+  'Not applicable'
 ];
 List<String> genders = ['Male', 'Female'];
 List<String> infoSource = ['Social Media', 'Friend', 'Website'];

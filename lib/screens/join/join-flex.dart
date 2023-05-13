@@ -18,13 +18,14 @@ import '../payment/payment-method.dart';
 import '../web-view.dart';
 
 class JoinFlex extends StatelessWidget {
-
   final Flexes? flex;
+  final bool showAllFeatures;
 
   static const String id = "joinFlex";
   JoinFlex({
     Key? key,
     this.flex,
+    this.showAllFeatures = false
   }) : super(key: key);
 
   /// calling the [JoinController] for [JoinFlex]
@@ -74,12 +75,14 @@ class JoinFlex extends StatelessWidget {
                     return CachedNetworkImage(
                       alignment: Alignment.topCenter,
                       imageUrl: e,
-                      progressIndicatorBuilder: (context, url, downloadProgress) {
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) {
                         return SpinKitCircle(
                           color: primaryColor.withOpacity(0.7),
                         );
                       },
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                       fit: BoxFit.cover,
                     );
                   }).toList(),
@@ -125,7 +128,7 @@ class JoinFlex extends StatelessWidget {
                 return Container(
                   width: SizeConfig.screenWidth,
                   padding: const EdgeInsets.only(top: 4),
-                  decoration:  const BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -135,190 +138,245 @@ class JoinFlex extends StatelessWidget {
                   child: SingleChildScrollView(
                     controller: scrollController,
                     child: Obx(() => AbsorbPointer(
-                        absorbing: controller.showSpinner.value,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      flex!.name!,
-                                      style: textTheme.headlineMedium!.copyWith(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 30,
+                          absorbing: controller.showSpinner.value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        flex!.name!,
+                                        style:
+                                            textTheme.headlineMedium!.copyWith(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 30,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 26),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(23),
-                                      color: whiteColor,
+                                    const SizedBox(width: 26),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 14, horizontal: 18),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(23),
+                                        color: whiteColor,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            Functions.getFlexDayAndMonth(
+                                                flex!.fromDate!)[0],
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(
+                                              color: primaryColor,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            Functions.getFlexDayAndMonth(
+                                                flex!.fromDate!)[1],
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
-                                          style: textTheme.headlineSmall!.copyWith(
-                                            color: primaryColor,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                  ],
+                                ),
+                                const SizedBox(height: 30),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Time',
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 16,
+                                              color:
+                                                  neutralColor.withOpacity(0.5),
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
-                                          style: textTheme.headlineSmall!.copyWith(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600,
+                                          Text(
+                                            '${Functions.getFlexTime(flex!.fromDate!)} - '
+                                            '${Functions.getFlexTime(flex!.toDate!)}',
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 17.5,
+                                              color: neutralColor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 30),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Time',
-                                          style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 16,
-                                            color: neutralColor.withOpacity(0.5),
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${Functions.getFlexTime(flex!.fromDate!)} - '
-                                              '${Functions.getFlexTime(flex!.toDate!)}',
-                                          style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 17.5,
-                                            color: neutralColor,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  controller.isPaidButtonTapped.value == false
-                                    ? TextButton(
-                                        onPressed: () {
-                                          if (userController.isLoggedIn.value) {
-                                            if(flex!.payStatus! == 'Paid') {
-                                              controller.isPaidButtonTapped.value = true;
-                                            }
-                                            else {
-                                              if (!userController.flexAttendedList.contains(flex!.joinCode) &&
-                                                  userController.gender.value.contains('${flex!.genderRestriction}') ||
-                                                  flex!.genderRestriction == 'Both'
-                                              ) {
-                                                _joinFlex(flex!.joinCode!, flex!);
+                                    controller.isPaidButtonTapped.value == false
+                                        ? TextButton(
+                                            onPressed: () {
+                                              if (userController
+                                                  .isLoggedIn.value) {
+                                                if (flex!.payStatus! ==
+                                                    'Paid') {
+                                                  controller.isPaidButtonTapped
+                                                      .value = true;
+                                                } else {
+                                                  if (!userController
+                                                              .flexAttendedList
+                                                              .contains(flex!
+                                                                  .joinCode) &&
+                                                          userController
+                                                              .gender.value
+                                                              .contains(
+                                                                  '${flex!.genderRestriction}') ||
+                                                      flex!.genderRestriction ==
+                                                          'Both') {
+                                                    _joinFlex(
+                                                        flex!.joinCode!, flex!);
+                                                  }
+                                                  if (!userController
+                                                          .flexAttendedList
+                                                          .contains(
+                                                              flex!.joinCode) &&
+                                                      !userController
+                                                          .gender.value
+                                                          .contains(
+                                                              '${flex!.genderRestriction}') &&
+                                                      flex!.genderRestriction !=
+                                                          'Both') {
+                                                    Functions.showMessage(
+                                                        'Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                                  }
+                                                }
+                                              } else {
+                                                Functions.showMessage(
+                                                    'Please log in to join a flex.');
+                                                Get.toNamed(Login.id);
                                               }
-                                              if (!userController.flexAttendedList.contains(flex!.joinCode) &&
-                                                  !userController.gender.value.contains('${flex!.genderRestriction}') &&
-                                                  flex!.genderRestriction != 'Both'
-                                              ) {
-                                                  Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
-                                              }
-                                            }
-                                          }
-                                          else {
-                                            Functions.showMessage('Please log in to join a flex.');
-                                            Get.toNamed(Login.id);
-                                          }
-                                        },
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: userController.flexAttendedList.contains(flex!.joinCode)
-                                            ? const Color(0xFFE9EEF4)
-                                            : primaryColor,
-                                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
-                                        ),
-                                        child: controller.showSpinner.value == false
-                                          ? Text(
-                                              userController.flexAttendedList.contains(flex!.joinCode)
-                                                ? userController.getFlexAttendeeStatusText(flex!.joinCode!)
-                                                : 'Join this Flex',
+                                            },
+                                            style: TextButton.styleFrom(
+                                              backgroundColor: userController
+                                                      .flexAttendedList
+                                                      .contains(flex!.joinCode)
+                                                  ? const Color(0xFFE9EEF4)
+                                                  : primaryColor,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 24),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                            ),
+                                            child: controller.showSpinner.value == false
+                                              ? Text(
+                                                  userController
+                                                          .flexAttendedList
+                                                          .contains(
+                                                              flex!.joinCode)
+                                                      ? userController
+                                                          .getFlexAttendeeStatusText(
+                                                              flex!.joinCode!)
+                                                      : 'Join this Flex',
+                                                  style: textTheme.button!
+                                                      .copyWith(
+                                                    fontSize: 15,
+                                                    color: whiteColor,
+                                                  ),
+                                                )
+                                              : const Padding(
+                                                  padding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 18),
+                                                  child: SizedBox(
+                                                    height: 17,
+                                                    width: 17,
+                                                    child:
+                                                        CircleProgressIndicator(),
+                                                  ),
+                                                ),
+                                          )
+                                        : TextButton(
+                                            onPressed: () {
+                                              Navigator.pushNamed(
+                                                  context, PaymentMethod.id);
+                                            },
+                                            style: TextButton.styleFrom(
+                                              backgroundColor:
+                                                  backgroundColor, //const Color(0xFFE9EEF4),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 20,
+                                                      horizontal: 24),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                side: const BorderSide(
+                                                    color: primaryColor),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'Pay Now',
                                               style: textTheme.button!.copyWith(
                                                 fontSize: 15,
-                                                color: whiteColor,
+                                                color: primaryColor,
                                               ),
-                                            )
-                                          : const Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 18),
-                                              child: SizedBox(
-                                                height: 17,
-                                                width: 17,
-                                                child: CircleProgressIndicator(),
-                                              ),
+                                            ),
                                           ),
-                                      )
-                                    : TextButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(context, PaymentMethod.id);
-                                        },
-                                        style: TextButton.styleFrom(
-                                          backgroundColor: backgroundColor, //const Color(0xFFE9EEF4),
-                                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(16),
-                                            side: const BorderSide(color: primaryColor),
+                                  ],
+                                ),
+                                const SizedBox(height: 32),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppStrings.host,
+                                          style:
+                                              textTheme.headlineSmall!.copyWith(
+                                            color:
+                                                neutralColor.withOpacity(0.5),
+                                            fontSize: 16.5,
                                           ),
                                         ),
-                                        child: Text(
-                                          'Pay Now',
-                                          style: textTheme.button!.copyWith(
-                                            fontSize: 15,
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          flex!.creator?.name ?? 'Host',
+                                          style: textTheme.bodyLarge!.copyWith(
+                                            fontSize: 18.5,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Multiple Time Hoster',
+                                          style:
+                                              textTheme.headlineSmall!.copyWith(
                                             color: primaryColor,
+                                            fontSize: 16.5,
                                           ),
                                         ),
-                                      ),
-                                ],
-                              ),
-                              const SizedBox(height: 32),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppStrings.host,
-                                        style: textTheme.headlineSmall!.copyWith(
-                                          color: neutralColor.withOpacity(0.5),
-                                          fontSize: 16.5,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        flex!.creator?.name ?? 'Host',
-                                        style: textTheme.bodyLarge!.copyWith(
-                                          fontSize: 18.5,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Multiple Time Hoster',
-                                        style: textTheme.headlineSmall!.copyWith(
-                                          color: primaryColor,
-                                          fontSize: 16.5,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  /*Container(
+                                      ],
+                                    ),
+                                    /*Container(
                                     width: 72,
                                     height: 72,
                                     decoration: BoxDecoration(
@@ -329,132 +387,147 @@ class JoinFlex extends StatelessWidget {
                                       ),
                                     ),
                                   ),*/
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              /// video link button
-                              flex?.videoLink! != ''
-                                ? GestureDetector(
-                                    onTap: () {
-                                      // controller.launchVideo('https://youtube.com').catchError((e){
-                                      //   Functions.showMessage('Could not launch url');
-                                      // });
-                                      Get.to(() => WebViewer(url: flex!.videoLink!));
-                                    },
-                                    child: Stack(
-                                      children: const [
-                                        Icon(
-                                          Icons.movie,
-                                          color: primaryColor,
-                                          size: 57,
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+
+                                /// video link button
+                                flex?.videoLink! != ''
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          // controller.launchVideo('https://youtube.com').catchError((e){
+                                          //   Functions.showMessage('Could not launch url');
+                                          // });
+                                          Get.to(() =>
+                                              WebViewer(url: flex!.videoLink!));
+                                        },
+                                        child: Stack(
+                                          children: const [
+                                            Icon(
+                                              Icons.movie,
+                                              color: primaryColor,
+                                              size: 57,
+                                            ),
+                                            Positioned(
+                                              top: 23,
+                                              left: 19,
+                                              child: Icon(
+                                                Icons.play_arrow,
+                                                color: whiteColor,
+                                                size: 21,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Positioned(
-                                          top: 23,
-                                          left: 19,
-                                          child: Icon(
-                                            Icons.play_arrow,
-                                            color: whiteColor,
-                                            size: 21,
+                                      )
+                                    : const SizedBox(),
+
+                                /// about
+                                const SizedBox(height: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'About/Rules',
+                                      style: textTheme.bodyLarge!.copyWith(
+                                        fontSize: 18.5,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      flex!.flexRules!,
+                                      style: textTheme.headlineSmall!
+                                          .copyWith(fontSize: 16.5),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 25),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //guest
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Guests',
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 18.5,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                )
-                                : const SizedBox(),
-                              /// about
-                              const SizedBox(height: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'About/Rules',
-                                    style: textTheme.bodyLarge!.copyWith(
-                                      fontSize: 18.5,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    flex!.flexRules!,
-                                    style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //guest
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Guests',
-                                          style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 18.5,
-                                            fontWeight: FontWeight.w600,
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            '${flex?.totalInvitees}/${flex?.capacity} Total',
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(fontSize: 16.5),
                                           ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          '${flex?.totalInvitees}/${flex?.capacity} Total',
-                                          style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  //provided
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Consumable policy',
-                                          style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 18.5,
-                                            fontWeight: FontWeight.w600,
+                                    const SizedBox(width: 10),
+                                    //provided
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Consumable policy',
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 18.5,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          flex!.consumablesPolicy!,
-                                          style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 25),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //nature of flex
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Nature of Flex',
-                                          style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 18.5,
-                                            fontWeight: FontWeight.w600,
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            flex!.consumablesPolicy!,
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(fontSize: 16.5),
                                           ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          flex!.flexType!,
-                                          style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  /*//rsvp
+                                  ],
+                                ),
+                                const SizedBox(height: 25),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //nature of flex
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Nature of Flex',
+                                            style:
+                                                textTheme.bodyLarge!.copyWith(
+                                              fontSize: 18.5,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            flex!.flexType!,
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(fontSize: 16.5),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    /*//rsvp
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -474,106 +547,149 @@ class JoinFlex extends StatelessWidget {
                                       ],
                                     ),
                                   ),*/
-                                ],
-                              ),
-                              const SizedBox(height: 32),
-                              SizedBox(
-                                width: SizeConfig.screenWidth,
-                                height: SizeConfig.screenHeight! * 0.25,
-                                child: flex?.showOnAccepted == true
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        color: whiteColor,
-                                      ),
-                                      child: Icon(
-                                        Icons.location_disabled,
-                                        color: neutralColor.withOpacity(0.4),
-                                        size: 55,
-                                      ),
-                                    )
-                                  : ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child: Stack(
-                                    alignment: AlignmentDirectional.center,
-                                    children: [
-                                      GoogleMap(
-                                        mapType: MapType.normal,
-                                        initialCameraPosition: CameraPosition(
-                                          target: LatLng(
-                                            flex!.locationCoordinates!.lat!,
-                                            flex!.locationCoordinates!.lng!,
-                                          ),
-                                          zoom: 18.0,
-                                        ),
-                                        onMapCreated: _onMapCreated,
-                                        myLocationEnabled: false,
-                                        myLocationButtonEnabled: false,
-                                        scrollGesturesEnabled: false,
-                                        zoomControlsEnabled: false,
-                                        zoomGesturesEnabled: false,
-                                      ),
-                                      flex?.showOnAccepted == true
-                                        ? Container(
+                                  ],
+                                ),
+                                const SizedBox(height: 32),
+                                SizedBox(
+                                  width: SizeConfig.screenWidth,
+                                  height: SizeConfig.screenHeight! * 0.25,
+                                  child: flex?.showOnAccepted == true && showAllFeatures == false
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
                                             color: whiteColor,
-                                            child: const Icon(
-                                              Icons.location_disabled,
-                                              color: neutralColor,
-                                              size: 21,
+                                          ),
+                                          child: Icon(
+                                            Icons.location_disabled,
+                                            color: neutralColor.withOpacity(0.4),
+                                            size: 45,
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Stack(
+                                            alignment:
+                                                AlignmentDirectional.center,
+                                            children: [
+                                              GoogleMap(
+                                                mapType: MapType.normal,
+                                                initialCameraPosition:
+                                                  CameraPosition(
+                                                    target: LatLng(
+                                                      flex!.locationCoordinates!
+                                                          .lat!,
+                                                      flex!.locationCoordinates!
+                                                          .lng!,
+                                                    ),
+                                                    zoom: 18.0,
+                                                  ),
+                                                onMapCreated: _onMapCreated,
+                                                myLocationEnabled: true,
+                                                myLocationButtonEnabled: false,
+                                                scrollGesturesEnabled: false,
+                                                zoomControlsEnabled: false,
+                                                zoomGesturesEnabled: true,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                ),
+                                const SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        if (flex?.showOnAccepted == false || showAllFeatures == true) {
+                                          Clipboard.setData(ClipboardData(
+                                            text: await controller
+                                                .formatLocation(
+                                                    flex!
+                                                        .locationCoordinates!
+                                                        .lat!,
+                                                    flex!
+                                                        .locationCoordinates!
+                                                        .lng!)))
+                                              .then((value) {
+                                            Functions.showMessage(
+                                                'Flex location copied');
+                                          }).catchError((e) {
+                                            Functions.showMessage(
+                                                'Could not copy flex link');
+                                          });
+                                        }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 5.0),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.content_copy_outlined,
+                                            color: primaryColor,
+                                            size: 12,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            'Click to Copy Address',
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(
+                                              color: primaryColor,
+                                              fontSize: 12,
                                             ),
-                                          )
-                                        : Container(
-
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              TextButton(
-                                onPressed: () async {
-                                  if (flex?.showOnAccepted == false) {
-                                    Clipboard.setData(
-                                      ClipboardData(
-                                        text: await controller.formatLocation(
-                                          flex!.locationCoordinates!.lat!,
-                                          flex!.locationCoordinates!.lng!
-                                        ))
-                                    ).then((value) {
-                                      Functions.showMessage('Flex location copied');
-                                    }).catchError((e){
-                                      Functions.showMessage('Could not copy flex link');
-                                    });
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-                                ),
-                                child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.content_copy_outlined,
-                                        color: primaryColor,
-                                        size: 12,
+                                          ),
+                                        ],
                                       ),
-                                      const SizedBox(width: 6),
-                                      Text(
-                                        'Click to Copy Address',
-                                        style: textTheme.headlineSmall!.copyWith(
-                                          color: primaryColor,
-                                          fontSize: 12,
-                                        ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        if (flex?.showOnAccepted == false || showAllFeatures == true) {
+                                          Clipboard.setData(ClipboardData(
+                                              text: flex!.joinCode)).then((value) {
+                                            Functions.showMessage(
+                                                'Flex code copied');
+                                          }).catchError((e) {
+                                            Functions.showMessage(
+                                                'Could not copy flex code');
+                                          });;
+                                        }
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 5.0),
                                       ),
-                                    ],
-                                  ),
-                              ),
-                              const SizedBox(height: 12),
-                            ],
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(
+                                            Icons.content_copy_outlined,
+                                            color: primaryColor,
+                                            size: 12,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            'Click to Copy Code',
+                                            style: textTheme.headlineSmall!
+                                                .copyWith(
+                                              color: primaryColor,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ),
+                        )),
                   ),
                 );
               }),
@@ -591,11 +707,10 @@ class JoinFlex extends StatelessWidget {
       Functions.showMessage('Successfully joined flex!');
       userController.refreshDashboardController();
       Get.off(() => JoinedFlexDetails(flex: flex));
-    }).catchError((e){
+    }).catchError((e) {
       log(e);
       controller.showSpinner.value = false;
       Functions.showMessage(e);
     });
   }
-
 }

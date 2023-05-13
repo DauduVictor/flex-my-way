@@ -742,13 +742,9 @@ class _EditFlexState extends State<EditFlex> {
                     textInputAction: TextInputAction.done,
                     hintText: 'Search address',
                     suffix: controller.showSearchSpinner == true
-                        ? SizedBox(
-                            width: 5,
-                            height: 5,
-                            child: SpinKitCircle(
-                              color: primaryColor.withOpacity(0.9),
-                              size: 25,
-                            ),
+                        ? SpinKitCircle(
+                            color: primaryColor.withOpacity(0.9),
+                            size: 25,
                           )
                         : IconButton(
                             onPressed: () {},

@@ -17,17 +17,12 @@ import '../join/joined-flex-details.dart';
 import 'FlexHistoryImageArchive.dart';
 
 class FlexHistoryDetail extends StatelessWidget {
-
   static const String id = "flexHistoryDetail";
 
   final bool? past;
   final Flexes? flex;
 
-  FlexHistoryDetail({
-    Key? key,
-    this.past,
-    this.flex
-  }) : super(key: key);
+  FlexHistoryDetail({Key? key, this.past, this.flex}) : super(key: key);
 
   /// calling the [JoinController] for [JoinFlex]
   final JoinController joinController = Get.put(JoinController());
@@ -52,6 +47,7 @@ class FlexHistoryDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
+    print(flex?.joinCode);
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -72,12 +68,14 @@ class FlexHistoryDetail extends StatelessWidget {
                     return CachedNetworkImage(
                       alignment: Alignment.topCenter,
                       imageUrl: e,
-                      progressIndicatorBuilder: (context, url, downloadProgress) {
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) {
                         return SpinKitCircle(
                           color: primaryColor.withOpacity(0.7),
                         );
                       },
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                       fit: BoxFit.cover,
                     );
                   }).toList(),
@@ -116,12 +114,16 @@ class FlexHistoryDetail extends StatelessWidget {
                               radius: 22,
                               child: TextButton(
                                 onPressed: () {
-                                  if(past!) {
-                                    Get.to(() => FlexHistoryImageArchive(flexTag: flex!.hashtag!));
-                                  } else if (flex!.fromDate!.isAfter(DateTime.now())){
-                                    Get.to(() => FlexHistoryImageArchive(flexTag: flex!.hashtag!));
+                                  if (past!) {
+                                    Get.to(() => FlexHistoryImageArchive(
+                                        flexTag: flex!.hashtag!));
+                                  } else if (flex!.fromDate!
+                                      .isAfter(DateTime.now())) {
+                                    Get.to(() => FlexHistoryImageArchive(
+                                        flexTag: flex!.hashtag!));
                                   } else {
-                                    Functions.showMessage('All images will be present after flex goes live!');
+                                    Functions.showMessage(
+                                        'All images will be present after flex goes live!');
                                   }
                                 },
                                 style: TextButton.styleFrom(
@@ -152,7 +154,7 @@ class FlexHistoryDetail extends StatelessWidget {
                 return Container(
                   // height: SizeConfig.screenHeight! * 0.6,
                   width: SizeConfig.screenWidth,
-                  decoration:  const BoxDecoration(
+                  decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
@@ -161,8 +163,9 @@ class FlexHistoryDetail extends StatelessWidget {
                   ),
                   child: SingleChildScrollView(
                     controller: controller,
-                    child:Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -180,7 +183,8 @@ class FlexHistoryDetail extends StatelessWidget {
                               ),
                               const SizedBox(width: 26),
                               Container(
-                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 14, horizontal: 20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(23),
                                   color: whiteColor,
@@ -188,7 +192,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
+                                      Functions.getFlexDayAndMonth(
+                                          flex!.fromDate!)[0],
                                       style: textTheme.headlineSmall!.copyWith(
                                         color: primaryColor,
                                         fontSize: 20,
@@ -196,7 +201,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
+                                      Functions.getFlexDayAndMonth(
+                                          flex!.fromDate!)[1],
                                       style: textTheme.headlineSmall!.copyWith(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
@@ -225,7 +231,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     ),
                                     Text(
                                       '${Functions.getFlexTime(flex!.fromDate!)} - '
-                                          '${Functions.getFlexTime(flex!.toDate!)}',
+                                      '${Functions.getFlexTime(flex!.toDate!)}',
                                       style: textTheme.bodyLarge!.copyWith(
                                         fontSize: 18.5,
                                         color: neutralColor,
@@ -236,57 +242,66 @@ class FlexHistoryDetail extends StatelessWidget {
                                 ),
                               ),
                               Obx(() {
-                                  return TextButton(
-                                    onPressed: () {
-                                      if (!past!) {
-                                        if (!userController.flexAttendedList.contains(flex!.joinCode) &&
-                                            userController.gender.value.contains('${flex!.genderRestriction}') ||
-                                            flex!.genderRestriction == 'Both'
-                                        ) {
-                                          _joinFlex(flex!.joinCode!, flex!);
-                                        }
-                                        if (!userController.flexAttendedList.contains(flex!.joinCode) &&
-                                            !userController.gender.value.contains('${flex!.genderRestriction}') &&
-                                            flex!.genderRestriction != 'Both'
-                                        ) {
-                                          Functions.showMessage('Gender restriction has been applied to this flex.\nPlease join other flex!');
-                                        }
+                                return TextButton(
+                                  onPressed: () {
+                                    if (!past!) {
+                                      if (!userController.flexAttendedList
+                                                  .contains(flex!.joinCode) &&
+                                              userController.gender.value.contains(
+                                                  '${flex!.genderRestriction}') ||
+                                          flex!.genderRestriction == 'Both') {
+                                        _joinFlex(flex!.joinCode!, flex!);
                                       }
-                                    },
-                                    style: TextButton.styleFrom(
-                                      backgroundColor: past == true
+                                      if (!userController.flexAttendedList
+                                              .contains(flex!.joinCode) &&
+                                          !userController.gender.value.contains(
+                                              '${flex!.genderRestriction}') &&
+                                          flex!.genderRestriction != 'Both') {
+                                        Functions.showMessage(
+                                            'Gender restriction has been applied to this flex.\nPlease join other flex!');
+                                      }
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: past == true
                                         ? const Color(0xFFE9EEF4)
-                                        : userController.flexAttendedList.contains(flex!.joinCode)
-                                          ? const Color(0xFFE9EEF4)
-                                          : primaryColor,
-                                      padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 26),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
+                                        : userController.flexAttendedList
+                                                .contains(flex!.joinCode)
+                                            ? const Color(0xFFE9EEF4)
+                                            : primaryColor,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 21, horizontal: 26),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
-                                    child: joinController.showSpinner.value == false
-                                        ? Text(
-                                            flex!.payStatus! == 'Free'
-                                              ? userController.flexAttendedList.contains(flex!.joinCode)
-                                                ? userController.getFlexAttendeeStatusText(flex!.joinCode!)
-                                                : 'Join this Flex'
+                                  ),
+                                  child: joinController.showSpinner.value ==
+                                          false
+                                      ? Text(
+                                          flex!.payStatus! == 'Free'
+                                              ? userController.flexAttendedList
+                                                      .contains(flex!.joinCode)
+                                                  ? userController
+                                                      .getFlexAttendeeStatusText(
+                                                          flex!.joinCode!)
+                                                  : 'Join this Flex'
                                               : 'Buy Flex Ticket',
-                                            style: textTheme.button!.copyWith(
-                                              fontSize: 15,
-                                              color: whiteColor,
-                                            ),
-                                          )
-                                        : const Padding(
-                                            padding: EdgeInsets.symmetric(horizontal: 18),
-                                            child: SizedBox(
-                                              height: 17,
-                                              width: 17,
-                                              child: CircleProgressIndicator(),
-                                            ),
-                                    ),
-                                  );
-                                }
-                              ),
+                                          style: textTheme.button!.copyWith(
+                                            fontSize: 15,
+                                            color: whiteColor,
+                                          ),
+                                        )
+                                      : const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 18),
+                                          child: SizedBox(
+                                            height: 17,
+                                            width: 17,
+                                            child: CircleProgressIndicator(),
+                                          ),
+                                        ),
+                                );
+                              }),
                             ],
                           ),
                           const SizedBox(height: 32),
@@ -348,7 +363,8 @@ class FlexHistoryDetail extends StatelessWidget {
                               const SizedBox(height: 10),
                               Text(
                                 flex!.flexRules!.capitalizeFirst!,
-                                style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                style: textTheme.headlineSmall!
+                                    .copyWith(fontSize: 16.5),
                               ),
                             ],
                           ),
@@ -372,7 +388,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                     const SizedBox(height: 10),
                                     Text(
                                       '1/${flex!.capacity!} Total',
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!
+                                          .copyWith(fontSize: 16.5),
                                     ),
                                   ],
                                 ),
@@ -393,7 +410,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.consumablesPolicy!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!
+                                          .copyWith(fontSize: 16.5),
                                     ),
                                   ],
                                 ),
@@ -420,7 +438,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.flexType!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!
+                                          .copyWith(fontSize: 16.5),
                                     ),
                                   ],
                                 ),
@@ -441,7 +460,8 @@ class FlexHistoryDetail extends StatelessWidget {
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.creator!.phone!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!
+                                          .copyWith(fontSize: 16.5),
                                     ),
                                   ],
                                 ),
@@ -476,20 +496,20 @@ class FlexHistoryDetail extends StatelessWidget {
                           const SizedBox(height: 3),
                           TextButton(
                             onPressed: () async {
-                              Clipboard.setData(
-                                  ClipboardData(
+                              Clipboard.setData(ClipboardData(
                                       text: await formatLocation(
                                           flex!.locationCoordinates!.lat!,
-                                          flex!.locationCoordinates!.lng!
-                                      ))
-                              ).then((value) {
+                                          flex!.locationCoordinates!.lng!)))
+                                  .then((value) {
                                 Functions.showMessage('Flex location copied');
-                              }).catchError((e){
-                                Functions.showMessage('Could not copy flex link');
+                              }).catchError((e) {
+                                Functions.showMessage(
+                                    'Could not copy flex link');
                               });
                             },
                             style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 5.0),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -537,7 +557,7 @@ class FlexHistoryDetail extends StatelessWidget {
       joinController.joinedFlex = flex;
       Functions.showMessage('Successfully joined flex!');
       Get.to(() => JoinedFlexDetails(flex: flex));
-    }).catchError((e){
+    }).catchError((e) {
       log(e);
       joinController.showSpinner.value = false;
       Functions.showMessage(e);

@@ -1,6 +1,4 @@
 import 'package:flex_my_way/components/button.dart';
-import 'package:flex_my_way/model/flex.dart';
-import 'package:flex_my_way/screens/flex-history/flex-history-detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,9 +6,7 @@ import 'package:get/get.dart';
 import '../dashboard/dashboard.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
-import '../onboarding/login.dart';
 import 'package:share_plus/share_plus.dart';
-import 'beta-sms.dart';
 
 class HostFlexSuccess extends StatelessWidget {
 
@@ -116,15 +112,18 @@ class HostFlexSuccess extends StatelessWidget {
                             AppStrings.clickTheBelow,
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 24),
-                          GestureDetector(
-                            onTap: () {
-                              // Get.to(() => FlexHistoryDetail(flexSuccess: hostController.createdFlex!));
-                            },
-                            child: Text(
-                              AppStrings.flexURL,
-                              textAlign: TextAlign.center,
-                              style: textTheme.bodyMedium!.copyWith(color: primaryColor),
+                          const SizedBox(height: 14),
+                          Visibility(
+                            visible: false,
+                            child: GestureDetector(
+                              onTap: () {
+                                // Get.to(() => FlexHistoryDetail(flexSuccess: hostController.createdFlex!));
+                              },
+                              child: Text(
+                                AppStrings.flexURL,
+                                textAlign: TextAlign.center,
+                                style: textTheme.bodyMedium!.copyWith(color: primaryColor),
+                              ),
                             ),
                           )
                         ],
@@ -157,7 +156,7 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Share.share(AppStrings.flexURL);
+                            Share.share('Hey there, you can join my flex with the code ${hostController.createdFlex!.joinCode!}');
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),
@@ -175,10 +174,10 @@ class HostFlexSuccess extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(
-                                text: hostController.createdFlex!.joinCode!)).then((value) {
-                                  Functions.showMessage('Flex link copied');
+                              text: hostController.createdFlex!.joinCode!)).then((value) {
+                                Functions.showMessage('Flex code copied');
                             }).catchError((e){
-                              Functions.showMessage('Could not copy flex link');
+                              Functions.showMessage('Could not copy flex code');
                             });
                           },
                           style: TextButton.styleFrom(

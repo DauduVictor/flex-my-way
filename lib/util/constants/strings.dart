@@ -94,7 +94,7 @@ Vivamus mus sed commodo ut non ut venenatis est rutrum. """;
   static const isInviting =
       ' is inviting you to flex. Find him this weekend on ';
   static const invitingDate = '24 Oct, 2021.';
-  static const clickTheBelow = 'Click the link below to have a view of your created flex.';
+  static const clickTheBelow = 'You can share your event with your guests by using the action buttons';
   static const flexURL = 'https://www.flexmyway.io/uweb191';
   static const betaSMSCaps = 'BETA\nSMS';
   static const goHome = 'Go Home';
