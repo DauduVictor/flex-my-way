@@ -60,7 +60,7 @@ class RefactoredDrawer extends StatelessWidget {
                           child: Text(
                             userController.username.value.substring(0,1).toUpperCase(),
                             style: textTheme.headlineMedium!.copyWith(
-                              fontSize: 40,
+                              fontSize: 40.5,
                               color: primaryColor,
                               fontWeight: FontWeight.w500,
                             ),
@@ -80,7 +80,7 @@ class RefactoredDrawer extends StatelessWidget {
                                   userController.username.value.split(' ')[0].capitalizeFirst ?? '',
                                   overflow: TextOverflow.ellipsis,
                                   style: textTheme.headlineSmall!.copyWith(
-                                    fontSize: 22,
+                                    fontSize: 22.5,
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -99,7 +99,7 @@ class RefactoredDrawer extends StatelessWidget {
                             child: Text(
                               'View Profile',
                               style: textTheme.headlineSmall!.copyWith(
-                                fontSize: 13.5,
+                                fontSize: 14,
                                 color: primaryColor,
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.w500,
@@ -119,7 +119,7 @@ class RefactoredDrawer extends StatelessWidget {
                     return Text(
                       '#${userController.bearerToken.value.substring(1,10).toLowerCase()}',
                       style: textTheme.headlineSmall!.copyWith(
-                        fontSize: 26,
+                        fontSize: 26.5,
                         fontWeight: FontWeight.w600,
                       ),
                     );
@@ -209,7 +209,7 @@ class RefactoredDrawer extends StatelessWidget {
                   Text(
                     'Legal',
                     style: textTheme.bodyLarge!.copyWith(
-                      fontSize: 21,
+                      fontSize: 21.5,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -223,7 +223,7 @@ class RefactoredDrawer extends StatelessWidget {
                       AppStrings.termsAndConditions,
                       style: textTheme.bodyLarge!.copyWith(
                         color: neutralColor.withOpacity(0.5),
-                        fontSize: 17,
+                        fontSize: 17.5,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -238,7 +238,7 @@ class RefactoredDrawer extends StatelessWidget {
                       AppStrings.privacyPolicy,
                       style: textTheme.bodyLarge!.copyWith(
                         color: neutralColor.withOpacity(0.5),
-                        fontSize: 17,
+                        fontSize: 17.5,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -106,7 +106,7 @@ AppBar buildAppBar(
     ),
     title: Text(
       title,
-      style: textTheme.headlineSmall!.copyWith(fontSize: 23.5, fontWeight: FontWeight.w600),
+      style: textTheme.headlineSmall!.copyWith(fontSize: 24, fontWeight: FontWeight.w600),
     ),
   );
 }

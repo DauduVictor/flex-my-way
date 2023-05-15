@@ -70,7 +70,7 @@ class HostRegistration extends StatelessWidget {
                             child: Text(
                               controller.hostObscureText.value == true ? 'SHOW' : 'HIDE',
                               style: textTheme.button!.copyWith(
-                                fontSize: 17,
+                                fontSize: 17.5,
                                 color: primaryColor,
                               ),
                             ),
@@ -222,7 +222,7 @@ class HostRegistration extends StatelessWidget {
           Text(
             'Continue action using',
             style: textTheme.headlineSmall!.copyWith(
-              fontSize: 21,
+              fontSize: 21.5,
             ),
           ),
           const SizedBox(height: 10),
@@ -253,7 +253,7 @@ class HostRegistration extends StatelessWidget {
                         Text(
                           'Gallery',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],
@@ -278,7 +278,7 @@ class HostRegistration extends StatelessWidget {
                         Text(
                           'Camera',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],

@@ -74,7 +74,7 @@ class _DashboardState extends State<Dashboard> {
                     style: TextStyle(
                       color: neutralColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 20,
+                      fontSize: 20.5,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -213,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
                                       child: Text(
                                         'Scheduled',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.5,
                                           fontWeight: FontWeight.w600,
                                           fontFamily: 'Gilroy',
                                         ),
@@ -223,7 +223,7 @@ class _DashboardState extends State<Dashboard> {
                                       child: Text(
                                         'Completed',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.5,
                                           fontWeight: FontWeight.w600,
                                           fontFamily: 'Gilroy',
                                         ),
@@ -271,7 +271,7 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(height: 20),
               const Text(
                 'You have no scheduled flex',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16.5),
               ),
               const SizedBox(height: 20),
             ],
@@ -314,7 +314,7 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(height: 20),
               const Text(
                 'You have no completed flex',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16.5),
               ),
               const SizedBox(height: 20),
             ],
@@ -429,7 +429,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                                 Text(
                                   '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
                                   style: textTheme.bodyMedium!.copyWith(
-                                    fontSize: 15,
+                                    fontSize: 15.5,
                                     color: neutralColor.withOpacity(0.5),
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -437,7 +437,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                                 Text(
                                   AppStrings.confirmedInvitees,
                                   style: textTheme.bodyMedium!.copyWith(
-                                    fontSize: 15,
+                                    fontSize: 15.5,
                                     color: neutralColor.withOpacity(0.5),
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -474,7 +474,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                                         Text(
                                           'Edit',
                                           style: textTheme.bodyMedium!.copyWith(
-                                            fontSize: 13,
+                                            fontSize: 13.5,
                                             color: primaryColor,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -482,7 +482,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                                         const SizedBox(width: 5),
                                         const Icon(
                                           Icons.arrow_forward,
-                                          size: 13,
+                                          size: 13.5,
                                         ),
                                       ],
                                     ),

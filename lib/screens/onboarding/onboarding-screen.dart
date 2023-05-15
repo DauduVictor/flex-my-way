@@ -71,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Text(
               AppStrings.flexMyWay,
               style: textTheme.headline1!.copyWith(
-                fontSize: 100,
+                fontSize: 100.5,
                 color: whiteColor, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 24),

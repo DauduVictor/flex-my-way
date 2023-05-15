@@ -34,7 +34,7 @@ class ListTileButton extends StatelessWidget {
                   style: const TextStyle(
                     color: whiteColor,
                     fontWeight: FontWeight.w500,
-                    fontSize: 17,
+                    fontSize: 17.5,
                   ),
                 ),
               ),

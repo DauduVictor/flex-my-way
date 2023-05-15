@@ -328,7 +328,7 @@ class HostAFlex extends StatelessWidget {
                         child: Text(
                           '  * You can upload multiple banner images',
                           style: textTheme.bodyMedium!.copyWith(
-                            fontSize: 11.5,
+                            fontSize: 12,
                             color: primaryColor,
                             fontWeight: FontWeight.w500,
                           ),
@@ -628,7 +628,7 @@ class HostAFlex extends StatelessWidget {
           Text(
             'Continue action using',
             style: textTheme.headlineSmall!.copyWith(
-              fontSize: 21,
+              fontSize: 21.5,
             ),
           ),
           const SizedBox(height: 10),
@@ -659,7 +659,7 @@ class HostAFlex extends StatelessWidget {
                         Text(
                           'Gallery',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],
@@ -684,7 +684,7 @@ class HostAFlex extends StatelessWidget {
                         Text(
                           'Camera',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],
@@ -726,7 +726,7 @@ class HostAFlex extends StatelessWidget {
                     child: Text(
                       'Search Address',
                       style: textTheme.headlineSmall!.copyWith(
-                        fontSize: 17,
+                        fontSize: 17.5,
                       ),
                     ),
                   ),
@@ -879,7 +879,7 @@ class HostAFlex extends StatelessWidget {
                                     ?.capitalizeFirst ??
                                 '',
                             style: textTheme.bodyLarge!.copyWith(
-                              fontSize: 16.5,
+                              fontSize: 17,
                             ),
                           ),
                         ),
@@ -982,7 +982,7 @@ class HostAFlex extends StatelessWidget {
                   child: Text(
                     AppStrings.weWillTake,
                     style: textTheme.bodyMedium!
-                        .copyWith(fontSize: 16, height: 1.2),
+                        .copyWith(fontSize: 16.5, height: 1.2),
                   ),
                 ),
               ),

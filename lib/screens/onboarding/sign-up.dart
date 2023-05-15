@@ -28,7 +28,7 @@ class SignUp extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           'Sign Up',
-          style: textTheme.headlineMedium!.copyWith(fontSize: 30),
+          style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
         ),
       ),
       body: DismissKeyboard(
@@ -137,7 +137,7 @@ class SignUp extends StatelessWidget {
                   child: Text(
                     controller.signupObscurePassword.value == true ? 'SHOW' : 'HIDE',
                     style: textTheme.button!.copyWith(
-                      fontSize: 14,
+                      fontSize: 14.5,
                       color: primaryColor,
                     ),
                   ),
@@ -204,7 +204,7 @@ class SignUp extends StatelessWidget {
             textEditingController: controller.signupOccupationController,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
-            hintText: 'Your Occupation',
+            hintText: 'Occupation (Student, Tech Bro/Sis, Banker)',
             validator: (value) {
               if(value!.isEmpty) {
                 return 'This field is required';

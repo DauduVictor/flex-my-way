@@ -177,7 +177,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   style: textTheme.headlineMedium!.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 30,
+                                    fontSize: 30.5,
                                   ),
                                 ),
                               ),
@@ -196,7 +196,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                           flex!.fromDate!)[0],
                                       style: textTheme.headlineSmall!.copyWith(
                                         color: primaryColor,
-                                        fontSize: 20,
+                                        fontSize: 20.5,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -204,7 +204,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                       Functions.getFlexDayAndMonth(
                                           flex!.fromDate!)[1],
                                       style: textTheme.headlineSmall!.copyWith(
-                                        fontSize: 20,
+                                        fontSize: 20.5,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -224,7 +224,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       'Time',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 16,
+                                        fontSize: 16.5,
                                         color: neutralColor.withOpacity(0.5),
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -233,7 +233,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                       '${Functions.getFlexTime(flex!.fromDate!)} - '
                                       '${Functions.getFlexTime(flex!.toDate!)}',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         color: neutralColor,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -287,7 +287,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                                   : 'Join this Flex'
                                               : 'Buy Flex Ticket',
                                           style: textTheme.button!.copyWith(
-                                            fontSize: 15,
+                                            fontSize: 15.5,
                                             color: whiteColor,
                                           ),
                                         )
@@ -315,14 +315,14 @@ class FlexHistoryDetail extends StatelessWidget {
                                     AppStrings.host,
                                     style: textTheme.headlineSmall!.copyWith(
                                       color: neutralColor.withOpacity(0.5),
-                                      fontSize: 16.5,
+                                      fontSize: 17,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     flex?.creator?.name ?? '',
                                     style: textTheme.bodyLarge!.copyWith(
-                                      fontSize: 18.5,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -330,7 +330,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     'Multiple Time Host',
                                     style: textTheme.headlineSmall!.copyWith(
                                       color: primaryColor,
-                                      fontSize: 16.5,
+                                      fontSize: 17,
                                     ),
                                   ),
                                 ],
@@ -356,7 +356,7 @@ class FlexHistoryDetail extends StatelessWidget {
                               Text(
                                 'About/Rules',
                                 style: textTheme.bodyLarge!.copyWith(
-                                  fontSize: 18.5,
+                                  fontSize: 19,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -364,7 +364,7 @@ class FlexHistoryDetail extends StatelessWidget {
                               Text(
                                 flex!.flexRules!.capitalizeFirst!,
                                 style: textTheme.headlineSmall!
-                                    .copyWith(fontSize: 16.5),
+                                    .copyWith(fontSize: 17),
                               ),
                             ],
                           ),
@@ -381,7 +381,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       'Guests',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -389,7 +389,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       '1/${flex!.capacity!} Total',
                                       style: textTheme.headlineSmall!
-                                          .copyWith(fontSize: 16.5),
+                                          .copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -403,7 +403,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       'Consumable Policy',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -411,7 +411,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       flex!.consumablesPolicy!,
                                       style: textTheme.headlineSmall!
-                                          .copyWith(fontSize: 16.5),
+                                          .copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -431,7 +431,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       'Nature of Flex',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -439,7 +439,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       flex!.flexType!,
                                       style: textTheme.headlineSmall!
-                                          .copyWith(fontSize: 16.5),
+                                          .copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -453,7 +453,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       'RSVP',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -461,7 +461,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Text(
                                       flex!.creator!.phone!,
                                       style: textTheme.headlineSmall!
-                                          .copyWith(fontSize: 16.5),
+                                          .copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -524,7 +524,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                   'Click to Copy Address',
                                   style: textTheme.headlineSmall!.copyWith(
                                     color: primaryColor,
-                                    fontSize: 12,
+                                    fontSize: 12.5,
                                   ),
                                 ),
                               ],

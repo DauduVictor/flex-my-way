@@ -112,7 +112,7 @@ class _FlexeryState extends State<Flexery> {
                                 ),
                                 hintText: 'Search flex hashtags',
                                 hintStyle: textTheme.bodyLarge!.copyWith(
-                                  fontSize: 13,
+                                  fontSize: 13.5,
                                   color: neutralColor.withOpacity(0.3),
                                 ),
                                 suffixIcon:
@@ -345,7 +345,7 @@ class _FlexeryState extends State<Flexery> {
                                             fontWeight: FontWeight.w500,
                                             color: whiteColor,
                                             letterSpacing: 1.2,
-                                            fontSize: 24,
+                                            fontSize: 24.5,
                                           ),
                                         ),
                                       ),
@@ -429,7 +429,7 @@ class _FlexeryState extends State<Flexery> {
                     const Text(
                       'Sort by',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'Gilroy',
                       ),
@@ -452,7 +452,7 @@ class _FlexeryState extends State<Flexery> {
                           child: Text(
                             'Most Recent',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.5,
                               fontWeight: controller.flexeryFilter.value == 0
                                   ? FontWeight.w600
                                   : FontWeight.w500,
@@ -480,7 +480,7 @@ class _FlexeryState extends State<Flexery> {
                           child: Text(
                             'Most Popular Flex',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.5,
                               fontWeight: controller.flexeryFilter.value == 1
                                   ? FontWeight.w600
                                   : FontWeight.w500,
@@ -508,7 +508,7 @@ class _FlexeryState extends State<Flexery> {
                           child: Text(
                             'Random',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 18.5,
                               fontWeight: controller.flexeryFilter.value == 2
                                   ? FontWeight.w600
                                   : FontWeight.w500,

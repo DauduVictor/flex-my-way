@@ -58,7 +58,7 @@ class ResetPassword extends StatelessWidget {
                       SizedBox(height: SizeConfig.screenHeight! * 0.04),
                       Text(
                         AppStrings.resetPassword,
-                        style: textTheme.headlineMedium!.copyWith(fontSize: 30),
+                        style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
                       ),
                       const SizedBox(height: 32),
                       Text(
@@ -146,7 +146,7 @@ class ResetPassword extends StatelessWidget {
                   child: Text(
                     controller.resetPasswordObscurePassword.value == true ? 'SHOW' : 'HIDE',
                     style: textTheme.button!.copyWith(
-                      fontSize: 14,
+                      fontSize: 14.5,
                       color: primaryColor,
                     ),
                   ),

@@ -87,7 +87,7 @@ class UploadImage extends StatelessWidget {
                                         style: textTheme.bodyMedium!.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: whiteColor.withOpacity(0.3),
-                                          fontSize: 110,
+                                          fontSize: 110.5,
                                         ),
                                       ),
                                     )
@@ -111,7 +111,7 @@ class UploadImage extends StatelessWidget {
                                         style: textTheme.bodyMedium!.copyWith(
                                           fontWeight: FontWeight.w500,
                                           color: whiteColor,
-                                          fontSize: 21,
+                                          fontSize: 21.5,
                                         ),
                                       ),
                                       const SizedBox(width: 10),
@@ -306,7 +306,7 @@ class UploadImage extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: neutralColor,
-                    fontSize: 16,
+                    fontSize: 16.5,
                   ),
                 ),
                 const SizedBox(height: 15),

@@ -62,36 +62,36 @@ class AppTheme {
 
   static TextTheme _textTheme(ColorScheme colorScheme) => const TextTheme(
     headlineMedium: TextStyle(
-      fontSize: 32,
+      fontSize: 32.5,
       fontWeight: FontWeight.bold,
       color: neutralColor,
     ),
     headlineSmall: TextStyle(
-      fontSize: 24,
+      fontSize: 24.5,
       fontWeight: FontWeight.w400,
       color: neutralColor,
     ),
     titleLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 18.5,
       fontWeight: FontWeight.w400,
       color: neutralColor,
     ),
     titleMedium: TextStyle(
       color: neutralColor,
-      fontSize: 12,
+      fontSize: 12.5,
       fontWeight: FontWeight.w400,
     ),
     bodyLarge: TextStyle(
-      fontSize: 14,
+      fontSize: 14.5,
       color: neutralColor,
       fontWeight: FontWeight.w500,
     ),
     bodyMedium: TextStyle(
-      fontSize: 16,
+      fontSize: 16.5,
       color: neutralColor,
     ),
     labelLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 18.5,
       color: neutralColor,
       fontWeight: FontWeight.w600
     ),

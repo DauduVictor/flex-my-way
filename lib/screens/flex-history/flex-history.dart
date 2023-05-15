@@ -100,7 +100,7 @@ class FlexHistory extends StatelessWidget {
                                       child: Text(
                                         'Past',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Gilroy',
                                         ),
@@ -110,7 +110,7 @@ class FlexHistory extends StatelessWidget {
                                       child: Text(
                                         'Present',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Gilroy',
                                         ),
@@ -120,7 +120,7 @@ class FlexHistory extends StatelessWidget {
                                       child: Text(
                                         'Future',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 16.5,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: 'Gilroy',
                                         ),
@@ -179,7 +179,7 @@ class FlexHistory extends StatelessWidget {
               const SizedBox(height: 20),
               const Text(
                 'You have no past flex',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16.5),
               ),
               const SizedBox(height: 20),
             ],
@@ -226,7 +226,7 @@ class FlexHistory extends StatelessWidget {
               const SizedBox(height: 20),
               const Text(
                 'You have no present flex',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16.5),
               ),
               const SizedBox(height: 5),
             ],
@@ -274,7 +274,7 @@ class FlexHistory extends StatelessWidget {
               const SizedBox(height: 20),
               const Text(
                 'You have no future flex',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16.5),
               ),
               const SizedBox(height: 20),
             ],
@@ -372,14 +372,14 @@ class ReusableFlexHistoryPastButton extends StatelessWidget {
                         month,
                         style: textTheme.headlineSmall!.copyWith(
                           color: primaryColor,
-                          fontSize: 20,
+                          fontSize: 20.5,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         day,
                         style: textTheme.headlineSmall!.copyWith(
-                          fontSize: 20,
+                          fontSize: 20.5,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -465,14 +465,14 @@ class ReusableFlexHistoryButton extends StatelessWidget {
                             month,
                             style: textTheme.headlineSmall!.copyWith(
                               color: primaryColor,
-                              fontSize: 20,
+                              fontSize: 20.5,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Text(
                             day,
                             style: textTheme.headlineSmall!.copyWith(
-                              fontSize: 20,
+                              fontSize: 20.5,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

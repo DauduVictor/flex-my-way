@@ -41,7 +41,7 @@ class Notifications extends StatelessWidget {
                         const SizedBox(height: 20),
                         const Text(
                           'You have no new notifications',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16.5),
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -161,7 +161,7 @@ class _NotificationButtonState extends State<NotificationButton> {
                       style: const TextStyle(
                         color: whiteColor,
                         fontWeight: FontWeight.w500,
-                        fontSize: 17,
+                        fontSize: 17.5,
                       ),
                     ),
                   ),

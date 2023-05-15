@@ -136,7 +136,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                   style: textTheme.headlineMedium!.copyWith(
                                     color: primaryColor,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 30,
+                                    fontSize: 30.5,
                                   ),
                                 ),
                               ),
@@ -153,14 +153,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                       Functions.getFlexDayAndMonth(flex!.fromDate!)[0],
                                       style: textTheme.headlineSmall!.copyWith(
                                         color: primaryColor,
-                                        fontSize: 20,
+                                        fontSize: 20.5,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     Text(
                                       Functions.getFlexDayAndMonth(flex!.fromDate!)[1],
                                       style: textTheme.headlineSmall!.copyWith(
-                                        fontSize: 20,
+                                        fontSize: 20.5,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -180,7 +180,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                     Text(
                                       'Time',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 16,
+                                        fontSize: 16.5,
                                         color: neutralColor.withOpacity(0.5),
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -189,7 +189,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                       '${Functions.getFlexTime(flex!.fromDate!)} - '
                                           '${Functions.getFlexTime(flex!.toDate!)}',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         color: neutralColor,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -209,7 +209,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                 child: Text(
                                   'Joined Flex',
                                   style: textTheme.button!.copyWith(
-                                    fontSize: 15,
+                                    fontSize: 15.5,
                                     color: whiteColor,
                                   ),
                                 )
@@ -234,7 +234,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                   Text(
                                     flex!.creator?.name ?? 'Host',
                                     style: textTheme.bodyLarge!.copyWith(
-                                      fontSize: 18.5,
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -242,7 +242,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                     'Multiple Time Hoster',
                                     style: textTheme.headlineSmall!.copyWith(
                                       color: primaryColor,
-                                      fontSize: 16.5,
+                                      fontSize: 17,
                                     ),
                                   ),
                                 ],
@@ -322,14 +322,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                     Text(
                                       'Guests',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       '${flex?.totalInvitees}/${flex?.capacity} Total',
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -343,14 +343,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                     Text(
                                       'Consumable policy',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.consumablesPolicy!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -370,14 +370,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                     Text(
                                       'Nature of Flex',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.flexType!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -391,14 +391,14 @@ class JoinedFlexDetails extends StatelessWidget {
                                     Text(
                                       'RSVP',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
                                       flex!.creator!.phone!,
-                                      style: textTheme.headlineSmall!.copyWith(fontSize: 16.5),
+                                      style: textTheme.headlineSmall!.copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -460,7 +460,7 @@ class JoinedFlexDetails extends StatelessWidget {
                                   'Click to Copy Address',
                                   style: textTheme.headlineSmall!.copyWith(
                                     color: primaryColor,
-                                    fontSize: 12,
+                                    fontSize: 12.5,
                                   ),
                                 ),
                               ],

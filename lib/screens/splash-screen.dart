@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Flexmyway',
                 style: textTheme.headline2!.copyWith(
                   color: whiteColor,
-                  fontSize: 50,
+                  fontSize: 50.5,
                   fontFamily: 'Neon',
                 ),
               ),

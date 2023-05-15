@@ -162,7 +162,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                 'Finding your flex...',
                 style: TextStyle(
                   color: neutralColor,
-                  fontSize: 14,
+                  fontSize: 14.5,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -177,7 +177,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                       'Just a moment',
                       textAlign: TextAlign.center,
                       textStyle: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.5,
                         color: primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
@@ -187,7 +187,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                       'hold on a sec.',
                       textAlign: TextAlign.center,
                       textStyle: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.5,
                         color: primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
@@ -197,7 +197,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                       'almost there..',
                       textAlign: TextAlign.center,
                       textStyle: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.5,
                         color: primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
@@ -207,7 +207,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                       'finding the closest flex..',
                       textAlign: TextAlign.center,
                       textStyle: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 12.5,
                         color: primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
@@ -355,186 +355,162 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                 children: [
                   const SizedBox(height: 50),
                   //appbar
-                  isLoggedIn == true
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Builder(builder: (context) {
-                              return CircleAvatar(
-                                backgroundColor: whiteColor,
-                                radius: 22,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(12, 8, 6, 8),
-                                    shape: const CircleBorder(),
-                                  ),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: neutralColor,
-                                    size: 22,
-                                  ),
-                                ),
-                              );
-                            }),
-                            Expanded(
-                              child: AnimatedCrossFade(
-                                duration: const Duration(milliseconds: 200),
-                                firstCurve: Curves.easeIn,
-                                secondCurve: Curves.fastOutSlowIn,
-                                crossFadeState: isSearchEnabled == false
-                                    ? CrossFadeState.showFirst
-                                    : CrossFadeState.showSecond,
-                                firstChild: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(right: 12.0),
-                                    child: Stack(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              PageRouteBuilder(
-                                                transitionDuration:
-                                                    const Duration(
-                                                        milliseconds: 600),
-                                                pageBuilder: (context,
-                                                    animation,
-                                                    secondaryAnimation) {
-                                                  return Notifications();
-                                                },
-                                                transitionsBuilder: (context,
-                                                    animation,
-                                                    secondaryAnimation,
-                                                    child) {
-                                                  return Container(
-                                                    color:
-                                                        whiteColor.withOpacity(
-                                                            animation.value),
-                                                    child: SlideTransition(
-                                                      position: animation.drive(
-                                                        Tween(
-                                                          begin: const Offset(
-                                                              0.0, -1.0),
-                                                          end: Offset.zero,
-                                                        ).chain(CurveTween(
-                                                            curve: Curves
-                                                                .easeInCubic)),
-                                                      ),
-                                                      child: child,
-                                                    ),
-                                                  );
-                                                },
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: whiteColor,
+                        radius: 22,
+                        child: TextButton(
+                          onPressed: () {
+                            if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                            Get.back();
+                          },
+                          style: TextButton.styleFrom(
+                            padding:
+                                const EdgeInsets.fromLTRB(12, 8, 6, 8),
+                            shape: const CircleBorder(),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_back_ios,
+                            color: neutralColor,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 200),
+                          firstCurve: Curves.easeIn,
+                          secondCurve: Curves.fastOutSlowIn,
+                          crossFadeState: isSearchEnabled == false
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          firstChild: isLoggedIn ? Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          transitionDuration:
+                                              const Duration(
+                                                  milliseconds: 600),
+                                          pageBuilder: (context,
+                                              animation,
+                                              secondaryAnimation) {
+                                            return Notifications();
+                                          },
+                                          transitionsBuilder: (context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child) {
+                                            return Container(
+                                              color:
+                                                  whiteColor.withOpacity(
+                                                      animation.value),
+                                              child: SlideTransition(
+                                                position: animation.drive(
+                                                  Tween(
+                                                    begin: const Offset(
+                                                        0.0, -1.0),
+                                                    end: Offset.zero,
+                                                  ).chain(CurveTween(
+                                                      curve: Curves
+                                                          .easeInCubic)),
+                                                ),
+                                                child: child,
                                               ),
                                             );
                                           },
-                                          child: const Icon(
-                                            IconlyLight.notification,
-                                            color: Colors.black,
-                                            size: 23,
-                                          ),
                                         ),
-                                        Positioned(
-                                          right: 2.3,
-                                          top: 0.8,
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                              width: 6,
-                                              height: 6,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                secondChild: Container(
-                                  margin: const EdgeInsets.only(left: 3.5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    color: whiteColor,
-                                  ),
-                                  child: TextField(
-                                    keyboardType: TextInputType.text,
-                                    focusNode: _searchFocusNode,
-                                    autofocus: true,
-                                    textInputAction: TextInputAction.search,
-                                    style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
-                                    onChanged: (value) {
-                                      if (value.length == 6) getFlexByCode(value);
+                                      );
                                     },
-                                    decoration: InputDecoration(
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          5, 15, 5, 5),
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        IconlyLight.search,
-                                        color: neutralColor.withOpacity(0.3),
-                                        size: 16,
-                                      ),
-                                      hintText: 'Search flex code',
-                                      hintStyle: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 13,
-                                        color: primaryColor.withOpacity(0.3),
-                                      ),
-                                      focusedBorder: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(24)),
-                                        borderSide:
-                                            BorderSide(color: neutralColor),
-                                      ),
-                                      suffixIcon: showSearchSpinner == true
-                                          ? SizedBox(
-                                              width: 5,
-                                              height: 5,
-                                              child: SpinKitCircle(
-                                                color: primaryColor
-                                                    .withOpacity(0.9),
-                                                size: 25,
-                                              ),
-                                            )
-                                          : const SizedBox(
-                                              width: 2,
-                                              height: 2,
-                                            ),
+                                    child: const Icon(
+                                      IconlyLight.notification,
+                                      color: Colors.black,
+                                      size: 23,
                                     ),
                                   ),
-                                ),
+                                  Positioned(
+                                    right: 2.3,
+                                    top: 0.8,
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Container(
+                                        width: 6,
+                                        height: 6,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        )
-                      : Align(
-                          alignment: Alignment.centerLeft,
-                          child: CircleAvatar(
-                            backgroundColor: whiteColor,
-                            radius: 22,
-                            child: TextButton(
-                              onPressed: () {
-                                if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                                Navigator.pop(context);
+                          ) : const SizedBox(),
+                          secondChild: Container(
+                            margin: const EdgeInsets.only(left: 3.5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: whiteColor,
+                            ),
+                            child: TextField(
+                              keyboardType: TextInputType.text,
+                              focusNode: _searchFocusNode,
+                              autofocus: true,
+                              textInputAction: TextInputAction.search,
+                              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+                              onChanged: (value) {
+                                if (value.length == 6) getFlexByCode(value);
                               },
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.only(left: 8),
-                                shape: const CircleBorder(),
-                              ),
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: neutralColor,
-                                size: 22,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.fromLTRB(
+                                    5, 15, 5, 5),
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  IconlyLight.search,
+                                  color: neutralColor.withOpacity(0.3),
+                                  size: 16,
+                                ),
+                                hintText: 'Search flex code',
+                                hintStyle: textTheme.bodyLarge!.copyWith(
+                                  fontSize: 13.5,
+                                  color: primaryColor.withOpacity(0.3),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(24)),
+                                  borderSide:
+                                      BorderSide(color: neutralColor),
+                                ),
+                                suffixIcon: showSearchSpinner == true
+                                    ? SizedBox(
+                                        width: 5,
+                                        height: 5,
+                                        child: SpinKitCircle(
+                                          color: primaryColor
+                                              .withOpacity(0.9),
+                                          size: 25,
+                                        ),
+                                      )
+                                    : const SizedBox(
+                                        width: 2,
+                                        height: 2,
+                                      ),
                               ),
                             ),
                           ),
                         ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -565,13 +541,13 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                 Text(
                                   'Filters',
                                   style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 28),
+                                      .copyWith(fontSize: 28.5),
                                 ),
                                 const SizedBox(height: 17),
                                 Text(
                                   'Preferred Age Range',
                                   style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 17),
+                                      .copyWith(fontSize: 17.5),
                                 ),
                                 const SizedBox(height: 17),
                                 Row(
@@ -647,7 +623,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                 Text(
                                   'Cost of Entry',
                                   style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 17),
+                                      .copyWith(fontSize: 17.5),
                                 ),
                                 const SizedBox(height: 17),
                                 Row(
@@ -704,7 +680,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                           Text(
                                             'What paid flex range are you looking at?',
                                             style: textTheme.headlineSmall!
-                                                .copyWith(fontSize: 17),
+                                                .copyWith(fontSize: 17.5),
                                           ),
                                           const SizedBox(height: 30),
                                           Slider(
@@ -732,7 +708,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                                       .headlineSmall!
                                                       .copyWith(
                                                     color: primaryColor,
-                                                    fontSize: 19,
+                                                    fontSize: 19.5,
                                                   ),
                                                 ),
                                                 Text(
@@ -741,7 +717,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                                       .headlineSmall!
                                                       .copyWith(
                                                     color: primaryColor,
-                                                    fontSize: 19,
+                                                    fontSize: 19.5,
                                                   ),
                                                 ),
                                               ],
@@ -865,7 +841,7 @@ class ReuableMapFilterButton extends StatelessWidget {
           child: Text(
             text,
             style: textTheme.headlineSmall!.copyWith(
-              fontSize: 14,
+              fontSize: 14.5,
               color: color ?? lightButtonColor,
             ),
           ),

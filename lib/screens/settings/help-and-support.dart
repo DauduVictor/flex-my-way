@@ -35,7 +35,7 @@ class HelpAndSupport extends StatelessWidget {
                   child: Text(
                     'How can we help you?',
                     textAlign: TextAlign.center,
-                    style: textTheme.button!.copyWith(fontSize: 26),
+                    style: textTheme.button!.copyWith(fontSize: 26.5),
                   ),
                 ),
               ],
@@ -59,7 +59,7 @@ class HelpAndSupport extends StatelessWidget {
                 ),
                 Text(
                   '09023130910',
-                  style: textTheme.button!.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: textTheme.button!.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -82,7 +82,7 @@ class HelpAndSupport extends StatelessWidget {
                 ),
                 Text(
                   'hello@flexmyway.com',
-                  style: textTheme.button!.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: textTheme.button!.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600),
                 ),
               ],
             ),

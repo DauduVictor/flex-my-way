@@ -139,7 +139,7 @@ class Settings extends StatelessWidget {
                                                       child: Text(
                                                         controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
                                                         style: textTheme.button!.copyWith(
-                                                          fontSize: 14,
+                                                          fontSize: 14.5,
                                                           color: primaryColor,
                                                         ),
                                                       ),
@@ -168,7 +168,7 @@ class Settings extends StatelessWidget {
                                                       child: Text(
                                                         controller.obscureCurrentPassword.value == true ? 'SHOW' : 'HIDE',
                                                         style: textTheme.button!.copyWith(
-                                                          fontSize: 14,
+                                                          fontSize: 14.5,
                                                           color: primaryColor,
                                                         ),
                                                       ),
@@ -200,7 +200,7 @@ class Settings extends StatelessWidget {
                                                       child: Text(
                                                         controller.obscureNewPassword.value == true ? 'SHOW' : 'HIDE',
                                                         style: textTheme.button!.copyWith(
-                                                          fontSize: 14,
+                                                          fontSize: 14.5,
                                                           color: primaryColor,
                                                         ),
                                                       ),
@@ -347,7 +347,7 @@ class Settings extends StatelessWidget {
         content: Text(
           AppStrings.logOutPrompt,
           style: textTheme.bodyLarge!.copyWith(
-            fontSize: 17,
+            fontSize: 17.5,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -398,7 +398,7 @@ class Settings extends StatelessWidget {
         content: Text(
           AppStrings.upgradeHostPrompt,
           style: textTheme.bodyLarge!.copyWith(
-            fontSize: 17,
+            fontSize: 17.5,
             fontWeight: FontWeight.w500,
           ),
         ),

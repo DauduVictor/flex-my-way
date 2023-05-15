@@ -43,7 +43,7 @@
 //                           TextSpan(
 //                             text: '#12345678',
 //                             style: textTheme.bodyLarge!.copyWith(
-//                               fontSize: 18,
+//                               fontSize: 18.5,
 //                               fontWeight: FontWeight.w600,
 //                             ),
 //                           ),
@@ -56,7 +56,7 @@
 //                     Text(
 //                       'Afro Nation Festival',
 //                       style: textTheme.bodyMedium!.copyWith(
-//                         fontSize: 14,
+//                         fontSize: 14.5,
 //                         color: neutralColor.withOpacity(0.7),
 //                       ),
 //                     ),

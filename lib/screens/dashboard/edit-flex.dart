@@ -354,7 +354,7 @@ class _EditFlexState extends State<EditFlex> {
                             'Preview Image(s)',
                             style: TextStyle(
                               color: primaryColor,
-                              fontSize: 14,
+                              fontSize: 14.5,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -617,7 +617,7 @@ class _EditFlexState extends State<EditFlex> {
           Text(
             'Continue action using',
             style: textTheme.headlineSmall!.copyWith(
-              fontSize: 21,
+              fontSize: 21.5,
             ),
           ),
           const SizedBox(height: 10),
@@ -648,7 +648,7 @@ class _EditFlexState extends State<EditFlex> {
                         Text(
                           'Gallery',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],
@@ -673,7 +673,7 @@ class _EditFlexState extends State<EditFlex> {
                         Text(
                           'Camera',
                           style: textTheme.headlineSmall!.copyWith(
-                            fontSize: 17,
+                            fontSize: 17.5,
                           ),
                         ),
                       ],
@@ -714,7 +714,7 @@ class _EditFlexState extends State<EditFlex> {
                     child: Text(
                       'Search Address',
                       style: textTheme.headlineSmall!.copyWith(
-                        fontSize: 17,
+                        fontSize: 17.5,
                       ),
                     ),
                   ),
@@ -850,7 +850,7 @@ class _EditFlexState extends State<EditFlex> {
                           child: Text(
                             controller.googlePlacesPredictionModel?.predictions?[index].description?.capitalizeFirst ?? '',
                             style: textTheme.bodyLarge!.copyWith(
-                              fontSize: 16.5,
+                              fontSize: 17,
                             ),
                           ),
                         ),

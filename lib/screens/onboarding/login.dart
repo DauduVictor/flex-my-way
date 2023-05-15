@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                     children: [
                       Text(
                         'Login',
-                        style: textTheme.headlineMedium!.copyWith(fontSize: 30),
+                        style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
                       ),
                       const SizedBox(height: 32),
                       _buildForm(textTheme),
@@ -157,7 +157,7 @@ class Login extends StatelessWidget {
                   child: Text(
                     controller.loginObscureText.value == true ? 'SHOW' : 'HIDE',
                     style: textTheme.button!.copyWith(
-                      fontSize: 14,
+                      fontSize: 14.5,
                       color: primaryColor,
                     ),
                   ),

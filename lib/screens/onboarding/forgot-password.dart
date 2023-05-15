@@ -44,7 +44,7 @@ class ForgotPassword extends StatelessWidget {
                     Text(
                       'Forgot your password?',
                       textAlign: TextAlign.center,
-                      style: textTheme.headlineMedium!.copyWith(fontSize: 30),
+                      style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
                     ),
                     const SizedBox(height: 32),
                     Padding(
@@ -101,7 +101,7 @@ class ForgotPassword extends StatelessWidget {
                           'Back to Login',
                           textAlign: TextAlign.center,
                           style: textTheme.subtitle2!.copyWith(
-                            fontSize: 16,
+                            fontSize: 16.5,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

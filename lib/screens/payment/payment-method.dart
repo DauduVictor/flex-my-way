@@ -118,7 +118,7 @@ class PaymentMethod extends StatelessWidget {
                 Text(
                   'Add New Card',
                   style: TextStyle(
-                    fontSize: 14.5,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: neutralColor
                   ),
@@ -176,7 +176,7 @@ class PaymentMethod extends StatelessWidget {
                       Text(
                         'Generate Account',
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.5,
                           fontWeight: FontWeight.w500,
                           color: controller.isAccountGenerated.value == false
                             ? neutralColor : neutralColor.withOpacity(0.4),
@@ -234,7 +234,7 @@ class PaymentMethod extends StatelessWidget {
                                           '50,000',
                                           style: TextStyle(
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 30,
+                                            fontSize: 30.5,
                                           ),
                                         ),
                                       ],
@@ -246,7 +246,7 @@ class PaymentMethod extends StatelessWidget {
                                         'Transfer this exact amount to the account below',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 14.5,
                                         ),
                                       ),
                                     ),
@@ -277,7 +277,7 @@ class PaymentMethod extends StatelessWidget {
                                         const Text(
                                           'Account number expires in ',
                                           style: TextStyle(
-                                            fontSize: 12.5,
+                                            fontSize: 13,
                                           ),
                                         ),
                                         Countdown(
@@ -285,7 +285,7 @@ class PaymentMethod extends StatelessWidget {
                                           build: (context, double time) => Text(
                                             '${time.toInt()}s',
                                             style: const TextStyle(
-                                              fontSize: 12.5,
+                                              fontSize: 13,
                                             ),
                                           ),
                                           onFinished: () {
@@ -342,7 +342,7 @@ class PaymentMethod extends StatelessWidget {
                 Text(
                   'Add New Card',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 15.5,
                     fontWeight: FontWeight.w500,
                     color: neutralColor
                   ),
@@ -391,7 +391,7 @@ class BankTransferField extends StatelessWidget {
               fieldName,
               style: const TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 16,
+                fontSize: 16.5,
               ),
             ),
             const Spacer(),
@@ -400,7 +400,7 @@ class BankTransferField extends StatelessWidget {
               textAlign: TextAlign.right,
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 16.5,
               ),
             ),
             copy == true
@@ -458,7 +458,7 @@ class CardContainer extends StatelessWidget {
                       Text(
                         '****  ****  ****  3280',
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 14.5,
                           color: neutralColor,
                           fontWeight: FontWeight.w400,
                         ),

@@ -69,7 +69,7 @@ class PendingInvites extends StatelessWidget {
                                       child: Text(
                                         'Accept All',
                                         style: textTheme.button!.copyWith(
-                                          fontSize: 20,
+                                          fontSize: 20.5,
                                           fontWeight: FontWeight.w600,
                                           color: greenColor,
                                         ),
@@ -85,7 +85,7 @@ class PendingInvites extends StatelessWidget {
                                       child: Text(
                                         'Deny All',
                                         style: textTheme.button!.copyWith(
-                                          fontSize: 20,
+                                          fontSize: 20.5,
                                           fontWeight: FontWeight.w600,
                                           color: errorColor,
                                         ),
@@ -237,7 +237,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                           TextSpan(
                             text: '#${invite?.attendeeId}',
                             style: textTheme.bodyLarge!.copyWith(
-                              fontSize: 18,
+                              fontSize: 18.5,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -250,7 +250,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
                     Text(
                       '${invite?.flexName}',
                       style: textTheme.bodyMedium!.copyWith(
-                        fontSize: 14,
+                        fontSize: 14.5,
                         color: neutralColor.withOpacity(0.7),
                       ),
                     ),

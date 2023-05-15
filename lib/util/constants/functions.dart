@@ -14,7 +14,7 @@ class Functions {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.black.withOpacity(0.8),
         textColor: whiteColor,
-        fontSize: 14.0
+        fontSize: 14.5
     );
   }
 

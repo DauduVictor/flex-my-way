@@ -41,7 +41,7 @@ class ReusablePaymentOptionButton extends StatelessWidget {
           Text(
             type,
             style: textTheme.button!.copyWith(
-              fontSize: 12.5,
+              fontSize: 13,
               color: active ? whiteColor : primaryColor.withOpacity(0.3),
               fontWeight: FontWeight.bold,
             ),

@@ -90,7 +90,7 @@ class _FindAFlexState extends State<FindAFlex> {
                 child: DefaultTextStyle(
                   style: textTheme.headline1!.copyWith(
                     color: whiteColor,
-                    fontSize: 60,
+                    fontSize: 60.5,
                     fontWeight: FontWeight.w500,
                   ),
                   child: AnimatedTextKit(
@@ -169,7 +169,7 @@ class _FindAFlexState extends State<FindAFlex> {
                               'Have an account already?',
                               style: textTheme.bodyLarge!.copyWith(
                                 color: whiteColor,
-                                fontSize: 19,
+                                fontSize: 19.5,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -180,7 +180,7 @@ class _FindAFlexState extends State<FindAFlex> {
                                 'Login here',
                                 style: textTheme.button!.copyWith(
                                   color: whiteColor,
-                                  fontSize: 20,
+                                  fontSize: 20.5,
                                 ),
                               ),
                             ),

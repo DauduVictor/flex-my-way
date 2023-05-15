@@ -37,7 +37,7 @@ class BetaSms extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           'BetaSMS',
-          style: textTheme.headlineMedium!.copyWith(fontSize: 30),
+          style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
         ),
       ),
       body: DismissKeyboard(
@@ -218,7 +218,7 @@ class BetaSms extends StatelessWidget {
                     ? TextFormField(
                         textInputAction: TextInputAction.done,
                         maxLines: 5,
-                        style: const TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14.5),
                         keyboardType: TextInputType.number,
                         controller: hostController.contactController,
                         validator: (value) {
@@ -285,7 +285,7 @@ class BetaSms extends StatelessWidget {
                         'You will be redirected to our payment portal to complete this process.',
                         style: textTheme.bodyLarge!.copyWith(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 14.5,
                         ),
                       ),
                     ),

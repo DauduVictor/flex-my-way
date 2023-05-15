@@ -60,7 +60,7 @@ class CustomTextFormField extends StatelessWidget {
           textCapitalization: textCapitalization,
           keyboardType: keyboardType,
           style: textTheme.bodyMedium!.copyWith(
-            fontSize: 14,
+            fontSize: 14.5,
           ),
           autocorrect: false,
           onTap: onTap,

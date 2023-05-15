@@ -154,7 +154,7 @@ class JoinFlex extends StatelessWidget {
                                             textTheme.headlineMedium!.copyWith(
                                           color: primaryColor,
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 30,
+                                          fontSize: 30.5,
                                         ),
                                       ),
                                     ),
@@ -174,7 +174,7 @@ class JoinFlex extends StatelessWidget {
                                             style: textTheme.headlineSmall!
                                                 .copyWith(
                                               color: primaryColor,
-                                              fontSize: 20,
+                                              fontSize: 20.5,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -183,7 +183,7 @@ class JoinFlex extends StatelessWidget {
                                                 flex!.fromDate!)[1],
                                             style: textTheme.headlineSmall!
                                                 .copyWith(
-                                              fontSize: 20,
+                                              fontSize: 20.5,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -206,7 +206,7 @@ class JoinFlex extends StatelessWidget {
                                             'Time',
                                             style:
                                                 textTheme.bodyLarge!.copyWith(
-                                              fontSize: 16,
+                                              fontSize: 16.5,
                                               color:
                                                   neutralColor.withOpacity(0.5),
                                               fontWeight: FontWeight.w600,
@@ -217,7 +217,7 @@ class JoinFlex extends StatelessWidget {
                                             '${Functions.getFlexTime(flex!.toDate!)}',
                                             style:
                                                 textTheme.bodyLarge!.copyWith(
-                                              fontSize: 17.5,
+                                              fontSize: 18,
                                               color: neutralColor,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -295,7 +295,7 @@ class JoinFlex extends StatelessWidget {
                                                       : 'Join this Flex',
                                                   style: textTheme.button!
                                                       .copyWith(
-                                                    fontSize: 15,
+                                                    fontSize: 15.5,
                                                     color: whiteColor,
                                                   ),
                                                 )
@@ -333,7 +333,7 @@ class JoinFlex extends StatelessWidget {
                                             child: Text(
                                               'Pay Now',
                                               style: textTheme.button!.copyWith(
-                                                fontSize: 15,
+                                                fontSize: 15.5,
                                                 color: primaryColor,
                                               ),
                                             ),
@@ -355,14 +355,14 @@ class JoinFlex extends StatelessWidget {
                                               textTheme.headlineSmall!.copyWith(
                                             color:
                                                 neutralColor.withOpacity(0.5),
-                                            fontSize: 16.5,
+                                            fontSize: 17,
                                           ),
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
                                           flex!.creator?.name ?? 'Host',
                                           style: textTheme.bodyLarge!.copyWith(
-                                            fontSize: 18.5,
+                                            fontSize: 19,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -371,7 +371,7 @@ class JoinFlex extends StatelessWidget {
                                           style:
                                               textTheme.headlineSmall!.copyWith(
                                             color: primaryColor,
-                                            fontSize: 16.5,
+                                            fontSize: 17.5,
                                           ),
                                         ),
                                       ],
@@ -430,7 +430,7 @@ class JoinFlex extends StatelessWidget {
                                     Text(
                                       'About/Rules',
                                       style: textTheme.bodyLarge!.copyWith(
-                                        fontSize: 18.5,
+                                        fontSize: 19,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -438,7 +438,7 @@ class JoinFlex extends StatelessWidget {
                                     Text(
                                       flex!.flexRules!,
                                       style: textTheme.headlineSmall!
-                                          .copyWith(fontSize: 16.5),
+                                          .copyWith(fontSize: 17),
                                     ),
                                   ],
                                 ),
@@ -458,7 +458,7 @@ class JoinFlex extends StatelessWidget {
                                             'Guests',
                                             style:
                                                 textTheme.bodyLarge!.copyWith(
-                                              fontSize: 18.5,
+                                              fontSize: 19,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -466,7 +466,7 @@ class JoinFlex extends StatelessWidget {
                                           Text(
                                             '${flex?.totalInvitees}/${flex?.capacity} Total',
                                             style: textTheme.headlineSmall!
-                                                .copyWith(fontSize: 16.5),
+                                                .copyWith(fontSize: 17),
                                           ),
                                         ],
                                       ),
@@ -482,7 +482,7 @@ class JoinFlex extends StatelessWidget {
                                             'Consumable policy',
                                             style:
                                                 textTheme.bodyLarge!.copyWith(
-                                              fontSize: 18.5,
+                                              fontSize: 19,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -490,7 +490,7 @@ class JoinFlex extends StatelessWidget {
                                           Text(
                                             flex!.consumablesPolicy!,
                                             style: textTheme.headlineSmall!
-                                                .copyWith(fontSize: 16.5),
+                                                .copyWith(fontSize: 17),
                                           ),
                                         ],
                                       ),
@@ -513,7 +513,7 @@ class JoinFlex extends StatelessWidget {
                                             'Nature of Flex',
                                             style:
                                                 textTheme.bodyLarge!.copyWith(
-                                              fontSize: 18.5,
+                                              fontSize: 19,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -521,7 +521,7 @@ class JoinFlex extends StatelessWidget {
                                           Text(
                                             flex!.flexType!,
                                             style: textTheme.headlineSmall!
-                                                .copyWith(fontSize: 16.5),
+                                                .copyWith(fontSize: 17),
                                           ),
                                         ],
                                       ),
@@ -640,7 +640,7 @@ class JoinFlex extends StatelessWidget {
                                             style: textTheme.headlineSmall!
                                                 .copyWith(
                                               color: primaryColor,
-                                              fontSize: 12,
+                                              fontSize: 12.5,
                                             ),
                                           ),
                                         ],
@@ -677,7 +677,7 @@ class JoinFlex extends StatelessWidget {
                                             style: textTheme.headlineSmall!
                                                 .copyWith(
                                               color: primaryColor,
-                                              fontSize: 12,
+                                              fontSize: 12.5,
                                             ),
                                           ),
                                         ],
