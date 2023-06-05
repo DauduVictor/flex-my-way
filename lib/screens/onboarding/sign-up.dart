@@ -200,7 +200,7 @@ class SignUp extends StatelessWidget {
             },
           ),
           /// occupation
-          CustomTextFormField(
+          /*CustomTextFormField(
             textEditingController: controller.signupOccupationController,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
@@ -211,7 +211,7 @@ class SignUp extends StatelessWidget {
               }
               return null;
             },
-          ),
+          ),*/
           /*CustomDropdownButtonField(
             hintText: AppStrings.typeOfFlex,
             items: preferredFlexes,

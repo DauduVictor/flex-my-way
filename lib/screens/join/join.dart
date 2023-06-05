@@ -5,6 +5,7 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -85,6 +86,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Variable to hold the param to send
   String payParam = 'free';
 
+  // bool variable to check shared pref if user first time seeing screen
+  bool isFirstTimeUser = false;
+
   /// Function to get user location and use [LatLang] in the map
   void getUserLocation() async {
     if (!mounted) return;
@@ -118,23 +122,25 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     GoogleMapController controller = await _mapController.future;
     controller.animateCamera(CameraUpdate.zoomOut());
     _showFlexSearchDialog(context);
-    await api.getFlexByLocation(lat, long,ageStatus: ageStatus, payStatus: payStatus)
-      .then((value) {
-        setState(() {
-          flex = value;
-          flexLength = flex.length;
-          controller.animateCamera(CameraUpdate.zoomBy(1.2));
-          log(flexLength.toString());
-        });
-        _buildFlexOnMap();
-        if (!mounted) return;
-        Get.back();
-      }).catchError((e) {
-        if (!mounted) return;
-        Get.back();
-        log(e);
-        Functions.showMessage(e);
+    await api
+        .getFlexByLocation(lat, long,
+            ageStatus: ageStatus, payStatus: payStatus)
+        .then((value) {
+      setState(() {
+        flex = value;
+        flexLength = flex.length;
+        controller.animateCamera(CameraUpdate.zoomBy(1.2));
+        log(flexLength.toString());
       });
+      _buildFlexOnMap();
+      if (!mounted) return;
+      Get.back();
+    }).catchError((e) {
+      if (!mounted) return;
+      Get.back();
+      log(e);
+      Functions.showMessage(e);
+    });
   }
 
   ///widget to prompt user if they want to logout
@@ -272,6 +278,24 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     }
   }
 
+  void showSearchHintOnScreen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('isFirstTimeUser') == true) {
+      //show hint after 150 milsecs of loading screen
+      await Future.delayed(const Duration(milliseconds: 1000)).then((value) {
+        setState(() => isFirstTimeUser = true);
+      });
+
+      //remove hint from screen after 3 secs
+      await Future.delayed(const Duration(milliseconds: 3000))
+          .then((value) async {
+        await prefs.setBool('isFirstTimeUser', true).then((value) {
+          setState(() => isFirstTimeUser = false);
+        });
+      });
+    }
+  }
+
   /// Bool variable to hold the bool state if the user is currently logged in
   bool isLoggedIn = false;
 
@@ -293,6 +317,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Declaring the tween animation
   late Animation _colorTweenAnimation;
 
+  /// Variable to hold the tween animation for bounce
+  late Animation<double> _bouncingAnimation;
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -302,11 +329,16 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     _controller.repeat(reverse: true);
     getUserLocation();
     checkUserIsLoggedIn();
+    showSearchHintOnScreen();
     super.initState();
 
     /// setting the [_glowingAnimation] as a tween value
     _colorTweenAnimation = ColorTween(
             begin: Colors.black, end: Colors.purpleAccent)
+        .animate(CurvedAnimation(curve: Curves.linear, parent: _controller));
+
+    /// setting the [_glowingAnimation] as a tween value
+    _bouncingAnimation = Tween(begin: 87.0, end: 80.0)
         .animate(CurvedAnimation(curve: Curves.linear, parent: _controller));
   }
 
@@ -329,33 +361,33 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
           alignment: Alignment.bottomCenter,
           children: [
             userPosition == null
-              ? SpinKitDoubleBounce(
-                  color: primaryColor.withOpacity(0.6),
-                  size: 75,
-                  duration: const Duration(milliseconds: 3000),
-                )
-              : GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(lat, long),
-                    zoom: 19.5,
+                ? SpinKitDoubleBounce(
+                    color: primaryColor.withOpacity(0.6),
+                    size: 75,
+                    duration: const Duration(milliseconds: 3000),
+                  )
+                : GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(lat, long),
+                      zoom: 19.5,
+                    ),
+                    myLocationEnabled: true,
+                    buildingsEnabled: false,
+                    myLocationButtonEnabled: false,
+                    onMapCreated: _onMapCreated,
+                    markers: _markers,
+                    onTap: (value) {
+                      if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                    },
                   ),
-                  myLocationEnabled: true,
-                  buildingsEnabled: false,
-                  myLocationButtonEnabled: false,
-                  onMapCreated: _onMapCreated,
-                  markers: _markers,
-                  onTap: (value) {
-                    if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                  },
-                ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: [
                   const SizedBox(height: 50),
                   //appbar
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CircleAvatar(
@@ -363,12 +395,12 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                         radius: 22,
                         child: TextButton(
                           onPressed: () {
-                            if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+                            if (!currentFocus.hasPrimaryFocus)
+                              currentFocus.unfocus();
                             Get.back();
                           },
                           style: TextButton.styleFrom(
-                            padding:
-                                const EdgeInsets.fromLTRB(12, 8, 6, 8),
+                            padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
                             shape: const CircleBorder(),
                           ),
                           child: const Icon(
@@ -386,75 +418,77 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                           crossFadeState: isSearchEnabled == false
                               ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
-                          firstChild: isLoggedIn ? Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 12.0),
-                              child: Stack(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration:
-                                              const Duration(
-                                                  milliseconds: 600),
-                                          pageBuilder: (context,
-                                              animation,
-                                              secondaryAnimation) {
-                                            return Notifications();
-                                          },
-                                          transitionsBuilder: (context,
-                                              animation,
-                                              secondaryAnimation,
-                                              child) {
-                                            return Container(
-                                              color:
-                                                  whiteColor.withOpacity(
-                                                      animation.value),
-                                              child: SlideTransition(
-                                                position: animation.drive(
-                                                  Tween(
-                                                    begin: const Offset(
-                                                        0.0, -1.0),
-                                                    end: Offset.zero,
-                                                  ).chain(CurveTween(
-                                                      curve: Curves
-                                                          .easeInCubic)),
-                                                ),
-                                                child: child,
+                          firstChild: isLoggedIn
+                              ? Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 12.0),
+                                    child: Stack(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              PageRouteBuilder(
+                                                transitionDuration:
+                                                    const Duration(
+                                                        milliseconds: 600),
+                                                pageBuilder: (context,
+                                                    animation,
+                                                    secondaryAnimation) {
+                                                  return Notifications();
+                                                },
+                                                transitionsBuilder: (context,
+                                                    animation,
+                                                    secondaryAnimation,
+                                                    child) {
+                                                  return Container(
+                                                    color:
+                                                        whiteColor.withOpacity(
+                                                            animation.value),
+                                                    child: SlideTransition(
+                                                      position: animation.drive(
+                                                        Tween(
+                                                          begin: const Offset(
+                                                              0.0, -1.0),
+                                                          end: Offset.zero,
+                                                        ).chain(CurveTween(
+                                                            curve: Curves
+                                                                .easeInCubic)),
+                                                      ),
+                                                      child: child,
+                                                    ),
+                                                  );
+                                                },
                                               ),
                                             );
                                           },
+                                          child: const Icon(
+                                            IconlyLight.notification,
+                                            color: Colors.black,
+                                            size: 23,
+                                          ),
                                         ),
-                                      );
-                                    },
-                                    child: const Icon(
-                                      IconlyLight.notification,
-                                      color: Colors.black,
-                                      size: 23,
+                                        Positioned(
+                                          right: 2.3,
+                                          top: 0.8,
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Container(
+                                              width: 6,
+                                              height: 6,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 2.3,
-                                    top: 0.8,
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: Container(
-                                        width: 6,
-                                        height: 6,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ) : const SizedBox(),
+                                )
+                              : const SizedBox(),
                           secondChild: Container(
                             margin: const EdgeInsets.only(left: 3.5),
                             decoration: BoxDecoration(
@@ -466,13 +500,14 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                               focusNode: _searchFocusNode,
                               autofocus: true,
                               textInputAction: TextInputAction.search,
-                              style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+                              style: textTheme.bodyLarge!
+                                  .copyWith(fontWeight: FontWeight.w600),
                               onChanged: (value) {
                                 if (value.length == 6) getFlexByCode(value);
                               },
                               decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(
-                                    5, 15, 5, 5),
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(5, 15, 5, 5),
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   IconlyLight.search,
@@ -485,18 +520,16 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                   color: primaryColor.withOpacity(0.3),
                                 ),
                                 focusedBorder: const OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(24)),
-                                  borderSide:
-                                      BorderSide(color: neutralColor),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(24)),
+                                  borderSide: BorderSide(color: neutralColor),
                                 ),
                                 suffixIcon: showSearchSpinner == true
                                     ? SizedBox(
                                         width: 5,
                                         height: 5,
                                         child: SpinKitCircle(
-                                          color: primaryColor
-                                              .withOpacity(0.9),
+                                          color: primaryColor.withOpacity(0.9),
                                           size: 25,
                                         ),
                                       )
@@ -751,10 +784,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                                               color: _colorTweenAnimation.value
                                                   .withOpacity(0.2),
                                             ),
-                                            // BoxShadow(
-                                            //   spreadRadius: 10,
-                                            //   color: const Color(0xFF000000).withOpacity(0.05)
-                                            // ),
                                           ]),
                                     );
                                   }),
@@ -767,26 +796,90 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                 }),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            if (!isSearchEnabled) {
-              setState(() {
-                isSearchEnabled = true;
-              });
-            }
-            await Future.delayed(const Duration(milliseconds: 150))
-                .then((value) {
-              if (!_searchFocusNode.hasFocus) {
-                 _searchFocusNode.requestFocus();
-              }
-            });
-          },
-          elevation: 10,
-          backgroundColor: primaryColor,
-          child: const Icon(
-            IconlyLight.search,
-            color: whiteColor,
-          ),
+        floatingActionButton: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Positioned(
+              right: 15,
+              child: FloatingActionButton(
+                onPressed: () async {
+                  if (!isSearchEnabled) {
+                    setState(() {
+                      isSearchEnabled = true;
+                    });
+                  }
+                  await Future.delayed(const Duration(milliseconds: 150))
+                      .then((value) {
+                    if (!_searchFocusNode.hasFocus) {
+                      _searchFocusNode.requestFocus();
+                    }
+                  });
+                },
+                elevation: 10,
+                backgroundColor: primaryColor,
+                child: const Icon(
+                  IconlyLight.search,
+                  color: whiteColor,
+                ),
+              ),
+            ),
+            AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return isFirstTimeUser
+                      ? Positioned(
+                          bottom: _bouncingAnimation.value,
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Container(
+                                width: SizeConfig.screenWidth! * 0.75,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(4),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        spreadRadius: 3,
+                                        blurRadius: 6,
+                                        color: lightTextColor.withOpacity(0.15),
+                                      ),
+                                    ]),
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Did you get an invite code? ',
+                                    style: textTheme.bodyMedium,
+                                    children: [
+                                      const TextSpan(
+                                        text: 'Tap',
+                                      ),
+                                      TextSpan(
+                                        text: ' here ',
+                                        style: textTheme.bodyMedium!.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                            color: primaryColor),
+                                      ),
+                                      const TextSpan(text: 'to enter code'),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                right: 35,
+                                top: 40,
+                                child: CustomPaint(
+                                  painter: TrianglePainter(),
+                                  size: const Size(25, 25),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container();
+                }),
+          ],
         ),
       ),
     );
@@ -799,20 +892,64 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
 
   void getFlexByCode(String flexCode) async {
     setState(() => showSearchSpinner = true);
-    await api.getFlexByCode(flexCode)
-      .then((value) {
-        if (!mounted) return;
-        setState(() {
-          showSearchSpinner = false;
-          log(flexLength.toString());
-        });
-        Get.to(() => JoinFlex(flex: value));
-      }).catchError((e) {
-        if (!mounted) return;
-        setState(() => showSearchSpinner = false);
-        log(e);
-        Functions.showMessage('Flex not found');
+    await api.getFlexByCode(flexCode).then((value) {
+      if (!mounted) return;
+      setState(() {
+        showSearchSpinner = false;
+        log(flexLength.toString());
       });
+      Get.to(() => JoinFlex(flex: value));
+    }).catchError((e) {
+      if (!mounted) return;
+      setState(() => showSearchSpinner = false);
+      log(e);
+      Functions.showMessage('Flex not found');
+    });
+  }
+}
+
+class TrianglePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Define the rotation angle in radians
+    double rotationAngle = 45 * 3.14159 / 180;
+
+    // Calculate the center point of the triangle
+    Offset center = Offset(size.width / 2, size.height / 2);
+
+    // Create a transformation matrix for rotation around the center point
+    Matrix4 rotationMatrix = Matrix4.identity();
+    rotationMatrix.translate(center.dx, center.dy);
+    rotationMatrix.rotateZ(rotationAngle);
+    rotationMatrix.translate(-center.dx, -center.dy);
+
+    // Create the triangle path
+    Path path = Path();
+    path.moveTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    // Apply the rotation to the triangle path
+    path = path.transform(rotationMatrix.storage);
+
+    // Draw the shadow
+    Paint shadowPaint = Paint()
+      ..color = Colors.black.withOpacity(0.15)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6);
+
+    Path shadowPath = path.shift(const Offset(0, 9));
+
+    canvas.drawPath(shadowPath, shadowPaint);
+
+    // Draw the triangle
+    Paint paint = Paint()..color = whiteColor;
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
 

@@ -156,7 +156,7 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Share.share('Hey there, you can join my flex with the code ${hostController.createdFlex!.joinCode!}');
+                            Share.share('Hey there, you can join my flex with the code "${hostController.createdFlex!.joinCode!}"');
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),

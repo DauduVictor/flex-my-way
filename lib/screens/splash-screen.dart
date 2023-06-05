@@ -72,10 +72,14 @@ class _SplashScreenState extends State<SplashScreen> {
   /// [SharedPreferences]
   void getBoolFromSp() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    //check if user is first time user
+    if (prefs.getBool('isFirstTimeUser') == false) {
+      await prefs.setBool('isFirstTimeUser', true);
+    }
     if (prefs.getBool('onBoarded') == true) {
       if (prefs.getBool('loggedIn') == true) {
-        var _futureValue = FutureValues();
-        Future<User> user = _futureValue.getCurrentUser();
+        var futureValue = FutureValues();
+        Future<User> user = futureValue.getCurrentUser();
         try {
           await user.then((value) async {
             if (value.id == null) {
