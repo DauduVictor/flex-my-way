@@ -11,7 +11,6 @@ import 'dashboard/dashboard.dart';
 import 'onboarding/login.dart';
 
 class SplashScreen extends StatefulWidget {
-
   static const String id = "splashScreen";
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -20,7 +19,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   /// Function to navigate to the next screen after the splash screen is completed
   void _navigate() {
     Timer(const Duration(milliseconds: 1500), () => getBoolFromSp());
@@ -68,34 +66,36 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-  ///Function to get if user has been onboarded with help of
-  /// [SharedPreferences]
-  void getBoolFromSp() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    //check if user is first time user
-    if (prefs.getBool('isFirstTimeUser') == false) {
-      await prefs.setBool('isFirstTimeUser', true);
-    }
-    if (prefs.getBool('onBoarded') == true) {
-      if (prefs.getBool('loggedIn') == true) {
-        var futureValue = FutureValues();
-        Future<User> user = futureValue.getCurrentUser();
-        try {
-          await user.then((value) async {
-            if (value.id == null) {
-              Get.offAndToNamed(Login.id);
-            } else {
-              Get.offAndToNamed(Dashboard.id);
-            }
-          });
-        } catch (e) {
-          Get.offAndToNamed(Login.id);
-        }
-      }
-      else {
-        Get.offAndToNamed(FindAFlex.id);
+
+///Function to get if user has been onboarded with help of
+/// [SharedPreferences]
+void getBoolFromSp() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //check if user is first time user
+  if (prefs.getBool('isFirstTimeUser') == false) {
+    await prefs.setBool('isFirstTimeUser', true);
+  } else {
+     await prefs.setBool('isFirstTimeUser', true);
+  }
+  if (prefs.getBool('onBoarded') == true) {
+    if (prefs.getBool('loggedIn') == true) {
+      var futureValue = FutureValues();
+      Future<User> user = futureValue.getCurrentUser();
+      try {
+        await user.then((value) async {
+          if (value.id == null) {
+            Get.offAndToNamed(Login.id);
+          } else {
+            Get.offAndToNamed(Dashboard.id);
+          }
+        });
+      } catch (e) {
+        Get.offAndToNamed(Login.id);
       }
     } else {
-      Get.offAndToNamed(OnboardingScreen.id);
+      Get.offAndToNamed(FindAFlex.id);
     }
+  } else {
+    Get.offAndToNamed(OnboardingScreen.id);
   }
+}
