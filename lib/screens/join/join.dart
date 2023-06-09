@@ -287,7 +287,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       });
 
       //remove hint from screen after 3 secs
-      await Future.delayed(const Duration(milliseconds: 3000))
+      await Future.delayed(const Duration(milliseconds: 6500))
           .then((value) async {
         await prefs.setBool('isFirstTimeUser', true).then((value) {
           setState(() => isFirstTimeUser = false);
