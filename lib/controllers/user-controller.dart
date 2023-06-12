@@ -117,6 +117,9 @@ class UserController extends GetxController {
   /// Variable to hold notification delete spinner
   final showInvitesSpinner = false.obs;
 
+  /// Variable to hold deleteAccount  spinner
+  bool deleteAccountSpinner = false;
+
   RxList<Notification> notification = <Notification>[].obs;
   RxList<DashboardFLex> scheduledFlex = <DashboardFLex>[].obs;
   RxList<DashboardFLex> completedFlex = <DashboardFLex>[].obs;

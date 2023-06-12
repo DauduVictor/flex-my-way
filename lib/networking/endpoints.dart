@@ -34,6 +34,7 @@ const UPDATE_A_FLEX = '${BASE_URL}flex/';
 
 const GET_NOTIFICATION = '${BASE_URL}notification/get';
 const DELETE_NOTIFICATION = '${BASE_URL}notification/';
+const DELETE_USER_ACCOUNT = '${BASE_URL}users/delete';
 
 const GOOGLE_PLACE_API = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
 const GOOGLE_PLACE_DETAILS_API = 'https://maps.googleapis.com/maps/api/place/details/json';

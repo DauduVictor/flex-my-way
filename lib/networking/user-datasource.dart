@@ -173,4 +173,25 @@ class UserDataSource {
     });
   }
 
+  /// A function that sends request for deleting user account
+  /// A post request to use the [UPDATE_USER_INFO]
+  /// It returns a [String_Message]
+  Future<dynamic> deleteUserAccount() async {
+    String? userId;
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+    });
+    return _netUtil.delete(DELETE_USER_ACCOUNT, headers: header).then((res) {
+      log(':::deleteNotification: $res');
+      if(res['status'] != 'success') throw res['message'];
+      return res['data'];
+    }).catchError((e){
+      errorHandler.handleError(e);
+    });
+  }
+
 }

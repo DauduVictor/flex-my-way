@@ -166,7 +166,6 @@ class HostRegistration extends StatelessWidget {
                             if (controller.selfieImage == null) {
                               Functions.showMessage('Please upload a selfie');
                             }
-                            print('pass');
                           }
                         },
                         child: controller.showSpinner.value == false

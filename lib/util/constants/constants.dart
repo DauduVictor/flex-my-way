@@ -19,6 +19,7 @@ const lightButtonColor = Color(0xFF7D9AA5);
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
 const empty = 'assets/images/svgs/empty.svg';
 const successImage = 'assets/images/svgs/success.svg';
+const deleteIcon = 'assets/images/svgs/delete.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';
 const splashScreenLocationImage2 = 'assets/images/jpegs/locationImage.png';
