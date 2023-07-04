@@ -13,6 +13,7 @@ const RESET_PASSWORD = '${BASE_URL}users/password/reset';
 const EDIT_PASSWORD = '${BASE_URL}users/password/edit';
 const UPDATE_USER_INFO = '${BASE_URL}users/update';
 const UPGRADE_USER = '${BASE_URL}users/upgrade';
+const REPORT = '${BASE_URL}users/report';
 const GET_USER_PROFILE = '${BASE_URL}users/get';
 const DELETE_A_USER = 'id/delete';
 

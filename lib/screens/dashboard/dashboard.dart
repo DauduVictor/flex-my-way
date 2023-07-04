@@ -146,110 +146,131 @@ class _DashboardState extends State<Dashboard> {
     userController.checkUserIsLoggedIn();
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    return Obx(() => Scaffold(
-          appBar: buildAppBarWithNotification(
-              textTheme, context, userController.username.value),
-          drawer: RefactoredDrawer(),
-          body: WillPopScope(
-            onWillPop: Functions.onWillPops,
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  Container(
-                    width: SizeConfig.screenWidth,
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                    decoration: BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
+    return Obx(() => AbsorbPointer(
+          absorbing: userController.deleteAccountSpinner.value,
+          child: Stack(
+            children: [
+              Scaffold(
+                appBar: buildAppBarWithNotification(
+                    textTheme, context, userController.username.value),
+                drawer: RefactoredDrawer(),
+                body: WillPopScope(
+                  onWillPop: Functions.onWillPops,
+                  child: DefaultTabController(
+                    length: 2,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          AppStrings.manageYourFlex,
-                          style: textTheme.headlineSmall!
-                              .copyWith(fontWeight: FontWeight.w600),
+                        Container(
+                          width: SizeConfig.screenWidth,
+                          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppStrings.manageYourFlex,
+                                style: textTheme.headlineSmall!
+                                    .copyWith(fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 24),
+                              Visibility(
+                                visible: userController.canHostFlex.value,
+                                child: ListTileButton(
+                                  title: userController.flexInvites.isNotEmpty
+                                      ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
+                                      : 'No pending invites at the moment. Create Flex and invite your friends',
+                                  onPressed: () {
+                                    Get.toNamed(PendingInvites.id);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 24),
-                        Visibility(
-                          visible: userController.canHostFlex.value,
-                          child: ListTileButton(
-                            title: userController.flexInvites.isNotEmpty
-                                ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
-                                : 'No pending invites at the moment. Create Flex and invite your friends',
-                            onPressed: () {
-                              Get.toNamed(PendingInvites.id);
-                            },
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 13, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  child: BounceInDown(
+                                    duration: const Duration(milliseconds: 600),
+                                    child: SizedBox(
+                                      height: 42,
+                                      child: TabBar(
+                                        indicator: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          color: primaryColor,
+                                        ),
+                                        unselectedLabelColor: neutralColor,
+                                        tabs: const [
+                                          Tab(
+                                            child: Text(
+                                              'Scheduled',
+                                              style: TextStyle(
+                                                fontSize: 16.5,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Gilroy',
+                                              ),
+                                            ),
+                                          ),
+                                          Tab(
+                                            child: Text(
+                                              'Completed',
+                                              style: TextStyle(
+                                                fontSize: 16.5,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Gilroy',
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Expanded(
+                                  child: TabBarView(
+                                    children: [
+                                      _scheduled(userController.scheduledFlex),
+                                      _completedFlex(
+                                          userController.completedFlex),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 13, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            child: BounceInDown(
-                              duration: const Duration(milliseconds: 600),
-                              child: SizedBox(
-                                height: 42,
-                                child: TabBar(
-                                  indicator: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(16),
-                                    color: primaryColor,
-                                  ),
-                                  unselectedLabelColor: neutralColor,
-                                  tabs: const [
-                                    Tab(
-                                      child: Text(
-                                        'Scheduled',
-                                        style: TextStyle(
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'Gilroy',
-                                        ),
-                                      ),
-                                    ),
-                                    Tab(
-                                      child: Text(
-                                        'Completed',
-                                        style: TextStyle(
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'Gilroy',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Expanded(
-                            child: TabBarView(
-                              children: [
-                                _scheduled(userController.scheduledFlex),
-                                _completedFlex(userController.completedFlex),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Visibility(
+                visible: userController.deleteAccountSpinner.value,
+                child: Container(
+                  width: SizeConfig.screenWidth,
+                  height: SizeConfig.screenHeight,
+                  color: neutralColor.withOpacity(0.2),
+                  child: SpinKitCircle(
+                    color: primaryColor.withOpacity(0.9),
+                    size: 40,
+                  ),
+                ),
+              ),
+            ],
           ),
         ));
   }
@@ -515,10 +536,7 @@ class ReusableDashBoardCard extends StatelessWidget {
 Future<void> getFlexByCode(String flexCode) async {
   var api = FlexDataSource();
   await api.getFlexByCode(flexCode).then((value) {
-    Get.to(() => JoinFlex(
-      flex: value,
-      showAllFeatures: true
-    ));
+    Get.to(() => JoinFlex(flex: value, showAllFeatures: true));
   }).catchError((e) {
     log(e);
     throw (e);

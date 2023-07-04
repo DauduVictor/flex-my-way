@@ -6,14 +6,18 @@ const primaryColorVariant = Color(0xFFDDD7FD);
 const backgroundColor = Color(0xFFF8F7FE);
 const whiteColor = Colors.white;
 const neutralWhiteColor = Color(0xFFDBDDE0);
+const whiteColor2 = Color(0xFFF7F7F7);
 const transparentColor = Colors.transparent;
 const neutralColor = Color(0xFF003951);
+const blackColor = Color(0xFF000000);
+const blackColor2 = Color(0xFF000609);
 const neutralColorLight = Color(0xFFDBDDE0);
 const errorColor = Color(0xFFDB3704);
 const greenColor = Color(0xFF00A41A);
 const splashBackgroundColor = Color(0xFF86CBF0);
 const lightTextColor = Color(0xFF374957);
 const lightButtonColor = Color(0xFF7D9AA5);
+const greyColor = Color(0xFF52575C);
 
 // images
 const uploadIcon = 'assets/images/svgs/upload_icon.svg';
@@ -21,11 +25,13 @@ const empty = 'assets/images/svgs/empty.svg';
 const successImage = 'assets/images/svgs/success.svg';
 const deleteIcon = 'assets/images/svgs/delete.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
+const infoImage = 'assets/images/svgs/info-svg.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';
 const splashScreenLocationImage2 = 'assets/images/jpegs/locationImage.png';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
-const flexBackgroundImage = 'assets/images/jpegs/flex-history-background-image.png';
+const flexBackgroundImage =
+    'assets/images/jpegs/flex-history-background-image.png';
 const hostImage = 'assets/images/jpegs/host-image.png';
 const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
 const splashImage = 'assets/images/jpegs/splash-image.png';

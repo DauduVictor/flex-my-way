@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class NetworkHelper {
 
   /// next three lines makes this class a Singleton
-  static NetworkHelper _instance = NetworkHelper.internal();
+  static final NetworkHelper _instance = NetworkHelper.internal();
   NetworkHelper.internal();
   factory NetworkHelper() => _instance;
 
@@ -20,10 +20,8 @@ class NetworkHelper {
   Future<dynamic> get(String url, {Map<String, String>? headers}) async {
     try {
       headers!['Content-Type'] = 'application/json';
-      return
-        http
-            .get(Uri.parse(url), headers: headers)
-            .then((http.Response response) {
+      print(headers);
+      return http.get(Uri.parse(url), headers: headers).then((http.Response response) {
           final String res = response.body;
           final int statusCode = response.statusCode;
           print(statusCode);
@@ -39,9 +37,6 @@ class NetworkHelper {
   /// A function to do any post request with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> post(String url, {Map<String, String>? headers, body, encoding}) {
-    print(body);
-    print(url);
-    print(headers);
     try {
       headers!['Content-Type'] = 'application/json';
       headers['Accept'] = '*/*';
@@ -67,10 +62,6 @@ class NetworkHelper {
   Future<dynamic> postForm(String url, List<http.MultipartFile>? files, {Map<String, String>? header, body, encoding}) async {
     var request;
     try {
-      print(body);
-      print(header);
-      print(url);
-      print(files!.first.filename);
       request = http.MultipartRequest('POST', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
       if(body != null) request.fields.addAll(body);
@@ -116,9 +107,6 @@ class NetworkHelper {
   /// then sends back a json decoded result
   Future<dynamic> putForm(String url, List<http.MultipartFile>? files,
       {Map<String, String>? header, body, encoding}) async {
-    print(header);
-    print(body);
-    print(url);
     try {
       var request = http.MultipartRequest('PUT', Uri.parse(url));
       if(header != null) request.headers.addAll(header);
@@ -129,7 +117,6 @@ class NetworkHelper {
       final response = await http.Response.fromStream(streamedResponse).timeout(Duration(seconds: httpTimeoutDuration));
       final dynamic res = json.decode(response.body);
       final int statusCode = response.statusCode;
-      print(statusCode);
       if (statusCode < 200 || statusCode > 400) throw res['message'];
       return res;
     } catch (e) {
@@ -141,8 +128,6 @@ class NetworkHelper {
   /// A function to do any delete request with the url and headers
   /// then sends back a json decoded result
   Future<dynamic> delete(String url, {Map<String, String>? headers, body}) {
-    print(url);
-    print(headers);
     try {
       // headers!['Content-Type'] = 'application/json';
       return http
@@ -151,7 +136,6 @@ class NetworkHelper {
           .then((http.Response response) {
         final String res = response.body;
         final int statusCode = response.statusCode;
-        print(statusCode);
         var result = _decoder.convert(res);
         if (statusCode < 200 || statusCode > 400) throw result['message'];
         return result;

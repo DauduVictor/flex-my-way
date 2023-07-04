@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:flex_my_way/networking/networking.dart';
-import 'package:flex_my_way/screens/host/host-registration.dart';
 import 'package:flex_my_way/screens/settings/help-and-support.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/components/components.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/setting-controller.dart';
 import 'package:flex_my_way/util/util.dart';
@@ -37,7 +35,6 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
-    print(controller.canHostFlex.value);
     return Obx(() => AbsorbPointer(
       absorbing: controller.showUpgradeUser.value,
       child: Scaffold(

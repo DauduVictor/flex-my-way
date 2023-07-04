@@ -35,6 +35,7 @@ import 'package:flex_my_way/screens/theme/app-theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'screens/settings/eula-policy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         EditProfileDetail.id: (context) => EditProfileDetail(),
         TermsAndCondition.id: (context) => const TermsAndCondition(),
         PrivacyPolicy.id: (context) => const PrivacyPolicy(),
+        EulaPolicy.id: (context) => const EulaPolicy(),
         HelpAndSupport.id: (context) => const HelpAndSupport(),
         PendingInvites.id: (context) => PendingInvites(),
         FlexHistory.id: (context) => FlexHistory(),

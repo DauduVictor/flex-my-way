@@ -410,7 +410,6 @@ class FlexDataSource {
     });
     return _netUtil.postForm(ADD_FLEXERY, uploads, header: header, body: body).then((res) {
       if(res['status'] != 'success') throw res['message'];
-      log (res['data']);
       return res['data'];
     }).catchError((e){
       errorHandler.handleError(e);
@@ -461,6 +460,31 @@ class FlexDataSource {
       return latLng;
     }).catchError((e) {
       log(e);
+      errorHandler.handleError(e);
+    });
+  }
+
+  /// A function that sends request for reporting image [body] as details
+  /// A post request to use the [ADD_FLEXERY]
+  /// It returns a [] model
+  Future<dynamic> reportImage(Map<String, String> body) async {
+    String? userId;
+    Map<String, String> header = {};
+    Future<User> user = _futureValue.getCurrentUser();
+    await user.then((value) async {
+      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      userId = value.id;
+      log(':::userId: $userId');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
+      header['Content-Type'] = 'text/plain';
+      header['Accept'] = '*/*';
+    });
+    return _netUtil.post(REPORT, headers: header, body: body).then((res) {
+      if(res['status'] != 'success') throw res['message'];
+      log (res['data']);
+      return res['data'];
+    }).catchError((e){
       errorHandler.handleError(e);
     });
   }

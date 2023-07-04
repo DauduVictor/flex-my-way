@@ -58,7 +58,7 @@ class HelpAndSupport extends StatelessWidget {
                   style: textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
                 ),
                 Text(
-                  '09023130910',
+                  '+2349023130910',
                   style: textTheme.button!.copyWith(fontSize: 18.5, fontWeight: FontWeight.w600),
                 ),
               ],

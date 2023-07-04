@@ -218,7 +218,6 @@ class EditController extends GetxController {
   /// Function to get user location and use [LatLang] in the map
   void getUserLatLongByAddress(String address) async {
     List<Location> locations = await locationFromAddress(address);
-    print(locations);
     location.value = locations;
   }
 

@@ -1,9 +1,11 @@
+import 'package:flex_my_way/networking/networking.dart';
 import 'package:flex_my_way/screens/flex-media/flexery.dart';
 import 'package:flex_my_way/screens/settings/edit-profile-detail.dart';
 import 'package:flex_my_way/screens/settings/privacy-policy.dart';
 import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import '../find-a-flex.dart';
@@ -13,7 +15,6 @@ import 'dashboard.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 
 class RefactoredDrawer extends StatelessWidget {
-
   RefactoredDrawer({Key? key}) : super(key: key);
 
   /// calling the user controller [UserController]
@@ -58,7 +59,9 @@ class RefactoredDrawer extends StatelessWidget {
                           radius: 35,
                           backgroundColor: primaryColor.withOpacity(0.2),
                           child: Text(
-                            userController.username.value.substring(0,1).toUpperCase(),
+                            userController.username.value
+                                .substring(0, 1)
+                                .toUpperCase(),
                             style: textTheme.headlineMedium!.copyWith(
                               fontSize: 40.5,
                               color: primaryColor,
@@ -66,8 +69,7 @@ class RefactoredDrawer extends StatelessWidget {
                             ),
                           ),
                         );
-                      }
-                      ),
+                      }),
                       const SizedBox(width: 20),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +79,10 @@ class RefactoredDrawer extends StatelessWidget {
                               child: SizedBox(
                                 width: SizeConfig.screenWidth! * 0.3,
                                 child: Text(
-                                  userController.username.value.split(' ')[0].capitalizeFirst ?? '',
+                                  userController.username.value
+                                          .split(' ')[0]
+                                          .capitalizeFirst ??
+                                      '',
                                   overflow: TextOverflow.ellipsis,
                                   style: textTheme.headlineSmall!.copyWith(
                                     fontSize: 22.5,
@@ -87,8 +92,7 @@ class RefactoredDrawer extends StatelessWidget {
                                 ),
                               ),
                             );
-                          }
-                          ),
+                          }),
                           const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
@@ -199,6 +203,7 @@ class RefactoredDrawer extends StatelessWidget {
                 ),
               ),
             ),
+
             /// legal
             Container(
               width: SizeConfig.screenWidth,
@@ -243,6 +248,21 @@ class RefactoredDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      _showDeleteDialog(textTheme, context);
+                    },
+                    child: Text(
+                      'Delete Account',
+                      style: textTheme.bodyLarge!.copyWith(
+                        color: neutralColor.withOpacity(0.5),
+                        fontSize: 17.5,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 15),
                 ],
               ),
@@ -254,17 +274,100 @@ class RefactoredDrawer extends StatelessWidget {
   }
 }
 
-class DrawerButton extends StatelessWidget {
+///widget to prompt user if they want to delete account
+Future<void> _showDeleteDialog(TextTheme textTheme, BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: whiteColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      title: Text(
+        'Delete Account',
+        style: textTheme.headlineSmall!.copyWith(
+          fontWeight: FontWeight.w600,
+          fontSize: 20,
+        ),
+      ),
+      content: Padding(
+        padding: const EdgeInsets.only(right: 15.0),
+        child: Text(
+          'Are you sure you want to delete your account?',
+          style: textTheme.bodyLarge!.copyWith(
+            fontSize: 17.5,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          style: TextButton.styleFrom(
+            foregroundColor: primaryColor,
+          ),
+          child: Text(
+            'Cancel',
+            style: textTheme.bodyLarge!.copyWith(
+                fontSize: 17.5,
+                fontWeight: FontWeight.w500,
+                color: primaryColor),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: TextButton(
+            onPressed: () async {
+              Get.back();
+              deleteUserAccont();
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: primaryColor,
+            ),
+            child: Text(
+              'Delete',
+              style: textTheme.bodyLarge!.copyWith(
+                fontSize: 17.5,
+                fontWeight: FontWeight.w500,
+                color: errorColor,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
+/// Function to make api POST request
+/// To delete user account
+void deleteUserAccont() async {
+  /// calling the user controller [UserController] and [SettingsController]
+  final UserController userController = Get.put(UserController());
+  final SettingsController settingsController = Get.put(SettingsController());
+  userController.deleteAccountSpinner.value = true;
+  var api = UserDataSource();
+  await api.deleteUserAccount().then((value) {
+    userController.deleteAccountSpinner.value = false;
+    userController.update();
+    Functions.showMessage('User Account Deleted');
+    settingsController.logOut();
+  }).catchError((e) {
+    userController.deleteAccountSpinner.value = false;
+    userController.update();
+    Functions.showMessage(e);
+  });
+}
+
+class DrawerButton extends StatelessWidget {
   final String routeName;
   final void Function() onPressed;
 
-  const DrawerButton({
-    Key? key,
-    required this.routeName,
-    required this.onPressed
-  }) : super(key: key);
-
+  const DrawerButton(
+      {Key? key, required this.routeName, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +383,8 @@ class DrawerButton extends StatelessWidget {
             width: SizeConfig.screenWidth,
             child: Text(
               routeName,
-              style: textTheme.bodyLarge!.copyWith(fontSize: 21, fontWeight: FontWeight.w500),
+              style: textTheme.bodyLarge!
+                  .copyWith(fontSize: 21, fontWeight: FontWeight.w500),
             ),
           ),
         ),

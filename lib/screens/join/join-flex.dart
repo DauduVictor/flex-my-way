@@ -52,7 +52,6 @@ class JoinFlex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(flex?.showOnAccepted);
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
@@ -649,14 +648,13 @@ class JoinFlex extends StatelessWidget {
                                     TextButton(
                                       onPressed: () async {
                                         if (flex?.showOnAccepted == false || showAllFeatures == true) {
-                                          Clipboard.setData(ClipboardData(
-                                              text: flex!.joinCode)).then((value) {
+                                          Clipboard.setData(ClipboardData(text: flex!.joinCode ?? '')).then((value) {
                                             Functions.showMessage(
                                                 'Flex code copied');
                                           }).catchError((e) {
                                             Functions.showMessage(
                                                 'Could not copy flex code');
-                                          });;
+                                          });
                                         }
                                       },
                                       style: TextButton.styleFrom(

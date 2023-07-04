@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flex_my_way/networking/flex-datasource.dart';
@@ -6,6 +7,7 @@ import 'package:flex_my_way/screens/flex-media/upload-image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
@@ -275,112 +277,107 @@ class _FlexeryState extends State<Flexery> {
         context: context,
         barrierDismissible: true,
         barrierLabel: '',
-        barrierColor: neutralColor.withOpacity(0.4),
+        barrierColor: blackColor2.withOpacity(0.8),
         transitionBuilder: (context, animation, secondaryAnimation, widget) {
           return Transform.translate(
             offset: Offset(0, 10 * animation.value),
             child: StatefulBuilder(builder: (context, stateSetter) {
-              return Stack(
-                children: [
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 60, horizontal: 2),
-                    child: Column(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: const Icon(
-                                    Icons.close,
-                                    color: whiteColor,
-                                    size: 31,
+              return Center(
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 60, horizontal: 23),
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(8)),
+                  height: MediaQuery.of(context).size.height * 0.66,
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      initialPage: position,
+                      autoPlay: false,
+                      viewportFraction: 1,
+                      height: SizeConfig.screenHeight! * 0.77,
+                    ),
+                    items: flexery.map((e) {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Material(
+                                color: transparentColor,
+                                child: Text(
+                                  e.hashtag!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: neutralColor,
+                                    fontSize: 17.5,
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 15),
-                            CarouselSlider(
-                              options: CarouselOptions(
-                                initialPage: position,
-                                autoPlay: false,
-                                viewportFraction: 1,
-                                height: SizeConfig.screenHeight! * 0.77,
+                              const Spacer(),
+                              Material(
+                                color: transparentColor,
+                                child: InkWell(
+                                  onTap: () =>
+                                      _showReportModal(context, e.url ?? ''),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13, vertical: 9),
+                                    child: SvgPicture.asset(
+                                      infoImage,
+                                      width: 14,
+                                      height: 14,
+                                    ),
+                                  ),
+                                ),
                               ),
-                              items: flexery.map((e) {
-                                return Column(
-                                  children: [
-                                    CachedNetworkImage(
-                                      alignment: Alignment.topCenter,
-                                      imageUrl: e.url!,
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) {
-                                        return SpinKitCircle(
-                                          color: primaryColor.withOpacity(0.7),
-                                          size: 30,
-                                        );
-                                      },
-                                      errorWidget: (context, url, error) =>
-                                          Icon(
-                                        Icons.error,
-                                        color: neutralColor.withOpacity(0.4),
-                                        size: 30,
-                                      ),
-                                      height: SizeConfig.screenHeight! * 0.7,
-                                      fit: BoxFit.cover,
+                              const SizedBox(width: 10),
+                              Material(
+                                borderRadius: BorderRadius.circular(15),
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: whiteColor2,
+                                  child: InkWell(
+                                    onTap: () => Navigator.pop(context),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: greyColor,
+                                      size: 21,
                                     ),
-                                    const SizedBox(height: 10),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Material(
-                                        color: transparentColor,
-                                        child: Text(
-                                          e.hashtag!,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor,
-                                            letterSpacing: 1.2,
-                                            fontSize: 24.5,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  /*Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (position < flexery.length -1) {
-                            stateSetter(() {
-                              position += 1;
-                            });
-                          }
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent.withOpacity(0.1),
-                          radius: 22,
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: whiteColor,
-                            size: 21,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ),*/
-                ],
+                          const SizedBox(height: 12),
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: CachedNetworkImage(
+                                alignment: Alignment.topCenter,
+                                imageUrl: e.url!,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) {
+                                  return SpinKitCircle(
+                                    color: primaryColor.withOpacity(0.7),
+                                    size: 30,
+                                  );
+                                },
+                                errorWidget: (context, url, error) => Icon(
+                                  Icons.error,
+                                  color: neutralColor.withOpacity(0.4),
+                                  size: 30,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                ),
               );
             }),
           );
@@ -528,6 +525,50 @@ class _FlexeryState extends State<Flexery> {
     );
   }
 
+  ///widget to show the dialog for filter
+  Future<void> _showReportModal(BuildContext context, String imageUrl) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Transform.translate(
+        offset: Offset(MediaQuery.of(context).size.width * 0.14,
+            -MediaQuery.of(context).size.height * 0.24),
+        child: SizedBox(
+          height: 50,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Material(
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 15, 40, 12),
+                height: 50,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: const Color(0xFFFFFFFF),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    reportImage(imageUrl);
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Report',
+                    style: TextStyle(
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Gilroy',
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   ///Function to get images by search
   void getFlexeryByHashTag(String hashTag) {
     if (_debounce?.isActive ?? false) {
@@ -546,6 +587,22 @@ class _FlexeryState extends State<Flexery> {
         print(':::error: $e');
         Functions.showMessage(e.toString());
       });
+    });
+  }
+
+  ///Function to report image
+  void reportImage(String imageUrl) async {
+    log(imageUrl);
+    log('report image');
+    Map<String, String> body = {
+      'type': 'image',
+      'reason': 'In appropriate Image',
+      'imageUrl': imageUrl,
+    };
+    await api.reportImage(body).then((value) => Functions.showMessage('Report sent')).catchError((e) {
+      controller.showSearchSpinner.value = false;
+      print(':::error: $e');
+      Functions.showMessage(e.toString());
     });
   }
 }

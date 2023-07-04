@@ -118,7 +118,7 @@ class UserController extends GetxController {
   final showInvitesSpinner = false.obs;
 
   /// Variable to hold deleteAccount  spinner
-  bool deleteAccountSpinner = false;
+  final deleteAccountSpinner = false.obs;
 
   RxList<Notification> notification = <Notification>[].obs;
   RxList<DashboardFLex> scheduledFlex = <DashboardFLex>[].obs;
@@ -177,7 +177,6 @@ class UserController extends GetxController {
   }
 
   String getFlexAttendeeStatusText(String flexId) {
-    print('here');
     String textStatus = '';
     for (int i = 0; i < userProfile!.flexAttended!.length; i++) {
       print(userProfile!.flexAttended![i].flexCode!);
@@ -185,7 +184,6 @@ class UserController extends GetxController {
         textStatus = userProfile!.flexAttended![i].attendeeStatus!;
       }
     }
-    print(textStatus);
     return textStatus;
   }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomTextFormField extends StatelessWidget {
-
   const CustomTextFormField({
     Key? key,
     required this.hintText,
@@ -90,11 +89,8 @@ class CustomTextFormField extends StatelessWidget {
             ),
           ),
         ),
-        bottomSpacing == true
-          ? const SizedBox(height: 24)
-          : const SizedBox(),
+        bottomSpacing == true ? const SizedBox(height: 24) : const SizedBox(),
       ],
     );
   }
 }
-
