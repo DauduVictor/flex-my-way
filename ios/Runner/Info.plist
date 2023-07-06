@@ -30,15 +30,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Privacy - Camera Usage Description</string>
+	<string>Flexmyway needs access to your camera to upload images</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Flexmyway requires contacts access to import your contact list.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Flexmyway needs access to location when in the background.</string>
+	<string>Flexmyway needs access to location to get the closest flex around you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Flexmyway needs access to location when open.</string>
+	<string>Flexmyway needs access to location to get the closest flex around you.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Flexmyway needs access to location when in usage</string>
+	<string>Flexmyway needs access to location to get the closest flex around you </string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Flexmyway needs access to your Microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>

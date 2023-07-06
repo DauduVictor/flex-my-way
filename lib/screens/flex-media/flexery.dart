@@ -219,13 +219,13 @@ class _FlexeryState extends State<Flexery> {
                                     child: CachedNetworkImage(
                                       alignment: Alignment.topCenter,
                                       imageUrl: controller.flexery[index].url!,
-                                      progressIndicatorBuilder:
-                                          (context, url, downloadProgress) {
-                                        return SpinKitCircle(
-                                          color: primaryColor.withOpacity(0.7),
-                                          size: 30,
-                                        );
-                                      },
+                                      // progressIndicatorBuilder:
+                                      //     (context, url, downloadProgress) {
+                                      //   return SpinKitCircle(
+                                      //     color: primaryColor.withOpacity(0.7),
+                                      //     size: 30,
+                                      //   );
+                                      // },
                                       errorWidget: (context, url, error) =>
                                           Icon(
                                         Icons.error,
@@ -303,23 +303,45 @@ class _FlexeryState extends State<Flexery> {
                         children: [
                           Row(
                             children: [
-                              Material(
-                                color: transparentColor,
-                                child: Text(
-                                  e.hashtag!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: neutralColor,
-                                    fontSize: 17.5,
+                              Expanded(
+                                child: Material(
+                                  color: transparentColor,
+                                  child: Text(
+                                    e.hashtag!,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: neutralColor,
+                                      fontSize: 17.5,
+                                    ),
                                   ),
                                 ),
                               ),
-                              const Spacer(),
+                              const SizedBox(width: 7),
+                              // block
                               Material(
                                 color: transparentColor,
                                 child: InkWell(
-                                  onTap: () =>
-                                      _showReportModal(context, e.url ?? ''),
+                                  onTap: () => _showReportBlockModal(
+                                      context, e.url ?? '',
+                                      block: true),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13, vertical: 9),
+                                    child: SvgPicture.asset(
+                                      blockImage,
+                                      width: 14,
+                                      height: 14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              // report
+                              Material(
+                                color: transparentColor,
+                                child: InkWell(
+                                  onTap: () => _showReportBlockModal(
+                                      context, e.url ?? ''),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 13, vertical: 9),
@@ -356,13 +378,13 @@ class _FlexeryState extends State<Flexery> {
                               child: CachedNetworkImage(
                                 alignment: Alignment.topCenter,
                                 imageUrl: e.url!,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) {
-                                  return SpinKitCircle(
-                                    color: primaryColor.withOpacity(0.7),
-                                    size: 30,
-                                  );
-                                },
+                                // progressIndicatorBuilder:
+                                //     (context, url, downloadProgress) {
+                                //   return SpinKitCircle(
+                                //     color: primaryColor.withOpacity(0.7),
+                                //     size: 30,
+                                //   );
+                                // },
                                 errorWidget: (context, url, error) => Icon(
                                   Icons.error,
                                   color: neutralColor.withOpacity(0.4),
@@ -526,7 +548,8 @@ class _FlexeryState extends State<Flexery> {
   }
 
   ///widget to show the dialog for filter
-  Future<void> _showReportModal(BuildContext context, String imageUrl) {
+  Future<void> _showReportBlockModal(BuildContext context, String imageUrl,
+      {bool block = false}) {
     return showDialog(
       context: context,
       barrierDismissible: true,
@@ -549,12 +572,16 @@ class _FlexeryState extends State<Flexery> {
                 ),
                 child: InkWell(
                   onTap: () {
-                    reportImage(imageUrl);
+                    if (block) {
+                      log('implement block function here');
+                    } else {
+                      reportImage(imageUrl);
+                    }
                     Navigator.pop(context);
                   },
-                  child: const Text(
-                    'Report',
-                    style: TextStyle(
+                  child: Text(
+                    block ? 'Block' : 'Report',
+                    style: const TextStyle(
                       fontSize: 15.5,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Gilroy',
@@ -599,7 +626,10 @@ class _FlexeryState extends State<Flexery> {
       'reason': 'In appropriate Image',
       'imageUrl': imageUrl,
     };
-    await api.reportImage(body).then((value) => Functions.showMessage('Report sent')).catchError((e) {
+    await api
+        .reportImage(body)
+        .then((value) => Functions.showMessage('Report sent'))
+        .catchError((e) {
       controller.showSearchSpinner.value = false;
       print(':::error: $e');
       Functions.showMessage(e.toString());

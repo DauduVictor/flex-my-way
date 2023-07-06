@@ -26,6 +26,7 @@ const successImage = 'assets/images/svgs/success.svg';
 const deleteIcon = 'assets/images/svgs/delete.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const infoImage = 'assets/images/svgs/info-svg.svg';
+const blockImage = 'assets/images/svgs/block.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';
 const splashScreenLocationImage2 = 'assets/images/jpegs/locationImage.png';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';

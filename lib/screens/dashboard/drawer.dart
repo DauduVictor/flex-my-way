@@ -163,20 +163,21 @@ class RefactoredDrawer extends StatelessWidget {
                         Get.toNamed(Flexery.id);
                       },
                     ),
-                    DrawerButton(
-                      routeName: AppStrings.settings,
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Get.back();
-                        Get.toNamed(Settings.id);
-                      },
-                    ),
+
                     DrawerButton(
                       routeName: 'Flex History',
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         Get.back();
                         Get.toNamed(FlexHistory.id);
+                      },
+                    ),
+                    DrawerButton(
+                      routeName: AppStrings.settings,
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Get.back();
+                        Get.toNamed(Settings.id);
                       },
                     ),
                     // DrawerButton(
