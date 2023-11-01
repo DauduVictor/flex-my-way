@@ -41,78 +41,94 @@ class Login extends StatelessWidget {
                       image: AssetImage(loginDecoratedImage),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 45),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Login',
-                          style: textTheme.headlineMedium!
-                              .copyWith(fontSize: 30.5),
-                        ),
-                        const SizedBox(height: 32),
-                        _buildForm(textTheme),
-                        const SizedBox(height: 24),
-                        Button(
-                          label: 'Log in',
-                          onPressed: () {
-                            FocusScopeNode currentFocus =
-                                FocusScope.of(context);
-                            if (!currentFocus.hasPrimaryFocus)
-                              currentFocus.unfocus();
-                            if (_formKey.currentState!.validate()) {
-                              _login(controller);
-                            }
-                          },
-                          child: controller.loginShowSpinner.value == true
-                              ? const SizedBox(
-                                  height: 21,
-                                  width: 19,
-                                  child: CircleProgressIndicator())
-                              : null,
-                        ),
-                        const SizedBox(height: 24),
-                        RichText(
-                          text: TextSpan(
-                            style: textTheme.bodyLarge!,
-                            children: [
-                              const TextSpan(
-                                text: 'Forgot your password? ',
-                              ),
-                              TextSpan(
-                                text: 'Click Here',
-                                style: textTheme.bodyLarge!
-                                    .copyWith(fontWeight: FontWeight.w600),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Get.toNamed(ForgotPassword.id);
-                                  },
-                              ),
-                            ],
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: SizeConfig.screenHeight! * 0.12,
+                        left: 32,
+                        child: InkWell(
+                          onTap: () => Get.back(),
+                          child: const Icon(
+                            Icons.cancel,
+                            size: 28,
                           ),
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Don’t have an account?',
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyLarge!,
-                        ),
-                        const SizedBox(height: 4),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(SignUp.id);
-                          },
-                          child: Text(
-                            'Sign Up',
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyLarge!.copyWith(
-                              fontWeight: FontWeight.w600,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 45),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Login',
+                              style: textTheme.headlineMedium!
+                                  .copyWith(fontSize: 30.5),
                             ),
-                          ),
+                            const SizedBox(height: 32),
+                            _buildForm(textTheme),
+                            const SizedBox(height: 24),
+                            Button(
+                              label: 'Log in',
+                              onPressed: () {
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                                if (_formKey.currentState!.validate()) {
+                                  _login(controller);
+                                }
+                              },
+                              child: controller.loginShowSpinner.value == true
+                                  ? const SizedBox(
+                                      height: 21,
+                                      width: 19,
+                                      child: CircleProgressIndicator())
+                                  : null,
+                            ),
+                            const SizedBox(height: 24),
+                            RichText(
+                              text: TextSpan(
+                                style: textTheme.bodyLarge!,
+                                children: [
+                                  const TextSpan(
+                                    text: 'Forgot your password? ',
+                                  ),
+                                  TextSpan(
+                                    text: 'Click Here',
+                                    style: textTheme.bodyLarge!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Get.toNamed(ForgotPassword.id);
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Don’t have an account?',
+                              textAlign: TextAlign.center,
+                              style: textTheme.bodyLarge!,
+                            ),
+                            const SizedBox(height: 4),
+                            GestureDetector(
+                              onTap: () {
+                                Get.toNamed(SignUp.id);
+                              },
+                              child: Text(
+                                'Sign Up',
+                                textAlign: TextAlign.center,
+                                style: textTheme.bodyLarge!.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

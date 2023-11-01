@@ -1,0 +1,92 @@
+import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flex_my_way/model/flex.dart';
+import 'package:flex_my_way/util/util.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:screenshot/screenshot.dart';
+
+Future<Uint8List> captureWidgetToImage(Widget widget) async {
+  final screenshotController = ScreenshotController();
+
+  final imageBytes = await screenshotController.captureFromWidget(widget);
+  return imageBytes;
+}
+
+class CustomMarkerWidget extends StatelessWidget {
+  const CustomMarkerWidget({
+    required this.flex,
+    this.isBroadcast = false,
+    super.key,
+  });
+
+  final Flexes flex;
+  final bool isBroadcast;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      decoration: BoxDecoration(
+        color: whiteColor,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      clipBehavior: Clip.none,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: greyColor.withOpacity(0.4),
+            ),
+            child: CachedNetworkImage(
+              alignment: Alignment.topCenter,
+              imageUrl: flex.bannerImage!.first,
+              width: 20,
+              height: 20,
+              progressIndicatorBuilder: (context, url, downloadProgress) {
+                return Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: greyColor.withOpacity(0.4),
+                  ),
+                );
+              },
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 9),
+          Text(
+            flex.name ?? '',
+            style: textTheme.bodySmall!.copyWith(
+              fontSize: 11,
+              color: neutralColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 9),
+          Visibility(
+            visible: isBroadcast == true,
+            child: Positioned(
+              left: 11,
+              bottom: 11,
+              child: SvgPicture.asset(
+                broadcastImage,
+                width: 20,
+                height: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

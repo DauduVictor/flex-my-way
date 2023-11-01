@@ -9,3 +9,4 @@ export 'text-form-field.dart';
 export 'pending-button.dart';
 export 'payment-option.dart';
 export 'dismiss-keyboard.dart';
+export 'custom-marker-widget.dart';

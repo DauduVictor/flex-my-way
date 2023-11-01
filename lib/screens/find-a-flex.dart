@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flex_my_way/bloc/future-values.dart';
 import 'package:flex_my_way/screens/host/host-a-flex.dart';
+import 'package:flex_my_way/util/location-permission.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +42,11 @@ class _FindAFlexState extends State<FindAFlex> {
     checkUserIsLoggedIn();
     super.initState();
   }
+
+  /// Instantiating a class of future values
+  var futureValues = FutureValues();
+
+  var locationPermission = LocationPermissionCheck();
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +150,19 @@ class _FindAFlexState extends State<FindAFlex> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => Get.toNamed(Join.id),
+                        onTap: () async {
+                          await futureValues.getUserLocation().then((value) {
+                            if (!mounted) return;
+                            Get.toNamed(Join.id);
+                          }).catchError((e) async {
+                            if (!mounted) return;
+                            if (e.toString().contains('denied')) {
+                              locationPermission
+                                  .buildLocationRequest(context)
+                                  .then((value) {});
+                            }
+                          });
+                        },
                         child: CircleAvatar(
                           backgroundColor: whiteColor,
                           radius: 42,

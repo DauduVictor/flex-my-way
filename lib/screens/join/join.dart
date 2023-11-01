@@ -4,8 +4,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/screens/join/join-flex.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,17 +56,25 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   /// Focus node for search text editing controller
   final _searchFocusNode = FocusNode();
 
+  // function to pick map style from root bundle
+  void _setMapSytle(GoogleMapController controller) {
+    rootBundle.loadString('assets/map-style.json').then((value) {
+      controller.setMapStyle(value);
+    });
+  }
+
   /// Function for _onMapCreated
   void _onMapCreated(GoogleMapController controller) {
     // controller.animateCamera();
     _mapController.complete(controller);
+    _setMapSytle(controller);
   }
 
   /// Variable to hold a set of markers displayed to the user
   final Set<Marker> _markers = {};
 
-  /// variable to hold custom icon used as the marker
-  BitmapDescriptor? customIcon;
+  /// variable to hold custom icon used as the marker (normal flex)
+  BitmapDescriptor? customIconForNormalFlex;
 
   /// Variable to hold latitude
   double lat = 0.0;
@@ -101,7 +109,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       // _getFlexByLocation(lat, long, ageStatus: ageParam, payStatus: payParam);
       userPosition = CameraPosition(
         target: LatLng(lat, long),
-        zoom: 19.5,
+        zoom: 17,
       );
     }).catchError((e) async {
       log(e);
@@ -121,10 +129,15 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     flexLength = 0;
     GoogleMapController controller = await _mapController.future;
     controller.animateCamera(CameraUpdate.zoomOut());
+    // ignore: use_build_context_synchronously
     _showFlexSearchDialog(context);
     await api
-        .getFlexByLocation(lat, long,
-            ageStatus: ageStatus, payStatus: payStatus)
+        .getFlexByLocation(
+      lat,
+      long,
+      ageStatus: ageStatus,
+      payStatus: payStatus,
+    )
         .then((value) {
       setState(() {
         flex = value;
@@ -230,26 +243,96 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     );
   }
 
+  // function to get flex 2nd marker based on flex detail
+  Future<BitmapDescriptor?> getCustomIcon(Flexes flex,
+      [bool isBroadcast = false]) async {
+    try {
+      return BitmapDescriptor.fromBytes(
+        await captureWidgetToImage(
+          CustomMarkerWidget(
+            flex: flex,
+            isBroadcast: isBroadcast,
+          ),
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   /// Function to build markers on the map from [List<Flexes>]
-  void _buildFlexOnMap() {
+  void _buildFlexOnMap() async {
     if (flex.isNotEmpty && flexLength > 0) {
       for (int i = 0; i < flex.length; i++) {
-        _markers.add(
-          Marker(
-              markerId: MarkerId('markerFlexId$i'),
-              position: LatLng(
-                flex[i].locationCoordinates?.lat ?? lat,
-                flex[i].locationCoordinates?.lng ?? long,
-              ),
-              icon: customIcon!,
-              onTap: () {
-                Get.to(() => JoinFlex(flex: flex[i]));
-              }),
+        final position = LatLng(
+          flex[i].locationCoordinates?.lat ?? lat,
+          flex[i].locationCoordinates?.lng ?? long,
         );
+        if (flex[i].isBroadcast == true) {
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId('markerPointd$i'),
+                position: position,
+                icon: customIconForNormalFlex!,
+                anchor: const Offset(.5, .5),
+                flat: true,
+                zIndex: 4,
+              ),
+            );
+          });
+          var icon = await getCustomIcon(flex[i], true);
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId('markerInfo$i'),
+                position: position,
+                anchor: const Offset(0.495, 1.0),
+                flat: false,
+                zIndex: 4,
+                icon: icon ?? customIconForNormalFlex!,
+                onTap: () {
+                  Get.to(() => JoinFlex(flex: flex[i]));
+                },
+              ),
+            );
+          });
+        } else {
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId('markerPointd$i'),
+                position: position,
+                icon: customIconForNormalFlex!,
+                anchor: const Offset(.5, .5),
+                flat: true,
+                zIndex: 4,
+              ),
+            );
+          });
+          var icon = await getCustomIcon(flex[i]);
+          setState(() {
+            _markers.add(
+              Marker(
+                markerId: MarkerId('markerInfo$i'),
+                position: position,
+                anchor: const Offset(0.25, 1.0),
+                flat: false,
+                zIndex: 4,
+                icon: icon ?? customIconForNormalFlex!,
+                onTap: () {
+                  Get.to(() => JoinFlex(flex: flex[i]));
+                },
+              ),
+            );
+          });
+        }
       }
     } else {
       Functions.showMessage(
-          'It seems like we couldn\'t find flexes close to you. Try again!');
+        'It seems like we couldn\'t find flexes close to you. Try again!',
+      );
     }
   }
 
@@ -263,17 +346,19 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     }
   }
 
-  /// Function to create icon with the help of [customIcon]
+  /// Function to create base icon with the help
   void _createCustomMarkerIcon(context) {
-    if (customIcon == null) {
+    if (customIconForNormalFlex == null) {
       ImageConfiguration configuration = createLocalImageConfiguration(context);
-      BitmapDescriptor.fromAssetImage(configuration, markerImage).then((value) {
+      BitmapDescriptor.fromAssetImage(configuration, markerPinImage)
+          .then((value) {
         setState(() {
-          customIcon = value;
+          customIconForNormalFlex = value;
         });
       }).catchError((e) {
         Functions.showMessage(
-            'Unable to connect to google maps at this time, please try again');
+          'Unable to connect to google maps at this time, please try again',
+        );
       });
     }
   }
@@ -370,11 +455,15 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                     mapType: MapType.normal,
                     initialCameraPosition: CameraPosition(
                       target: LatLng(lat, long),
-                      zoom: 19.5,
+                      zoom: 17,
                     ),
-                    myLocationEnabled: true,
+                    myLocationEnabled: false,
                     buildingsEnabled: false,
+                    zoomControlsEnabled: false,
+                    trafficEnabled: false,
+                    indoorViewEnabled: false,
                     myLocationButtonEnabled: false,
+                    compassEnabled: false,
                     onMapCreated: _onMapCreated,
                     markers: _markers,
                     onTap: (value) {
@@ -395,8 +484,9 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                         radius: 22,
                         child: TextButton(
                           onPressed: () {
-                            if (!currentFocus.hasPrimaryFocus)
+                            if (!currentFocus.hasPrimaryFocus) {
                               currentFocus.unfocus();
+                            }
                             Get.back();
                           },
                           style: TextButton.styleFrom(
@@ -903,7 +993,6 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       if (!mounted) return;
       setState(() => showSearchSpinner = false);
       log(e);
-      Functions.showMessage('Flex not found');
     });
   }
 }

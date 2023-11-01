@@ -1,7 +1,6 @@
 /// A class to hold the [Flexes] model
 
 class Flexes {
-
   /// setting constructor for the flex class
   Flexes({
     this.locationCoordinates,
@@ -24,6 +23,9 @@ class Flexes {
     this.joinCode,
     this.distance,
     this.id,
+    this.broadcastLocations,
+    this.recurringDates,
+    this.isBroadcast,
     this.videoLink,
   });
 
@@ -81,7 +83,15 @@ class Flexes {
   /// This variable holds the flex viewStatus
   String? joinCode;
 
+  bool? isBroadcast;
+
   double? distance;
+
+  /// This variable holds the list of recurring broadcastLocations
+  List<BroadcastLocation>? broadcastLocations;
+
+  /// This variable holds the list of recurring dates
+  List<RecurringDate>? recurringDates;
 
   /// This variable holds the flex id
   String? id;
@@ -90,56 +100,70 @@ class Flexes {
   String? videoLink;
 
   factory Flexes.fromJson(Map<String, dynamic> json) => Flexes(
-    locationCoordinates: json['locationCoordinates'] != null ? FlexLocationCoordinates.fromJson(json["locationCoordinates"]) : null,
-    name: json["name"] ?? '',
-    creator: json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
-    fromDate: DateTime.parse(json["fromDate"]),
-    toDate: DateTime.parse(json["toDate"]),
-    totalInvitees: json["totalInvitees"] ?? 0,
-    capacity: json["capacity"] ?? 1,
-    ageRating: json["ageRating"] ?? '',
-    flexType: json["flexType"] ?? '',
-    bannerImage: List<String>.from(json['bannerImage'].map((x) => x)),
-    hashtag: json["hashtag"] ?? '',
-    payStatus: json["payStatus"] ?? '',
-    viewStatus: json["viewStatus"] ?? '',
-    showOnAccepted: json["showOnAccepted"] ?? false,
-    genderRestriction: json["genderRestriction"] ?? '',
-    consumablesPolicy: json["consumablesPolicy"] ?? '',
-    flexRules: json["flexRules"] ?? '',
-    joinCode: json["joinCode"] ?? '',
-    distance: json['distance'] != null ? json["distance"].toDouble() : 0.0,
-    id: json["id"] ?? '',
-    videoLink: json["videoLink"] ?? '',
-  );
+        locationCoordinates: json['locationCoordinates'] != null
+            ? FlexLocationCoordinates.fromJson(json["locationCoordinates"])
+            : null,
+        name: json["name"] ?? '',
+        creator:
+            json['creator'] != null ? Creator.fromJson(json["creator"]) : null,
+        fromDate: DateTime.parse(json["fromDate"]),
+        toDate: DateTime.parse(json["toDate"]),
+        totalInvitees: json["totalInvitees"] ?? 0,
+        capacity: json["capacity"] ?? 1,
+        ageRating: json["ageRating"] ?? '',
+        flexType: json["flexType"] ?? '',
+        bannerImage: List<String>.from(json['bannerImage'].map((x) => x)),
+        hashtag: json["hashtag"] ?? '',
+        payStatus: json["payStatus"] ?? '',
+        viewStatus: json["viewStatus"] ?? '',
+        showOnAccepted: json["showOnAccepted"] ?? false,
+        genderRestriction: json["genderRestriction"] ?? '',
+        consumablesPolicy: json["consumablesPolicy"] ?? '',
+        flexRules: json["flexRules"] ?? '',
+        joinCode: json["joinCode"] ?? '',
+        distance: json['distance'] != null ? json["distance"].toDouble() : 0.0,
+        broadcastLocations: List<BroadcastLocation>.from(
+          json["broadcastLocations"].map((x) => BroadcastLocation.fromJson(x)),
+        ),
+        recurringDates: List<RecurringDate>.from(
+          json["recurringDates"].map((x) => RecurringDate.fromJson(x)),
+        ),
+        id: json["id"] ?? '',
+        isBroadcast: json["isBroadcast"] ?? false,
+        videoLink: json["videoLink"] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
-    "locationCoordinates": locationCoordinates?.toJson(),
-    "name": name,
-    "creator": creator?.toJson(),
-    "fromDate": fromDate?.toIso8601String(),
-    "toDate": toDate?.toIso8601String(),
-    "totalInvitees": totalInvitees,
-    "capacity": capacity,
-    "ageRating": ageRating,
-    "flexType": flexType,
-    "bannerImage": bannerImage,
-    "hashtag": hashtag,
-    "payStatus": payStatus,
-    "viewStatus": viewStatus,
-    "showOnAccepted": showOnAccepted,
-    "genderRestriction": genderRestriction,
-    "consumablesPolicy": consumablesPolicy,
-    "flexRules": flexRules,
-    "joinCode": joinCode,
-    "distance": distance,
-    "id": id,
-    "videoLink": videoLink,
-  };
+        "locationCoordinates": locationCoordinates?.toJson(),
+        "name": name,
+        "creator": creator?.toJson(),
+        "fromDate": fromDate?.toIso8601String(),
+        "toDate": toDate?.toIso8601String(),
+        "totalInvitees": totalInvitees,
+        "capacity": capacity,
+        "ageRating": ageRating,
+        "flexType": flexType,
+        "bannerImage": bannerImage,
+        "hashtag": hashtag,
+        "payStatus": payStatus,
+        "viewStatus": viewStatus,
+        "showOnAccepted": showOnAccepted,
+        "genderRestriction": genderRestriction,
+        "consumablesPolicy": consumablesPolicy,
+        "flexRules": flexRules,
+        "joinCode": joinCode,
+        "distance": distance,
+        "broadcastLocations":
+            List<dynamic>.from(broadcastLocations!.map((x) => x.toJson())),
+        "recurringDates":
+            List<dynamic>.from(recurringDates!.map((x) => x.toJson())),
+        "id": id,
+        "isBroadcast": isBroadcast,
+        "videoLink": videoLink,
+      };
 }
 
 class Creator {
-
   Creator({
     this.name,
     this.id,
@@ -151,20 +175,19 @@ class Creator {
   String? phone;
 
   factory Creator.fromJson(Map<String, dynamic> json) => Creator(
-    name: json["name"] ?? '',
-    id: json["id"] ?? '',
-    phone: json["phone"] ?? '',
-  );
+        name: json["name"] ?? '',
+        id: json["id"] ?? '',
+        phone: json["phone"] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "id": id,
-    "phone": phone,
-  };
+        "name": name,
+        "id": id,
+        "phone": phone,
+      };
 }
 
 class FlexLocationCoordinates {
-
   FlexLocationCoordinates({
     this.lat,
     this.lng,
@@ -173,13 +196,83 @@ class FlexLocationCoordinates {
   double? lat;
   double? lng;
 
-  factory FlexLocationCoordinates.fromJson(Map<String, dynamic> json) => FlexLocationCoordinates(
-    lat: json['lat'] != null ? json["lat"].toDouble() : 0.0,
-    lng: json['lng'] != null ? json["lng"].toDouble() : 0.0,
-  );
+  factory FlexLocationCoordinates.fromJson(Map<String, dynamic> json) =>
+      FlexLocationCoordinates(
+        lat: json['lat'] != null ? json["lat"].toDouble() : 0.0,
+        lng: json['lng'] != null ? json["lng"].toDouble() : 0.0,
+      );
 
   Map<String, dynamic> toJson() => {
-    "lat": lat,
-    "lng": lng,
-  };
+        "lat": lat,
+        "lng": lng,
+      };
+}
+
+class BroadcastLocation {
+  Coordinates? coordinates;
+  String? locationName;
+  String? id;
+
+  BroadcastLocation({
+    this.coordinates,
+    this.locationName,
+    this.id,
+  });
+
+  factory BroadcastLocation.fromJson(Map<String, dynamic> json) =>
+      BroadcastLocation(
+        coordinates: Coordinates.fromJson(json["coordinates"]),
+        locationName: json["locationName"],
+        id: json["_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "coordinates": coordinates?.toJson(),
+        "locationName": locationName,
+        "_id": id,
+      };
+}
+
+class Coordinates {
+  double lat;
+  double lng;
+
+  Coordinates({
+    required this.lat,
+    required this.lng,
+  });
+
+  factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(
+        lat: json["lat"]?.toDouble(),
+        lng: json["lng"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "lat": lat,
+        "lng": lng,
+      };
+}
+
+class RecurringDate {
+  DateTime fromDate;
+  DateTime toDate;
+  String id;
+
+  RecurringDate({
+    required this.fromDate,
+    required this.toDate,
+    required this.id,
+  });
+
+  factory RecurringDate.fromJson(Map<String, dynamic> json) => RecurringDate(
+        fromDate: DateTime.parse(json["fromDate"]),
+        toDate: DateTime.parse(json["toDate"]),
+        id: json["_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fromDate": fromDate.toIso8601String(),
+        "toDate": toDate.toIso8601String(),
+        "_id": id,
+      };
 }

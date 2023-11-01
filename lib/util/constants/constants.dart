@@ -11,6 +11,8 @@ const transparentColor = Colors.transparent;
 const neutralColor = Color(0xFF003951);
 const blackColor = Color(0xFF000000);
 const blackColor2 = Color(0xFF000609);
+const blackColor3 = Color(0xFF1A1A1A);
+const lightBlueColor = Color(0xFF78AEED);
 const neutralColorLight = Color(0xFFDBDDE0);
 const errorColor = Color(0xFFDB3704);
 const greenColor = Color(0xFF00A41A);
@@ -27,6 +29,7 @@ const deleteIcon = 'assets/images/svgs/delete.svg';
 const helpHeadSetImage = 'assets/images/svgs/fi-br-headset.svg';
 const infoImage = 'assets/images/svgs/info-svg.svg';
 const blockImage = 'assets/images/svgs/block.svg';
+const cancelImage = 'assets/images/svgs/cancel.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';
 const splashScreenLocationImage2 = 'assets/images/jpegs/locationImage.png';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
@@ -36,8 +39,10 @@ const flexBackgroundImage =
 const hostImage = 'assets/images/jpegs/host-image.png';
 const unsplashImage = 'assets/images/jpegs/unsplash_3cBFqagweZM.png';
 const splashImage = 'assets/images/jpegs/splash-image.png';
-const markerImage = 'assets/images/jpegs/marker-icon.png';
+const markerPinImage = 'assets/images/jpegs/marker-pin-image.png';
 const agentImage = 'assets/images/jpegs/search-splash.gif';
+
+const broadcastImage = 'assets/images/svgs/broadcast-speaker.svg';
 
 BorderRadius appBarBottomBorder = const BorderRadius.only(
   bottomLeft: Radius.circular(30.0),
@@ -70,7 +75,11 @@ List<String> preferredFlexes = [
 List<String> paidOrFree = ['Free'];
 List<String> publicOrPrivate = ['Public', 'Private'];
 List<bool> displayToOnlyAcceptedParticipants = [false, true];
-List<String> isGenderRestrictions = ['Only Female', 'Only Male', 'Both'];
+List<String> isGenderRestrictions = [
+  'Only Female',
+  'Only Male',
+  'All genders allowed'
+];
 List<String> yesOrNo = ['Yes', 'No'];
 List<String> foodAndDrinkPolicy = [
   'Food & Drinks @ a cost',

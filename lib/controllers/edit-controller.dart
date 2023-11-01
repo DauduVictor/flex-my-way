@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flex_my_way/networking/flex-datasource.dart';
+import 'package:flex_my_way/screens/host/host-a-flex.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,6 @@ import 'controllers.dart';
 import 'package:http/http.dart' as http;
 
 class EditController extends GetxController {
-
   /// Instantiating a class of [FlexDataSource]
   var api = FlexDataSource();
 
@@ -25,14 +26,17 @@ class EditController extends GetxController {
   /// Variable to hold prediction
   GooglePlacesPredictionModel? googlePlacesPredictionModel;
 
+  GooglePlacesPredictionModel? googlePlacesPredictionModel2;
+
   Future getFlexDetails(String flexCode) async {
     showSpinner.value = true;
     await api.getFlexDetails(flexCode).then((value) {
       flex = value;
+      log('flex prop ::: ${value.toString()}');
       update();
       populateValues();
       showSpinner.value = false;
-    }).catchError((e){
+    }).catchError((e) {
       log(e);
       showSpinner.value = false;
       Functions.showMessage(e.toString());
@@ -41,34 +45,97 @@ class EditController extends GetxController {
 
   ///Function to populate text controllers and all
   void populateValues() async {
-    flexAddress.text = await formatLocation(
-      flex!.locationCoordinates!.lat!,
-      flex!.locationCoordinates!.lng!
-    );
-    lat.value = flex!.locationCoordinates!.lat!.toString();
-    long.value = flex!.locationCoordinates!.lng!.toString();
-    nameFlexController.text = flex!.name!;
-    dateController.text = _formatDate(flex!.fromDate!);
-    allowPickTime.value = true;
-    pickedDate = flex!.fromDate!;
-    startTimeController.text = Functions.getFlexTime(flex!.fromDate!);
-    endTimeController.text = Functions.getFlexTime(flex!.toDate!);
-    startTime = flex!.fromDate!;
-    endTime = flex!.toDate!;
-    numberOfPeopleController.text = flex!.capacity!.toString();
-    eventHashTagController.text = flex!.hashtag!;
-    ageRating.value = flex!.ageRating! == '18'
-      ? '18+' : 'Below 18';
-    typeOfFlex.value = flex!.flexType!;
-    displayFlexLocation.value = flex!.showOnAccepted! == false
-      ? 'No' : 'Yes';
-    bannerImageController.text = '${flex!.bannerImage!.length} Image(s) uploaded';
-    publicOrPrivate.value = flex!.viewStatus!;
-    paid.value = flex!.payStatus!;
-    genderRestriction.value = flex!.genderRestriction!;
-    consumablePolicy.value = flex!.consumablesPolicy!;
-    flexRulesController.text = flex!.flexRules!;
-    videoLinkController.text = flex!.videoLink!;
+    try {
+      lat.value = flex!.locationCoordinates!.lat!.toString();
+      long.value = flex!.locationCoordinates!.lng!.toString();
+      nameFlexController.text = flex!.name!;
+      dateController.text = _formatDate(flex!.fromDate!);
+      allowPickTime.value = true;
+      pickedDate = flex!.fromDate!;
+      startTimeController.text = Functions.getFlexTime(flex!.fromDate!);
+      endTimeController.text = Functions.getFlexTime(flex!.toDate!);
+      startTime = flex!.fromDate!;
+      endTime = flex!.toDate!;
+      numberOfPeopleController.text = flex!.capacity!.toString();
+      eventHashTagController.text = flex!.hashtag!;
+      ageRating.value = flex!.ageRating! == '18' ? '18+' : 'Below 18';
+      typeOfFlex.value = flex!.flexType!;
+      displayFlexLocation.value = flex!.showOnAccepted! == false ? 'No' : 'Yes';
+      bannerImageController.text =
+          '${flex!.bannerImage!.length} Image(s) uploaded';
+      publicOrPrivate.value = flex!.viewStatus!;
+      paid.value = flex!.payStatus!;
+      genderRestriction.value = flex!.genderRestriction! == 'Both'
+          ? 'All genders allowed'
+          : flex!.genderRestriction!;
+      consumablePolicy.value = flex!.consumablesPolicy!;
+      flexRulesController.text = flex!.flexRules!;
+      videoLinkController.text = flex!.videoLink!;
+      // check if recurring dates is not empty and add to form
+      if (flex!.recurringDates != null) {
+        if (flex!.recurringDates!.isNotEmpty) {
+          for (int i = 0; i < flex!.recurringDates!.length; i++) {
+            reoccuringDates.add(ReoccuringWidget(
+              reoccuringDate: DateFormat('dd/MM/yyyy')
+                  .format(flex!.recurringDates![i].fromDate),
+              onDeleteTap: () {
+                deleteDate(
+                  DateFormat('dd/MM/yyyy')
+                      .format(flex!.recurringDates![i].fromDate),
+                );
+              },
+            ));
+          }
+        }
+      }
+
+      // check if recurring location is not empty and add to form
+      if (flex!.broadcastLocations != null) {
+        if (flex!.broadcastLocations!.isNotEmpty) {
+          for (int i = 0; i < flex!.broadcastLocations!.length; i++) {
+            reoccuringLocations.add(ReoccuringWidget(
+              reoccuringDate: flex!.broadcastLocations![i].locationName ?? '',
+              onDeleteTap: () {
+                deleteBrodcast(flex!.broadcastLocations![i].locationName ?? '');
+              },
+            ));
+            reoccuringLatLongs.add(
+              [
+                flex!.broadcastLocations![i].coordinates?.lat.toString() ?? '',
+                flex!.broadcastLocations![i].coordinates?.lng.toString() ?? '',
+                flex!.broadcastLocations![i].locationName ?? '',
+              ],
+            );
+          }
+        }
+      }
+      flexAddress.text = await formatLocation(
+          flex!.locationCoordinates!.lat!, flex!.locationCoordinates!.lng!);
+      update();
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'An error occured tryig to get flex details');
+    }
+  }
+
+  // function to delete reoccuring date from list
+  void deleteDate(String format) {
+    reoccuringDates.removeWhere((element) => element.reoccuringDate == format);
+    update();
+  }
+
+  // function to delete reoccuring date from list
+  void deleteBrodcast(String location) {
+    for (int i = 0; i < reoccuringLocations.length; i++) {
+      if (reoccuringLocations[i].reoccuringDate.toLowerCase() ==
+          location.toLowerCase()) {
+        // remove the broadcast textual data location from the list of broadcast
+        reoccuringLocations.remove(reoccuringLocations[i]);
+
+        // remove the broadcast lat long locaton from list of brodcast
+        reoccuringLatLongs.removeAt(i);
+        update();
+      }
+    }
   }
 
   /// Instantiating a class of future values
@@ -97,7 +164,8 @@ class EditController extends GetxController {
   final TextEditingController eventHashTagController = TextEditingController();
 
   /// A [TextEditingController] to control the input text for number of people
-  final TextEditingController numberOfPeopleController = TextEditingController();
+  final TextEditingController numberOfPeopleController =
+      TextEditingController();
 
   /// A [TextEditingController] to control the input text for event amount
   final TextEditingController eventAmountController = TextEditingController();
@@ -159,6 +227,12 @@ class EditController extends GetxController {
   /// File Variable to hold the file source of the selected image
   RxList<File> image = <File>[].obs;
 
+  RxList<ReoccuringWidget> reoccuringDates = <ReoccuringWidget>[].obs;
+
+  RxList<ReoccuringWidget> reoccuringLocations = <ReoccuringWidget>[].obs;
+
+  RxList<List<String>> reoccuringLatLongs = <List<String>>[].obs;
+
   RxList<http.MultipartFile> multiPartImages = <http.MultipartFile>[].obs;
 
   /// Function to convert file to multipart
@@ -182,7 +256,7 @@ class EditController extends GetxController {
   //RxList<FlexSuccess>? createdFlex = <FlexSuccess>[].obs;
 
   bool isAddressSearch = false;
- 
+
   /// Function to get user location and use [LatLang] in the map
   Future<void> getUserLocation() async {
     isAddressSearch = true;
@@ -195,7 +269,8 @@ class EditController extends GetxController {
       List<Placemark> placeMarks = await placemarkFromCoordinates(
           double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
-      flexAddress.text = ('${place.name} ${place.street}, ${place.locality}, ${place.country}');
+      flexAddress.text =
+          ('${place.name} ${place.street}, ${place.locality}, ${place.country}');
     }).catchError((e) async {
       isAddressSearch = false;
       update();
@@ -204,8 +279,9 @@ class EditController extends GetxController {
   }
 
   /// Function to launch the url for the video link
-  Future <void> launchVideo() async {
-    if (!await launch(videoLinkController.text)) throw 'Could not launch ${videoLinkController.text}';
+  Future<void> launchVideo() async {
+    if (!await launch(videoLinkController.text))
+      throw 'Could not launch ${videoLinkController.text}';
   }
 
   /// Function to get user location and use [LatLang] in the map
@@ -229,27 +305,61 @@ class EditController extends GetxController {
   /*Api Integration*/
   editFlex(String code) async {
     loginEditSpinner.value = true;
-    Map<String, String> body = {
+    List broadcastLocation = [];
+    List recurringDates = [];
+    for (final latLngBroadcast in reoccuringLatLongs) {
+      broadcastLocation.add({
+        'locationName': latLngBroadcast[2],
+        'coordinates': {
+          'lat': latLngBroadcast[0],
+          'lng': latLngBroadcast[1],
+        }
+      });
+    }
+    for (final broadcastTime in reoccuringDates) {
+      final dateString = broadcastTime.reoccuringDate.split('/');
+      final newDate = DateTime(
+        int.parse(dateString[2]),
+        int.parse(dateString[1]),
+        int.parse(dateString[0]),
+      );
+      final fromDate = DateTime(
+        newDate.year,
+        newDate.month,
+        newDate.day,
+        startTime?.hour ?? 0,
+        startTime?.minute ?? 0,
+        startTime?.second ?? 0,
+        startTime?.millisecond ?? 0,
+      );
+      recurringDates.add(
+        {
+          'fromDate': fromDate.toString(),
+          'toDate': endTime.toString(),
+        },
+      );
+    }
+    Map<String, dynamic> body = {
       'lat': lat.value,
       'lng': long.value,
       'name': nameFlexController.text,
       'fromDate': startTime.toString(),
       'toDate': endTime.toString(),
       'capacity': numberOfPeopleController.text,
-      'ageRating': ageRating.value == '18+'
-        ? '18'
-        : '17',
+      'ageRating': ageRating.value == '18+' ? '18' : '17',
       'flexType': typeOfFlex.value,
       'hashtag': eventHashTagController.text,
       'payStatus': paid.value,
       'viewStatus': publicOrPrivate.value,
-      'showOnAccepted': displayFlexLocation.value == 'Yes'
-        ? 'true'
-        : 'false',
-      'genderRestriction': '$genderRestriction',
+      'showOnAccepted': displayFlexLocation.value == 'Yes' ? 'true' : 'false',
+      'genderRestriction': genderRestriction.value != 'All genders allowed'
+          ? genderRestriction
+          : 'Both',
       'consumablesPolicy': consumablePolicy.value,
       'flexRules': flexRulesController.text,
       'videoLink': videoLinkController.text,
+      'broadcastLocations': broadcastLocation,
+      'recurringDates': recurringDates,
     };
     var api = FlexDataSource();
     await api.editFlex(multiPartImages, body, code).then((value) {
@@ -267,5 +377,4 @@ class EditController extends GetxController {
       Functions.showMessage(e.toString());
     });
   }
-
 }

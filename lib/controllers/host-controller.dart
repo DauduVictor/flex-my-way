@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../bloc/future-values.dart';
+import '../screens/host/host-a-flex.dart';
 import '../util/constants/constants.dart';
 import 'package:flex_my_way/model/model.dart';
 
@@ -78,7 +79,10 @@ class HostController extends GetxController {
   final displayFlexLocation = ''.obs;
 
   /// A variable to hold the gender restriction
-  final genderRestriciton = ''.obs;
+  final genderRestriction = ''.obs;
+
+  /// A variable to hold the gender restriction
+  final isBroadcastLocation = ''.obs;
 
   /// A variable to hold the consumable policy
   final consumablePolicy = ''.obs;
@@ -99,6 +103,12 @@ class HostController extends GetxController {
 
   /// File Variable to hold the file source of the selected image
   RxList<File> image = <File>[].obs;
+
+  RxList<ReoccuringWidget> reoccuringDates = <ReoccuringWidget>[].obs;
+
+  RxList<ReoccuringWidget> reoccuringLocations = <ReoccuringWidget>[].obs;
+
+  RxList<List<String>> reoccuringLatLongs = <List<String>>[].obs;
 
   RxList<http.MultipartFile> multiPartImages = <http.MultipartFile>[].obs;
 
@@ -147,7 +157,8 @@ class HostController extends GetxController {
       update();
       lat.value = double.parse(value[0]).toString();
       long.value = double.parse(value[1]).toString();
-      List<Placemark> placeMarks = await placemarkFromCoordinates(double.parse(value[0]), double.parse(value[1]));
+      List<Placemark> placeMarks = await placemarkFromCoordinates(
+          double.parse(value[0]), double.parse(value[1]));
       Placemark place = placeMarks[0];
       flexAddressController.text =
           ('${place.name} ${place.street}, ${place.locality}, ${place.country}');
@@ -160,6 +171,8 @@ class HostController extends GetxController {
 
   /// Variable to hold prediction
   GooglePlacesPredictionModel? googlePlacesPredictionModel;
+
+  GooglePlacesPredictionModel? googlePlacesPredictionModel2;
 
   /// Function to launch the url for the video link
   Future<void> launchVideo() async {

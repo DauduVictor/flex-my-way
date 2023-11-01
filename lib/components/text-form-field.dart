@@ -11,7 +11,7 @@ class CustomTextFormField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.validator,
     this.obscureText = false,
-    this.keyboardType = TextInputType.name,
+    this.keyboardType = TextInputType.streetAddress,
     this.maxLines = 1,
     this.textCapitalization = TextCapitalization.none,
     this.suffix,

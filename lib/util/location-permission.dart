@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 
-class LocationPermissionCheck{
-
+class LocationPermissionCheck {
   Future<bool> checkLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -41,47 +41,53 @@ class LocationPermissionCheck{
 
   /// This function builds and return a dialog to the user telling them to enable
   /// permission in settings
-  Future<void> buildLocationRequest(BuildContext context){
+  Future<void> buildLocationRequest(BuildContext context) {
     return showDialog(
       context: context,
       builder: (_) => Platform.isIOS
-        ? CupertinoAlertDialog(
-            title: const Text("Location is disabled for \"Flex My Way\""),
-            content: const Text("You can enable location for this app in Settings"),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                onPressed: (){
-                  Navigator.pop(context);
-                  AppSettings.openLocationSettings();
-                },
-                child: const Text("Settings"),
-              ),
-              CupertinoDialogAction(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                isDefaultAction: true,
-                child: const Text("OK"),
-              )
-            ],
-          )
-        : AlertDialog(
-            title: const Text("Location is disabled for \"Flex My Way\""),
-            content: const Text("You can enable location for this app in Settings"),
-            actions: [
-              TextButton(
-                child: const Text("Settings"),
-                onPressed: () {
-                  Navigator.pop(context);
-                  AppSettings.openLocationSettings();
-                },
-              ),
-              TextButton(
-                child: const Text("OK"),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          ),
+          ? CupertinoAlertDialog(
+              title: const Text("Location is disabled for \"Flex My Way\""),
+              content: const Text(
+                  'You can enable location for this app in Settings'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    AppSettings.openLocationSettings();
+                  },
+                  child: const Text('Settings'),
+                ),
+                CupertinoDialogAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Fluttertoast.showToast(msg: 'Location access not granted');
+                  },
+                  isDefaultAction: true,
+                  child: const Text('Ok'),
+                )
+              ],
+            )
+          : AlertDialog(
+              title: const Text("Location is disabled for \"Flex My Way\""),
+              content: const Text(
+                  'You can enable location for this app in Settings'),
+              actions: [
+                TextButton(
+                  child: const Text('Settings'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    AppSettings.openLocationSettings();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Ok'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Fluttertoast.showToast(msg: 'Location access not granted');
+                  },
+                )
+              ],
+            ),
     );
   }
 }

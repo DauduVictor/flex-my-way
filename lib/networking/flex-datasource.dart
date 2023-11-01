@@ -25,7 +25,9 @@ class FlexDataSource {
     List<DashboardFLex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,12 +35,16 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    return _netUtil.get('$GET_DASHBOARD_FLEX?filter=$filter', headers: header).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+    return _netUtil
+        .get('$GET_DASHBOARD_FLEX?filter=$filter', headers: header)
+        .then((res) {
+      if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<DashboardFLex>((json) => DashboardFLex.fromJson(json)).toList();
+      flexes = rest
+          .map<DashboardFLex>((json) => DashboardFLex.fromJson(json))
+          .toList();
       return flexes;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -52,7 +58,9 @@ class FlexDataSource {
     List<HistoryFlex> flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,12 +68,15 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    return _netUtil.get('$GET_FLEX_HISTORY?filter=$filter', headers: header).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+    return _netUtil
+        .get('$GET_FLEX_HISTORY?filter=$filter', headers: header)
+        .then((res) {
+      if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexes = rest.map<HistoryFlex>((json) => HistoryFlex.fromJson(json)).toList();
+      flexes =
+          rest.map<HistoryFlex>((json) => HistoryFlex.fromJson(json)).toList();
       return flexes;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -79,7 +90,9 @@ class FlexDataSource {
     List<Notification> notifications;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -89,11 +102,13 @@ class FlexDataSource {
     });
     return _netUtil.get(GET_NOTIFICATION, headers: header).then((res) {
       log(':::getNotification: $res');
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      notifications = rest.map<Notification>((json) => Notification.fromJson(json)).toList();
+      notifications = rest
+          .map<Notification>((json) => Notification.fromJson(json))
+          .toList();
       return notifications;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -107,7 +122,9 @@ class FlexDataSource {
     List<FlexInvite> flexInvites;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -117,11 +134,12 @@ class FlexDataSource {
     });
     return _netUtil.get(GET_FLEX_INVITEES, headers: header).then((res) {
       log(':::getFlexInvites: $res');
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexInvites = rest.map<FlexInvite>((json) => FlexInvite.fromJson(json)).toList();
+      flexInvites =
+          rest.map<FlexInvite>((json) => FlexInvite.fromJson(json)).toList();
       return flexInvites;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -129,12 +147,15 @@ class FlexDataSource {
   /// A function that created flex with [body] as details
   /// A post request to use the [CREATE_A_FLEX]
   /// It returns a [FlexSuccess] model
-  Future<FlexSuccess> createFlex(List<http.MultipartFile> uploads, Map<String, String> body) async {
+  Future<FlexSuccess> createFlex(
+      List<http.MultipartFile> uploads, Map<String, dynamic> body) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -142,10 +163,12 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    return _netUtil.postForm(CREATE_A_FLEX, uploads, header: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['message'];
+    return _netUtil
+        .postForm(CREATE_A_FLEX, uploads, header: header, body: body)
+        .then((res) {
+      if (res['status'] != 'success') throw res['message'];
       return FlexSuccess.fromJson(res['data']);
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -153,14 +176,16 @@ class FlexDataSource {
   /// A function that edit flex with [body] as details
   /// A post request to use the [UPDATE_A_FLEX]
   /// It returns a [] model
-  Future<dynamic> editFlex(List<http.MultipartFile> uploads, Map<String, dynamic> body, String code ) async {
-    for (int i = 0; i < uploads.length; i++) {
-    }
+  Future<dynamic> editFlex(List<http.MultipartFile> uploads,
+      Map<String, dynamic> body, String code) async {
+    for (int i = 0; i < uploads.length; i++) {}
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -169,18 +194,22 @@ class FlexDataSource {
       header['Accept'] = '*/*';
     });
     if (uploads.isNotEmpty) {
-      return _netUtil.putForm('$UPDATE_A_FLEX$code/update', uploads, header: header, body: body).then((res) {
-        if(res['status'] != 'success') throw res['message'];
+      return _netUtil
+          .putForm('$UPDATE_A_FLEX$code/update', uploads,
+              header: header, body: body)
+          .then((res) {
+        if (res['status'] != 'success') throw res['message'];
         return 'done';
       }).catchError((e) {
         errorHandler.handleError(e);
       });
-    }
-    else {
-      return _netUtil.put('$UPDATE_A_FLEX$code/update', headers: header, body: body).then((res) {
-        if(res['status'] != 'success') throw res['message'];
+    } else {
+      return _netUtil
+          .put('$UPDATE_A_FLEX$code/update', headers: header, body: body)
+          .then((res) {
+        if (res['status'] != 'success') throw res['message'];
         return 'done';
-      }).catchError((e){
+      }).catchError((e) {
         errorHandler.handleError(e);
       });
     }
@@ -194,17 +223,19 @@ class FlexDataSource {
     Flexes flexes;
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
       header['Content-Type'] = 'text/plain';
     });
     String getFlexDetailsUrl = '$GET_FLEX_DETAILS$flexCode/get';
     return _netUtil.get(getFlexDetailsUrl, headers: header).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       flexes = Flexes.fromJson(res['data']);
       return flexes;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -217,7 +248,9 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
@@ -225,9 +258,9 @@ class FlexDataSource {
     });
     String joinFlexUrl = '$JOIN_FLEX$flexId/join';
     return _netUtil.get(joinFlexUrl, headers: header).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       return res['data'];
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -235,7 +268,8 @@ class FlexDataSource {
   /// A function that sends request for joining a flex
   /// A get request to use the [GET_FLEX_BY_LOCATION]
   /// It returns a [List<Flexes>] model
-  Future<List<Flexes>> getFlexByLocation(double lat, double long, {String? ageStatus, String? payStatus}) async {
+  Future<List<Flexes>> getFlexByLocation(double lat, double long,
+      {String? ageStatus, String? payStatus}) async {
     Map<String, String> header = {};
     List<Flexes> flexes;
     String? payParam;
@@ -250,15 +284,15 @@ class FlexDataSource {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     header['Content-Type'] = 'text/plain';
-   switch(payStatus) {
-     case "free":
-       payParam = '&payStatus=Free';
-       break;
-     case "paid":
-       payParam = '&payStatus=Paid';
-       break;
-   }
-    switch(ageStatus) {
+    switch (payStatus) {
+      case "free":
+        payParam = '&payStatus=Free';
+        break;
+      case "paid":
+        payParam = '&payStatus=Paid';
+        break;
+    }
+    switch (ageStatus) {
       case "18+":
         ageParam = '&ageRating=18';
         break;
@@ -266,14 +300,16 @@ class FlexDataSource {
         ageParam = '&ageRating=17';
         break;
     }
-    String getFlexByLocationUrl = '${GET_FLEX_BY_LOCATION}lat=$lat&lng=$long$payParam$ageParam';
+    String getFlexByLocationUrl =
+        '${GET_FLEX_BY_LOCATION}lat=$lat&lng=$long$payParam$ageParam';
     return _netUtil.get(getFlexByLocationUrl, headers: header).then((res) {
       log(':::getFlexByLocation: $res');
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
       flexes = rest.map<Flexes>((json) => Flexes.fromJson(json)).toList();
+      log(flexes.toString());
       return flexes;
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -286,12 +322,12 @@ class FlexDataSource {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     header['Content-Type'] = 'text/plain';
-    String getFlexByLocationUrl = '${GET_FLEX_BY_CODE}/$flexCode/get';
+    String getFlexByLocationUrl = '$GET_FLEX_BY_CODE$flexCode/get';
     return _netUtil.get(getFlexByLocationUrl, headers: header).then((res) {
       log(':::getFlexByCode: $res');
-      if(res['status'] != 'success') throw res['message'];
+      if (res['status'] != 'success') throw res['message'];
       return Flexes.fromJson(res['data']);
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -303,15 +339,19 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     });
     String approveAttendeeUrl = '${APPROVE_ATTENDEE}approve';
-    return _netUtil.post(approveAttendeeUrl, headers: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['data'];
+    return _netUtil
+        .post(approveAttendeeUrl, headers: header, body: body)
+        .then((res) {
+      if (res['status'] != 'success') throw res['data'];
       return res['data'];
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -323,16 +363,19 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null)
+        throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
       header['Authorization'] = 'Bearer ${prefs.getString('bearerToken')}';
     });
     String rejectAttendeeUrl = '${REJECT_ATTENDEE}reject';
-    return _netUtil.post(rejectAttendeeUrl, headers: header, body: body).then((res) {
+    return _netUtil
+        .post(rejectAttendeeUrl, headers: header, body: body)
+        .then((res) {
       log(':::rejectAttendee: $res');
-      if(res['status'] != 'success') throw res['data'];
+      if (res['status'] != 'success') throw res['data'];
       return res['data'];
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -343,7 +386,7 @@ class FlexDataSource {
   Future<List<FlexeryModel>> getFlexeryByHashTag(String hashTag) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
-    List<FlexeryModel> flexery= [];
+    List<FlexeryModel> flexery = [];
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -359,7 +402,9 @@ class FlexDataSource {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexery = rest.map<FlexeryModel>((json) => FlexeryModel.fromJson(json)).toList();
+      flexery = rest
+          .map<FlexeryModel>((json) => FlexeryModel.fromJson(json))
+          .toList();
       return flexery;
     }).catchError((e) {
       errorHandler.handleError(e);
@@ -372,7 +417,7 @@ class FlexDataSource {
   Future<List<FlexeryModel>> getFlexery(String filter) async {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
-    List<FlexeryModel> flexery= [];
+    List<FlexeryModel> flexery = [];
     await user.then((value) async {
       // if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -385,7 +430,9 @@ class FlexDataSource {
       log(':::flexery: $res');
       if (res['status'] != 'success') throw res['data'];
       var rest = res['data'] as List;
-      flexery = rest.map<FlexeryModel>((json) => FlexeryModel.fromJson(json)).toList();
+      flexery = rest
+          .map<FlexeryModel>((json) => FlexeryModel.fromJson(json))
+          .toList();
       return flexery;
     }).catchError((e) {
       errorHandler.handleError(e);
@@ -395,12 +442,15 @@ class FlexDataSource {
   /// A function that sends request for uploading flex [body] as details
   /// A post request to use the [ADD_FLEXERY]
   /// It returns a [] model
-  Future<dynamic> addFlexery(List<http.MultipartFile> uploads, Map<String, String> body) async {
+  Future<dynamic> addFlexery(
+      List<http.MultipartFile> uploads, Map<String, String> body) async {
     String? userId;
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -408,10 +458,12 @@ class FlexDataSource {
       header['Content-Type'] = 'text/plain';
       header['Accept'] = '*/*';
     });
-    return _netUtil.postForm(ADD_FLEXERY, uploads, header: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['message'];
+    return _netUtil
+        .postForm(ADD_FLEXERY, uploads, header: header, body: body)
+        .then((res) {
+      if (res['status'] != 'success') throw res['message'];
       return res['data'];
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
@@ -420,16 +472,17 @@ class FlexDataSource {
   /// A get request to use the [GOOGLE_PLACE_API]
   /// It returns a [] model
   Future<GooglePlacesPredictionModel?> searchAddress({
-    required String address, 
-    required String sessionToken
+    required String address,
+    required String sessionToken,
   }) async {
     log(address);
     GooglePlacesPredictionModel? prediction;
-    String googlePlaceApiUrl = 
-      '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id&sessiontoken=$sessionToken';
+    String googlePlaceApiUrl =
+        '$GOOGLE_PLACE_API?input=$address&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id&sessiontoken=$sessionToken';
     return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
       log(res.body.toString());
-      if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
+      if (res.statusCode < 200 || res.statusCode > 400)
+        throw ('An unknown error occurred');
       var resp = json.decode(res.body);
       prediction = GooglePlacesPredictionModel.fromJson(resp);
       return prediction;
@@ -442,21 +495,20 @@ class FlexDataSource {
   /// A function to pick address long and lat using google place api
   /// A get request to use the [GOOGLE_PLACE_API]
   /// It returns a [] model
-  Future<dynamic> getAddressDetails({
-    required String placeId, 
-    required String sessionToken
-  }) async {
-    String googlePlaceApiUrl = 
-      '$GOOGLE_PLACE_DETAILS_API?place_id=$placeId&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id,geometry&sessiontoken=$sessionToken';
+  Future<dynamic> getAddressDetails(
+      {required String placeId, required String sessionToken}) async {
+    String googlePlaceApiUrl =
+        '$GOOGLE_PLACE_DETAILS_API?place_id=$placeId&key=AIzaSyAfgGk7ct3iTPGsgKz1x28PHmMSfnnQdHg&fields=formatted_address,place_id,geometry&sessiontoken=$sessionToken';
     return await http.get(Uri.parse(googlePlaceApiUrl)).then((res) {
       log(res.body.toString());
-      if (res.statusCode < 200 || res.statusCode > 400) throw ('An unknown error occurred');
+      if (res.statusCode < 200 || res.statusCode > 400) {
+        throw ('An unknown error occurred');
+      }
       var resp = json.decode(res.body);
       final latLng = [
         resp['result']['geometry']['location']['lat'],
         resp['result']['geometry']['location']['lng']
       ];
-      print(latLng);
       return latLng;
     }).catchError((e) {
       log(e);
@@ -472,7 +524,9 @@ class FlexDataSource {
     Map<String, String> header = {};
     Future<User> user = _futureValue.getCurrentUser();
     await user.then((value) async {
-      if(value.id == null) throw ('No user currently logged in. Kindly logout and login again');
+      if (value.id == null) {
+        throw ('No user currently logged in. Kindly logout and login again');
+      }
       userId = value.id;
       log(':::userId: $userId');
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -481,12 +535,11 @@ class FlexDataSource {
       header['Accept'] = '*/*';
     });
     return _netUtil.post(REPORT, headers: header, body: body).then((res) {
-      if(res['status'] != 'success') throw res['message'];
-      log (res['data']);
+      if (res['status'] != 'success') throw res['message'];
+      log(res['data']);
       return res['data'];
-    }).catchError((e){
+    }).catchError((e) {
       errorHandler.handleError(e);
     });
   }
-
 }
