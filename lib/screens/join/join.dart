@@ -244,8 +244,10 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
   }
 
   // function to get flex 2nd marker based on flex detail
-  Future<BitmapDescriptor?> getCustomIcon(Flexes flex,
-      [bool isBroadcast = false]) async {
+  Future<BitmapDescriptor?> getCustomIcon(
+    Flexes flex, [
+    bool isBroadcast = false,
+  ]) async {
     try {
       return BitmapDescriptor.fromBytes(
         await captureWidgetToImage(
