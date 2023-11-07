@@ -243,95 +243,64 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
     );
   }
 
-  // function to get flex 2nd marker based on flex detail
-  Future<BitmapDescriptor?> getCustomIcon(
-    Flexes flex, [
-    bool isBroadcast = false,
-  ]) async {
-    try {
-      return BitmapDescriptor.fromBytes(
-        await captureWidgetToImage(
-          CustomMarkerWidget(
-            flex: flex,
-            isBroadcast: isBroadcast,
-          ),
-        ),
-      );
-    } catch (e) {
-      log(e.toString());
-    }
-    return null;
-  }
+  List<Widget> mapWidget = [];
 
   /// Function to build markers on the map from [List<Flexes>]
   void _buildFlexOnMap() async {
-    if (flex.isNotEmpty && flexLength > 0) {
+    List<CustomMarkerWidget> globalKeyList = <CustomMarkerWidget>[];
+    for (int i = 0; i < flex.length; i++) {
+      final globalKey = GlobalKey();
+      globalKeyList.add(
+        CustomMarkerWidget(
+          flex: flex[i],
+          isBroadcast: flex[i].isBroadcast == true,
+          globalKey: globalKey,
+        ),
+      );
+      mapWidget.add(
+        CustomMarkerWidget(
+          flex: flex[i],
+          isBroadcast: flex[i].isBroadcast == true,
+          globalKey: globalKey,
+        ),
+      );
+    }
+    setState(() {});
+
+    try {
       for (int i = 0; i < flex.length; i++) {
         final position = LatLng(
-          flex[i].locationCoordinates?.lat ?? lat,
-          flex[i].locationCoordinates?.lng ?? long,
+          globalKeyList[i].flex.locationCoordinates?.lat ?? lat,
+          globalKeyList[i].flex.locationCoordinates?.lng ?? long,
         );
-        if (flex[i].isBroadcast == true) {
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: MarkerId('markerPointd$i'),
-                position: position,
-                icon: customIconForNormalFlex!,
-                anchor: const Offset(.5, .5),
-                flat: true,
-                zIndex: 4,
-              ),
-            );
-          });
-          var icon = await getCustomIcon(flex[i], true);
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: MarkerId('markerInfo$i'),
-                position: position,
-                anchor: const Offset(0.495, 1.0),
-                flat: false,
-                zIndex: 4,
-                icon: icon ?? customIconForNormalFlex!,
-                onTap: () {
-                  Get.to(() => JoinFlex(flex: flex[i]));
-                },
-              ),
-            );
-          });
-        } else {
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: MarkerId('markerPointd$i'),
-                position: position,
-                icon: customIconForNormalFlex!,
-                anchor: const Offset(.5, .5),
-                flat: true,
-                zIndex: 4,
-              ),
-            );
-          });
-          var icon = await getCustomIcon(flex[i]);
-          setState(() {
-            _markers.add(
-              Marker(
-                markerId: MarkerId('markerInfo$i'),
-                position: position,
-                anchor: const Offset(0.25, 1.0),
-                flat: false,
-                zIndex: 4,
-                icon: icon ?? customIconForNormalFlex!,
-                onTap: () {
-                  Get.to(() => JoinFlex(flex: flex[i]));
-                },
-              ),
-            );
-          });
-        }
+        final icon = await widgetToBitmap(globalKeyList[i].globalKey);
+        setState(() {
+          _markers.add(
+            Marker(
+              markerId: MarkerId('markerPointd$i'),
+              position: position,
+              icon: customIconForNormalFlex!,
+              anchor: const Offset(0.85, .5),
+              flat: true,
+              zIndex: 4,
+            ),
+          );
+          _markers.add(
+            Marker(
+              markerId: MarkerId('markerInfo$i'),
+              position: position,
+              anchor: const Offset(0.5, 1.0),
+              flat: false,
+              zIndex: 4,
+              icon: icon,
+              onTap: () {
+                Get.to(() => JoinFlex(flex: flex[i]));
+              },
+            ),
+          );
+        });
       }
-    } else {
+    } catch (e) {
       Functions.showMessage(
         'It seems like we couldn\'t find flexes close to you. Try again!',
       );
@@ -447,6 +416,14 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
+            SizedBox(
+              height: 200,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: mapWidget,
+                ),
+              ),
+            ),
             userPosition == null
                 ? SpinKitDoubleBounce(
                     color: primaryColor.withOpacity(0.6),
@@ -640,252 +617,224 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
               ),
             ),
             DraggableScrollableSheet(
-                maxChildSize: 0.48,
-                initialChildSize: 0.2,
-                minChildSize: 0.1,
-                builder: (context, controller) {
-                  return Container(
-                    width: SizeConfig.screenWidth,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                      ),
-                      color: backgroundColor,
+              maxChildSize: 0.48,
+              initialChildSize: 0.2,
+              minChildSize: 0.1,
+              builder: (context, controller) {
+                return Container(
+                  width: SizeConfig.screenWidth,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
                     ),
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(26, 40, 5, 50),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Filters',
-                                  style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 28.5),
-                                ),
-                                const SizedBox(height: 17),
-                                Text(
-                                  'Preferred Age Range',
-                                  style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 17.5),
-                                ),
-                                const SizedBox(height: 17),
-                                Row(
-                                  children: [
-                                    ReuableMapFilterButton(
-                                      text: 'Below 18',
-                                      onPressed: () {
-                                        if (selectedAge != AgeFilter.below18) {
-                                          setState(() {
-                                            ageParam = '18-';
-                                            selectedAge = AgeFilter.below18;
-                                          });
-                                          _getFlexByLocation(lat, long,
-                                              ageStatus: ageParam,
-                                              payStatus: payParam);
-                                          _animateController(controller);
-
-                                          ///TODO: amimate the camera here
-                                        }
-                                      },
-                                      color: selectedAge == AgeFilter.below18
-                                          ? primaryColor
-                                          : null,
-                                    ),
-                                    ReuableMapFilterButton(
-                                      text: '18+',
-                                      onPressed: () {
-                                        if (selectedAge != AgeFilter.above18) {
-                                          setState(() {
-                                            ageParam = '18+';
-                                            selectedAge = AgeFilter.above18;
-                                          });
-                                          _getFlexByLocation(lat, long,
-                                              ageStatus: ageParam,
-                                              payStatus: payParam);
-                                          _animateController(controller);
-
-                                          ///TODO: amimate the camera here
-                                        }
-                                      },
-                                      color: selectedAge == AgeFilter.above18
-                                          ? primaryColor
-                                          : null,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 30),
-                                //occupation
-                                /*Text(
-                                'Occupation',
-                                style: textTheme.headlineSmall!.copyWith(fontSize: 17),
+                    color: backgroundColor,
+                  ),
+                  child: SingleChildScrollView(
+                    controller: controller,
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(26, 40, 5, 50),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              Text(
+                                'Filters',
+                                style: textTheme.headlineSmall!
+                                    .copyWith(fontSize: 28.5),
+                              ),
+                              const SizedBox(height: 17),
+                              Text(
+                                'Preferred Age Range',
+                                style: textTheme.headlineSmall!
+                                    .copyWith(fontSize: 17.5),
                               ),
                               const SizedBox(height: 17),
                               Row(
                                 children: [
                                   ReuableMapFilterButton(
-                                    text: 'Student',
-                                    onPressed: () {},
+                                    text: 'Below 18',
+                                    onPressed: () {
+                                      if (selectedAge != AgeFilter.below18) {
+                                        setState(() {
+                                          ageParam = '18-';
+                                          selectedAge = AgeFilter.below18;
+                                        });
+                                        _getFlexByLocation(lat, long,
+                                            ageStatus: ageParam,
+                                            payStatus: payParam);
+                                        _animateController(controller);
+
+                                        ///TODO: amimate the camera here
+                                      }
+                                    },
+                                    color: selectedAge == AgeFilter.below18
+                                        ? primaryColor
+                                        : null,
                                   ),
                                   ReuableMapFilterButton(
-                                    text: 'Working',
-                                    onPressed: () {},
-                                  ),
-                                  ReuableMapFilterButton(
-                                    text: 'Don\'t mind',
-                                    onPressed: () {},
-                                    color: primaryColor,
+                                    text: '18+',
+                                    onPressed: () {
+                                      if (selectedAge != AgeFilter.above18) {
+                                        setState(() {
+                                          ageParam = '18+';
+                                          selectedAge = AgeFilter.above18;
+                                        });
+                                        _getFlexByLocation(lat, long,
+                                            ageStatus: ageParam,
+                                            payStatus: payParam);
+                                        _animateController(controller);
+
+                                        ///TODO: amimate the camera here
+                                      }
+                                    },
+                                    color: selectedAge == AgeFilter.above18
+                                        ? primaryColor
+                                        : null,
                                   ),
                                 ],
                               ),
-                              //cost of entry
-                              const SizedBox(height: 30),*/
-                                Text(
-                                  'Cost of Entry',
-                                  style: textTheme.headlineSmall!
-                                      .copyWith(fontSize: 17.5),
-                                ),
-                                const SizedBox(height: 17),
-                                Row(
-                                  children: [
-                                    ReuableMapFilterButton(
-                                      text: 'Free',
+                              const SizedBox(height: 30),
+                              Text(
+                                'Cost of Entry',
+                                style: textTheme.headlineSmall!
+                                    .copyWith(fontSize: 17.5),
+                              ),
+                              const SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  ReuableMapFilterButton(
+                                    text: 'Free',
+                                    onPressed: () {
+                                      if (payStatus != PayStatus.free) {
+                                        setState(() {
+                                          payParam = 'free';
+                                          payStatus = PayStatus.free;
+                                        });
+                                        _getFlexByLocation(lat, long,
+                                            payStatus: payParam,
+                                            ageStatus: ageParam);
+                                        _animateController(controller);
+
+                                        ///TODO: amimate the camera here
+                                      }
+                                    },
+                                    color: payStatus == PayStatus.free
+                                        ? primaryColor
+                                        : null,
+                                  ),
+                                  Visibility(
+                                    visible: false,
+                                    child: ReuableMapFilterButton(
+                                      text: 'Paid',
                                       onPressed: () {
-                                        if (payStatus != PayStatus.free) {
+                                        if (payStatus != PayStatus.paid) {
                                           setState(() {
-                                            payParam = 'free';
-                                            payStatus = PayStatus.free;
+                                            payParam = 'paid';
+                                            payStatus = PayStatus.paid;
                                           });
-                                          _getFlexByLocation(lat, long,
-                                              payStatus: payParam,
-                                              ageStatus: ageParam);
+                                          // _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
                                           _animateController(controller);
 
                                           ///TODO: amimate the camera here
                                         }
                                       },
-                                      color: payStatus == PayStatus.free
+                                      color: payStatus == PayStatus.paid
                                           ? primaryColor
                                           : null,
                                     ),
-                                    Visibility(
-                                      visible: false,
-                                      child: ReuableMapFilterButton(
-                                        text: 'Paid',
-                                        onPressed: () {
-                                          if (payStatus != PayStatus.paid) {
-                                            setState(() {
-                                              payParam = 'paid';
-                                              payStatus = PayStatus.paid;
-                                            });
-                                            // _getFlexByLocation(lat, long, payStatus: payParam, ageStatus: ageParam);
-                                            _animateController(controller);
-
-                                            ///TODO: amimate the camera here
-                                          }
-                                        },
-                                        color: payStatus == PayStatus.paid
-                                            ? primaryColor
-                                            : null,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                payStatus == PayStatus.paid
-                                    ? Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 15),
-                                          Text(
-                                            'What paid flex range are you looking at?',
-                                            style: textTheme.headlineSmall!
-                                                .copyWith(fontSize: 17.5),
-                                          ),
-                                          const SizedBox(height: 30),
-                                          Slider(
-                                              value: priceRange,
-                                              max: 100000,
-                                              divisions: 1000,
-                                              label: 'N${priceRange.round()}',
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  priceRange = value;
-                                                });
-                                              }),
-                                          const SizedBox(height: 2),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 10.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'N1,000',
-                                                  style: textTheme
-                                                      .headlineSmall!
-                                                      .copyWith(
-                                                    color: primaryColor,
-                                                    fontSize: 19.5,
-                                                  ),
+                                  ),
+                                ],
+                              ),
+                              payStatus == PayStatus.paid
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 15),
+                                        Text(
+                                          'What paid flex range are you looking at?',
+                                          style: textTheme.headlineSmall!
+                                              .copyWith(fontSize: 17.5),
+                                        ),
+                                        const SizedBox(height: 30),
+                                        Slider(
+                                            value: priceRange,
+                                            max: 100000,
+                                            divisions: 1000,
+                                            label: 'N${priceRange.round()}',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                priceRange = value;
+                                              });
+                                            }),
+                                        const SizedBox(height: 2),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'N1,000',
+                                                style: textTheme.headlineSmall!
+                                                    .copyWith(
+                                                  color: primaryColor,
+                                                  fontSize: 19.5,
                                                 ),
-                                                Text(
-                                                  'N100,000',
-                                                  style: textTheme
-                                                      .headlineSmall!
-                                                      .copyWith(
-                                                    color: primaryColor,
-                                                    fontSize: 19.5,
-                                                  ),
+                                              ),
+                                              Text(
+                                                'N100,000',
+                                                style: textTheme.headlineSmall!
+                                                    .copyWith(
+                                                  color: primaryColor,
+                                                  fontSize: 19.5,
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
-                                          const SizedBox(height: 10),
-                                        ],
-                                      )
-                                    : Container(),
-                              ],
-                            ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                      ],
+                                    )
+                                  : Container(),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Center(
-                              child: AnimatedBuilder(
-                                  animation: _controller,
-                                  builder: (context, child) {
-                                    return Container(
-                                      height: 5,
-                                      width: 45,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xFF000000)
-                                              .withOpacity(0.5),
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              spreadRadius:
-                                                  _controller.value * 7,
-                                              color: _colorTweenAnimation.value
-                                                  .withOpacity(0.2),
-                                            ),
-                                          ]),
-                                    );
-                                  }),
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Center(
+                            child: AnimatedBuilder(
+                                animation: _controller,
+                                builder: (context, child) {
+                                  return Container(
+                                    height: 5,
+                                    width: 45,
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.5),
+                                        borderRadius: BorderRadius.circular(4),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            spreadRadius: _controller.value * 7,
+                                            color: _colorTweenAnimation.value
+                                                .withOpacity(0.2),
+                                          ),
+                                        ]),
+                                  );
+                                }),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           ],
         ),
         floatingActionButton: Stack(
