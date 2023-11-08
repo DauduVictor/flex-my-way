@@ -114,6 +114,9 @@ class _HostAFlexState extends State<HostAFlex> {
                                     .format(picked)
                                     .toString();
                             controller.allowPickTime.value = true;
+                            if (controller.reoccuringDates.isNotEmpty) {
+                              controller.reoccuringDates.clear();
+                            }
                             setState(() {});
                           }
                         },
@@ -162,8 +165,10 @@ class _HostAFlexState extends State<HostAFlex> {
                                         DateTime? picked = await showDatePicker(
                                           context: context,
                                           lastDate: DateTime(now.year + 2),
-                                          firstDate: now,
-                                          initialDate: now,
+                                          firstDate: controller.pickedDate ??
+                                              DateTime.now(),
+                                          initialDate: controller.pickedDate ??
+                                              DateTime.now(),
                                           builder: (context, child) {
                                             return Theme(
                                               data: ThemeData.light().copyWith(
@@ -1227,6 +1232,9 @@ class _HostAFlexState extends State<HostAFlex> {
                             sessionToken: sessionToken,
                             locationName: brLocation,
                           );
+                          controller.searchAddress.clear();
+                          controller.googlePlacesPredictionModel2 = null;
+                          controller.update();
                           Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(

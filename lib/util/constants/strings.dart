@@ -51,7 +51,7 @@ class AppStrings {
   static const whatsAgeRating = 'What\'s the age rating?';
   static const typeOfFlex = 'Type of Flex';
   static const uploadBannerImage = 'Upload Banner Image(s)';
-  static const broadCastLocations = 'Other broadcast locations';
+  static const broadCastLocations = 'Broadcast event to other locations?';
   static const setAddress = 'Set Flex Address';
   static const addAHAshtag = 'Add a Hashtag for this flex';
   static const isPaidOrFree = 'Is this event paid or free?';

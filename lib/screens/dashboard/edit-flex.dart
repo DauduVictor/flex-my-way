@@ -133,6 +133,10 @@ class _EditFlexState extends State<EditFlex> {
                                           .format(picked)
                                           .toString();
                                   controller.allowPickTime.value = true;
+                                  controller.allowPickTime.value = true;
+                                  if (controller.reoccuringDates.isNotEmpty) {
+                                    controller.reoccuringDates.clear();
+                                  }
                                   controller.update();
                                 }
                               },
@@ -190,8 +194,12 @@ class _EditFlexState extends State<EditFlex> {
                                                 context: context,
                                                 lastDate:
                                                     DateTime(now.year + 2),
-                                                firstDate: now,
-                                                initialDate: now,
+                                                firstDate:
+                                                    controller.pickedDate ??
+                                                        DateTime.now(),
+                                                initialDate:
+                                                    controller.pickedDate ??
+                                                        DateTime.now(),
                                                 builder: (context, child) {
                                                   return Theme(
                                                     data: ThemeData.light()
@@ -1461,6 +1469,9 @@ class _EditFlexState extends State<EditFlex> {
                             sessionToken: sessionToken,
                             locationName: brLocation,
                           );
+                          controller.searchAddress.clear();
+                          controller.googlePlacesPredictionModel2 = null;
+                          controller.update();
                           Navigator.pop(context);
                         },
                         style: TextButton.styleFrom(
