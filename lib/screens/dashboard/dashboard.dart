@@ -179,9 +179,14 @@ class _DashboardState extends State<Dashboard> {
                               Visibility(
                                 visible: userController.canHostFlex.value,
                                 child: ListTileButton(
-                                  title: userController.flexInvites.isNotEmpty
-                                      ? 'You have ${userController.flexInvites.length} pending invites. How would you like to deal with these?'
-                                      : 'No pending invites at the moment. Create Flex and invite your friends',
+                                  title: userController.flexInvites.isEmpty ||
+                                          userController.flexInvites
+                                              .where((p0) =>
+                                                  p0.attendeeStatus ==
+                                                  'Pending')
+                                              .isEmpty
+                                      ? 'No pending invites at the moment. Create Flex and invite your friends'
+                                      : 'You have ${userController.flexInvites.where((p0) => p0.attendeeStatus == 'Pending').length} pending invites. How would you like to deal with these?',
                                   onPressed: () {
                                     Get.toNamed(PendingInvites.id);
                                   },

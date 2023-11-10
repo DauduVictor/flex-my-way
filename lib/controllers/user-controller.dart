@@ -9,7 +9,6 @@ import '../database/user-db-helper.dart';
 import 'package:flex_my_way/util/util.dart';
 
 class UserController extends GetxController {
-
   /// Instantiating the user model
   var user = User();
 
@@ -40,7 +39,7 @@ class UserController extends GetxController {
       log(username.value);
       log(emailAddress.value);
       log(':::Can host flex: ${canHostFlex.value.toString()}');
-    }).catchError((e){
+    }).catchError((e) {
       log(e);
     });
   }
@@ -48,8 +47,9 @@ class UserController extends GetxController {
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('loggedIn') == true) {
+    if (prefs.getBool('loggedIn') == true) {
       isLoggedIn.value = true;
+
       /// once user is logged in, do this...
       getCurrentUserDetail();
       getDashboardFlex();
@@ -58,8 +58,7 @@ class UserController extends GetxController {
       getFlexInvites();
       getPeriodicUserProfile();
       log('logged in');
-    }
-    else {
+    } else {
       log('User is not logged in');
     }
   }
@@ -67,11 +66,10 @@ class UserController extends GetxController {
   /// function to check if the user is currently logged in
   void checkFlexReminder() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('flexReminder') == true) {
+    if (prefs.getBool('flexReminder') == true) {
       flexReminder.value = true;
       log('remind user');
-    }
-    else {
+    } else {
       log('no reminder');
     }
   }
@@ -115,7 +113,7 @@ class UserController extends GetxController {
 
   //notifications
   /// Variable to hold notification delete spinner
-  final showInvitesSpinner = false.obs;
+  // final showInvitesSpinner = false.obs;
 
   /// Variable to hold deleteAccount  spinner
   final deleteAccountSpinner = false.obs;
@@ -136,7 +134,7 @@ class UserController extends GetxController {
     var api = UserDataSource();
     Timer.periodic(const Duration(minutes: 5), (timer) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      if(prefs.getBool('loggedIn') == true) {
+      if (prefs.getBool('loggedIn') == true) {
         await api.getUserProfile().then((value) {
           userProfile = value;
           flexAttendedList.clear();
@@ -159,7 +157,7 @@ class UserController extends GetxController {
   void getUserProfile() async {
     var api = UserDataSource();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getBool('loggedIn') == true) {
+    if (prefs.getBool('loggedIn') == true) {
       await api.getUserProfile().then((value) {
         userProfile = value;
         flexAttendedList.clear();
@@ -199,8 +197,8 @@ class UserController extends GetxController {
     /// get scheduled flex tab
     await api.getDashboardFlex('scheduled').then((value) {
       isScheduledLoaded.value = true;
-      scheduledFlex.value = value;
-      print(value);
+      final reversedScheduledFlex = value.reversed.toList();
+      scheduledFlex.value = reversedScheduledFlex;
     }).catchError((e) {
       isScheduledLoaded.value = true;
       log(':::error: $e');
@@ -210,14 +208,13 @@ class UserController extends GetxController {
     ///get completed flex tab
     await api.getDashboardFlex('completed').then((value) {
       isCompletedLoaded.value = true;
-      completedFlex.value = value;
-      print(value);
+      final reversedCompletedFlex = value.reversed.toList();
+      completedFlex.value = reversedCompletedFlex;
     }).catchError((e) {
       isCompletedLoaded.value = true;
       log(':::error: $e');
       Functions.showMessage(e);
     });
-
   }
 
   /* Flex History Integration*/
@@ -236,7 +233,6 @@ class UserController extends GetxController {
       update();
     }).catchError((e) {
       isPastLoaded.value = true;
-      print(e);
       // print(':::error: $e');
       // Functions.showMessage(e);
     });
@@ -279,11 +275,12 @@ class UserController extends GetxController {
 
   final isFlexInvitesLoaded = false.obs;
 
-  void getFlexInvites() async {
+  Future<void> getFlexInvites() async {
     var api = FlexDataSource();
     await api.getFlexInvites().then((value) {
       flexInvites.value = value;
       isFlexInvitesLoaded.value = true;
+      log(':::flexInvitesLength: ${flexInvites.length}');
       log(':::flexInvitesLength: ${flexInvites.length}');
     }).catchError((e) {
       isFlexInvitesLoaded.value = true;
@@ -296,5 +293,4 @@ class UserController extends GetxController {
     getFlexHistory();
     getFlexHistory();
   }
-
 }
