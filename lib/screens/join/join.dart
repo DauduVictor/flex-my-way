@@ -269,10 +269,22 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
 
     try {
       for (int i = 0; i < flex.length; i++) {
-        final position = LatLng(
-          globalKeyList[i].flex.locationCoordinates?.lat ?? lat,
-          globalKeyList[i].flex.locationCoordinates?.lng ?? long,
-        );
+        var position;
+
+        if (globalKeyList[i].flex.isBroadcast == false) {
+          position = LatLng(
+            globalKeyList[i].flex.locationCoordinates?.lat ?? lat,
+            globalKeyList[i].flex.locationCoordinates?.lng ?? long,
+          );
+        } else {
+          // flex is a broadcasted flex
+          // use broadcast location instead
+          position = LatLng(
+            globalKeyList[i].flex.broadcastLocation?.lat ?? lat,
+            globalKeyList[i].flex.broadcastLocation?.lng ?? long,
+          );
+        }
+
         final icon = await widgetToBitmap(globalKeyList[i].globalKey);
         setState(() {
           _markers.add(
@@ -438,7 +450,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
                     ),
                     myLocationEnabled: false,
                     buildingsEnabled: false,
-                    zoomControlsEnabled: false,
+                    zoomControlsEnabled: true,
                     trafficEnabled: false,
                     indoorViewEnabled: false,
                     myLocationButtonEnabled: false,

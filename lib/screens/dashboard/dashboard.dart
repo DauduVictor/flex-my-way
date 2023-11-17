@@ -196,56 +196,59 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                         Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 24, 35, 3),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 13, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    color: whiteColor,
-                                    borderRadius: BorderRadius.circular(16.0),
-                                  ),
-                                  child: BounceInDown(
-                                    duration: const Duration(milliseconds: 600),
-                                    child: SizedBox(
-                                      height: 42,
-                                      child: TabBar(
-                                        indicator: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          color: primaryColor,
-                                        ),
-                                        unselectedLabelColor: neutralColor,
-                                        tabs: const [
-                                          Tab(
-                                            child: Text(
-                                              'Scheduled',
-                                              style: TextStyle(
-                                                fontSize: 16.5,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: 'Gilroy',
-                                              ),
-                                            ),
-                                          ),
-                                          Tab(
-                                            child: Text(
-                                              'Completed',
-                                              style: TextStyle(
-                                                fontSize: 16.5,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: 'Gilroy',
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 13,
+                                  vertical: 12,
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(35, 24, 35, 2),
+                                decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
+                                child: BounceInDown(
+                                  duration: const Duration(milliseconds: 600),
+                                  child: SizedBox(
+                                    height: 42,
+                                    child: TabBar(
+                                      indicator: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: primaryColor,
                                       ),
+                                      unselectedLabelColor: neutralColor,
+                                      tabs: const [
+                                        Tab(
+                                          child: Text(
+                                            'Scheduled',
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Gilroy',
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Text(
+                                            'Completed',
+                                            style: TextStyle(
+                                              fontSize: 16.5,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: 'Gilroy',
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 24),
-                                Expanded(
+                              ),
+                              const SizedBox(height: 24),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
                                   child: TabBarView(
                                     children: [
                                       _scheduled(userController.scheduledFlex),
@@ -254,8 +257,8 @@ class _DashboardState extends State<Dashboard> {
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -306,9 +309,12 @@ class _DashboardState extends State<Dashboard> {
       } else {
         return ListView.builder(
           itemCount: data.length,
+          padding: const EdgeInsets.symmetric(horizontal: 5),
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-                dashboardFLex: data[index], isScheduled: true);
+              dashboardFLex: data[index],
+              isScheduled: true,
+            );
           },
         );
       }
@@ -325,7 +331,6 @@ class _DashboardState extends State<Dashboard> {
   /// Widget to hold column view for completed flex
   Widget _completedFlex(List<DashboardFLex> data) {
     log(':::completedFlexLength: ${data.length}');
-    final isGetFlexDetail = ValueNotifier(false);
     if (userController.isScheduledLoaded.value == true) {
       if (data.isEmpty) {
         return Center(
@@ -349,9 +354,12 @@ class _DashboardState extends State<Dashboard> {
       } else {
         return ListView.builder(
           itemCount: data.length,
+          padding: const EdgeInsets.only(left: 20),
           itemBuilder: (BuildContext context, int index) {
             return ReusableDashBoardCard(
-                dashboardFLex: data[index], isScheduled: false);
+              dashboardFLex: data[index],
+              isScheduled: false,
+            );
           },
         );
       }
@@ -381,158 +389,153 @@ class ReusableDashBoardCard extends StatelessWidget {
     SizeConfig().init(context);
     final textTheme = Theme.of(context).textTheme;
     final isGetFlexDetail = ValueNotifier(false);
-    return SlideInUp(
-      child: Column(
-        children: [
-          Container(
-            width: SizeConfig.screenWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: whiteColor,
-            ),
-            clipBehavior: Clip.hardEdge,
-            child: TextButton(
-              onPressed: () async {
-                if (isScheduled) {
-                  isGetFlexDetail.value = true;
-                  try {
-                    await getFlexByCode(dashboardFLex.flexCode ?? '');
-                  } catch (e) {
-                    Functions.showMessage('Flex not found');
-                  }
-                  isGetFlexDetail.value = false;
-                }
-              },
-              style: TextButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: SizeConfig.screenWidth! * 0.237,
-                        height: SizeConfig.screenHeight! * 0.104,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: CachedNetworkImage(
-                          alignment: Alignment.topCenter,
-                          imageUrl: dashboardFLex.flexImage!,
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) {
-                            return SpinKitCircle(
-                              color: primaryColor.withOpacity(0.7),
-                              size: 30,
-                            );
-                          },
-                          errorWidget: (context, url, error) => Icon(
-                            Icons.error,
-                            color: neutralColor.withOpacity(0.4),
-                            size: 30,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+    return IntrinsicHeight(
+      child: SlideInUp(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    // width: SizeConfig.screenWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: whiteColor,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: TextButton(
+                      onPressed: () async {
+                        if (isScheduled) {
+                          isGetFlexDetail.value = true;
+                          try {
+                            await getFlexByCode(dashboardFLex.flexCode ?? '');
+                          } catch (e) {
+                            Functions.showMessage('Flex not found');
+                          }
+                          isGetFlexDetail.value = false;
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 20),
                       ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              dashboardFLex.flexName!,
-                              style: textTheme.titleLarge!
-                                  .copyWith(fontWeight: FontWeight.w600),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: SizeConfig.screenWidth! * 0.237,
+                            height: SizeConfig.screenHeight! * 0.104,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            SizedBox(height: SizeConfig.screenHeight! * 0.013),
-                            Column(
+                            child: CachedNetworkImage(
+                              alignment: Alignment.topCenter,
+                              imageUrl: dashboardFLex.flexImage!,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) {
+                                return SpinKitCircle(
+                                  color: primaryColor.withOpacity(0.7),
+                                  size: 30,
+                                );
+                              },
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.error,
+                                color: neutralColor.withOpacity(0.4),
+                                size: 30,
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
-                                  style: textTheme.bodyMedium!.copyWith(
-                                    fontSize: 15.5,
-                                    color: neutralColor.withOpacity(0.5),
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  dashboardFLex.flexName!,
+                                  style: textTheme.titleLarge!
+                                      .copyWith(fontWeight: FontWeight.w600),
                                 ),
-                                Text(
-                                  AppStrings.confirmedInvitees,
-                                  style: textTheme.bodyMedium!.copyWith(
-                                    fontSize: 15.5,
-                                    color: neutralColor.withOpacity(0.5),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  if (isScheduled)
-                    ValueListenableBuilder(
-                        valueListenable: isGetFlexDetail,
-                        builder: (context, isFlexGotten, _) {
-                          return isFlexGotten == false
-                              ? InkWell(
-                                  onTap: () {
-                                    Get.to(() => EditFlex(
-                                        flexCode: dashboardFLex.flexCode));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: primaryColor.withOpacity(0.11),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          'Edit',
-                                          style: textTheme.bodyMedium!.copyWith(
-                                            fontSize: 13.5,
-                                            color: primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Icon(
-                                          Icons.arrow_forward,
-                                          size: 13.5,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                SizedBox(
+                                    height: SizeConfig.screenHeight! * 0.013),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: SpinKitCircle(
-                                        color: primaryColor.withOpacity(0.9),
-                                        size: 25,
+                                    Text(
+                                      '${dashboardFLex.confirmedInvitees}/${dashboardFLex.flexCapacity}',
+                                      style: textTheme.bodyMedium!.copyWith(
+                                        fontSize: 15.5,
+                                        color: neutralColor.withOpacity(0.5),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      AppStrings.confirmedInvitees,
+                                      style: textTheme.bodyMedium!.copyWith(
+                                        fontSize: 15.5,
+                                        color: neutralColor.withOpacity(0.5),
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ],
-                                );
-                        }),
-                ],
-              ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                if (isScheduled)
+                  ValueListenableBuilder(
+                    valueListenable: isGetFlexDetail,
+                    builder: (context, isFlexGotten, _) {
+                      return isFlexGotten == false
+                          ? InkWell(
+                              onTap: () {
+                                Get.to(() =>
+                                    EditFlex(flexCode: dashboardFLex.flexCode));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4,
+                                ),
+                                height: 123,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: primaryColor.withOpacity(0.11),
+                                ),
+                                child: const Icon(
+                                  Icons.edit_rounded,
+                                  // size: 13.5,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: SpinKitCircle(
+                                    color: primaryColor.withOpacity(0.9),
+                                    size: 25,
+                                  ),
+                                ),
+                              ],
+                            );
+                    },
+                  ),
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-        ],
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

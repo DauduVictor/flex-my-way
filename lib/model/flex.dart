@@ -26,6 +26,7 @@ class Flexes {
     this.broadcastLocations,
     this.recurringDates,
     this.isBroadcast,
+    this.broadcastLocation,
     this.videoLink,
   });
 
@@ -85,6 +86,8 @@ class Flexes {
 
   bool? isBroadcast;
 
+  Coordinates? broadcastLocation;
+
   double? distance;
 
   /// This variable holds the list of recurring broadcastLocations
@@ -130,6 +133,7 @@ class Flexes {
         ),
         id: json["id"] ?? '',
         isBroadcast: json["isBroadcast"] ?? false,
+        broadcastLocation: json["isBroadcast"] == true ? Coordinates.fromJson(json["broadcastLocation"]) : null,
         videoLink: json["videoLink"] ?? '',
       );
 
@@ -159,6 +163,7 @@ class Flexes {
             List<dynamic>.from(recurringDates!.map((x) => x.toJson())),
         "id": id,
         "isBroadcast": isBroadcast,
+        "broadcastLocation": broadcastLocation,
         "videoLink": videoLink,
       };
 }
