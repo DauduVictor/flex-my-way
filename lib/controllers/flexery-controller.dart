@@ -72,7 +72,7 @@ class FlexeryController extends GetxController {
     }).catchError((e) {
       showSpinner.value = false;
       log(':::error: $e');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 }

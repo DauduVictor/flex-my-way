@@ -202,7 +202,7 @@ class UserController extends GetxController {
     }).catchError((e) {
       isScheduledLoaded.value = true;
       log(':::error: $e');
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
 
     ///get completed flex tab
@@ -213,7 +213,7 @@ class UserController extends GetxController {
     }).catchError((e) {
       isCompletedLoaded.value = true;
       log(':::error: $e');
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 

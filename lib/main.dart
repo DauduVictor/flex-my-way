@@ -32,9 +32,11 @@ import 'package:flex_my_way/screens/settings/terms-and-condition.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flex_my_way/screens/splash-screen.dart';
 import 'package:flex_my_way/screens/theme/app-theme.dart';
+import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'screens/settings/eula-policy.dart';
 
 void main() {
@@ -46,53 +48,56 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flexmyway',
-      theme: AppTheme.themeData,
-      initialRoute: SplashScreen.id,
-      enableLog: true,
-      routes: {
-        SplashScreen.id: (context) => const SplashScreen(),
-        OnboardingScreen.id: (context) => const OnboardingScreen(),
-        Login.id: (context) => Login(),
-        ForgotPassword.id: (context) => ForgotPassword(),
-        ResetPassword.id: (context) =>  ResetPassword(),
-        SignUp.id: (context) => SignUp(),
-        FindAFlex.id: (context) => const FindAFlex(),
-        HostRegistration.id: (context) => HostRegistration(),
-        HostAFlex.id: (context) => const HostAFlex(),
-        HostFlexTermsAndConditions.id: (context) => const HostFlexTermsAndConditions(),
-        HostFlexSuccess.id: (context) => HostFlexSuccess(),
-        BetaSms.id: (context) => BetaSms(),
-        Dashboard.id: (context) => const Dashboard(),
-        Flexery.id: (context) => const Flexery(),
-        Notifications.id: (context) => Notifications(),
-        Settings.id: (context) => Settings(),
-        About.id: (context) => const About(),
-        EditProfileDetail.id: (context) => EditProfileDetail(),
-        TermsAndCondition.id: (context) => const TermsAndCondition(),
-        PrivacyPolicy.id: (context) => const PrivacyPolicy(),
-        EulaPolicy.id: (context) => const EulaPolicy(),
-        HelpAndSupport.id: (context) => const HelpAndSupport(),
-        PendingInvites.id: (context) => PendingInvites(),
-        FlexHistory.id: (context) => FlexHistory(),
-        FlexHistoryDetail.id: (context) => FlexHistoryDetail(),
-        Join.id: (context) => const Join(),
-        JoinFlex.id: (context) => JoinFlex(),
-        JoinedFlexDetails.id: (context) => JoinedFlexDetails(),
-        ContactScreen.id: (context) => ContactScreen(),
-        UploadImage.id: (context) => UploadImage(),
-        EditFlex.id: (context) => const EditFlex(),
-        FlexHistoryImageArchive.id: (context) => const FlexHistoryImageArchive(),
-        PaymentMethod.id: (context) => PaymentMethod(),
-        AddCard.id: (context) => AddCard(),
-      },
+    return OverlaySupport.global(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flexmyway',
+        theme: AppTheme.themeData,
+        initialRoute: SplashScreen.id,
+        enableLog: true,
+        routes: {
+          SplashScreen.id: (context) => const SplashScreen(),
+          OnboardingScreen.id: (context) => const OnboardingScreen(),
+          Login.id: (context) => Login(),
+          ForgotPassword.id: (context) => ForgotPassword(),
+          ResetPassword.id: (context) => ResetPassword(),
+          SignUp.id: (context) => SignUp(),
+          FindAFlex.id: (context) => const FindAFlex(),
+          HostRegistration.id: (context) => HostRegistration(),
+          HostAFlex.id: (context) => const HostAFlex(),
+          HostFlexTermsAndConditions.id: (context) =>
+              const HostFlexTermsAndConditions(),
+          HostFlexSuccess.id: (context) => HostFlexSuccess(),
+          BetaSms.id: (context) => BetaSms(),
+          Dashboard.id: (context) => const Dashboard(),
+          Flexery.id: (context) => const Flexery(),
+          Notifications.id: (context) => Notifications(),
+          Settings.id: (context) => Settings(),
+          About.id: (context) => const About(),
+          EditProfileDetail.id: (context) => EditProfileDetail(),
+          TermsAndCondition.id: (context) => const TermsAndCondition(),
+          PrivacyPolicy.id: (context) => const PrivacyPolicy(),
+          EulaPolicy.id: (context) => const EulaPolicy(),
+          HelpAndSupport.id: (context) => const HelpAndSupport(),
+          PendingInvites.id: (context) => PendingInvites(),
+          FlexHistory.id: (context) => FlexHistory(),
+          FlexHistoryDetail.id: (context) => FlexHistoryDetail(),
+          Join.id: (context) => const Join(),
+          JoinFlex.id: (context) => JoinFlex(),
+          JoinedFlexDetails.id: (context) => JoinedFlexDetails(),
+          ContactScreen.id: (context) => ContactScreen(),
+          UploadImage.id: (context) => UploadImage(),
+          EditFlex.id: (context) => const EditFlex(),
+          FlexHistoryImageArchive.id: (context) =>
+              const FlexHistoryImageArchive(),
+          PaymentMethod.id: (context) => PaymentMethod(),
+          AddCard.id: (context) => AddCard(),
+        },
+      ),
     );
   }
 }

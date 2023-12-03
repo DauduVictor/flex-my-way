@@ -39,7 +39,7 @@ class EditController extends GetxController {
     }).catchError((e) {
       log(e);
       showSpinner.value = false;
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 
@@ -367,14 +367,14 @@ class EditController extends GetxController {
       final UserController userController = Get.put(UserController());
       userController.getDashboardFlex();
       userController.getFlexHistory();
-      Functions.showMessage('Flex updated successfully');
+      Functions.showToast('Flex updated successfully');
       loginEditSpinner.value = false;
       Get.back();
     }).catchError((e) {
       convertFileToMultipart();
       loginEditSpinner.value = false;
       log(':::error: $e');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 }

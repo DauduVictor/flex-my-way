@@ -9,7 +9,6 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:flex_my_way/components/components.dart';
 
 class ResetPassword extends StatelessWidget {
-
   static const String id = "resetPassword";
   ResetPassword({Key? key}) : super(key: key);
 
@@ -41,58 +40,60 @@ class ResetPassword extends StatelessWidget {
       ),
       body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
-            absorbing: controller.loginShowSpinner.value,
-            child: SingleChildScrollView(
-              child: Container(
-                height: SizeConfig.screenHeight,
-                width: SizeConfig.screenWidth,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(loginDecoratedImage),
+              absorbing: controller.loginShowSpinner.value,
+              child: SingleChildScrollView(
+                child: Container(
+                  height: SizeConfig.screenHeight,
+                  width: SizeConfig.screenWidth,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(loginDecoratedImage),
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 45),
-                  child: Column(
-                    children: [
-                      SizedBox(height: SizeConfig.screenHeight! * 0.04),
-                      Text(
-                        AppStrings.resetPassword,
-                        style: textTheme.headlineMedium!.copyWith(fontSize: 30.5),
-                      ),
-                      const SizedBox(height: 32),
-                      Text(
-                        'We have sent a code to your registered Email. \nEnter your Email, Code and new Password to reset your password',
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyLarge!,
-                      ),
-                      const SizedBox(height: 32),
-                      _buildForm(textTheme),
-                      const SizedBox(height: 24),
-                      Button(
-                        label: AppStrings.resetPassword,
-                        onPressed: () {
-                          FocusScopeNode currentFocus = FocusScope.of(context);
-                          if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                          if(_formKey.currentState!.validate()){
-                            _resetPassword();
-                          }
-                        },
-                        child: controller.loginShowSpinner.value == true
-                          ? const SizedBox(
-                            height: 21,
-                            width: 19,
-                            child: CircleProgressIndicator())
-                          : null,
-                      ),
-                      const SizedBox(height: 24),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 45),
+                    child: Column(
+                      children: [
+                        SizedBox(height: SizeConfig.screenHeight! * 0.04),
+                        Text(
+                          AppStrings.resetPassword,
+                          style: textTheme.headlineMedium!
+                              .copyWith(fontSize: 30.5),
+                        ),
+                        const SizedBox(height: 32),
+                        Text(
+                          'We have sent a code to your registered Email. \nEnter your Email, Code and new Password to reset your password',
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyLarge!,
+                        ),
+                        const SizedBox(height: 32),
+                        _buildForm(textTheme),
+                        const SizedBox(height: 24),
+                        Button(
+                          label: AppStrings.resetPassword,
+                          onPressed: () {
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus)
+                              currentFocus.unfocus();
+                            if (_formKey.currentState!.validate()) {
+                              _resetPassword();
+                            }
+                          },
+                          child: controller.loginShowSpinner.value == true
+                              ? const SizedBox(
+                                  height: 21,
+                                  width: 19,
+                                  child: CircleProgressIndicator())
+                              : null,
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        ),
+            )),
       ),
     );
   }
@@ -104,15 +105,16 @@ class ResetPassword extends StatelessWidget {
       child: Column(
         children: [
           CustomTextFormField(
-            textEditingController: controller.resetPasswordEmailAddressController,
+            textEditingController:
+                controller.resetPasswordEmailAddressController,
             hintText: 'Your Email Address',
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             validator: (value) {
-              if(value!.isEmpty) {
+              if (value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value.length < 3 || !value.contains('@')){
+              if (value.length < 3 || !value.contains('@')) {
                 return 'This field is required';
               }
               return null;
@@ -124,12 +126,13 @@ class ResetPassword extends StatelessWidget {
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             validator: (value) {
-              if(value!.isEmpty) {
+              if (value!.isEmpty) {
                 return 'This field is required';
               }
               return null;
             },
           ),
+
           /// new password
           CustomTextFormField(
             textEditingController: controller.resetPasswordController,
@@ -138,40 +141,43 @@ class ResetPassword extends StatelessWidget {
             textInputAction: TextInputAction.next,
             hintText: 'New Password',
             suffix: Obx(() => GestureDetector(
-                onTap: () {
-                  controller.resetPasswordObscurePassword.toggle();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0,17.5 ,10 ,0),
-                  child: Text(
-                    controller.resetPasswordObscurePassword.value == true ? 'SHOW' : 'HIDE',
-                    style: textTheme.button!.copyWith(
-                      fontSize: 14.5,
-                      color: primaryColor,
+                  onTap: () {
+                    controller.resetPasswordObscurePassword.toggle();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 17.5, 10, 0),
+                    child: Text(
+                      controller.resetPasswordObscurePassword.value == true
+                          ? 'SHOW'
+                          : 'HIDE',
+                      style: textTheme.button!.copyWith(
+                        fontSize: 14.5,
+                        color: primaryColor,
+                      ),
                     ),
                   ),
-                ),
-              )
-            ),
+                )),
             validator: (value) {
-              if(value!.isEmpty) {
+              if (value!.isEmpty) {
                 return 'This field is required';
               }
               return null;
             },
           ),
+
           /// confirm new password
           CustomTextFormField(
-            textEditingController: controller.resetPasswordConfirmPasswordController,
+            textEditingController:
+                controller.resetPasswordConfirmPasswordController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: true,
             textInputAction: TextInputAction.done,
             hintText: 'Confirm Password',
             validator: (value) {
-              if(value!.isEmpty) {
+              if (value!.isEmpty) {
                 return 'This field is required';
               }
-              if(value != controller.resetPasswordController.text) {
+              if (value != controller.resetPasswordController.text) {
                 return 'Confirm your password';
               }
               return null;
@@ -187,19 +193,18 @@ class ResetPassword extends StatelessWidget {
     controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'email' : controller.resetPasswordEmailAddressController.text,
-      'password' : controller.resetPasswordController.text,
-      'code' : controller.resetCodeController.text
+      'email': controller.resetPasswordEmailAddressController.text,
+      'password': controller.resetPasswordController.text,
+      'code': controller.resetCodeController.text
     };
     await api.resetPassword(body).then((value) async {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage('Password successfully reset!');
+      Functions.showToast('Password successfully reset!');
       Get.toNamed(Login.id);
-    }).catchError((e){
+    }).catchError((e) {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
       log(e);
     });
   }
-
 }

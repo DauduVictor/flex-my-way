@@ -336,11 +336,11 @@ class SignUp extends StatelessWidget {
     };
     await api.signUp(body).then((value) async {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage('Registration Successful');
+      Functions.showToast('Registration Successful');
       Get.back();
     }).catchError((e) {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
       log(e);
     });
   }

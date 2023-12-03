@@ -122,7 +122,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                     Get.to(() => FlexHistoryImageArchive(
                                         flexTag: flex!.hashtag!));
                                   } else {
-                                    Functions.showMessage(
+                                    Functions.showToast(
                                         'All images will be present after flex goes live!');
                                   }
                                 },
@@ -257,7 +257,7 @@ class FlexHistoryDetail extends StatelessWidget {
                                           !userController.gender.value.contains(
                                               '${flex!.genderRestriction}') &&
                                           flex!.genderRestriction != 'Both') {
-                                        Functions.showMessage(
+                                        Functions.showToast(
                                             'Gender restriction has been applied to this flex.\nPlease join other flex!');
                                       }
                                     }
@@ -501,10 +501,9 @@ class FlexHistoryDetail extends StatelessWidget {
                                           flex!.locationCoordinates!.lat!,
                                           flex!.locationCoordinates!.lng!)))
                                   .then((value) {
-                                Functions.showMessage('Flex location copied');
+                                Functions.showToast('Flex location copied');
                               }).catchError((e) {
-                                Functions.showMessage(
-                                    'Could not copy flex link');
+                                Functions.showToast('Could not copy flex link');
                               });
                             },
                             style: TextButton.styleFrom(
@@ -555,12 +554,12 @@ class FlexHistoryDetail extends StatelessWidget {
     await api.joinFlex(joinCode).then((flex) {
       joinController.showSpinner.value = false;
       joinController.joinedFlex = flex;
-      Functions.showMessage('Successfully joined flex!');
+      Functions.showToast('Successfully joined flex!');
       Get.to(() => JoinedFlexDetails(flex: flex));
     }).catchError((e) {
       log(e);
       joinController.showSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 }

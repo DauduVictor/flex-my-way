@@ -22,11 +22,8 @@ class JoinFlex extends StatelessWidget {
   final bool showAllFeatures;
 
   static const String id = "joinFlex";
-  JoinFlex({
-    Key? key,
-    this.flex,
-    this.showAllFeatures = false
-  }) : super(key: key);
+  JoinFlex({Key? key, this.flex, this.showAllFeatures = false})
+      : super(key: key);
 
   /// calling the [JoinController] for [JoinFlex]
   final JoinController controller = Get.put(JoinController());
@@ -257,12 +254,12 @@ class JoinFlex extends StatelessWidget {
                                                               '${flex!.genderRestriction}') &&
                                                       flex!.genderRestriction !=
                                                           'Both') {
-                                                    Functions.showMessage(
+                                                    Functions.showToast(
                                                         'Gender restriction has been applied to this flex.\nPlease join other flex!');
                                                   }
                                                 }
                                               } else {
-                                                Functions.showMessage(
+                                                Functions.showToast(
                                                     'Please log in to join a flex.');
                                                 Get.toNamed(Login.id);
                                               }
@@ -282,33 +279,35 @@ class JoinFlex extends StatelessWidget {
                                                     BorderRadius.circular(16),
                                               ),
                                             ),
-                                            child: controller.showSpinner.value == false
-                                              ? Text(
-                                                  userController
-                                                          .flexAttendedList
-                                                          .contains(
-                                                              flex!.joinCode)
-                                                      ? userController
-                                                          .getFlexAttendeeStatusText(
-                                                              flex!.joinCode!)
-                                                      : 'Join this Flex',
-                                                  style: textTheme.button!
-                                                      .copyWith(
-                                                    fontSize: 15.5,
-                                                    color: whiteColor,
+                                            child: controller
+                                                        .showSpinner.value ==
+                                                    false
+                                                ? Text(
+                                                    userController
+                                                            .flexAttendedList
+                                                            .contains(
+                                                                flex!.joinCode)
+                                                        ? userController
+                                                            .getFlexAttendeeStatusText(
+                                                                flex!.joinCode!)
+                                                        : 'Join this Flex',
+                                                    style: textTheme.button!
+                                                        .copyWith(
+                                                      fontSize: 15.5,
+                                                      color: whiteColor,
+                                                    ),
+                                                  )
+                                                : const Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 18),
+                                                    child: SizedBox(
+                                                      height: 17,
+                                                      width: 17,
+                                                      child:
+                                                          CircleProgressIndicator(),
+                                                    ),
                                                   ),
-                                                )
-                                              : const Padding(
-                                                  padding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 18),
-                                                  child: SizedBox(
-                                                    height: 17,
-                                                    width: 17,
-                                                    child:
-                                                        CircleProgressIndicator(),
-                                                  ),
-                                                ),
                                           )
                                         : TextButton(
                                             onPressed: () {
@@ -552,7 +551,8 @@ class JoinFlex extends StatelessWidget {
                                 SizedBox(
                                   width: SizeConfig.screenWidth,
                                   height: SizeConfig.screenHeight! * 0.25,
-                                  child: flex?.showOnAccepted == true && showAllFeatures == false
+                                  child: flex?.showOnAccepted == true &&
+                                          showAllFeatures == false
                                       ? Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -561,7 +561,8 @@ class JoinFlex extends StatelessWidget {
                                           ),
                                           child: Icon(
                                             Icons.location_disabled,
-                                            color: neutralColor.withOpacity(0.4),
+                                            color:
+                                                neutralColor.withOpacity(0.4),
                                             size: 45,
                                           ),
                                         )
@@ -575,15 +576,15 @@ class JoinFlex extends StatelessWidget {
                                               GoogleMap(
                                                 mapType: MapType.normal,
                                                 initialCameraPosition:
-                                                  CameraPosition(
-                                                    target: LatLng(
-                                                      flex!.locationCoordinates!
-                                                          .lat!,
-                                                      flex!.locationCoordinates!
-                                                          .lng!,
-                                                    ),
-                                                    zoom: 18.0,
+                                                    CameraPosition(
+                                                  target: LatLng(
+                                                    flex!.locationCoordinates!
+                                                        .lat!,
+                                                    flex!.locationCoordinates!
+                                                        .lng!,
                                                   ),
+                                                  zoom: 18.0,
+                                                ),
                                                 onMapCreated: _onMapCreated,
                                                 myLocationEnabled: true,
                                                 myLocationButtonEnabled: false,
@@ -602,21 +603,22 @@ class JoinFlex extends StatelessWidget {
                                   children: [
                                     TextButton(
                                       onPressed: () async {
-                                        if (flex?.showOnAccepted == false || showAllFeatures == true) {
+                                        if (flex?.showOnAccepted == false ||
+                                            showAllFeatures == true) {
                                           Clipboard.setData(ClipboardData(
-                                            text: await controller
-                                                .formatLocation(
-                                                    flex!
-                                                        .locationCoordinates!
-                                                        .lat!,
-                                                    flex!
-                                                        .locationCoordinates!
-                                                        .lng!)))
+                                                  text: await controller
+                                                      .formatLocation(
+                                                          flex!
+                                                              .locationCoordinates!
+                                                              .lat!,
+                                                          flex!
+                                                              .locationCoordinates!
+                                                              .lng!)))
                                               .then((value) {
-                                            Functions.showMessage(
+                                            Functions.showToast(
                                                 'Flex location copied');
                                           }).catchError((e) {
-                                            Functions.showMessage(
+                                            Functions.showToast(
                                                 'Could not copy flex link');
                                           });
                                         }
@@ -647,12 +649,15 @@ class JoinFlex extends StatelessWidget {
                                     ),
                                     TextButton(
                                       onPressed: () async {
-                                        if (flex?.showOnAccepted == false || showAllFeatures == true) {
-                                          Clipboard.setData(ClipboardData(text: flex!.joinCode ?? '')).then((value) {
-                                            Functions.showMessage(
+                                        if (flex?.showOnAccepted == false ||
+                                            showAllFeatures == true) {
+                                          Clipboard.setData(ClipboardData(
+                                                  text: flex!.joinCode ?? ''))
+                                              .then((value) {
+                                            Functions.showToast(
                                                 'Flex code copied');
                                           }).catchError((e) {
-                                            Functions.showMessage(
+                                            Functions.showToast(
                                                 'Could not copy flex code');
                                           });
                                         }
@@ -702,13 +707,13 @@ class JoinFlex extends StatelessWidget {
     var api = FlexDataSource();
     await api.joinFlex(joinCode).then((value) {
       controller.showSpinner.value = false;
-      Functions.showMessage('Successfully joined flex!');
+      Functions.showToast('Successfully joined flex!');
       userController.refreshDashboardController();
       Get.off(() => JoinedFlexDetails(flex: flex));
     }).catchError((e) {
       log(e);
       controller.showSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 }

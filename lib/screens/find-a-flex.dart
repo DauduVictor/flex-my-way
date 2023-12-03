@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flex_my_way/bloc/future-values.dart';
+import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/screens/host/host-a-flex.dart';
+import 'package:flex_my_way/util/constants/functions.dart';
 import 'package:flex_my_way/util/location-permission.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,8 +23,11 @@ class FindAFlex extends StatefulWidget {
 }
 
 class _FindAFlexState extends State<FindAFlex> {
-  /// Bool variable to hold the value of logged in
+  /// bool variable to hold the value of logged in
   bool isLoggedIn = false;
+
+  /// bool variable to hold the value of awaiting map permission
+  bool isRequestingLocationAccess = false;
 
   /// function to check if the user is currently logged in
   void checkUserIsLoggedIn() async {
@@ -133,7 +138,10 @@ class _FindAFlexState extends State<FindAFlex> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () => Get.toNamed(HostAFlex.id),
+                        onTap: () {
+                          setState(() => isRequestingLocationAccess = false);
+                          Get.toNamed(HostAFlex.id);
+                        },
                         child: CircleAvatar(
                           backgroundColor: whiteColor,
                           radius: 42,
@@ -151,17 +159,25 @@ class _FindAFlexState extends State<FindAFlex> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          await futureValues.getUserLocation().then((value) {
+                          if (!isRequestingLocationAccess) {
                             if (!mounted) return;
-                            Get.toNamed(Join.id);
-                          }).catchError((e) async {
-                            if (!mounted) return;
-                            if (e.toString().contains('denied')) {
-                              locationPermission
-                                  .buildLocationRequest(context)
-                                  .then((value) {});
-                            }
-                          });
+                            setState(() => isRequestingLocationAccess = true);
+                            await futureValues.getUserLocation().then((value) {
+                              if (!mounted) return;
+                              setState(
+                                  () => isRequestingLocationAccess = false);
+                              Get.toNamed(Join.id);
+                            }).catchError((e) async {
+                              if (!mounted) return;
+                              setState(
+                                  () => isRequestingLocationAccess = false);
+                              if (e.toString().contains('denied')) {
+                                Functions.showToast('User disabled access to location');
+                                locationPermission
+                                    .buildLocationRequest(context);
+                              }
+                            });
+                          }
                         },
                         child: CircleAvatar(
                           backgroundColor: whiteColor,
@@ -169,12 +185,16 @@ class _FindAFlexState extends State<FindAFlex> {
                           child: CircleAvatar(
                             radius: 40,
                             backgroundColor: whiteColor,
-                            child: Text(
-                              AppStrings.join,
-                              style: textTheme.titleLarge!.copyWith(
-                                  color: splashBackgroundColor,
-                                  fontWeight: FontWeight.w600),
-                            ),
+                            child: isRequestingLocationAccess
+                                ? const CircleProgressIndicator(
+                                    animatingColor: primaryColor,
+                                  )
+                                : Text(
+                                    AppStrings.join,
+                                    style: textTheme.titleLarge!.copyWith(
+                                        color: splashBackgroundColor,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                           ),
                         ),
                       ),

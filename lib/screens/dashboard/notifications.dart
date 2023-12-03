@@ -10,7 +10,6 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import '../../networking/user-datasource.dart';
 
 class Notifications extends StatelessWidget {
-
   static const String id = "notifications";
   Notifications({Key? key}) : super(key: key);
 
@@ -21,32 +20,33 @@ class Notifications extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Obx(() {
-        return Stack(
-          children: [
-            Scaffold(
-              backgroundColor: backgroundColor,
-              appBar: buildAppBar(context, textTheme, 'Notifications'),
-              body: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
-                child: userController.notification.isEmpty
+      return Stack(
+        children: [
+          Scaffold(
+            backgroundColor: backgroundColor,
+            appBar: buildAppBar(context, textTheme, 'Notifications'),
+            body: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24),
+              child: userController.notification.isEmpty
                   ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          empty,
-                          width: 70,
-                          height: 70,
-                        ),
-                        const SizedBox(height: 20),
-                        const Text(
-                          'You have no new notifications',
-                          style: TextStyle(fontSize: 16.5),
-                        ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
-                  )
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            empty,
+                            width: 70,
+                            height: 70,
+                          ),
+                          const SizedBox(height: 20),
+                          const Text(
+                            'You have no new notifications',
+                            style: TextStyle(fontSize: 16.5),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    )
                   : ListView.builder(
                       itemCount: userController.notification.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -57,9 +57,9 @@ class Notifications extends StatelessWidget {
                         );
                       },
                     ),
-              ),
             ),
-            userController.showNotificationSpinner.value == true
+          ),
+          userController.showNotificationSpinner.value == true
               ? Container(
                   color: userController.showNotificationSpinner.value == true
                       ? whiteColor.withOpacity(0.2)
@@ -73,15 +73,13 @@ class Notifications extends StatelessWidget {
                   ),
                 )
               : Container(),
-          ],
-        );
-      }
-    );
+        ],
+      );
+    });
   }
 }
 
 class NotificationButton extends StatefulWidget {
-
   final String text;
   final String id;
   final int index;
@@ -98,7 +96,6 @@ class NotificationButton extends StatefulWidget {
 }
 
 class _NotificationButtonState extends State<NotificationButton> {
-
   /// calling the user controller [UserController]
   final UserController userController = Get.find<UserController>();
 
@@ -143,8 +140,8 @@ class _NotificationButtonState extends State<NotificationButton> {
             },
             child: AnimatedContainer(
               height: _expanded == true
-                ? SizeConfig.screenHeight! * 0.13
-                : SizeConfig.screenHeight! * 0.085,
+                  ? SizeConfig.screenHeight! * 0.13
+                  : SizeConfig.screenHeight! * 0.085,
               padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
               decoration: BoxDecoration(
                 color: primaryColor,
@@ -171,27 +168,27 @@ class _NotificationButtonState extends State<NotificationButton> {
                     children: [
                       Icon(
                         _expanded == false
-                          ? Icons.keyboard_arrow_down
-                          : Icons.keyboard_arrow_up,
+                            ? Icons.keyboard_arrow_down
+                            : Icons.keyboard_arrow_up,
                         size: 21,
                         color: whiteColor,
                       ),
                       _expanded == true
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 12.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                log('delete notification');
-                                _deleteNotification(widget.id, widget.index);
-                              },
-                              child: const Icon(
-                                IconlyBold.delete,
-                                size: 19,
-                                color: whiteColor,
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  log('delete notification');
+                                  _deleteNotification(widget.id, widget.index);
+                                },
+                                child: const Icon(
+                                  IconlyBold.delete,
+                                  size: 19,
+                                  color: whiteColor,
+                                ),
                               ),
-                            ),
-                        )
-                        : Container(),
+                            )
+                          : Container(),
                     ],
                   ),
                 ],
@@ -210,13 +207,11 @@ class _NotificationButtonState extends State<NotificationButton> {
     userController.notification.removeAt(index);
     await api.deleteNotification(id).then((value) {
       userController.showNotificationSpinner.value = false;
-      Functions.showMessage('Notification deleted successfully');
+      Functions.showToast('Notification deleted successfully');
     }).catchError((e) {
       userController.showNotificationSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
       log(e);
     });
   }
-
 }
-

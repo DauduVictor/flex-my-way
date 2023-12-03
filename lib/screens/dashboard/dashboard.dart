@@ -410,7 +410,7 @@ class ReusableDashBoardCard extends StatelessWidget {
                           try {
                             await getFlexByCode(dashboardFLex.flexCode ?? '');
                           } catch (e) {
-                            Functions.showMessage('Flex not found');
+                            Functions.showToast('Flex not found');
                           }
                           isGetFlexDetail.value = false;
                         }

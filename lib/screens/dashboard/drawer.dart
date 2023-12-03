@@ -353,12 +353,12 @@ void deleteUserAccont() async {
   await api.deleteUserAccount().then((value) {
     userController.deleteAccountSpinner.value = false;
     userController.update();
-    Functions.showMessage('User Account Deleted');
+    Functions.showToast('User Account Deleted');
     settingsController.logOut();
   }).catchError((e) {
     userController.deleteAccountSpinner.value = false;
     userController.update();
-    Functions.showMessage(e);
+    Functions.showToast(e);
   });
 }
 

@@ -202,7 +202,7 @@ class UploadImage extends StatelessWidget {
       controller.image = controller.images.first;
       controller.convertFileToMultipart();
     } on PlatformException {
-      Functions.showMessage('Failded to prepare image(s) for uplaod');
+      Functions.showToast('Failded to prepare image(s) for uplaod');
     }
   }
 
@@ -341,19 +341,19 @@ class UploadImage extends StatelessWidget {
     };
     var api = FlexDataSource();
     await api.addFlexery(controller.multiPartImages.value, body).then((value) {
-        controller.multiPartImages.clear();
-        controller.image = null;
-        controller.update();
-        Functions.showMessage('Image(s) uploaded successfully!');
-        controller.getFlexery('time');
-        controller.hashTagController.clear();
-       Get.back();
-       Get.back();
+      controller.multiPartImages.clear();
+      controller.image = null;
+      controller.update();
+      Functions.showToast('Image(s) uploaded successfully!');
+      controller.getFlexery('time');
+      controller.hashTagController.clear();
+      Get.back();
+      Get.back();
     }).catchError((e) {
       controller.convertFileToMultipart();
       Get.back();
       log(':::error: $e');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 }

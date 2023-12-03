@@ -9,7 +9,6 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/controllers/controllers.dart';
 
 class EditProfileDetail extends StatelessWidget {
-
   static const String id = "editProfileDetail";
   EditProfileDetail({Key? key}) : super(key: key);
 
@@ -28,98 +27,103 @@ class EditProfileDetail extends StatelessWidget {
       appBar: buildAppBar(context, textTheme, AppStrings.editProfileDetails),
       body: DismissKeyboard(
         child: Obx(() => AbsorbPointer(
-            absorbing: controller.showSpinner.value,
-            child: SingleChildScrollView(
-              child: Container(
-                height: SizeConfig.screenHeight,
-                width: SizeConfig.screenWidth,
-                padding: const EdgeInsets.fromLTRB(24, 25, 24, 20),
-                child: Column(
-                  children: [
-                    Text(
-                      'See something wrong?\nChange it below',
-                      textAlign: TextAlign.center,
-                      style: textTheme.button!.copyWith(
-                        color: neutralColor.withOpacity(0.5),
+              absorbing: controller.showSpinner.value,
+              child: SingleChildScrollView(
+                child: Container(
+                  height: SizeConfig.screenHeight,
+                  width: SizeConfig.screenWidth,
+                  padding: const EdgeInsets.fromLTRB(24, 25, 24, 20),
+                  child: Column(
+                    children: [
+                      Text(
+                        'See something wrong?\nChange it below',
+                        textAlign: TextAlign.center,
+                        style: textTheme.button!.copyWith(
+                          color: neutralColor.withOpacity(0.5),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 25),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          CustomTextFormField(
-                            hintText: 'Your Name',
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.name,
-                            textEditingController: controller.nameController,
-                          ),
-                          CustomTextFormField(
-                            hintText: 'Your Email Address',
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.emailAddress,
-                            textEditingController: controller.emailAddressController,
-                            readOnly: true,
-                          ),
-                          CustomTextFormField(
-                            hintText: 'Your Phone Number',
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.next,
-                            textEditingController: controller.phoneNumberController,
-                          ),
-                          CustomDropdownButtonField(
-                            hintText: 'Select a Gender',
-                            items: genders,
-                            value: controller.gender.value,
-                            onChanged: (value) {
-                              controller.gender.value = value.toString();
-                            },
-                          ),
-                          CustomTextFormField(
-                            hintText: 'Your Occupation',
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
-                            textEditingController: controller.occuapationController,
-                          ),
-                          Visibility(
-                            visible: false,
-                            child: CustomDropdownButtonField(
-                              hintText: 'What type of flex are you interested in?',
-                              items: preferredFlexes,
-                              value: controller.preferredFlex.value == ''
-                                ? null : controller.preferredFlex.value,
+                      const SizedBox(height: 25),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            CustomTextFormField(
+                              hintText: 'Your Name',
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.name,
+                              textEditingController: controller.nameController,
+                            ),
+                            CustomTextFormField(
+                              hintText: 'Your Email Address',
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.emailAddress,
+                              textEditingController:
+                                  controller.emailAddressController,
+                              readOnly: true,
+                            ),
+                            CustomTextFormField(
+                              hintText: 'Your Phone Number',
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.next,
+                              textEditingController:
+                                  controller.phoneNumberController,
+                            ),
+                            CustomDropdownButtonField(
+                              hintText: 'Select a Gender',
+                              items: genders,
+                              value: controller.gender.value,
                               onChanged: (value) {
-                                controller.preferredFlex.value = value.toString();
+                                controller.gender.value = value.toString();
                               },
                             ),
-                          ),
-                        ],
+                            CustomTextFormField(
+                              hintText: 'Your Occupation',
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.text,
+                              textEditingController:
+                                  controller.occuapationController,
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: CustomDropdownButtonField(
+                                hintText:
+                                    'What type of flex are you interested in?',
+                                items: preferredFlexes,
+                                value: controller.preferredFlex.value == ''
+                                    ? null
+                                    : controller.preferredFlex.value,
+                                onChanged: (value) {
+                                  controller.preferredFlex.value =
+                                      value.toString();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Button(
-                      label: AppStrings.save,
-                      onPressed: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        if(_formKey.currentState!.validate()){
-                          updateUserInfo();
-                        }
-                      },
-                      child: controller.showSpinner.value == true
-                        ? const SizedBox(
-                            height: 21,
-                            width: 19,
-                            child: CircleProgressIndicator()
-                        )
-                        : null,
-                    ),
-                  ],
+                      const SizedBox(height: 16),
+                      Button(
+                        label: AppStrings.save,
+                        onPressed: () {
+                          FocusScopeNode currentFocus = FocusScope.of(context);
+                          if (!currentFocus.hasPrimaryFocus)
+                            currentFocus.unfocus();
+                          if (_formKey.currentState!.validate()) {
+                            updateUserInfo();
+                          }
+                        },
+                        child: controller.showSpinner.value == true
+                            ? const SizedBox(
+                                height: 21,
+                                width: 19,
+                                child: CircleProgressIndicator())
+                            : null,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-        ),
+            )),
       ),
     );
   }
@@ -141,15 +145,14 @@ class EditProfileDetail extends StatelessWidget {
       var db = DatabaseHelper();
       await db.initDb();
       await db.saveUser(user);
-      Functions.showMessage('Your details have been updated successfully');
+      Functions.showToast('Your details have been updated successfully');
       controller.userName.value = user.name!;
       Get.back();
       controller.refreshUserDetails();
-    }).catchError((e){
+    }).catchError((e) {
       controller.showSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
       log(e);
     });
   }
-
 }

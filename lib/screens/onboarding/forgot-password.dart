@@ -8,7 +8,6 @@ import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/util/util.dart';
 
 class ForgotPassword extends StatelessWidget {
-
   static const String id = "forgotPassword";
   ForgotPassword({Key? key}) : super(key: key);
 
@@ -24,7 +23,8 @@ class ForgotPassword extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       body: DismissKeyboard(
-        child: Obx(() => AbsorbPointer(
+        child: Obx(
+          () => AbsorbPointer(
             absorbing: controller.loginShowSpinner.value,
             child: SingleChildScrollView(
               child: Container(
@@ -34,8 +34,7 @@ class ForgotPassword extends StatelessWidget {
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(
-                        'assets/images/jpegs/login-decorated-screen.png'
-                    ),
+                        'assets/images/jpegs/login-decorated-screen.png'),
                   ),
                 ),
                 child: Column(
@@ -59,15 +58,16 @@ class ForgotPassword extends StatelessWidget {
                     Form(
                       key: _formKey,
                       child: CustomTextFormField(
-                        textEditingController: controller.forgotPasswordEmailAddressController,
+                        textEditingController:
+                            controller.forgotPasswordEmailAddressController,
                         hintText: 'Your Email Address',
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         validator: (value) {
-                          if(value!.isEmpty) {
+                          if (value!.isEmpty) {
                             return 'This field is required';
                           }
-                          if(value.length < 3 || !value.contains('@')){
+                          if (value.length < 3 || !value.contains('@')) {
                             return 'This field is required';
                           }
                           return null;
@@ -79,18 +79,18 @@ class ForgotPassword extends StatelessWidget {
                       label: 'Send Recovery Email',
                       onPressed: () {
                         FocusScopeNode currentFocus = FocusScope.of(context);
-                        if(!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-                        if(_formKey.currentState!.validate()){
+                        if (!currentFocus.hasPrimaryFocus)
+                          currentFocus.unfocus();
+                        if (_formKey.currentState!.validate()) {
                           _forgotPassword();
                         }
                       },
                       child: controller.loginShowSpinner.value == true
-                        ? const SizedBox(
-                          height: 21,
-                          width: 19,
-                          child: CircleProgressIndicator()
-                        )
-                        : null,
+                          ? const SizedBox(
+                              height: 21,
+                              width: 19,
+                              child: CircleProgressIndicator())
+                          : null,
                     ),
                     const SizedBox(height: 16),
                     GestureDetector(
@@ -122,17 +122,16 @@ class ForgotPassword extends StatelessWidget {
     controller.loginShowSpinner.value = true;
     var api = UserDataSource();
     Map<String, String> body = {
-      'email' : controller.forgotPasswordEmailAddressController.text
+      'email': controller.forgotPasswordEmailAddressController.text
     };
     await api.forgotPassword(body).then((value) async {
       controller.loginShowSpinner.value = false;
       Get.toNamed(ResetPassword.id);
-      Functions.showMessage(value.toString());
-    }).catchError((e){
+      Functions.showToast(value.toString());
+    }).catchError((e) {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
       log(e);
     });
   }
-
 }

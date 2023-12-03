@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flex_my_way/components/components.dart';
 import 'package:flex_my_way/screens/find-a-flex.dart';
 import 'package:flex_my_way/screens/onboarding/onboarding-screen.dart';
 import 'package:flutter/material.dart';
@@ -39,28 +40,26 @@ class _SplashScreenState extends State<SplashScreen> {
         height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth,
         color: splashBackgroundColor,
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Center(
+              child: Text(
                 'Flexmyway',
                 style: textTheme.headline2!.copyWith(
                   color: whiteColor,
-                  fontSize: 50.5,
+                  fontSize: 48.5,
                   fontFamily: 'Neon',
                 ),
               ),
-              SizedBox(
-                height: 75,
-                width: 60,
-                child: Image.asset(
-                  splashScreenLocationImage2,
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom,
               ),
-              // SvgPicture.asset(uploadIcon),
-            ],
-          ),
+              child: const CircleProgressIndicator(),
+            )
+          ],
         ),
       ),
     );
@@ -75,7 +74,7 @@ void getBoolFromSp() async {
   if (prefs.getBool('isFirstTimeUser') == false) {
     await prefs.setBool('isFirstTimeUser', true);
   } else {
-     await prefs.setBool('isFirstTimeUser', true);
+    await prefs.setBool('isFirstTimeUser', true);
   }
   if (prefs.getBool('onBoarded') == true) {
     if (prefs.getBool('loggedIn') == true) {

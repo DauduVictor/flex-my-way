@@ -152,7 +152,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
       if (!mounted) return;
       Get.back();
       log(e);
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 
@@ -313,7 +313,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
         });
       }
     } catch (e) {
-      Functions.showMessage(
+      Functions.showToast(
         'It seems like we couldn\'t find flexes close to you. Try again!',
       );
     }
@@ -339,7 +339,7 @@ class _JoinState extends State<Join> with TickerProviderStateMixin {
           customIconForNormalFlex = value;
         });
       }).catchError((e) {
-        Functions.showMessage(
+        Functions.showToast(
           'Unable to connect to google maps at this time, please try again',
         );
       });

@@ -8,7 +8,6 @@ import '../../networking/flex-datasource.dart';
 import 'package:flex_my_way/model/model.dart';
 
 class FlexHistoryImageArchive extends StatefulWidget {
-
   static const String id = 'flexHistoryImageArchive';
   final String? flexTag;
 
@@ -18,15 +17,15 @@ class FlexHistoryImageArchive extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FlexHistoryImageArchive> createState() => _FlexHistoryImageArchiveState();
+  State<FlexHistoryImageArchive> createState() =>
+      _FlexHistoryImageArchiveState();
 }
 
 class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
-
   /// dynamic variable to hold an instance of flexDataSource
   var api = FlexDataSource();
 
-  List<FlexeryModel> flexery= [];
+  List<FlexeryModel> flexery = [];
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
     }).catchError((e) {
       setState(() => showSpinner = false);
       print(':::error: $e');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 
@@ -65,23 +64,20 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
       ),
       body: showSpinner == false
           ? Padding(
-            padding: const EdgeInsets.fromLTRB(5, 15, 15, 0),
-            child: GridView.builder(
+              padding: const EdgeInsets.fromLTRB(5, 15, 15, 0),
+              child: GridView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      _showImageDialog(
-                        flexery,
-                        index,
-                        context
-                      );
+                      _showImageDialog(flexery, index, context);
                     },
                     child: Container(
                       color: Colors.grey.withOpacity(0.3),
                       child: CachedNetworkImage(
                         alignment: Alignment.topCenter,
                         imageUrl: flexery[index].url!,
-                        progressIndicatorBuilder: (context, url, downloadProgress) {
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) {
                           return SpinKitCircle(
                             color: primaryColor.withOpacity(0.7),
                             size: 30,
@@ -100,15 +96,14 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
                 itemCount: flexery.length,
                 padding: const EdgeInsets.only(bottom: 12),
                 shrinkWrap: true,
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 0.6,
                   crossAxisSpacing: 1,
                   mainAxisSpacing: 1,
                 ),
               ),
-          )
+            )
           : Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight! * 0.35),
@@ -117,80 +112,82 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
                   size: 45,
                 ),
               ],
-      ),
+            ),
     );
   }
 
   ///widget to show the dialog for image
-  Future<void> _showImageDialog (List<FlexeryModel> flexery, int position, BuildContext context) {
+  Future<void> _showImageDialog(
+      List<FlexeryModel> flexery, int position, BuildContext context) {
     return showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: '',
-      barrierColor: neutralColor.withOpacity(0.4),
-      transitionBuilder: (context, animation, secondaryAnimation, widget) {
-        return Transform.translate(
-          offset: Offset(0, 10 * animation.value),
-          child: StatefulBuilder(
-              builder: (context, stateSetter) {
-                return Stack(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 2),
-                      child: Column(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onTap: () => Navigator.pop(context),
-                                    child: const Icon(
-                                      Icons.close,
-                                      color: whiteColor,
-                                      size: 31,
-                                    ),
+        context: context,
+        barrierDismissible: true,
+        barrierLabel: '',
+        barrierColor: neutralColor.withOpacity(0.4),
+        transitionBuilder: (context, animation, secondaryAnimation, widget) {
+          return Transform.translate(
+            offset: Offset(0, 10 * animation.value),
+            child: StatefulBuilder(builder: (context, stateSetter) {
+              return Stack(
+                children: [
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 60, horizontal: 2),
+                    child: Column(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: whiteColor,
+                                    size: 31,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 15),
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  initialPage: position,
-                                  autoPlay: false,
-                                  viewportFraction: 1,
-                                  height: SizeConfig.screenHeight! * 0.72,
-                                ),
-                                items: flexery.map((e) {
-                                  return CachedNetworkImage(
-                                    alignment: Alignment.topCenter,
-                                    imageUrl: e.url!,
-                                    progressIndicatorBuilder: (context, url, downloadProgress) {
-                                      return SpinKitCircle(
-                                        color: primaryColor.withOpacity(0.7),
-                                        size: 30,
-                                      );
-                                    },
-                                    errorWidget: (context, url, error) => Icon(
-                                      Icons.error,
-                                      color: neutralColor.withOpacity(0.4),
-                                      size: 30,
-                                    ),
-                                    height: SizeConfig.screenHeight! * 0.7,
-                                    fit: BoxFit.cover,
-                                  );
-                                }).toList(),
+                            ),
+                            const SizedBox(height: 15),
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                initialPage: position,
+                                autoPlay: false,
+                                viewportFraction: 1,
+                                height: SizeConfig.screenHeight! * 0.72,
                               ),
-                              const SizedBox(height: 15),
-                            ],
-                          ),
-                        ],
-                      ),
+                              items: flexery.map((e) {
+                                return CachedNetworkImage(
+                                  alignment: Alignment.topCenter,
+                                  imageUrl: e.url!,
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) {
+                                    return SpinKitCircle(
+                                      color: primaryColor.withOpacity(0.7),
+                                      size: 30,
+                                    );
+                                  },
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.error,
+                                    color: neutralColor.withOpacity(0.4),
+                                    size: 30,
+                                  ),
+                                  height: SizeConfig.screenHeight! * 0.7,
+                                  fit: BoxFit.cover,
+                                );
+                              }).toList(),
+                            ),
+                            const SizedBox(height: 15),
+                          ],
+                        ),
+                      ],
                     ),
-                    /*Align(
+                  ),
+                  /*Align(
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                         onTap: () {
@@ -211,17 +208,14 @@ class _FlexHistoryImageArchiveState extends State<FlexHistoryImageArchive> {
                         ),
                       ),
                     ),*/
-                  ],
-                );
-              }
-          ),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, animation1, animation2) {
-        return Container();
-      }
-    );
+                ],
+              );
+            }),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        });
   }
-
 }

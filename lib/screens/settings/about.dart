@@ -8,7 +8,6 @@ import '../../util/constants/functions.dart';
 import '../../util/constants/strings.dart';
 
 class About extends StatelessWidget {
-
   static const String id = "about";
   const About({Key? key}) : super(key: key);
 
@@ -26,9 +25,10 @@ class About extends StatelessWidget {
               ListTileButton(
                 onPressed: () {
                   try {
-                    launchUrl(Uri.parse('https://twitter.com/Flexmyway_?t=9pI10WbIB4-5FrxbwUWKTg&s=08'));
+                    launchUrl(Uri.parse(
+                        'https://twitter.com/Flexmyway_?t=9pI10WbIB4-5FrxbwUWKTg&s=08'));
                   } catch (e) {
-                    Functions.showMessage(e.toString());
+                    Functions.showToast(e.toString());
                   }
                 },
                 title: 'Twitter',
@@ -36,9 +36,10 @@ class About extends StatelessWidget {
               ListTileButton(
                 onPressed: () {
                   try {
-                    launchUrl(Uri.parse('https://instagram.com/flexmyway_account?igshid=ZDdkNTZiNTM='));
+                    launchUrl(Uri.parse(
+                        'https://instagram.com/flexmyway_account?igshid=ZDdkNTZiNTM='));
                   } catch (e) {
-                    Functions.showMessage(e.toString());
+                    Functions.showToast(e.toString());
                   }
                 },
                 title: 'Instagram',
@@ -46,7 +47,7 @@ class About extends StatelessWidget {
               Visibility(
                 visible: false,
                 child: ListTileButton(
-                  onPressed: () { },
+                  onPressed: () {},
                   title: 'Telegram',
                 ),
               ),
@@ -55,7 +56,7 @@ class About extends StatelessWidget {
                   try {
                     launchUrl(Uri.parse('https://wa.me/qr/LL223LZI2I6JF1'));
                   } catch (e) {
-                    Functions.showMessage(e.toString());
+                    Functions.showToast(e.toString());
                   }
                 },
                 title: 'Whatsapp',
@@ -63,7 +64,7 @@ class About extends StatelessWidget {
               Visibility(
                 visible: false,
                 child: ListTileButton(
-                  onPressed: () { },
+                  onPressed: () {},
                   title: 'TikTok',
                 ),
               ),

@@ -202,12 +202,12 @@ class _HostAFlexState extends State<HostAFlex> {
                                             setState(() {});
                                           } else {
                                             // Date already exists
-                                            Functions.showMessage(
+                                            Functions.showToast(
                                                 'Date already picked by user');
                                           }
                                         }
                                       } else {
-                                        Functions.showMessage(
+                                        Functions.showToast(
                                             'Maximum of 5 reoccuring events can be selected');
                                       }
                                     },
@@ -246,7 +246,7 @@ class _HostAFlexState extends State<HostAFlex> {
                             ),
                             onTap: () async {
                               if (controller.allowPickTime.value == false) {
-                                Functions.showMessage('Pick a flex date first');
+                                Functions.showToast('Pick a flex date first');
                               } else {
                                 DateTime now = DateTime.now();
                                 TimeOfDay? picked = await showTimePicker(
@@ -307,7 +307,7 @@ class _HostAFlexState extends State<HostAFlex> {
                             ),
                             onTap: () async {
                               if (controller.allowPickTime.value == false) {
-                                Functions.showMessage('Pick a flex date first');
+                                Functions.showToast('Pick a flex date first');
                               } else {
                                 TimeOfDay? picked = await showTimePicker(
                                     context: context,
@@ -762,13 +762,13 @@ class _HostAFlexState extends State<HostAFlex> {
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             if (controller.image.value.isEmpty) {
-                              Functions.showMessage('Please upload an image');
+                              Functions.showToast('Please upload an image');
                               return;
                             }
                             if (controller.image.value.length <= 3) {
                               Get.toNamed(HostFlexTermsAndConditions.id);
                             } else {
-                              Functions.showMessage('Maximum of 3 images');
+                              Functions.showToast('Maximum of 3 images');
                             }
                           }
                         },
@@ -791,7 +791,7 @@ class _HostAFlexState extends State<HostAFlex> {
         controller.image.first = File(image!.path);
         final fileTemp = File(image.path);
         controller.bannerImageController.text = fileTemp.path.split('/').last;
-        Functions.showMessage('Image upload successful');
+        Functions.showToast('Image upload successful');
       } else {
         List<XFile>? image =
             await ImagePicker().pickMultiImage(imageQuality: 40);
@@ -806,11 +806,11 @@ class _HostAFlexState extends State<HostAFlex> {
         controller.update();
         controller.bannerImageController.text =
             '${controller.image.length} images(s) uploaded';
-        Functions.showMessage('Image upload successful');
+        Functions.showToast('Image upload successful');
         controller.convertFileToMultipart();
       }
     } on PlatformException {
-      Functions.showMessage('Image upload failed');
+      Functions.showToast('Image upload failed');
     }
   }
 
@@ -1003,11 +1003,11 @@ class _HostAFlexState extends State<HostAFlex> {
                           setState(() {});
                           Navigator.pop(context);
                         }).catchError((e) {
-                          Functions.showMessage(
+                          Functions.showToast(
                               'An error occured, ensure you have internet enabled and try again!');
                         });
                       } catch (e) {
-                        Functions.showMessage(e);
+                        Functions.showToast(e.toString());
                       }
                     },
                     style: TextButton.styleFrom(
@@ -1221,7 +1221,7 @@ class _HostAFlexState extends State<HostAFlex> {
                             );
                           } else {
                             // location already exists
-                            Functions.showMessage(
+                            Functions.showToast(
                               'Broadcast location already picked by user',
                             );
                           }
@@ -1297,7 +1297,7 @@ class _HostAFlexState extends State<HostAFlex> {
         controller.showSearchSpinner = false;
         controller.update();
         log(':::error: seems an error occured');
-        Functions.showMessage(e.toString());
+        Functions.showToast(e.toString());
       });
     });
   }
@@ -1324,7 +1324,7 @@ class _HostAFlexState extends State<HostAFlex> {
         controller.showSearchSpinner = false;
         controller.update();
         log(':::error: seems an error occured');
-        Functions.showMessage(e.toString());
+        Functions.showToast(e.toString());
       });
     });
   }
@@ -1347,7 +1347,7 @@ class _HostAFlexState extends State<HostAFlex> {
     }).catchError((e) {
       controller.update();
       log(':::error: seems an error occured');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 
@@ -1371,7 +1371,7 @@ class _HostAFlexState extends State<HostAFlex> {
     }).catchError((e) {
       controller.update();
       log(':::error: seems an error occured');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 

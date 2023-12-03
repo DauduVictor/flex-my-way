@@ -4,7 +4,6 @@ import 'package:flex_my_way/util/util.dart';
 import 'package:flutter/material.dart';
 
 class PaymentController extends GetxController {
-
   /// variable to know the current state of the payment options
   final paymentOption = 1.obs;
 
@@ -27,16 +26,11 @@ class PaymentController extends GetxController {
   /// A [TextEditingController] to control the input text for card name
   final TextEditingController cvv = TextEditingController();
 
-
   void copyMessage(String text) async {
-    Clipboard.setData(
-        ClipboardData(
-          text: text
-        )).then((value) {
-      Functions.showMessage('Account number copied!');
-    }).catchError((e){
-      Functions.showMessage('Could not copy');
+    Clipboard.setData(ClipboardData(text: text)).then((value) {
+      Functions.showToast('Account number copied!');
+    }).catchError((e) {
+      Functions.showToast('Could not copy');
     });
   }
-
 }

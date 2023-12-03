@@ -910,10 +910,10 @@ class _HostFlexTermsAndConditionsState
                                                           .flexAddressController
                                                           .text))
                                                   .then((value) {
-                                                Functions.showMessage(
+                                                Functions.showToast(
                                                     'Flex location copied');
                                               }).catchError((e) {
-                                                Functions.showMessage(
+                                                Functions.showToast(
                                                     'Could not copy flex link');
                                               });
                                             },
@@ -1078,7 +1078,7 @@ class _HostFlexTermsAndConditionsState
       hostController.convertFileToMultipart();
       log(':::error: $e');
       print(e);
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 

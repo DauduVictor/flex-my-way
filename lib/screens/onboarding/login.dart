@@ -212,7 +212,7 @@ class Login extends StatelessWidget {
       _addBoolToSP(user);
     }).catchError((e) {
       controller.loginShowSpinner.value = false;
-      Functions.showMessage(e);
+      Functions.showToast(e);
       log(e);
     });
   }

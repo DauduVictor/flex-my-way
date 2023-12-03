@@ -10,7 +10,6 @@ import 'package:flex_my_way/util/util.dart';
 import 'package:flex_my_way/components/components.dart';
 
 class HostRegistration extends StatelessWidget {
-
   static const String id = "hostRegistration";
   HostRegistration({Key? key}) : super(key: key);
 
@@ -35,7 +34,8 @@ class HostRegistration extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-            child: Obx(() => AbsorbPointer(
+            child: Obx(
+              () => AbsorbPointer(
                 absorbing: controller.showSpinner.value,
                 child: Form(
                   key: _formKey,
@@ -112,69 +112,69 @@ class HostRegistration extends StatelessWidget {
                             barrierColor: Colors.black.withOpacity(0.5),
                             elevation: 1.5,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)
-                            ),
+                                borderRadius: BorderRadius.circular(30)),
                             context: context,
-                            builder: (context){
+                            builder: (context) {
                               return _bottomModalSheet(context, textTheme);
                             },
                           );
                         },
                         child: controller.selfieImage == null
-                          ? Container(
-                              height: 200,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: neutralColor,
+                            ? Container(
+                                height: 200,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: neutralColor,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(uploadIcon),
+                                      const SizedBox(height: 13),
+                                      const Text(
+                                        AppStrings.uploadASelfie,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                height: 200,
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: neutralColor,
+                                  ),
+                                  image: DecorationImage(
+                                    image: FileImage(
+                                        File(controller.selfieImage!.path)),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(uploadIcon),
-                                    const SizedBox(height: 13),
-                                    const Text(
-                                      AppStrings.uploadASelfie,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(
-                              height: 200,
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: neutralColor,
-                                ),
-                                image: DecorationImage(
-                                  image: FileImage(File(controller.selfieImage!.path)),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
                       ),
                       const SizedBox(height: 32),
                       Button(
                         label: 'Become Host',
                         onPressed: () {
-                          if(_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             if (controller.selfieImage == null) {
-                              Functions.showMessage('Please upload a selfie');
+                              Functions.showToast('Please upload a selfie');
                             }
                           }
                         },
                         child: controller.showSpinner.value == false
-                          ?  null
-                          : const SizedBox(
-                              height: 19,
-                              width: 19,
-                              child: CircleProgressIndicator(),
-                            ),
+                            ? null
+                            : const SizedBox(
+                                height: 19,
+                                width: 19,
+                                child: CircleProgressIndicator(),
+                              ),
                       ),
                       const SizedBox(height: 25),
                     ],
@@ -196,10 +196,9 @@ class HostRegistration extends StatelessWidget {
       controller.selfieImage = File(image!.path);
       print(':::imagePath: ${controller.selfieImage!.path}');
       controller.update();
-      Functions.showMessage('Image upload successful');
-    }
-    on PlatformException {
-      Functions.showMessage('Image upload failed');
+      Functions.showToast('Image upload successful');
+    } on PlatformException {
+      Functions.showToast('Image upload failed');
     }
   }
 
@@ -291,5 +290,4 @@ class HostRegistration extends StatelessWidget {
       ),
     );
   }
-
 }

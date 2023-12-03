@@ -396,7 +396,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
     isUpdateInviteContainer.value = true;
     var api = FlexDataSource();
     await api.acceptAttendee(body).then((flex) async {
-      Functions.showMessage('User added to confirmed guest list!');
+      Functions.showToast('User added to confirmed guest list!');
       await userController.getFlexInvites();
       isUpdateInviteContainer.value = false;
       userController.update();
@@ -405,7 +405,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
     }).catchError((e) {
       isUpdateInviteContainer.value = false;
       log(e);
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 
@@ -424,7 +424,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
     isUpdateInviteContainer.value = true;
     var api = FlexDataSource();
     await api.rejectAttendee(body).then((flex) async {
-      Functions.showMessage('User rejected from attending!');
+      Functions.showToast('User rejected from attending!');
       await userController.getFlexInvites();
       isUpdateInviteContainer.value = false;
       userController.update();
@@ -433,7 +433,7 @@ class ReusablePendingInviteButton extends StatelessWidget {
     }).catchError((e) {
       isUpdateInviteContainer.value = false;
       log(e);
-      Functions.showMessage(e);
+      Functions.showToast(e);
     });
   }
 }

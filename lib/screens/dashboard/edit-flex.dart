@@ -240,12 +240,12 @@ class _EditFlexState extends State<EditFlex> {
                                                   setState(() {});
                                                 } else {
                                                   // Date already exists
-                                                  Functions.showMessage(
+                                                  Functions.showToast(
                                                       'Date already picked by user');
                                                 }
                                               }
                                             } else {
-                                              Functions.showMessage(
+                                              Functions.showToast(
                                                   'Maximum of 5 reoccuring events can be selected');
                                             }
                                           },
@@ -276,8 +276,7 @@ class _EditFlexState extends State<EditFlex> {
                                     if (controller.startTime!
                                             .compareTo(controller.pickedDate!) <
                                         0) {
-                                      Functions.showMessage(
-                                          'Reselect flex time');
+                                      Functions.showToast('Reselect flex time');
                                       return 'Reselect time';
                                     }
                                     return null;
@@ -292,7 +291,7 @@ class _EditFlexState extends State<EditFlex> {
                                   onTap: () async {
                                     if (controller.allowPickTime.value ==
                                         false) {
-                                      Functions.showMessage(
+                                      Functions.showToast(
                                           'Pick a flex date first');
                                     } else {
                                       TimeOfDay? picked = await showTimePicker(
@@ -348,8 +347,7 @@ class _EditFlexState extends State<EditFlex> {
                                     if (controller.endTime!
                                             .compareTo(controller.pickedDate!) <
                                         0) {
-                                      Functions.showMessage(
-                                          'Reselect flex time');
+                                      Functions.showToast('Reselect flex time');
                                       return 'Reselect time';
                                     }
                                     return null;
@@ -364,7 +362,7 @@ class _EditFlexState extends State<EditFlex> {
                                   onTap: () async {
                                     if (controller.allowPickTime.value ==
                                         false) {
-                                      Functions.showMessage(
+                                      Functions.showToast(
                                           'Pick a flex date first');
                                     } else {
                                       TimeOfDay? picked = await showTimePicker(
@@ -804,7 +802,7 @@ class _EditFlexState extends State<EditFlex> {
                                   if (controller.image.value.length <= 3) {
                                     controller.editFlex(widget.flexCode!);
                                   } else {
-                                    Functions.showMessage(
+                                    Functions.showToast(
                                       'Maximum of 3 images',
                                     );
                                   }
@@ -885,7 +883,7 @@ class _EditFlexState extends State<EditFlex> {
         controller.image.first = File(image!.path);
         final fileTemp = File(image.path);
         controller.bannerImageController.text = fileTemp.path.split('/').last;
-        Functions.showMessage('Image upload successful');
+        Functions.showToast('Image upload successful');
       } else {
         List<XFile>? image =
             await ImagePicker().pickMultiImage(imageQuality: 40);
@@ -900,11 +898,11 @@ class _EditFlexState extends State<EditFlex> {
         controller.update();
         controller.bannerImageController.text =
             '${controller.image.length} images(s) uploaded';
-        Functions.showMessage('Image upload successful');
+        Functions.showToast('Image upload successful');
         controller.convertFileToMultipart();
       }
     } on PlatformException {
-      Functions.showMessage('Image upload failed');
+      Functions.showToast('Image upload failed');
     }
   }
 
@@ -1091,11 +1089,11 @@ class _EditFlexState extends State<EditFlex> {
                             .getUserLocation()
                             .then((value) => Navigator.pop(context))
                             .catchError((e) {
-                          Functions.showMessage(
+                          Functions.showToast(
                               'An error occured, ensure you have internet enabled and try again!');
                         });
                       } catch (e) {
-                        Functions.showMessage(e);
+                        Functions.showToast(e.toString());
                       }
                     },
                     style: TextButton.styleFrom(
@@ -1216,7 +1214,7 @@ class _EditFlexState extends State<EditFlex> {
         controller.showSearchSpinner = false;
         controller.update();
         log(':::error: seems an error occured');
-        Functions.showMessage(e.toString());
+        Functions.showToast(e.toString());
       });
     });
   }
@@ -1237,7 +1235,7 @@ class _EditFlexState extends State<EditFlex> {
     }).catchError((e) {
       controller.update();
       log(':::error: seems an error occured');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 
@@ -1458,7 +1456,7 @@ class _EditFlexState extends State<EditFlex> {
                             );
                           } else {
                             // location already exists
-                            Functions.showMessage(
+                            Functions.showToast(
                               'Broadcast location already picked by user',
                             );
                           }
@@ -1532,7 +1530,7 @@ class _EditFlexState extends State<EditFlex> {
         controller.showSearchSpinner = false;
         controller.update();
         log(':::error: seems an error occured');
-        Functions.showMessage(e.toString());
+        Functions.showToast(e.toString());
       });
     });
   }
@@ -1555,7 +1553,7 @@ class _EditFlexState extends State<EditFlex> {
     }).catchError((e) {
       controller.update();
       log(':::error: seems an error occured');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 }

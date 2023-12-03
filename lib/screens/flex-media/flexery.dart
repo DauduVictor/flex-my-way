@@ -612,7 +612,7 @@ class _FlexeryState extends State<Flexery> {
       }).catchError((e) {
         controller.showSearchSpinner.value = false;
         print(':::error: $e');
-        Functions.showMessage(e.toString());
+        Functions.showToast(e.toString());
       });
     });
   }
@@ -628,11 +628,11 @@ class _FlexeryState extends State<Flexery> {
     };
     await api
         .reportImage(body)
-        .then((value) => Functions.showMessage('Report sent'))
+        .then((value) => Functions.showToast('Report sent'))
         .catchError((e) {
       controller.showSearchSpinner.value = false;
       print(':::error: $e');
-      Functions.showMessage(e.toString());
+      Functions.showToast(e.toString());
     });
   }
 }

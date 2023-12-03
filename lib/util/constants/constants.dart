@@ -31,7 +31,7 @@ const infoImage = 'assets/images/svgs/info-svg.svg';
 const blockImage = 'assets/images/svgs/block.svg';
 const cancelImage = 'assets/images/svgs/cancel.svg';
 const splashScreenLocationImage = 'assets/images/svgs/location.svg';
-const splashScreenLocationImage2 = 'assets/images/jpegs/locationImage.png';
+const appIconImage = 'assets/images/jpegs/app-icon.png';
 const darkBackgroundImage = 'assets/images/jpegs/darker-background-image.png';
 const loginDecoratedImage = 'assets/images/jpegs/login-decorated-screen.png';
 const flexBackgroundImage =
@@ -63,8 +63,9 @@ List<String> preferredFlexes = [
   'Dinner',
   'Fundraising',
   'Graduation',
-  'HouseWarming',
+  'House Warming',
   'Marriage',
+  'Nightlife',
   'Pool',
   'Surprise',
   'Showers',

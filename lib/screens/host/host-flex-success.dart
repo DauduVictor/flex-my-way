@@ -9,7 +9,6 @@ import 'package:flex_my_way/controllers/controllers.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HostFlexSuccess extends StatelessWidget {
-
   static const String id = "hostFlexSuccess";
   HostFlexSuccess({Key? key}) : super(key: key);
 
@@ -35,13 +34,15 @@ class HostFlexSuccess extends StatelessWidget {
               const SizedBox(height: 32),
               Text(
                 AppStrings.congratulations,
-                style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
+                style: textTheme.headlineSmall!
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
               Text(
                 AppStrings.yourFlexIsLive,
                 textAlign: TextAlign.center,
-                style: textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
+                style: textTheme.headlineSmall!
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 32),
               Padding(
@@ -79,7 +80,8 @@ class HostFlexSuccess extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 32),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 27, vertical: 32),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24),
                         color: whiteColor,
@@ -87,26 +89,26 @@ class HostFlexSuccess extends StatelessWidget {
                       child: Column(
                         children: [
                           Obx(() {
-                              return RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  text: accountController.username.value,
-                                  style: textTheme.bodyMedium!
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                  children: [
-                                    TextSpan(
-                                        text: AppStrings.isInviting,
-                                        style: textTheme.bodyMedium),
-                                    TextSpan(
-                                      text: Functions.getFormattedDateTimeText(hostController.dateController.text),
-                                      style: textTheme.bodyMedium!
-                                          .copyWith(fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                          ),
+                            return RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: accountController.username.value,
+                                style: textTheme.bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.w600),
+                                children: [
+                                  TextSpan(
+                                      text: AppStrings.isInviting,
+                                      style: textTheme.bodyMedium),
+                                  TextSpan(
+                                    text: Functions.getFormattedDateTimeText(
+                                        hostController.dateController.text),
+                                    style: textTheme.bodyMedium!
+                                        .copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                           const SizedBox(height: 24),
                           const Text(
                             AppStrings.clickTheBelow,
@@ -122,7 +124,8 @@ class HostFlexSuccess extends StatelessWidget {
                               child: Text(
                                 AppStrings.flexURL,
                                 textAlign: TextAlign.center,
-                                style: textTheme.bodyMedium!.copyWith(color: primaryColor),
+                                style: textTheme.bodyMedium!
+                                    .copyWith(color: primaryColor),
                               ),
                             ),
                           )
@@ -136,15 +139,15 @@ class HostFlexSuccess extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             // Get.toNamed(BetaSms.id);
-                            Functions.showMessage('This feature will be available soon!!');
+                            Functions.showToast(
+                                'This feature will be available soon!!');
                           },
                           style: TextButton.styleFrom(
                               padding: const EdgeInsets.all(19),
                               backgroundColor: primaryColorVariant,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
-                              )
-                          ),
+                              )),
                           child: Center(
                             child: Text(
                               AppStrings.betaSMSCaps,
@@ -156,7 +159,8 @@ class HostFlexSuccess extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Share.share('Hey there, you can join my flex with the code "${hostController.createdFlex!.joinCode!}"');
+                            Share.share(
+                                'Hey there, you can join my flex with the code "${hostController.createdFlex!.joinCode!}"');
                           },
                           style: TextButton.styleFrom(
                             padding: const EdgeInsets.all(19),
@@ -174,10 +178,12 @@ class HostFlexSuccess extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             Clipboard.setData(ClipboardData(
-                              text: hostController.createdFlex!.joinCode!)).then((value) {
-                                Functions.showMessage('Flex code copied');
-                            }).catchError((e){
-                              Functions.showMessage('Could not copy flex code');
+                                    text:
+                                        hostController.createdFlex!.joinCode!))
+                                .then((value) {
+                              Functions.showToast('Flex code copied');
+                            }).catchError((e) {
+                              Functions.showToast('Could not copy flex code');
                             });
                           },
                           style: TextButton.styleFrom(
@@ -185,8 +191,7 @@ class HostFlexSuccess extends StatelessWidget {
                               backgroundColor: primaryColor.withOpacity(0.9),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
-                              )
-                          ),
+                              )),
                           child: const Icon(
                             Icons.file_copy,
                             size: 35,
